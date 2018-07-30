@@ -109,6 +109,7 @@ public class DevicePrefFragment extends SettingsPreferenceFragment implements
                 }
             }
         }
+                    mInputSettingNeeded = true;
         super.onCreate(savedInstanceState);
     }
 
