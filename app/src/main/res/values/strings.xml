@@ -33,6 +33,13 @@
     <string name="cpu_clock">Clocks</string>
     <string name="cpu_governor">Governors</string>
 
+    <!-- Preference which manages rotation settings. -->
+    <string name="rotation">Rotation</string>
+    <string name="landscape">Landscape</string>
+    <string name="portrait">Portrait</string>
+    <string name="portrait_90">90</string>
+    <string name="portrait_270">270</string>
+
     <!-- Preference which manages play back settings. -->
     <string name="playback_settings">Playback settings</string>
     <!-- Hdmi self-adaption switch -->

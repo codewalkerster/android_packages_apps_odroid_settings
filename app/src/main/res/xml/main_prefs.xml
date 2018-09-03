@@ -25,6 +25,11 @@
         android:key="cpu"
         android:title="@string/cpu" />
     <Preference
+        android:fragment="com.hardkernel.odroid.settings.rotation.RotationFragment"
+        android:icon="@drawable/ic_sync"
+        android:key="rotation"
+        android:title="@string/rotation" />
+    <Preference
         android:fragment="com.hardkernel.odroid.settings.display.DisplayFragment"
         android:icon="@drawable/ic_settings_display"
         android:key="display"
