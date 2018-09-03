@@ -28,6 +28,11 @@
     <string name="device_position_zoomin">Zoom in screen</string>
     <string name="device_position_description">current scaling is</string>
 
+    <!-- Preference which manages cpu settings. -->
+    <string name="cpu">Cpu</string>
+    <string name="cpu_clock">Clocks</string>
+    <string name="cpu_governor">Governors</string>
+
     <!-- Preference which manages play back settings. -->
     <string name="playback_settings">Playback settings</string>
     <!-- Hdmi self-adaption switch -->

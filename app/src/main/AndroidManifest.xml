@@ -57,6 +57,11 @@
             </intent-filter>
         </activity>
         <activity
+            android:name="cpu.CpuActivity"
+            android:configChanges="keyboard|keyboardHidden|navigation"
+            android:excludeFromRecents="true"
+            android:exported="true" />
+        <activity
             android:name=".HdmiCecActivity"
             android:configChanges="keyboard|keyboardHidden|navigation"
             android:excludeFromRecents="true"
