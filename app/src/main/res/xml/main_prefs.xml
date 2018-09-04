@@ -20,6 +20,11 @@
     android:title="@string/settings_app_name" >
 
     <Preference
+        android:fragment="com.hardkernel.odroid.settings.update.UpdateFragment"
+        android:icon="@drawable/ic_system_update"
+        android:key="update"
+        android:title="@string/update" />
+    <Preference
         android:fragment="com.hardkernel.odroid.settings.cpu.CpuFragment"
         android:icon="@drawable/ic_settings_more"
         android:key="cpu"

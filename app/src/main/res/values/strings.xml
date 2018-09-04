@@ -28,6 +28,10 @@
     <string name="device_position_zoomin">Zoom in screen</string>
     <string name="device_position_description">current scaling is</string>
 
+    <!-- Preference which manage update package -->
+    <string name="update">Update</string>
+    <string name="update_from_online">From online package</string>
+    <string name="update_from_storage">From downloaded package</string>
     <!-- Preference which manages cpu settings. -->
     <string name="cpu">Cpu</string>
     <string name="cpu_clock">Clocks</string>
