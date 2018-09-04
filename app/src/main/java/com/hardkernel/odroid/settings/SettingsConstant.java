@@ -26,15 +26,6 @@ public class SettingsConstant {
 
     public static String PACKAGE = "com.hardkernel.odroid.settings";
 
-    public static boolean needDroidlogicMboxFeature(Context context){
-        SystemControlManager sm = new SystemControlManager(context);
-        return sm.getPropertyBoolean("ro.platform.has.mbxuimode", false);
-    }
-
-    public static boolean needDroidlogicTvFeature(Context context){
-        SystemControlManager sm = new SystemControlManager(context);
-        return sm.getPropertyBoolean("ro.platform.has.tvuimode", false);
-    }
     public static boolean needDroidlogicHdrFeature(Context context){
         return context.getResources().getBoolean(R.bool.display_need_hdr_function);
     }
@@ -52,15 +43,5 @@ public class SettingsConstant {
     }
     public static boolean needDroidlogicPlaybackSetFeature(Context context){
         return context.getResources().getBoolean(R.bool.display_need_playback_set_function);
-    }
-
-    public static boolean hasMboxFeature(Context context){
-        SystemControlManager sm = new SystemControlManager(context);
-        return sm.getPropertyBoolean("ro.tvsoc.as.mbox", false);
-    }
-
-    public static boolean needDroidlogicCustomization(Context context){
-        SystemControlManager sm = new SystemControlManager(context);
-        return sm.getPropertyBoolean("ro.platform.customize_tvsetting", false);
     }
 }

@@ -90,7 +90,10 @@ public class SoundFragment extends LeanbackPreferenceFragment implements Prefere
         digitalsoundPref.setOnPreferenceChangeListener(this);
         dtsdrcmodePref.setValue(SystemProperties.get("persist.sys.dtsdrcscale", OutputModeManager.DEFAULT_DRC_SCALE));
         dtsdrcmodePref.setOnPreferenceChangeListener(this);
-        boolean tvFlag = SettingsConstant.needDroidlogicTvFeature(getContext());
+        if (!SettingsConstant.needDroidlogicDigitalSounds(getContext())) {
+            digitalsoundPref.setVisible(false);
+            Log.d(TAG, "tv don't need digital sound switch!");
+        }
         if (!SystemProperties.getBoolean("ro.platform.support.dolby", false)) {
             drcmodePref.setVisible(false);
             Log.d(TAG, "platform doesn't support dolby");
@@ -104,15 +107,11 @@ public class SoundFragment extends LeanbackPreferenceFragment implements Prefere
         } else {
             dtsdrccustommodePref.setVisible(false);
         }
-        if (tvFlag) {
-            boxlineout.setVisible(false);
-            boxhdmi.setVisible(false);
-        } else {
-            boxlineout.setValueIndex(mSoundParameterSettingManager.getLineOutAudioStatus());
-            boxlineout.setOnPreferenceChangeListener(this);
-            boxhdmi.setValueIndex(mSoundParameterSettingManager.getHdmiAudioStatus());
-            boxhdmi.setOnPreferenceChangeListener(this);
-        }
+
+        boxlineout.setValueIndex(mSoundParameterSettingManager.getLineOutAudioStatus());
+        boxlineout.setOnPreferenceChangeListener(this);
+        boxhdmi.setValueIndex(mSoundParameterSettingManager.getHdmiAudioStatus());
+        boxhdmi.setOnPreferenceChangeListener(this);
     }
 
     @Override

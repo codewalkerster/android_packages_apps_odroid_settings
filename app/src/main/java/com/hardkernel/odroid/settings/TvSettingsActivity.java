@@ -87,11 +87,6 @@ public abstract class TvSettingsActivity extends Activity {
                     });
         }
         mStartMode = getIntent().getIntExtra("from_live_tv", MODE_LAUNCHER);
-        if (SettingsConstant.needDroidlogicCustomization(this)) {
-            if (mStartMode == MODE_LIVE_TV) {
-                startShowActivityTimer();
-            }
-        }
     }
 
     public BroadcastReceiver mMenuTimeReceiver = new BroadcastReceiver() {
@@ -139,11 +134,6 @@ public abstract class TvSettingsActivity extends Activity {
     @Override
     public void onResume() {
         registerMenuTimeReceiver();
-        if (SettingsConstant.needDroidlogicCustomization(this)) {
-            if (mStartMode == MODE_LIVE_TV) {
-                startShowActivityTimer();
-            }
-        }
         super.onResume();
     }
 

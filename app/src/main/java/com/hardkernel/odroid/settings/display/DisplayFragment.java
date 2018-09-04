@@ -37,8 +37,6 @@ public class DisplayFragment extends LeanbackPreferenceFragment {
 	private static final String KEY_SDR = "sdr";
 	private static final String KEY_DOLBY_VISION    = "dolby_vision";
 
-	private boolean mTvUiMode;
-
 	public static DisplayFragment newInstance() {
 		return new DisplayFragment();
 	}
@@ -51,24 +49,20 @@ public class DisplayFragment extends LeanbackPreferenceFragment {
 	@Override
 	public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
 		setPreferencesFromResource(R.xml.display, null);
-		mTvUiMode = DroidUtils.hasTvUiMode();
 
-		boolean tvFlag = SettingsConstant.needDroidlogicTvFeature(getContext())
-			&& (SystemProperties.getBoolean("ro.tvsoc.as.mbox", false) == false);
 		final Preference outputmodePref = findPreference(KEY_OUTPUTMODE);
-		outputmodePref.setVisible(SettingsConstant.needScreenResolutionFeture(getContext()) && !tvFlag);
+		outputmodePref.setVisible(SettingsConstant.needScreenResolutionFeture(getContext()));
 
 		final Preference screenPositionPref = findPreference(KEY_POSITION);
-		screenPositionPref.setVisible(!tvFlag);
+		screenPositionPref.setVisible(true);
 
 		final Preference sdrPref = findPreference(KEY_SDR);
-		sdrPref.setVisible(SettingsConstant.needDroidlogicSdrFeature(getContext()) && !tvFlag);
+		sdrPref.setVisible(SettingsConstant.needDroidlogicSdrFeature(getContext()));
 
 		final Preference hdrPref = findPreference(KEY_HDR);
-		hdrPref.setVisible(SettingsConstant.needDroidlogicHdrFeature(getContext()) && !tvFlag);
+		hdrPref.setVisible(SettingsConstant.needDroidlogicHdrFeature(getContext()));
 
 		final Preference dvPref =(Preference) findPreference(KEY_DOLBY_VISION);
-		dvPref.setVisible((SystemProperties.getBoolean("ro.platform.support.dolbyvision", false) == true)
-			&& tvFlag);
+		dvPref.setVisible((SystemProperties.getBoolean("ro.platform.support.dolbyvision", false) == true));
 	}
 }
