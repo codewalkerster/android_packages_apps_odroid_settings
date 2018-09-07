@@ -38,6 +38,16 @@ public class UpdateFragment extends LeanbackPreferenceFragment {
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
+        refreshStatus();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        refreshStatus();
+    }
+
+    private void refreshStatus() {
         setPreferencesFromResource(R.xml.update, null);
         update_server = findPreference(KEY_SELECT_SERVER);
 
@@ -58,7 +68,6 @@ public class UpdateFragment extends LeanbackPreferenceFragment {
                 .getSystemService(getContext().DOWNLOAD_SERVICE);
 
         DownloadReceiver.context = getContext();
-
     }
 
     @Override
