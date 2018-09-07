@@ -5,6 +5,10 @@
         android:key="update_from_online"
         android:title="@string/update_from_online" />
     <Preference
+        android:key="selected_server"
+        android:title="@string/update_selected_server"
+        android:fragment="com.hardkernel.odroid.settings.update.UpdateServerFragment" />
+    <Preference
         android:key="update_from_storage"
         android:title="@string/update_from_storage" />
 

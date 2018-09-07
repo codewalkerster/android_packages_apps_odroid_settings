@@ -1,95 +1,81 @@
-package com.hardkernel.odroid;
+package com.hardkernel.odroid.settings.update;
 
 import java.io.File;
 
+import android.app.AlertDialog;
 import android.app.DownloadManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Environment;
-import android.os.StatFs;
+import android.os.RecoverySystem;
 import android.util.Log;
+import android.widget.Toast;
+
+import com.hardkernel.odroid.settings.update.DownloadReceiver;
 
 class UpdatePackage {
     private static final String TAG = "UpdatePackage";
 
-    private static final String HEADER = "updatepackage";
-    private static final String MODEL = "odroidn2";
-    private static final String VARIANT = "eng";
-    private static final String BRANCH = "s922_9.0.0_master";
+    private static long packgeId = -1;
+    private static long version_checkId = -1; /* TODO: use it when check version */
 
-    public static final long PACKAGE_MAXSIZE = 500 * 1024 * 1024;   /* 500MB */
+    packageName name;
 
-    public final static String OFFICAL_SERVER_URL =
-        "https://dn.odroid.com/S922/Android/ODROID-N2/";
-    public final static String MIRROR_SERVER_URL =
-        "https://www.odroid.in/mirror/dn.odroid.com/S922/Android/ODROID-N2/";
-
-    private static String mRemoteUrl = MIRROR_SERVER_URL;
-    private int m_buildNumber = -1;
-    private long m_downloadId = -1;
-
-    UpdatePackage(String packageName) {
-        String[] s = packageName.split("-");
-        if (s.length <= 4)
-            return;
-
-        if (!s[0].equals(HEADER) || !s[1].equals(MODEL) ||
-                !s[2].equals(VARIANT) || !s[3].equals(BRANCH))
-            return;
-
-        setBuildNumber(Integer.parseInt(s[4].split("\\.")[0]));
+    UpdatePackage(String name) {
+        this.name = new packageName(name);
     }
 
     UpdatePackage(int buildNumber) {
-        setBuildNumber(buildNumber);
-    }
-
-    void setBuildNumber(int buildNumber) {
-        Log.d(TAG, "Build Number is set as " + buildNumber);
-        m_buildNumber = buildNumber;
-    }
-
-    public int buildNumber() {
-        return m_buildNumber;
-    }
-
-    public String packageName() {
-        if (m_buildNumber == -1)
-            return null;
-
-        return HEADER + "-" + MODEL + "-" + VARIANT + "-" + BRANCH + "-"
-            + Integer.toString(m_buildNumber) + ".zip";
+        name = new packageName(buildNumber);
     }
 
     static File getDownloadDir(Context context) {
         return context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS);
     }
 
-    public Uri localUri(Context context) {
+    public static Uri localUri(Context context) {
         return Uri.parse("file://" + getDownloadDir(context) + "/update.zip");
     }
 
-    static public String remoteUrl() {
-        return mRemoteUrl;
-    }
+    public static long downloadedPackageId() { return packgeId; }
+    public static long version_checkId() { return version_checkId; }
 
-    static public void setRemoteUrl(String url) {
-        mRemoteUrl = url;
-    }
+    /*
+     * Check Update package version to update latest version.
+     */
+    public static void checkLatestVersion(Context context, DownloadManager downloadManager) {
+        String remote = updateManager.getRemoteURL();
 
-    public long downloadId() {
-        return m_downloadId;
+        /* Remove if the same file is exist */
+        new File (context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS),
+                updateManager.LATEST_VERSION).delete();
+        try {
+            DownloadManager.Request request = new DownloadManager.Request(
+                    Uri.parse(remote + updateManager.LATEST_VERSION));
+            request.setVisibleInDownloadsUi(false);
+            request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN);
+            request.setDestinationInExternalFilesDir(context,
+                    Environment.DIRECTORY_DOWNLOADS,
+                    updateManager.LATEST_VERSION);
+
+            DownloadReceiver.enqueue = downloadManager.enqueue(request);
+        } catch (IllegalArgumentException e) {
+            Toast.makeText(context,
+                    "URL must be HTTPS/HTTPS forms.",
+                    Toast.LENGTH_SHORT).show();
+        }
     }
 
     /*
      * Request to download update package if necessary
      */
-    public long requestDownload(Context context, DownloadManager dm) {
-        String name = packageName();
+    public void requestDownload(Context context, DownloadManager downloadManager) {
+        String name = this.name.getName();
         if (name == null)
-            return 0;
+            return;
 
-        Uri uri = Uri.parse(remoteUrl() + name);
+        Uri uri = Uri.parse(updateManager.getRemoteURL() + name);
 
         DownloadManager.Request request = new DownloadManager.Request(uri);
         request.setTitle("Downloading new update package");
@@ -105,8 +91,37 @@ class UpdatePackage {
         if (file.exists())
             file.delete();
 
-        m_downloadId = dm.enqueue(request);
-
-        return m_downloadId;
+        DownloadReceiver.enqueue = packgeId = downloadManager.enqueue(request);
     }
-};
+
+    public static void installPackage (Context context, final File packageFile) {
+        Log.e(TAG, "installPackage = " + packageFile.getPath());
+        try {
+            RecoverySystem.verifyPackage(packageFile, null, null);
+
+            new AlertDialog.Builder(context)
+                    .setTitle("Selected package file is verified")
+                    .setMessage("Your Android can be updated, do you want to proceed?")
+                    .setPositiveButton("Proceed", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                            try {
+                                RecoverySystem.installPackage(context,
+                                        packageFile);
+                            } catch (Exception e) {
+                                Toast.makeText(context,
+                                        "Error while install OTA package: " + e,
+                                        Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    })
+                    .setCancelable(true)
+                    .create().show();
+        } catch (Exception e) {
+            Toast.makeText(context,
+                    "The package file seems to be corrupted!!\n" +
+                            "Please select another package file...",
+                    Toast.LENGTH_LONG).show();
+        }
+    }
+}

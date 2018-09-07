@@ -1,19 +1,16 @@
 package com.hardkernel.odroid.settings.update;
 
-import android.app.AlertDialog;
+import android.app.DownloadManager;
 import android.content.ContentUris;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.RecoverySystem;
 import android.provider.DocumentsContract;
 import android.support.v17.preference.LeanbackPreferenceFragment;
 import android.support.v7.preference.Preference;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.hardkernel.odroid.settings.R;
@@ -28,6 +25,12 @@ public class UpdateFragment extends LeanbackPreferenceFragment {
     private static final String TAG = "UpdateFragment";
     public static final int FILE_SELECT_CODE = 101;
 
+    private static final String KEY_FROM_ONLINE = "update_from_online";
+    private static final String KEY_SELECT_SERVER = "selected_server";
+    private static final String KEY_FROM_STORAGE = "update_from_storage";
+
+    private static Preference update_server;
+
     public static UpdateFragment newInstance() { return new UpdateFragment(); }
 
     @Override
@@ -36,6 +39,26 @@ public class UpdateFragment extends LeanbackPreferenceFragment {
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         setPreferencesFromResource(R.xml.update, null);
+        update_server = findPreference(KEY_SELECT_SERVER);
+
+        String server = null;
+        switch (updateManager.getServer()) {
+            case updateManager.KEY_OFFICIAL:
+                server = getString(R.string.update_official_server);
+                break;
+            case updateManager.KEY_MIRROR:
+                server = getString(R.string.update_mirror_server);
+                break;
+            case updateManager.KEY_CUSTOM:
+                server = getString(R.string.update_custom_server);
+                break;
+        }
+        update_server.setSummary(server);
+        DownloadReceiver.downloadManager = (DownloadManager)getContext()
+                .getSystemService(getContext().DOWNLOAD_SERVICE);
+
+        DownloadReceiver.context = getContext();
+
     }
 
     @Override
@@ -43,14 +66,33 @@ public class UpdateFragment extends LeanbackPreferenceFragment {
         String key = preference.getKey();
 
         switch (key) {
-            case "update_from_online":
+            case KEY_FROM_ONLINE:
+                UpdatePackage.checkLatestVersion(getContext(), DownloadReceiver.downloadManager);
                 break;
-            case "update_from_storage":
+            case KEY_FROM_STORAGE:
                 updatePackageFromStorage();
                 break;
         }
 
         return super.onPreferenceTreeClick(preference);
+    }
+
+    private void updatePackageFromStorage() {
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+
+        intent.setType("application/zip");
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+
+        try {
+            startActivityForResult(
+                    Intent.createChooser(intent, "Select a File to Update"),
+                    FILE_SELECT_CODE);
+        } catch (android.content.ActivityNotFoundException ex) {
+            Toast.makeText(getContext(),
+                    "Please install a File Manager.",
+                    Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
@@ -60,11 +102,12 @@ public class UpdateFragment extends LeanbackPreferenceFragment {
         switch (requestCode) {
             case UpdateFragment.FILE_SELECT_CODE:
                 if (resultCode == RESULT_OK) {
+                    Context context = getContext();
                     Uri uri = data.getData();
-                    String path = getPath(getContext(), uri);
+                    String path = getPath(context, uri);
                     if (path == null)
                         return;
-                    installPackage(new File(path));
+                    UpdatePackage.installPackage(context, new File(path));
                 }
                 break;
         }
@@ -108,61 +151,11 @@ public class UpdateFragment extends LeanbackPreferenceFragment {
         return null;
     }
 
-    private void installPackage (final File packageFile) {
-        Log.e(TAG, "installPackage = " + packageFile.getPath());
-        Context context = getContext();
-        try {
-            RecoverySystem.verifyPackage(packageFile, null, null);
-
-            new AlertDialog.Builder(context)
-                    .setTitle("Selected package file is verified")
-                    .setMessage("Your Android can be updated, do you want to proceed?")
-                    .setPositiveButton("Proceed", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int whichButton) {
-                            try {
-                                RecoverySystem.installPackage(context,
-                                        packageFile);
-                            } catch (Exception e) {
-                                Toast.makeText(context,
-                                        "Error while install OTA package: " + e,
-                                        Toast.LENGTH_LONG).show();
-                            }
-                        }
-                    })
-                    .setCancelable(true)
-                    .create().show();
-        } catch (Exception e) {
-            Toast.makeText(context,
-                    "The package file seems to be corrupted!!\n" +
-                            "Please select another package file...",
-                    Toast.LENGTH_LONG).show();
-        }
-    }
-
     /**
      * @param uri The Uri to check.
      * @return Whether the Uri authority is DownloadProvider.
      */
     private static boolean isDownloadDocument(Uri uri) {
         return "com.android.providers.downloads.documents".equals(uri.getAuthority());
-    }
-
-    private void updatePackageFromStorage() {
-        Intent intent = new Intent();
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-
-        intent.setType("application/zip");
-        intent.addCategory(Intent.CATEGORY_OPENABLE);
-
-        try {
-            startActivityForResult(
-                    Intent.createChooser(intent, "Select a File to Update"),
-                    FILE_SELECT_CODE);
-        } catch (android.content.ActivityNotFoundException ex) {
-            Toast.makeText(getContext(),
-                    "Please install a File Manager.",
-                    Toast.LENGTH_SHORT).show();
-        }
     }
 }

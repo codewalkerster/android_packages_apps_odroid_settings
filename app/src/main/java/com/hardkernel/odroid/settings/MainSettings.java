@@ -17,6 +17,9 @@
 package com.hardkernel.odroid.settings;
 
 import android.app.Fragment;
+import android.content.Context;
+
+import com.hardkernel.odroid.settings.update.updateManager;
 
 /**
  * Main settings which loads up the top level headers.
@@ -38,6 +41,11 @@ public class MainSettings extends TvSettingsActivity {
         public void onPreferenceStartInitialScreen() {
             final MainFragment fragment = MainFragment.newInstance();
             startPreferenceFragment(fragment);
+
+            updateManager.setPreference(getContext().
+                    getSharedPreferences(updateManager.SHPREF_UPDATE_SERVER, Context.MODE_PRIVATE));
+            updateManager.initServer();
+            updateManager.initURL();
         }
     }
 }

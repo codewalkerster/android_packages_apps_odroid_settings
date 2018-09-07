@@ -32,6 +32,12 @@
     <string name="update">Update</string>
     <string name="update_from_online">From online package</string>
     <string name="update_from_storage">From downloaded package</string>
+    <string name="update_selected_server">Update Server</string>
+    <string name="update_official_server">Official</string>
+    <string name="update_mirror_server">Mirror</string>
+    <string name="update_custom_server">Custom</string>
+    <string name="get_custom_url">Please enter your Android update server URL properly.</string>
+
     <!-- Preference which manages cpu settings. -->
     <string name="cpu">Cpu</string>
     <string name="cpu_clock">Clocks</string>
