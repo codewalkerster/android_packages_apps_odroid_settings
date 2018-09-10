@@ -1,6 +1,7 @@
 package com.hardkernel.odroid.settings.cpu;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceScreen;
@@ -17,23 +18,6 @@ public class GovernorFragment extends LeanbackPreferenceFragment {
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         updatePreferenceFragment();
-    }
-
-    @Override
-    public boolean onPreferenceTreeClick(Preference preference) {
-        if (preference instanceof RadioPreference) {
-            final RadioPreference radioPreference = (RadioPreference)preference;
-            radioPreference.clearOtherRadioPreferences(getPreferenceScreen());
-            if (radioPreference.isChecked()) {
-                String selectedGovernor = radioPreference.getKey();
-                CPU cpu = CPU.getCPU(TAG, CPU.Cluster.Little);
-                cpu.governor.set(selectedGovernor);
-                radioPreference.setChecked(true);
-            } else {
-                radioPreference.setChecked(true);
-            }
-        }
-        return super.onPreferenceTreeClick(preference);
     }
 
     private void updatePreferenceFragment() {
@@ -57,5 +41,32 @@ public class GovernorFragment extends LeanbackPreferenceFragment {
             }
             screen.addPreference(radioPreference);
         }
+    }
+
+    @Override
+    public boolean onPreferenceTreeClick(Preference preference) {
+        if (preference instanceof RadioPreference) {
+            final RadioPreference radioPreference = (RadioPreference)preference;
+            radioPreference.clearOtherRadioPreferences(getPreferenceScreen());
+            if (radioPreference.isChecked()) {
+                String selectedGovernor = radioPreference.getKey();
+                CPU cpu = CPU.getCPU(TAG, CPU.Cluster.Little);
+                cpu.governor.set(selectedGovernor);
+                saveGovernor(selectedGovernor);
+                radioPreference.setChecked(true);
+            } else {
+                radioPreference.setChecked(true);
+            }
+        }
+        return super.onPreferenceTreeClick(preference);
+    }
+
+    private void saveGovernor(String governor) {
+        Context context = getContext();
+        SharedPreferences sharedPreferences =
+                context.getSharedPreferences("cpu", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("governor", governor);
+        editor.commit();
     }
 }
