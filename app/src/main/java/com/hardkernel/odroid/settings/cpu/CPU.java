@@ -1,13 +1,13 @@
 package com.hardkernel.odroid.settings.cpu;
 
 public class CPU {
-    enum Cluster {
+    public enum Cluster {
         Big,
         Little
     }
     public Governor governor;
     public Frequency frequency;
-    Cluster cluster;
+    public Cluster cluster;
 
     private CPU (String tag, Cluster cluster) {
         this.cluster = cluster;

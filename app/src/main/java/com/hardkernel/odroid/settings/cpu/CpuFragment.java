@@ -7,15 +7,18 @@ import android.support.v7.preference.PreferenceCategory;
 
 import com.hardkernel.odroid.settings.R;
 
-
 public class CpuFragment extends LeanbackPreferenceFragment {
     private static final String TAG = "CpuFragment";
 
-	private static final String KEY_CPU_CLOCK = "cpu_clock";
-	private static final String KEY_CPU_GOVERNOR = "cpu_governor";
+    private static final String KEY_BIG_CORE_CLOCK = "big_core_clock";
+	private static final String KEY_BIG_CORE_GOVERNOR = "big_core_governor";
+	private static final String KEY_LITTLE_CORE_CLOCK = "little_core_clock";
+	private static final String KEY_LITTLE_CORE_GOVERNOR = "little_core_governor";
 
-	private Preference cpuClockPref  = null;
-	private Preference cpuGovernorPref = null;
+	private Preference bigCoreClockPref  = null;
+	private Preference bigCoreGovernorPref = null;
+	private Preference littleCoreClockPref  = null;
+	private Preference littleCoreGovernorPref = null;
 
 	private CPU cpu;
 
@@ -36,20 +39,34 @@ public class CpuFragment extends LeanbackPreferenceFragment {
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
 		setPreferencesFromResource(R.xml.cpu, null);
 
-		cpuClockPref = findPreference(KEY_CPU_CLOCK);
-		cpuGovernorPref = findPreference(KEY_CPU_GOVERNOR);
+		bigCoreClockPref = findPreference(KEY_BIG_CORE_CLOCK);
+		bigCoreGovernorPref = findPreference(KEY_BIG_CORE_GOVERNOR);
+
+		littleCoreClockPref = findPreference(KEY_LITTLE_CORE_CLOCK);
+		littleCoreGovernorPref = findPreference(KEY_LITTLE_CORE_GOVERNOR);
 
 		refreshStatus();
     }
 
 	private void refreshStatus() {
+        String currentClock;
+        String currentGovernor;
+        /* Big Cluster */
+        cpu = CPU.getCPU(TAG, CPU.Cluster.Big);
+
+        currentClock = cpu.frequency.getScalingCurrent();
+        currentGovernor = cpu.governor.getCurrent();
+
+        bigCoreClockPref.setSummary(currentClock);
+        bigCoreGovernorPref.setSummary(currentGovernor);
+
         /* Little Cluster */
         cpu = CPU.getCPU(TAG, CPU.Cluster.Little);
 
-        String currentClock = cpu.frequency.getScalingCurrent();
-        String currentGovernor = cpu.governor.getCurrent();
+        currentClock = cpu.frequency.getScalingCurrent();
+        currentGovernor = cpu.governor.getCurrent();
 
-		cpuClockPref.setSummary(currentClock);
-		cpuGovernorPref.setSummary(currentGovernor);
+		littleCoreClockPref.setSummary(currentClock);
+		littleCoreGovernorPref.setSummary(currentGovernor);
 	}
 }

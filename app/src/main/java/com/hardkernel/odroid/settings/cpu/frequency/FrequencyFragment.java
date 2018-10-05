@@ -1,4 +1,4 @@
-package com.hardkernel.odroid.settings.cpu;
+package com.hardkernel.odroid.settings.cpu.frequency;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -6,37 +6,48 @@ import android.os.Bundle;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceScreen;
 import android.support.v17.preference.LeanbackPreferenceFragment;
+
 import com.hardkernel.odroid.settings.R;
 
 import com.hardkernel.odroid.settings.RadioPreference;
+import com.hardkernel.odroid.settings.cpu.CPU;
 
-public class GovernorFragment extends LeanbackPreferenceFragment {
-    private static final String TAG = "GovernorFragment";
+public class FrequencyFragment extends LeanbackPreferenceFragment {
+    private static final String TAG = "FrequencyFragment";
+    public static CPU cpu = null;
 
-    public static GovernorFragment newInstance() { return new GovernorFragment(); }
+    public static FrequencyFragment newInstance() { return new FrequencyFragment(); }
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
+        if (cpu == null) {
+            cpu = CPU.getCPU(TAG, CPU.Cluster.Big);
+        }
         updatePreferenceFragment();
     }
 
     private void updatePreferenceFragment() {
-        CPU cpu = CPU.getCPU(TAG, CPU.Cluster.Little);
         final Context themedContext = getPreferenceManager().getContext();
         final PreferenceScreen screen = getPreferenceManager().createPreferenceScreen(themedContext);
 
-        screen.setTitle(R.string.cpu_governor);
+        if (cpu.cluster == CPU.Cluster.Big)
+            screen.setTitle(R.string.big_core_clock);
+        else if (cpu.cluster == CPU.Cluster.Little)
+            screen.setTitle(R.string.little_core_clock);
+        else
+            screen.setTitle(R.string.cpu);
+
         setPreferenceScreen(screen);
 
-        String[] governorList = cpu.governor.getGovernors();
+        String[] frequencyList = cpu.frequency.getFrequencies();
 
-        for (final String governor : governorList) {
+        for (final String frequency : frequencyList) {
             final RadioPreference radioPreference = new RadioPreference(themedContext);
-            radioPreference.setKey(governor);
+            radioPreference.setKey(frequency);
             radioPreference.setPersistent(false);
-            radioPreference.setTitle(governor);
+            radioPreference.setTitle(frequency);
             radioPreference.setLayoutResource(R.layout.preference_reversed_widget);
-            if (cpu.governor.getCurrent().equals(governor)) {
+            if (cpu.frequency.getScalingCurrent().equals(frequency)) {
                 radioPreference.setChecked(true);
             }
             screen.addPreference(radioPreference);
@@ -49,10 +60,9 @@ public class GovernorFragment extends LeanbackPreferenceFragment {
             final RadioPreference radioPreference = (RadioPreference)preference;
             radioPreference.clearOtherRadioPreferences(getPreferenceScreen());
             if (radioPreference.isChecked()) {
-                String selectedGovernor = radioPreference.getKey();
-                CPU cpu = CPU.getCPU(TAG, CPU.Cluster.Little);
-                cpu.governor.set(selectedGovernor);
-                saveGovernor(selectedGovernor);
+                String selectedFrequency = radioPreference.getKey();
+                cpu.frequency.setScalingMax(selectedFrequency);
+                saveFrequency(selectedFrequency);
                 radioPreference.setChecked(true);
             } else {
                 radioPreference.setChecked(true);
@@ -61,12 +71,19 @@ public class GovernorFragment extends LeanbackPreferenceFragment {
         return super.onPreferenceTreeClick(preference);
     }
 
-    private void saveGovernor(String governor) {
+    private void saveFrequency(String frequency) {
         Context context = getContext();
+        String target;
+        if (cpu.cluster == CPU.Cluster.Little)
+            target = "little_core";
+        else if (cpu.cluster == CPU.Cluster.Big)
+            target = "big_core";
+        else
+            target = null;
         SharedPreferences sharedPreferences =
                 context.getSharedPreferences("cpu", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("governor", governor);
+        editor.putString(target+"_frequency", frequency);
         editor.commit();
     }
 }

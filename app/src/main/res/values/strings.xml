@@ -39,9 +39,11 @@
     <string name="get_custom_url">Please enter your Android update server URL properly.</string>
 
     <!-- Preference which manages cpu settings. -->
-    <string name="cpu">Cpu</string>
-    <string name="cpu_clock">Clocks</string>
-    <string name="cpu_governor">Governors</string>
+    <string name="cpu">CPU</string>
+    <string name="little_core_clock">Little Core Clocks</string>
+    <string name="little_core_governor">Little Core Governors</string>
+    <string name="big_core_clock">Big Core Clocks</string>
+    <string name="big_core_governor">Big Core Governors</string>
 
     <!-- Preference which manages rotation settings. -->
     <string name="rotation">Rotation</string>

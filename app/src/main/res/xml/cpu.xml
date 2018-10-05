@@ -17,12 +17,20 @@
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
         android:title="@string/cpu">
-        <Preference
-            android:key="cpu_clock"
-            android:title="@string/cpu_clock"
-            android:fragment="com.hardkernel.odroid.settings.cpu.FrequencyFragment"/>
 		<Preference
-			android:key="cpu_governor"
-			android:title="@string/cpu_governor"
-			android:fragment="com.hardkernel.odroid.settings.cpu.GovernorFragment" />
+			android:key="big_core_clock"
+			android:title="@string/big_core_clock"
+			android:fragment="com.hardkernel.odroid.settings.cpu.frequency.BigCoreFrequencyFragment"/>
+		<Preference
+			android:key="big_core_governor"
+			android:title="@string/big_core_governor"
+			android:fragment="com.hardkernel.odroid.settings.cpu.governor.BigCoreGovernorFragment" />
+        <Preference
+            android:key="little_core_clock"
+            android:title="@string/little_core_clock"
+            android:fragment="com.hardkernel.odroid.settings.cpu.frequency.LittleCoreFrequencyFragment"/>
+		<Preference
+			android:key="little_core_governor"
+			android:title="@string/little_core_governor"
+			android:fragment="com.hardkernel.odroid.settings.cpu.governor.LittleCoreGovernorFragment" />
 </PreferenceScreen>

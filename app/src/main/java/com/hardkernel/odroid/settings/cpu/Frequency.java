@@ -12,8 +12,8 @@ import java.util.ArrayList;
 
 public class Frequency {
     /* Big cluster */
-    private final static String BIG_SCALING_AVAILABLE_FREQ = "/sys/devices/system/cpu/cpufreq/policy4/scaling_available_frequencies";
-    private final static String BIG_SCALING_MAX_FREQ = "/sys/devices/system/cpu/cpufreq/policy4/scaling_max_freq";
+    private final static String BIG_SCALING_AVAILABLE_FREQ = "/sys/devices/system/cpu/cpufreq/policy2/scaling_available_frequencies";
+    private final static String BIG_SCALING_MAX_FREQ = "/sys/devices/system/cpu/cpufreq/policy2/scaling_max_freq";
     /* Little cluster */
     private final static String LITTLE_SCALING_AVAILABLE_FREQ = "/sys/devices/system/cpu/cpufreq/policy0/scaling_available_frequencies";
     private final static String LITTLE_SCALING_MAX_FREQ = "/sys/devices/system/cpu/cpufreq/policy0/scaling_max_freq";

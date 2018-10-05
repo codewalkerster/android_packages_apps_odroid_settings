@@ -1,11 +1,11 @@
-package com.hardkernel.odroid.settings.cpu;
+package com.hardkernel.odroid.settings.cpu.frequency;
 
 import android.app.Fragment;
 
 import com.hardkernel.odroid.settings.BaseSettingsFragment;
 import com.hardkernel.odroid.settings.TvSettingsActivity;
 
-public class GovernorActivity extends TvSettingsActivity{
+public class BigCoreFrequencyActivity extends TvSettingsActivity {
     @Override
     protected Fragment createSettingsFragment() { return SettingsFragment.newInstance(); }
 
@@ -14,7 +14,7 @@ public class GovernorActivity extends TvSettingsActivity{
 
         @Override
         public void onPreferenceStartInitialScreen() {
-            final GovernorFragment fragment = GovernorFragment.newInstance();
+            final BigCoreFrequencyFragment fragment = BigCoreFrequencyFragment.newInstance();
             startPreferenceFragment(fragment);
         }
     }

@@ -11,8 +11,8 @@ import java.io.IOException;
 
 public class Governor {
     /* big Cluster */
-    private final static String BIG_GOVERNOR_NODE = "/sys/devices/system/cpu/cpufreq/policy4/scaling_governor";
-    private final static String BIG_SCALING_AVAILABLE_GOVERNORS = "/sys/devices/system/cpu/cpufreq/policy4/scaling_available_governors";
+    private final static String BIG_GOVERNOR_NODE = "/sys/devices/system/cpu/cpufreq/policy2/scaling_governor";
+    private final static String BIG_SCALING_AVAILABLE_GOVERNORS = "/sys/devices/system/cpu/cpufreq/policy2/scaling_available_governors";
     /* little Cluster */
     private final static String LITTLE_GOVERNOR_NODE = "/sys/devices/system/cpu/cpufreq/policy0/scaling_governor";
     private final static String LITTLE_SCALING_AVAILABLE_GOVERNORS = "/sys/devices/system/cpu/cpufreq/policy0/scaling_available_governors";
