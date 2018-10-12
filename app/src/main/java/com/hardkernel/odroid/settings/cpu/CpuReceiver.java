@@ -20,7 +20,7 @@ public class CpuReceiver extends BroadcastReceiver {
 
             cpu = CPU.getCPU(TAG, CPU.Cluster.Big);
             cpu.governor.set(pref.getString("big_core_governor", cpu.governor.getCurrent()));
-            cpu.frequency.setScalingMax(pref.getString("big_core_frequency", cpu.frequency.getScalingCurrent()));
+            cpu.frequency.setScalingMax(pref.getString("big_core_frequency", "1704000000"));
         }
     }
 }
