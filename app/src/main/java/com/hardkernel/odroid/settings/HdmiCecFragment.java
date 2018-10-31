@@ -29,6 +29,10 @@ import android.text.TextUtils;
 import com.droidlogic.app.HdmiCecManager;
 import com.hardkernel.odroid.settings.R;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.Map;
 import java.util.Set;
 
@@ -43,6 +47,8 @@ public class HdmiCecFragment extends LeanbackPreferenceFragment {
 	private static final String KEY_CEC_ONEKEY_PLAY = "cec_onekey_play";
 	private static final String KEY_CEC_ONEKEY_POWEROFF = "cec_onekey_poweroff";
 	private static final String KEY_CEC_AUTO_CHANGE_LANGUAGE = "cec_auto_change_language";
+
+	private static final String CEC_STATE = "/sys/class/cec/pin_status";
 
 	private TwoStatePreference mCecSwitchPref;
 	private TwoStatePreference mCecOnekeyPlayPref;
@@ -102,8 +108,35 @@ public class HdmiCecFragment extends LeanbackPreferenceFragment {
 		return super.onPreferenceTreeClick(preference);
 	}
 
+	private boolean isCecSupport() {
+		String cecState = "";
+		try {
+			FileReader fileReader = new FileReader(CEC_STATE);
+			BufferedReader bufferedReader = new BufferedReader(fileReader);
+			cecState = bufferedReader.readLine();
+			bufferedReader.close();
+			fileReader.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		if (cecState.equals("ok")) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 	private void refresh() {
-		boolean hdmiControlEnabled = readCecOption(Settings.Global.HDMI_CONTROL_ENABLED);
+		boolean hdmiControlEnabled;
+		if (isCecSupport()) {
+			hdmiControlEnabled = readCecOption(Settings.Global.HDMI_CONTROL_ENABLED);
+		} else {
+			hdmiControlEnabled = false;
+			mCecSwitchPref.setEnabled(hdmiControlEnabled);
+		}
 		mCecSwitchPref.setChecked(hdmiControlEnabled);
 		mCecOnekeyPlayPref.setChecked(readCecOption(HdmiCecManager.HDMI_CONTROL_ONE_TOUCH_PLAY_ENABLED));
 		mCecOnekeyPlayPref.setEnabled(hdmiControlEnabled);
