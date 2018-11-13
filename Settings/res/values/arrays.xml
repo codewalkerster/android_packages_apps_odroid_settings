@@ -294,8 +294,7 @@
         <item>1280x720p-60</item>
         <item>720x480p-60</item>
     </string-array>
-    
-    
+
     <string-array name="color_list" translatable="false">
         <item>color1</item>
         <item>color2</item>
@@ -388,14 +387,14 @@
         <item>Unsuccessful</item>
     </string-array>
 
-    <!-- hotspot -->
+    <!-- hotpot -->
     <string-array name="wifi_ap_band_config_2G_only">
         <item>@string/wifi_ap_choose_2G</item>
     </string-array>
 
     <string-array name="wifi_ap_security">
-        <item>@string/wifi_security_none</item>
         <item>@string/wifi_security_wpa2</item>
+        <item>@string/wifi_security_none</item>
     </string-array>
 
     <string-array name="wifi_ap_band_config_full">
