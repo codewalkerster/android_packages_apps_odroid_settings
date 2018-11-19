@@ -40,6 +40,7 @@ import com.android.tv.settings.R;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import android.util.Log;
 import android.os.SystemProperties;
 
 /**
@@ -89,6 +90,9 @@ public class SoundFragment extends PreferenceControllerFragment implements
 
         final TwoStatePreference soundPref = (TwoStatePreference) findPreference(KEY_SOUND_EFFECTS);
         soundPref.setChecked(getSoundEffectsEnabled());
+
+        final TwoStatePreference soundSafe = (TwoStatePreference) findPreference(KEY_SOUND_SAFE);
+        soundSafe.setChecked(getSoundBootSafeEnabled());
 
         /* final TwoStatePreference soundSafe = (TwoStatePreference) findPreference(KEY_SOUND_SAFE);
         soundSafe.setChecked(getSoundBootSafeEnabled()); */
@@ -171,10 +175,10 @@ public class SoundFragment extends PreferenceControllerFragment implements
             final TwoStatePreference soundPref = (TwoStatePreference) preference;
             setSoundEffectsEnabled(soundPref.isChecked());
         }
-        /* if (TextUtils.equals(preference.getKey(), KEY_SOUND_SAFE)) {
+        if (TextUtils.equals(preference.getKey(), KEY_SOUND_SAFE)) {
             final TwoStatePreference soundSafe = (TwoStatePreference) preference;
             setSoundBootSafeEnabled(soundSafe.isChecked());
-        } */
+        }
         return super.onPreferenceTreeClick(preference);
     }
 
