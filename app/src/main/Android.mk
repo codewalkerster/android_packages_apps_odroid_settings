@@ -21,7 +21,6 @@ LOCAL_CERTIFICATE := platform
 LOCAL_MODULE_TAGS := optional
 LOCAL_PROGUARD_FLAG_FILES := proguard.cfg
 
-
 ifeq ($(shell test $(PLATFORM_SDK_VERSION) -ge 26 && echo OK),OK)
 LOCAL_PROPRIETARY_MODULE := true
 else
@@ -56,7 +55,8 @@ LOCAL_SRC_FILES := \
 include frameworks/opt/setupwizard/library/common-gingerbread.mk
 include frameworks/base/packages/SettingsLib/common.mk
 
-FILE := device/amlogic/$(TARGET_PRODUCT)/files/OdroidSettings/AndroidManifest-common.xml
+LOCAL_PRIVATE_PLATFORM_APIS := true
+FILE := device/hardkernel/$(TARGET_PRODUCT)/files/OdroidSettings/AndroidManifest-common.xml
 
 ifeq ($(FILE), $(wildcard $(FILE)))
 LOCAL_FULL_LIBS_MANIFEST_FILES := $(FILE)
