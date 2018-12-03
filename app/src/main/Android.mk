@@ -20,6 +20,7 @@ LOCAL_PACKAGE_NAME := OdroidSettings
 LOCAL_CERTIFICATE := platform
 LOCAL_MODULE_TAGS := optional
 LOCAL_PROGUARD_FLAG_FILES := proguard.cfg
+LOCAL_USE_AAPT2 := true
 
 ifeq ($(shell test $(PLATFORM_SDK_VERSION) -ge 26 && echo OK),OK)
 LOCAL_PROPRIETARY_MODULE := true
