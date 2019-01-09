@@ -36,6 +36,10 @@ import android.os.Message;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.provider.Settings;
+import android.content.ServiceConnection;
+import android.os.IBinder;
+import android.content.ComponentName;
+import java.lang.reflect.Method;
 
 public abstract class TvSettingsActivity extends Activity {
 
@@ -76,9 +80,9 @@ public abstract class TvSettingsActivity extends Activity {
                             });
 
                             final Slide slide = new Slide(Gravity.END);
-                            slide.setSlideFraction(
+                            /*slide.setSlideFraction(
                                     getResources().getDimension(R.dimen.lb_settings_pane_width)
-                                            / root.getWidth());
+                                            / root.getWidth());*/
                             TransitionManager.go(scene, slide);
 
                             // Skip the current draw, there's nothing in it
@@ -93,8 +97,13 @@ public abstract class TvSettingsActivity extends Activity {
         @Override
         public void onReceive(Context context, Intent intent) {
             Log.d(TAG, "intent = " + intent);
-            if (intent.getAction().equals(INTENT_ACTION_FINISH_FRAGMENT)) {
-                startShowActivityTimer();
+            switch (intent.getAction()) {
+                case INTENT_ACTION_FINISH_FRAGMENT:
+                    startShowActivityTimer();
+                    break;
+                case Intent.ACTION_CLOSE_SYSTEM_DIALOGS:
+                    finish();
+                    break;
             }
         }
     };
@@ -102,6 +111,7 @@ public abstract class TvSettingsActivity extends Activity {
     public void registerMenuTimeReceiver() {
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(INTENT_ACTION_FINISH_FRAGMENT);
+        intentFilter.addAction(Intent.ACTION_CLOSE_SYSTEM_DIALOGS);
         registerReceiver(mMenuTimeReceiver, intentFilter);
     }
 
@@ -113,16 +123,24 @@ public abstract class TvSettingsActivity extends Activity {
         handler.removeMessages(0);
 
         int seconds = Settings.System.getInt(getContentResolver(), KEY_MENU_TIME, DEFUALT_MENU_TIME);
-        if (seconds == 0) {
-            seconds = 10;
-        } else if (seconds == 1) {
-            seconds = 20;
+        if (seconds == 1) {
+            seconds = 15;
         } else if (seconds == 2) {
-            seconds = 40;
+            seconds = 30;
         } else if (seconds == 3) {
             seconds = 60;
+        } else if (seconds == 4) {
+            seconds = 120;
+        } else if (seconds == 5) {
+            seconds = 240;
+        } else {
+            seconds = 0;
         }
-        handler.sendEmptyMessageDelayed(0, seconds * 1000);
+        if (seconds > 0) {
+            handler.sendEmptyMessageDelayed(0, seconds * 1000);
+        } else {
+            handler.removeMessages(0);
+        }
     }
 
     Handler handler = new Handler() {
@@ -148,6 +166,7 @@ public abstract class TvSettingsActivity extends Activity {
                 case KeyEvent.KEYCODE_DPAD_CENTER:
                 case KeyEvent.KEYCODE_BACK:
                     if (mStartMode == MODE_LIVE_TV) {
+                        Log.d(TAG, "dispatchKeyEvent");
                         startShowActivityTimer();
                     }
                     break;
@@ -163,12 +182,20 @@ public abstract class TvSettingsActivity extends Activity {
     public void onDestroy() {
         super.onDestroy();
         unregisterMenuTimeReceiver();
+        Log.d(TAG, "onDestroy");
     }
 
     @Override
     public void finish() {
         final Fragment fragment = getFragmentManager().findFragmentByTag(SETTINGS_FRAGMENT_TAG);
-        if (isResumed() && fragment != null) {
+        boolean isresumed = true;
+        Method isResumedMethod = null;
+        try {
+            isResumedMethod = Activity.class.getMethod("isResumed()");
+            isresumed = (boolean)isResumedMethod.invoke(TvSettingsActivity.this);
+        }catch (Exception ex){
+        }
+        if (isresumed && fragment != null) {
             final ViewGroup root = (ViewGroup) findViewById(android.R.id.content);
             final Scene scene = new Scene(root);
             scene.setEnterAction(new Runnable() {
@@ -180,8 +207,8 @@ public abstract class TvSettingsActivity extends Activity {
                 }
             });
             final Slide slide = new Slide(Gravity.END);
-            slide.setSlideFraction(
-                    getResources().getDimension(R.dimen.lb_settings_pane_width) / root.getWidth());
+           /* slide.setSlideFraction(
+                    getResources().getDimension(R.dimen.lb_settings_pane_width) / root.getWidth());*/
             slide.addListener(new Transition.TransitionListener() {
                 @Override
                 public void onTransitionStart(Transition transition) {

@@ -7,7 +7,6 @@
 
 package com.hardkernel.odroid.settings.display.hdr;
 
-import android.app.ActivityManagerNative;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;

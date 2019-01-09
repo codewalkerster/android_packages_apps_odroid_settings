@@ -19,7 +19,6 @@ package com.hardkernel.odroid.settings;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.accounts.AuthenticatorDescription;
-import android.app.ActivityManager;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -29,15 +28,14 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.res.Resources;
-import android.content.pm.UserInfo;
 import android.graphics.drawable.Drawable;
 import android.media.tv.TvInputInfo;
 import android.media.tv.TvInputManager;
 import android.os.Bundle;
-import android.os.Binder;
 import android.os.SystemProperties;
 import android.os.UserHandle;
 import android.os.RemoteException;
+import android.provider.Settings;
 import android.support.v17.preference.LeanbackPreferenceFragment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.preference.Preference;
@@ -45,6 +43,7 @@ import android.support.v7.preference.PreferenceGroup;
 import android.text.TextUtils;
 import android.util.ArraySet;
 import android.util.Log;
+import android.content.ActivityNotFoundException;
 
 import com.hardkernel.odroid.settings.util.DroidUtils;
 import com.hardkernel.odroid.settings.SettingsConstant;
@@ -67,7 +66,6 @@ public class MainFragment extends LeanbackPreferenceFragment {
     private static final String KEY_PLAYBACK_SETTINGS = "playback_settings";
     private static final String KEY_NETFLIX_ESN = "netflix_esn";
     private static final String KEY_MORE_SETTINGS = "more";
-    private static final String KEY_ENCRYPT_MBX = "encrypt";
 
     private String mEsnText;
 
@@ -114,30 +112,13 @@ public class MainFragment extends LeanbackPreferenceFragment {
             } else {
                 netflixesnPref.setVisible(false);
             }
-            if (SystemProperties.get("ro.nrdp.validation", "").equals("")) {
-                netflixesnPref.setVisible(false);
-            }
         }
 
         final Preference moreSettingsPref = findPreference(KEY_MORE_SETTINGS);
-        final Preference securePref = findPreference(KEY_ENCRYPT_MBX);
-        final String state = SystemProperties.get("vold.decrypt");
-        final String useFilecrypto = SystemProperties.get("ro.crypto.type");
         if (is_from_live_tv) {
-            securePref.setVisible(false);
             moreSettingsPref.setVisible(false);
-         } else if (!isPackageInstalled(getActivity(), MORE_SETTINGS_APP_PACKAGE)) {
+        } else if (!isPackageInstalled(getActivity(), MORE_SETTINGS_APP_PACKAGE)) {
             getPreferenceScreen().removePreference(moreSettingsPref);
-            if (useFilecrypto.equals("file")) {
-                getPreferenceScreen().removePreference(securePref);
-            }else if (getCurrentUserId() != UserHandle.USER_SYSTEM) {
-                getPreferenceScreen().removePreference(securePref);
-            }else if (CryptKeeper.DECRYPT_STATE.equals(state)) {
-                securePref.setSummary(getString(R.string.crypt_keeper_encrypted_summary));
-                securePref.setEnabled(false);
-            }
-        } else {
-            getPreferenceScreen().removePreference(securePref);
         }
     }
 
@@ -147,19 +128,16 @@ public class MainFragment extends LeanbackPreferenceFragment {
         return false;
     }
 
-    private int getCurrentUserId() {
-        final long ident = Binder.clearCallingIdentity();
+    public static void startSoundEffectSettings(Context context){
         try {
-            UserInfo currentUser = ActivityManager.getService().getCurrentUser();
-            return currentUser.id;
-        } catch (RemoteException e) {
-            // Activity manager not running, nothing we can do assume user 0.
-        } finally {
-            Binder.restoreCallingIdentity(ident);
+            Intent intent = new Intent();
+            intent.setClassName("com.droidlogic.tv.soundeffectsettings", "com.droidlogic.tv.soundeffectsettings.SoundModeActivity");
+            context.startActivity(intent);
+        } catch (ActivityNotFoundException e) {
+            Log.d(TAG, "startSoundEffectSettings not found!");
+            return;
         }
-        return UserHandle.USER_SYSTEM;
     }
-
     @Override
     public void onStart() {
         super.onStart();

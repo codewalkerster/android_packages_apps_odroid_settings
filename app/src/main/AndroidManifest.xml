@@ -82,11 +82,6 @@
             android:excludeFromRecents="true"
             android:exported="false" />
         <activity
-            android:name=".CryptKeeperConfirm$Blank"
-            android:immersive="true"
-            android:launchMode="singleTop"
-            android:theme="@style/CryptKeeperBlankTheme" />
-        <activity
             android:name=".display.DisplayActivity"
             android:configChanges="keyboard|keyboardHidden|navigation"
             android:exported="true">
@@ -161,32 +156,6 @@
                 <category android:name="com.android.settings.SHORTCUT" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".CryptKeeper"
-            android:configChanges="mnc|mcc|keyboard|keyboardHidden|uiMode"
-            android:excludeFromRecents="true"
-            android:immersive="true"
-            android:launchMode="singleTop"
-            android:process=":CryptKeeper"
-            android:screenOrientation="nosensor"
-            android:theme="@style/Theme.CryptKeeper"
-            android:windowSoftInputMode="adjustResize"
-            androidprv:systemUserOnly="true">
-            <intent-filter android:priority="10">
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".ConfirmLockPassword"
-            android:windowSoftInputMode="stateVisible|adjustResize" />
-        <activity
-            android:name=".ConfirmLockPassword$InternalActivity"
-            android:exported="false"
-            android:theme="@style/Theme.Settings.Transparent"
-            android:windowSoftInputMode="stateVisible|adjustResize" />
-
         <receiver
             android:name=".cpu.CpuReceiver"
             android:enabled="true">
@@ -194,17 +163,6 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
-
-        <receiver android:name=".display.dolbyvision.DvReceiver">
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </receiver>
-
-        <service android:name=".display.dolbyvision.DolbyVisionService" />
-
         <receiver
             android:name=".update.DownloadReceiver"
             android:enabled="true"

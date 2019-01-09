@@ -27,14 +27,17 @@ import android.support.v7.preference.TwoStatePreference;
 import android.text.TextUtils;
 
 import com.droidlogic.app.HdmiCecManager;
+import com.droidlogic.app.SystemControlManager;
 import com.hardkernel.odroid.settings.R;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+
 import java.util.Map;
 import java.util.Set;
+import android.os.SystemProperties;
 
 /**
  * Fragment to control HDMI Cec settings.
@@ -48,12 +51,16 @@ public class HdmiCecFragment extends LeanbackPreferenceFragment {
 	private static final String KEY_CEC_ONEKEY_POWEROFF = "cec_onekey_poweroff";
 	private static final String KEY_CEC_AUTO_CHANGE_LANGUAGE = "cec_auto_change_language";
 
+	private static final String PERSIST_HDMI_CEC_SET_MENU_LANGUAGE = "persist.vendor.sys.cec.set_menu_language";
+
 	private static final String CEC_STATE = "/sys/class/cec/pin_status";
 
 	private TwoStatePreference mCecSwitchPref;
 	private TwoStatePreference mCecOnekeyPlayPref;
 	private TwoStatePreference mCecOnekeyPoweroffPref;
 	private TwoStatePreference mCecAutoChangeLanguagePref;
+
+	private SystemControlManager mSystemControlManager = SystemControlManager.getInstance();
 
 	public static HdmiCecFragment newInstance() {
 		return new HdmiCecFragment();
@@ -73,7 +80,6 @@ public class HdmiCecFragment extends LeanbackPreferenceFragment {
 	@Override
 	public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
 		setPreferencesFromResource(R.xml.hdmicec, null);
-
 		mCecSwitchPref = (TwoStatePreference) findPreference(KEY_CEC_SWITCH);
 		mCecOnekeyPlayPref = (TwoStatePreference) findPreference(KEY_CEC_ONEKEY_PLAY);
 		mCecOnekeyPoweroffPref = (TwoStatePreference) findPreference(KEY_CEC_ONEKEY_POWEROFF);
@@ -101,8 +107,9 @@ public class HdmiCecFragment extends LeanbackPreferenceFragment {
 			writeCecOption(Settings.Global.HDMI_CONTROL_AUTO_DEVICE_OFF_ENABLED, mCecOnekeyPoweroffPref.isChecked());
 			return true;
 		case KEY_CEC_AUTO_CHANGE_LANGUAGE:
-			writeCecOption(HdmiCecManager.HDMI_CONTROL_AUTO_CHANGE_LANGUAGE_ENABLED,
-					mCecAutoChangeLanguagePref.isChecked());
+			//writeCecOption(HdmiCecManager.HDMI_CONTROL_AUTO_CHANGE_LANGUAGE_ENABLED,
+			//		mCecAutoChangeLanguagePref.isChecked());
+			mSystemControlManager.setProperty(PERSIST_HDMI_CEC_SET_MENU_LANGUAGE, mCecAutoChangeLanguagePref.isChecked() ? "true" : "false");
 			return true;
 		}
 		return super.onPreferenceTreeClick(preference);
@@ -142,7 +149,8 @@ public class HdmiCecFragment extends LeanbackPreferenceFragment {
 		mCecOnekeyPlayPref.setEnabled(hdmiControlEnabled);
 		mCecOnekeyPoweroffPref.setChecked(readCecOption(Settings.Global.HDMI_CONTROL_AUTO_DEVICE_OFF_ENABLED));
 		mCecOnekeyPoweroffPref.setEnabled(hdmiControlEnabled);
-		mCecAutoChangeLanguagePref.setChecked(readCecOption(HdmiCecManager.HDMI_CONTROL_AUTO_CHANGE_LANGUAGE_ENABLED));
+		//mCecAutoChangeLanguagePref.setChecked(readCecOption(HdmiCecManager.HDMI_CONTROL_AUTO_CHANGE_LANGUAGE_ENABLED));
+		mCecAutoChangeLanguagePref.setChecked(mSystemControlManager.getPropertyBoolean(PERSIST_HDMI_CEC_SET_MENU_LANGUAGE, true));
 		mCecAutoChangeLanguagePref.setEnabled(hdmiControlEnabled);
 	}
 

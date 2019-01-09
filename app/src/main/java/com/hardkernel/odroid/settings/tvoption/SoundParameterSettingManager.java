@@ -23,7 +23,6 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.os.SystemProperties;
 import android.media.AudioManager;
-import android.media.AudioSystem;
 import android.app.ActivityManager;
 import android.provider.Settings;
 import android.content.SharedPreferences;
@@ -33,11 +32,13 @@ import com.hardkernel.odroid.settings.R;
 import com.droidlogic.app.SystemControlManager;
 import com.droidlogic.app.OutputModeManager;
 
-import com.hardkernel.odroid.settings.TvSettingsActivity;
+import com.hardkernel.odroid.settings.SettingsConstant;
 
+import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.TimeZone;
 import java.util.SimpleTimeZone;
 
@@ -58,7 +59,8 @@ public class SoundParameterSettingManager {
     }
 
     static public boolean CanDebug() {
-        return SystemProperties.getBoolean("sys.soundparameter.debug", false);
+        SystemControlManager mSystemControlManager = SystemControlManager.getInstance();
+        return mSystemControlManager.getPropertyBoolean("sys.vendor.soundparameter.debug", false);
     }
 
     // 0 1 ~ off on
@@ -86,28 +88,27 @@ public class SoundParameterSettingManager {
         if (CanDebug()) Log.d(TAG, "setSoundOutputStatus = " + mode);
         mOutputModeManager.setSoundOutputStatus(mode);
         Settings.Global.putInt(mContext.getContentResolver(), OutputModeManager.SOUND_OUTPUT_DEVICE, mode);
-        //need to add control in framework code
-        /*Settings.Global.putInt(mContext.getContentResolver(),
-                Settings.Global.HDMI_SYSTEM_AUDIO_STATUS_ENABLED,
-                mode == OutputModeManager.SOUND_OUTPUT_DEVICE_ARC ? OutputModeManager.TV_ARC_ON : OutputModeManager.TV_ARC_OFF);*/
+        Settings.Global.putInt(mContext.getContentResolver(), Settings.Global.HDMI_SYSTEM_AUDIO_STATUS_ENABLED,
+                mode == OutputModeManager.SOUND_OUTPUT_DEVICE_ARC ? OutputModeManager.TV_ARC_ON : OutputModeManager.TV_ARC_OFF);
     }
 
     public void setDigitalAudioFormat (int mode) {
         if (CanDebug()) Log.d(TAG, "setDigitalAudioFormat = " + mode);
         switch (mode) {
             case OutputModeManager.DIGITAL_PCM:
+            case OutputModeManager.DIGITAL_SPDIF:
             case OutputModeManager.DIGITAL_AUTO:
-                setDigitalAudioFormatMode(mode);
+                mOutputModeManager.setDigitalAudioFormatOut(mode);
+                break;
+            case OutputModeManager.DIGITAL_MANUAL:
+                mOutputModeManager.setDigitalAudioFormatOut(mode,
+                        getAudioManualFormats());
                 break;
             default:
-                setDigitalAudioFormatMode(OutputModeManager.DIGITAL_PCM);
+                mOutputModeManager.setDigitalAudioFormatOut(
+                        OutputModeManager.DIGITAL_PCM);
+                break;
         }
-    }
-
-    public void setDigitalAudioFormatMode(int mode) {
-        mOutputModeManager.setDigitalAudioFormatOut(mode);
-        Settings.Global.putInt(mContext.getContentResolver(),
-                OutputModeManager.DIGITAL_AUDIO_FORMAT, mode);
     }
 
     public int getDigitalAudioFormat() {
@@ -115,6 +116,35 @@ public class SoundParameterSettingManager {
                 OutputModeManager.DIGITAL_AUDIO_FORMAT, OutputModeManager.DIGITAL_PCM);
         if (CanDebug()) Log.d(TAG, "getDigitalAudioFormat value = " + value);
         return value;
+    }
+
+    public void setAudioManualFormats(int id, boolean enabled) {
+        HashSet<Integer> fmts = new HashSet<>();
+        String enable = getAudioManualFormats();
+        if (!enable.isEmpty()) {
+            try {
+                Arrays.stream(enable.split(",")).mapToInt(Integer::parseInt)
+                    .forEach(fmts::add);
+            } catch (NumberFormatException e) {
+                Log.w(TAG, "DIGITAL_AUDIO_SUBFORMAT misformatted.", e);
+            }
+        }
+        if (enabled) {
+            fmts.add(id);
+        } else {
+            fmts.remove(id);
+        }
+        mOutputModeManager.setDigitalAudioFormatOut(
+                OutputModeManager.DIGITAL_MANUAL, TextUtils.join(",", fmts));
+    }
+
+    public String getAudioManualFormats() {
+        String format = Settings.Global.getString(mContext.getContentResolver(),
+                OutputModeManager.DIGITAL_AUDIO_SUBFORMAT);
+        if (format == null)
+            return "";
+        else
+            return format;
     }
 
     public void enableLineOutAudio(boolean mode) {
@@ -164,9 +194,8 @@ public class SoundParameterSettingManager {
         mOutputModeManager.enableTvArcAudio(mode);
         Settings.Global.putInt(mContext.getContentResolver(),
                 OutputModeManager.TV_ARC, mode ? OutputModeManager.TV_ARC_ON : OutputModeManager.TV_ARC_OFF);
-        //need to add control in framework code
-        /*Settings.Global.putInt(mContext.getContentResolver(),
-                Settings.Global.HDMI_SYSTEM_AUDIO_STATUS_ENABLED, mode ? OutputModeManager.TV_ARC_ON : OutputModeManager.TV_ARC_OFF);*/
+        Settings.Global.putInt(mContext.getContentResolver(), Settings.Global.HDMI_SYSTEM_AUDIO_STATUS_ENABLED,
+                mode ? OutputModeManager.TV_ARC_ON : OutputModeManager.TV_ARC_OFF);
     }
 
     public int getArcAudioStatus() {
@@ -207,9 +236,31 @@ public class SoundParameterSettingManager {
     public void initParameterAfterBoot() {
         Log.d(TAG, "initParameterAfterBoot");
         setDigitalAudioFormat(getDigitalAudioFormat());
+        setDrcModePassthrough();
         mOutputModeManager.initSoundParametersAfterBoot();
     }
 
+    public void setDrcModePassthrough() {
+        final int value = Settings.Global.getInt(mContext.getContentResolver(),
+                OutputModeManager.DRC_MODE, OutputModeManager.IS_DRC_LINE);
+
+        switch (value) {
+        case OutputModeManager.IS_DRC_OFF:
+            mOutputModeManager.enableDobly_DRC(false);
+            mOutputModeManager.setDoblyMode(OutputModeManager.LINE_DRCMODE);
+            break;
+        case OutputModeManager.IS_DRC_LINE:
+            mOutputModeManager.enableDobly_DRC(true);
+            mOutputModeManager.setDoblyMode(OutputModeManager.LINE_DRCMODE);
+            break;
+        case OutputModeManager.IS_DRC_RF:
+            mOutputModeManager.enableDobly_DRC(false);
+            mOutputModeManager.setDoblyMode(OutputModeManager.RF_DRCMODE);
+            break;
+        default:
+            return;
+        }
+    }
     public void resetParameter() {
         Log.d(TAG, "resetParameter");
         mOutputModeManager.resetSoundParameters();

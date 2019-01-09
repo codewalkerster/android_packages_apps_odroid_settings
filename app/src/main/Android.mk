@@ -28,7 +28,7 @@ else
 LOCAL_PRIVILEGED_MODULE := true
 endif
 
-include frameworks/base/packages/SettingsLib/common.mk
+#include frameworks/base/packages/SettingsLib/common.mk
 LOCAL_JAVA_LIBRARIES := droidlogic droidlogic-tv
 LOCAL_STATIC_JAVA_LIBRARIES := \
     android-support-v7-recyclerview \
@@ -53,10 +53,13 @@ LOCAL_AAPT_FLAGS := --auto-add-overlay \
 LOCAL_SRC_FILES := \
     $(call all-java-files-under, java) \
     $(call all-Iaidl-files-under, java)
-include frameworks/opt/setupwizard/library/common-gingerbread.mk
-include frameworks/base/packages/SettingsLib/common.mk
+#include frameworks/opt/setupwizard/library/common-gingerbread.mk
+#include frameworks/base/packages/SettingsLib/common.mk
 
+ifndef PRODUCT_SHIPPING_API_LEVEL
 LOCAL_PRIVATE_PLATFORM_APIS := true
+endif
+
 FILE := device/hardkernel/$(TARGET_PRODUCT)/files/OdroidSettings/AndroidManifest-common.xml
 
 ifeq ($(FILE), $(wildcard $(FILE)))
@@ -65,3 +68,5 @@ LOCAL_JACK_COVERAGE_INCLUDE_FILTER := com.hardkernel.odroid.settings*
 endif
 
 include $(BUILD_PACKAGE)
+
+include $(call all-makefiles-under,$(LOCAL_PATH))

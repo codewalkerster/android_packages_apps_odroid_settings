@@ -7,7 +7,6 @@
 
 package com.hardkernel.odroid.settings.display.sdr;
 
-import android.app.ActivityManagerNative;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;

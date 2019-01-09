@@ -212,7 +212,7 @@ public class ScreenResolutionFragment extends LeanbackPreferenceFragment impleme
         }
         //only S912 as Mbox, T962E as Mbox, can display this options
         //T962E as TV and T962X, display in Settings-->Display list.
-        if (SystemProperties.getBoolean("ro.platform.support.dolbyvision", false) == true) {
+        if (SystemProperties.getBoolean("ro.vendor.platform.support.dolbyvision", false) == true) {
             if (isHdmiMode()) {
                 mDolbyVisionPref.setVisible(true);
                 mGraphicsPriorityPref.setVisible(
