@@ -3,7 +3,8 @@ package com.hardkernel.odroid.settings.cpu;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
+
+import com.hardkernel.odroid.settings.bootini;
 
 public class CpuReceiver extends BroadcastReceiver {
     private final String TAG = "CpuReceiver";
@@ -13,14 +14,13 @@ public class CpuReceiver extends BroadcastReceiver {
         String action = intent.getAction();
         if (action.equals(Intent.ACTION_BOOT_COMPLETED)) {
             CPU cpu;
-            SharedPreferences pref = context.getSharedPreferences("cpu", Context.MODE_PRIVATE);
             cpu = CPU.getCPU(TAG, CPU.Cluster.Little);
-            cpu.governor.set(pref.getString("little_core_governor", cpu.governor.getCurrent()));
-            cpu.frequency.setScalingMax(pref.getString("little_core_frequency", cpu.frequency.getScalingCurrent()));
+            cpu.governor.set(bootini.getLittleCoreGovernor());
+            cpu.frequency.setScalingMax(bootini.getLittleCoreClock());
 
             cpu = CPU.getCPU(TAG, CPU.Cluster.Big);
-            cpu.governor.set(pref.getString("big_core_governor", cpu.governor.getCurrent()));
-            cpu.frequency.setScalingMax(pref.getString("big_core_frequency", "1704000000"));
+            cpu.governor.set(bootini.getBigCoreGovernor());
+            cpu.frequency.setScalingMax(bootini.getBigCoreClock());
         }
     }
 }

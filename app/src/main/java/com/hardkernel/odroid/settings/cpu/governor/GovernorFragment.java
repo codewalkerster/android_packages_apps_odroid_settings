@@ -1,7 +1,6 @@
 package com.hardkernel.odroid.settings.cpu.governor;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceScreen;
@@ -9,6 +8,7 @@ import android.support.v17.preference.LeanbackPreferenceFragment;
 import com.hardkernel.odroid.settings.R;
 
 import com.hardkernel.odroid.settings.RadioPreference;
+import com.hardkernel.odroid.settings.bootini;
 import com.hardkernel.odroid.settings.cpu.CPU;
 
 public class GovernorFragment extends LeanbackPreferenceFragment {
@@ -70,18 +70,9 @@ public class GovernorFragment extends LeanbackPreferenceFragment {
     }
 
     private void saveGovernor(String governor) {
-        Context context = getContext();
-        String target;
         if (cpu.cluster == CPU.Cluster.Little)
-            target = "little_core";
+            bootini.setLittleCoreGovernor(governor);
         else if (cpu.cluster == CPU.Cluster.Big)
-            target = "big_core";
-        else
-            target = null;
-        SharedPreferences sharedPreferences =
-                context.getSharedPreferences("cpu", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(target + "_governor", governor);
-        editor.commit();
+            bootini.setBigCoreGovernor(governor);
     }
 }

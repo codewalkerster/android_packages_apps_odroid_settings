@@ -164,6 +164,13 @@
             </intent-filter>
         </receiver>
         <receiver
+            android:name=".display.position.DisplayPositionReceiver"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+        <receiver
             android:name=".update.DownloadReceiver"
             android:enabled="true"
             android:exported="true">

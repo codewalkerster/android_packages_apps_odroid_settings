@@ -3,8 +3,6 @@ package com.hardkernel.odroid.settings.display.outputmode;
 import com.hardkernel.odroid.settings.R;
 
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.os.Handler;
 import android.os.Message;
 import android.os.SystemClock;

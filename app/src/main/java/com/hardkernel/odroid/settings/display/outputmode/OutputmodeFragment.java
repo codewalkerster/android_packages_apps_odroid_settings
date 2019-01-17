@@ -36,13 +36,14 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+
+import com.hardkernel.odroid.settings.bootini;
 import com.hardkernel.odroid.settings.dialog.old.Action;
 import com.hardkernel.odroid.settings.RadioPreference;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -203,6 +204,7 @@ public class OutputmodeFragment extends LeanbackPreferenceFragment implements On
     }
     private void recoverOutputMode() {
        mOutputUiManager.change2NewMode(preMode);
+       curMode = preMode;
        // need revert Preference display.
        curPreference = prePreference;
        mHandler.sendEmptyMessage(MSG_FRESH_UI);
@@ -225,6 +227,8 @@ public class OutputmodeFragment extends LeanbackPreferenceFragment implements On
                 break;
         }
         task.cancel();
+
+        bootini.setHdmiMode(curMode);
     }
     private Handler mHandler = new Handler() {
         @Override
