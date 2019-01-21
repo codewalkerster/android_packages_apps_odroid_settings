@@ -16,8 +16,6 @@
 
 package com.hardkernel.odroid.settings.display.outputmode;
 
-import android.app.Activity;
-import android.app.AlarmManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -28,41 +26,26 @@ import android.support.v17.preference.LeanbackPreferenceFragment;
 import android.support.v7.preference.CheckBoxPreference;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceScreen;
-import android.text.TextUtils;
+
 import com.hardkernel.odroid.settings.R;
 
 
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
 
 import com.hardkernel.odroid.settings.bootini;
 import com.hardkernel.odroid.settings.dialog.old.Action;
 import com.hardkernel.odroid.settings.RadioPreference;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.os.Bundle;
+
 import android.os.Handler;
 import android.os.Message;
-import android.preference.PreferenceManager;
-import android.provider.Settings;
-import android.util.Log;
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.LayoutInflater;
-import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 @Keep
@@ -228,7 +211,7 @@ public class OutputmodeFragment extends LeanbackPreferenceFragment implements On
         }
         task.cancel();
 
-        bootini.setHdmiMode(curMode);
+        bootini.setResolutionMode(curMode);
     }
     private Handler mHandler = new Handler() {
         @Override
