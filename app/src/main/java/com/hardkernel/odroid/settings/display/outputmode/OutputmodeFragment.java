@@ -211,7 +211,7 @@ public class OutputmodeFragment extends LeanbackPreferenceFragment implements On
         }
         task.cancel();
 
-        bootini.setResolutionMode(curMode);
+        bootini.setHdmiMode(curMode);
     }
     private Handler mHandler = new Handler() {
         @Override

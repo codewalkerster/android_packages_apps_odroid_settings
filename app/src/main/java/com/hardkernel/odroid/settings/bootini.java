@@ -30,7 +30,7 @@ public class bootini {
     /** Not used,
      *  It works on systemcontrol. read from /proc/cmdline
      */
-    public static String getResolutionMode() {
+    public static String getHdmiMode() {
         return getValue("setenv hdmimode ");
     }
 
@@ -77,9 +77,8 @@ public class bootini {
         setValue("setenv governor_a53 ", governor);
     }
 
-    public static void setResolutionMode(String mode) {
+    public static void setHdmiMode(String mode) {
         setValue("setenv hdmimode ", mode);
-        setValue("setenv outputmode ", mode);
     }
 
     public static void setDisplayZoom(int rate) {
