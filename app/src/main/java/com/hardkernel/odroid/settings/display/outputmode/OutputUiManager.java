@@ -59,6 +59,11 @@ public class OutputUiManager {
         "480p60hz",
         "576i50hz",
         "480i60hz",
+        "800x480p60hz",
+        "800x480p60hz",
+        "1024x600p60hz",
+        "1024x600p60hz",
+        "1024x768p60hz",
     };
     private static final String[] HDMI_TITLE = {
         "4k2k-60hz",
@@ -77,7 +82,12 @@ public class OutputUiManager {
         "576p-50hz",
         "480p-60hz",
         "576i-50hz",
-        "480i-60hz"
+        "480i-60hz",
+        "ODROID-VU5/7",
+        "ODROID-VU5A",
+        "ODROID-VU7 Plus",
+        "ODROID-VU7A Plus",
+        "ODROID-VU8",
     };
 
     private static final String[] HDMI_COLOR_LIST = {

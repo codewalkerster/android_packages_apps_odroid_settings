@@ -63,7 +63,7 @@ public class OutputmodeFragment extends LeanbackPreferenceFragment implements On
     private TimerTask task;
     private AlertDialog mAlertDialog = null;
     private int countdown = 15;
-    private static String mode = null;
+    private static String voutmode = "hdmi";
     private static final int MSG_FRESH_UI = 0;
     private static final int MSG_COUNT_DOWN = 1;
     private static final int MSG_PLUG_FRESH_UI = 2;
@@ -85,6 +85,7 @@ public class OutputmodeFragment extends LeanbackPreferenceFragment implements On
         mOutputUiManager = new OutputUiManager(getActivity());
         mIntentFilter = new IntentFilter("android.intent.action.HDMI_PLUGGED");
         mIntentFilter.addAction(Intent.ACTION_TIME_TICK);
+        voutmode = bootini.getVoutMode();
         updatePreferenceFragment();
     }
     private ArrayList<Action> getMainActions() {
@@ -139,6 +140,7 @@ public class OutputmodeFragment extends LeanbackPreferenceFragment implements On
             if (radioPreference.isChecked()) {
                 preMode = mOutputUiManager.getCurrentMode().trim();
                 curMode = radioPreference.getKey();
+                setVoutmode();
                 curPreference = radioPreference;
                 mOutputUiManager.change2NewMode(curMode);
                 showDialog();
@@ -188,6 +190,7 @@ public class OutputmodeFragment extends LeanbackPreferenceFragment implements On
     private void recoverOutputMode() {
        mOutputUiManager.change2NewMode(preMode);
        curMode = preMode;
+       setVoutmode();
        // need revert Preference display.
        curPreference = prePreference;
        mHandler.sendEmptyMessage(MSG_FRESH_UI);
@@ -291,5 +294,21 @@ public class OutputmodeFragment extends LeanbackPreferenceFragment implements On
     }
     private boolean isHdmiMode() {
         return mOutputUiManager.isHdmiMode();
+    }
+
+    private void setVoutmode() {
+        if ("ODROID-VU5/7".equals(curMode)
+                || "ODROID-VU7 Plus".equals(curMode)
+                || "ODROID-VU8".equals(curMode)) {
+            if (voutmode != "dvi") {
+                voutmode = "dvi";
+                bootini.setVoutMode(voutmode);
+            }
+        } else {
+            if (voutmode != "hdmi") {
+                voutmode = "hdmi";
+                bootini.setVoutMode(voutmode);
+            }
+        }
     }
 }

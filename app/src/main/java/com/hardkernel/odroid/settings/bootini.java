@@ -34,6 +34,10 @@ public class bootini {
         return getValue("setenv hdmimode ");
     }
 
+    public static String getVoutMode() {
+        return getValue("setenv voutmode ");
+    }
+
     public static int getDisplayZoomrate() {
         return Integer.parseInt(getValue("setenv zoom_rate "));
     }
@@ -79,6 +83,10 @@ public class bootini {
 
     public static void setHdmiMode(String mode) {
         setValue("setenv hdmimode ", mode);
+    }
+
+    public static void setVoutMode(String mode) {
+        setValue("setenv voutmode ", mode);
     }
 
     public static void setDisplayZoom(int rate) {
