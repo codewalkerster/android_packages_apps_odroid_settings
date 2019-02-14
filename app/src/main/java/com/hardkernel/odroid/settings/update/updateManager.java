@@ -9,7 +9,7 @@ public class updateManager {
             "https://www.odroid.in/mirror/dn.odroid.com/S922/Android/ODROID-N2/";
 
     public static final long PACKAGE_MAXSIZE = 500 * 1024 * 1024;   /* 500MB */
-    public static final String LATEST_VERSION = "latestupdate_oreo";
+    public static final String LATEST_VERSION = "latestupdate_pie";
 
     public static final String KEY_OFFICIAL = "server_official";
     public static final String KEY_MIRROR = "server_mirror";
