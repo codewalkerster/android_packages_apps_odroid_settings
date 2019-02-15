@@ -2,9 +2,9 @@ package com.hardkernel.odroid.settings.update;
 
 class packageName {
     private static final String HEADER = "updatepackage";
-    private static final String MODEL = "odroidc3";
+    private static final String MODEL = "odroidn2";
     private static final String VARIANT = "eng";
-    private static final String BRANCH = "s905_8.1.0_master";
+    private static final String BRANCH = "s922_9.0.0_master";
 
     private int version = -1;
 
