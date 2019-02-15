@@ -112,7 +112,8 @@ public class DownloadReceiver extends BroadcastReceiver {
         new AlertDialog.Builder(context)
                 .setTitle("New update package is found!")
                 .setMessage("Do you want to download new update package?\n"
-                        + "It would take a few minutes or hours depends on your network speed.")
+                        + "It would take a few minutes or hours depends on your network speed.\n"
+                        + "If package file is verified, android update will start automatically.")
                 .setPositiveButton("Download",
                         new DialogInterface.OnClickListener() {
                             @Override

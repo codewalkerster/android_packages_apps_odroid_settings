@@ -94,29 +94,19 @@ class UpdatePackage {
         DownloadReceiver.enqueue = packgeId = downloadManager.enqueue(request);
     }
 
-    public static void installPackage (Context context, final File packageFile) {
+    public static void installPackage (final Context context, final File packageFile) {
         Log.e(TAG, "installPackage = " + packageFile.getPath());
         try {
             RecoverySystem.verifyPackage(packageFile, null, null);
 
-            new AlertDialog.Builder(context)
-                    .setTitle("Selected package file is verified")
-                    .setMessage("Your Android can be updated, do you want to proceed?")
-                    .setPositiveButton("Proceed", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int whichButton) {
-                            try {
-                                RecoverySystem.installPackage(context,
-                                        packageFile);
-                            } catch (Exception e) {
-                                Toast.makeText(context,
-                                        "Error while install OTA package: " + e,
-                                        Toast.LENGTH_LONG).show();
-                            }
-                        }
-                    })
-                    .setCancelable(true)
-                    .create().show();
+            try {
+                RecoverySystem.installPackage(context, packageFile);
+            } catch (Exception e) {
+                Toast.makeText(context,
+                        "Error while install OTA package: " + e,
+                        Toast.LENGTH_LONG).show();
+            }
+
         } catch (Exception e) {
             Toast.makeText(context,
                     "The package file seems to be corrupted!!\n" +
