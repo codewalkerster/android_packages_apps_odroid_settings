@@ -4,9 +4,9 @@ import android.content.SharedPreferences;
 
 public class updateManager {
     public final static String OFFICIAL_URL =
-            "https://dn.odroid.com/S922/Android/ODROID-N2/";
+            "https://dn.odroid.com/S922X/ODROID-N2/Android/";
     public final static String MIRROR_URL =
-            "https://www.odroid.in/mirror/dn.odroid.com/S922/Android/ODROID-N2/";
+            "https://www.odroid.in/mirror/dn.odroid.com/S922X/ODROID-N2/Android";
 
     public static final long PACKAGE_MAXSIZE = 500 * 1024 * 1024;   /* 500MB */
     public static final String LATEST_VERSION = "latestupdate_pie";
