@@ -23,12 +23,12 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.Keep;
 import android.support.v17.preference.LeanbackPreferenceFragment;
+import android.support.v14.preference.SwitchPreference;
 import android.support.v7.preference.CheckBoxPreference;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceScreen;
 
 import com.hardkernel.odroid.settings.R;
-
 
 import java.util.List;
 
@@ -39,6 +39,7 @@ import com.hardkernel.odroid.settings.RadioPreference;
 import android.os.Handler;
 import android.os.Message;
 import android.app.AlertDialog;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.LayoutInflater;
@@ -49,7 +50,8 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 @Keep
-public class OutputmodeFragment extends LeanbackPreferenceFragment implements OnClickListener {
+public class OutputmodeFragment extends LeanbackPreferenceFragment
+        implements Preference.OnPreferenceChangeListener, OnClickListener {
     private static final String LOG_TAG = "OutputmodeFragment";
     private OutputUiManager mOutputUiManager;
     private static String preMode;
@@ -68,6 +70,12 @@ public class OutputmodeFragment extends LeanbackPreferenceFragment implements On
     private static final int MSG_COUNT_DOWN = 1;
     private static final int MSG_PLUG_FRESH_UI = 2;
     private IntentFilter mIntentFilter;
+
+    private Preference mShowAllResolutionPref;
+
+    private static final String KEY_SHOW_ALL_RESOLUTION = "show_all_resolution";
+    private static final String KEY_RESOLUTION_LIST = "resolution_list";
+
     public boolean hpdFlag = false;
     public ArrayList<String> outputmodeTitleList = new ArrayList();
     private BroadcastReceiver mIntentReceiver = new BroadcastReceiver() {
@@ -80,19 +88,29 @@ public class OutputmodeFragment extends LeanbackPreferenceFragment implements On
     public static OutputmodeFragment newInstance() {
         return new OutputmodeFragment();
     }
+
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-        mOutputUiManager = new OutputUiManager(getActivity());
+        setPreferencesFromResource(R.xml.resolution, null);
+
+        mShowAllResolutionPref = findPreference(KEY_SHOW_ALL_RESOLUTION);
+        mShowAllResolutionPref.setOnPreferenceChangeListener(this);
+        ((SwitchPreference)mShowAllResolutionPref).setChecked(true);
+
         mIntentFilter = new IntentFilter("android.intent.action.HDMI_PLUGGED");
         mIntentFilter.addAction(Intent.ACTION_TIME_TICK);
+
         voutmode = bootini.getVoutMode();
+        mOutputUiManager = new OutputUiManager(getActivity());
+
         updatePreferenceFragment();
     }
+
     private ArrayList<Action> getMainActions() {
         ArrayList<Action> actions = new ArrayList<Action>();
         ArrayList<String> outputmodeValueList = mOutputUiManager.getOutputmodeValueList();
         outputmodeTitleList.clear();
-        ArrayList<String> mList = mOutputUiManager.getOutputmodeTitleList();
+        ArrayList<String> mList = mOutputUiManager.getOutputmodeValueList();
         for (String title : mList) {
             outputmodeTitleList.add(title);
         }
@@ -100,11 +118,11 @@ public class OutputmodeFragment extends LeanbackPreferenceFragment implements On
         for (int i = 0; i < outputmodeTitleList.size(); i++) {
             if (i == currentModeIndex) {
                 actions.add(new Action.Builder().key(outputmodeValueList.get(i))
-                      .title("        " + outputmodeTitleList.get(i))
+                      .title(outputmodeTitleList.get(i))
                       .checked(true).build());
              }else {
                     actions.add(new Action.Builder().key(outputmodeValueList.get(i))
-                    .title("        " + outputmodeTitleList.get(i))
+                    .title(outputmodeTitleList.get(i))
                     .description("").build());
              }
         }
@@ -173,13 +191,13 @@ public class OutputmodeFragment extends LeanbackPreferenceFragment implements On
         mAlertDialog.getWindow().setContentView(view_dialog);
         mAlertDialog.setCancelable(false);
 
-        if (mOutputUiManager.getOutputmodeTitleList().size() <= 0) {
+        if (mOutputUiManager.getOutputmodeValueList().size() <= 0) {
             tx_content.setText("Get outputmode empty!");
-        } else if (mOutputUiManager.getCurrentModeIndex() < mOutputUiManager.getOutputmodeTitleList().size()) {
+        } else if (mOutputUiManager.getCurrentModeIndex() < mOutputUiManager.getOutputmodeValueList().size()) {
             tx_content.setText(getResources().getString(R.string.device_outputmode_change)
-                + " " +mOutputUiManager.getOutputmodeTitleList().get(mOutputUiManager.getCurrentModeIndex()));
+                + " " +mOutputUiManager.getOutputmodeValueList().get(mOutputUiManager.getCurrentModeIndex()));
         }
-        countdown = 15;
+        countdown = 10;
         if (timer == null)
             timer = new Timer();
         if (task != null)
@@ -251,7 +269,7 @@ public class OutputmodeFragment extends LeanbackPreferenceFragment implements On
         }
     };
     private boolean needfresh() {
-        ArrayList<String> list = mOutputUiManager.getOutputmodeTitleList();
+        ArrayList<String> list = mOutputUiManager.getOutputmodeValueList();
         //Log.d(LOG_TAG, "outputmodeTitleList: " + outputmodeTitleList.toString() + "\n list: " + list.toString());
         if (outputmodeTitleList.size() > 0 && outputmodeTitleList.size() == list.size()) {
             for (String title:outputmodeTitleList) {
@@ -264,6 +282,18 @@ public class OutputmodeFragment extends LeanbackPreferenceFragment implements On
         return false;
     }
 
+    @Override
+    public boolean onPreferenceChange(Preference preference, Object newValue) {
+        if (TextUtils.equals(preference.getKey(), KEY_SHOW_ALL_RESOLUTION)) {
+            boolean isChecked = ((SwitchPreference)preference).isChecked();
+            if (mOutputUiManager.getShowAll() != isChecked) {
+                mOutputUiManager.setShowAll(isChecked);
+                mHandler.sendEmptyMessage(MSG_PLUG_FRESH_UI);
+            }
+        }
+        return true;
+    }
+
     /**
      * Display Outputmode list based on RadioPreference style.
      */
@@ -271,10 +301,13 @@ public class OutputmodeFragment extends LeanbackPreferenceFragment implements On
         mOutputUiManager.updateUiMode();
         if (!needfresh()) return;
         final Context themedContext = getPreferenceManager().getContext();
-        final PreferenceScreen screen = getPreferenceManager().createPreferenceScreen(
-                themedContext);
-        screen.setTitle(R.string.device_displaymode);
-        setPreferenceScreen(screen);
+        final PreferenceScreen screen = (PreferenceScreen)findPreference(KEY_RESOLUTION_LIST);
+
+        while (screen.getPreferenceCount() != 1) {
+            Preference preference = screen.getPreference(1);
+            if (preference instanceof RadioPreference)
+                screen.removePreference(preference);
+        }
 
         final List<Action> InfoList = getMainActions();
         for (final Action Info : InfoList) {

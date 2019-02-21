@@ -41,55 +41,6 @@ public class OutputUiManager {
     public static final String CVBS_MODE = "cvbs";
     public static final String HDMI_MODE = "hdmi";
 
-    private static final String[] HDMI_LIST = {
-        "2160p60hz",
-        "2160p50hz",
-        "2160p30hz",
-        "2160p25hz",
-        "2160p24hz",
-        "smpte24hz",
-        "1080p60hz",
-        "1080p50hz",
-        "1080p24hz",
-        "720p60hz",
-        "720p50hz",
-        "1080i60hz",
-        "1080i50hz",
-        "576p50hz",
-        "480p60hz",
-        "576i50hz",
-        "480i60hz",
-        "800x480p60hz",
-        "800x480p60hz",
-        "1024x600p60hz",
-        "1024x600p60hz",
-        "1024x768p60hz",
-    };
-    private static final String[] HDMI_TITLE = {
-        "4k2k-60hz",
-        "4k2k-50hz",
-        "4k2k-30hz",
-        "4k2k-25hz",
-        "4k2k-24hz",
-        "4k2k-smpte",
-        "1080p-60hz",
-        "1080p-50hz",
-        "1080p-24hz",
-        "720p-60hz",
-        "720p-50hz",
-        "1080i-60hz",
-        "1080i-50hz",
-        "576p-50hz",
-        "480p-60hz",
-        "576i-50hz",
-        "480i-60hz",
-        "ODROID-VU5/7",
-        "ODROID-VU5A",
-        "ODROID-VU7 Plus",
-        "ODROID-VU7A Plus",
-        "ODROID-VU8",
-    };
-
     private static final String[] HDMI_COLOR_LIST = {
         "444,12bit",
         "444,10bit",
@@ -158,12 +109,11 @@ public class OutputUiManager {
     private static final int DEFAULT_HDMI_MODE = 0;
     private static final int DEFAULT_CVBS_MODE = 1;
     private static String[] mHdmiValueList;
-    private static String[] mHdmiTitleList;
+    private static boolean showAll = false;
 
     private static String[] mHdmiColorValueList;
     private static String[] mHdmiColorTitleList;
 
-    private ArrayList<String> mTitleList = new ArrayList<String>();
     private ArrayList<String> mValueList = new ArrayList<String>();
     private ArrayList<String> mSupportList = new ArrayList<String>();
 
@@ -289,19 +239,15 @@ public class OutputUiManager {
         String strColorlist = mOutputModeManager.getHdmiColorSupportList();
         if (strColorlist != null && strColorlist.length() != 0 && !strColorlist.contains("null")) {
             List<String> listHdmiMode = new ArrayList<String>();
-            List<String> listHdmiTitle = new ArrayList<String>();
             for (int i = 0; i < listValue.size(); i++) {
                 if (strColorlist.contains(listValue.get(i))) {
                     listHdmiMode.add(listValue.get(i));
-                    listHdmiTitle.add(listTitle.get(i));
                 }
 
             }
             mHdmiColorValueList = listHdmiMode.toArray(new String[listValue.size()]);
-            mHdmiColorTitleList = listHdmiTitle.toArray(new String[listTitle.size()]);
         } else {
-            mHdmiColorValueList = new String[]{""};
-            mHdmiColorTitleList = new String[]{"No data!"};
+            mHdmiColorValueList = new String[]{"No data!"};
         }
     }
 
@@ -325,21 +271,16 @@ public class OutputUiManager {
 
     private void initModeValues(String mode){
         filterOutputMode();
-        mTitleList.clear();
         mValueList.clear();
 
         if (mode.equalsIgnoreCase(HDMI_MODE)) {
             for (int i=0 ; i< mHdmiValueList.length; i++) {
-                if (mHdmiTitleList[i] != null && mHdmiTitleList[i].length() != 0) {
-                    mTitleList.add(mHdmiTitleList[i]);
+                if (mHdmiValueList[i] != null && mHdmiValueList[i].length() != 0) {
                     mValueList.add(mHdmiValueList[i]);
                 }
             }
-        }else if (mode.equalsIgnoreCase(CVBS_MODE)) {
+        } else if (mode.equalsIgnoreCase(CVBS_MODE)) {
             for (int i = 0 ; i< CVBS_MODE_VALUE_LIST.length; i++) {
-                mTitleList.add(CVBS_MODE_VALUE_LIST[i]);
-            }
-            for (int i=0 ; i < CVBS_MODE_VALUE_LIST.length ; i++) {
                 mValueList.add(CVBS_MODE_VALUE_LIST[i]);
             }
         }
@@ -364,55 +305,32 @@ public class OutputUiManager {
         return mOutputModeManager.isDeepColor();
     }
 
-    public ArrayList<String> getOutputmodeTitleList(){
-        return mTitleList;
-    }
-
     public ArrayList<String> getOutputmodeValueList(){
         return mValueList;
     }
 
+    public void setShowAll(Boolean value) {
+        showAll = value;
+    }
+
+    public boolean getShowAll() {
+        return showAll;
+    }
+
     public void  filterOutputMode() {
-        List<String> listValue = new ArrayList<String>();
-        List<String> listTitle = new ArrayList<String>();
-
-        mHdmiValueList = HDMI_LIST;
-        mHdmiTitleList = HDMI_TITLE;
-
-        for (int i = 0; i < mHdmiValueList.length; i++) {
-            if (mHdmiValueList[i] != null) {
-                listValue.add(mHdmiValueList[i]);
-                listTitle.add(mHdmiTitleList[i]);
-            }
-        }
-
-        String strFilterMode = mContext.getResources().getString(R.string.display_filter_outputmode);
-        if (strFilterMode != null && strFilterMode.length() != 0) {
-            String[] array_filter_mode = strFilterMode.split(",");
-            for (int i = 0; i < array_filter_mode.length; i++) {
-                for (int j = 0; j < listValue.size(); j++) {
-                    if ((listValue.get(j).toString()).equals(array_filter_mode[i])) {
-                        listValue.remove(j);
-                        listTitle.remove(j);
-                    }
-                }
-            }
-        }
+        List<String> listValue =
+                Arrays.asList(mContext.getResources().getStringArray(R.array.resolutions));
 
         String strEdid = mOutputModeManager.getHdmiSupportList();
-        if (strEdid != null && strEdid.length() != 0 && !strEdid.contains("null")) {
+        if (!showAll && strEdid != null && strEdid.length() != 0 && !strEdid.contains("null")) {
             List<String> listHdmiMode = new ArrayList<String>();
-            List<String> listHdmiTitle = new ArrayList<String>();
             for (int i = 0; i < listValue.size(); i++) {
                 if (strEdid.contains(listValue.get(i))) {
                     listHdmiMode.add(listValue.get(i));
-                    listHdmiTitle.add(listTitle.get(i));
                 }
-
             }
 
             List<String> listHdmiMode_tmp = new ArrayList<String>();
-            List<String> listHdmiTitle_tmp = new ArrayList<String>();
             if (isDolbyVisionEnable() && isTvSupportDolbyVision()) {
                 for (int i = 0; i < listHdmiMode.size(); i++) {
                     if (resolveResolutionValue(listHdmiMode.get(i))
@@ -420,28 +338,26 @@ public class OutputUiManager {
                         Log.e(TAG, "This TV not Support Dolby Vision in " + listHdmiMode.get(i));
                     } else {
                         listHdmiMode_tmp.add(listHdmiMode.get(i));
-                        listHdmiTitle_tmp.add(listHdmiTitle.get(i));
                     }
                 }
                 mHdmiValueList = listHdmiMode_tmp.toArray(new String[listValue.size()]);
-                mHdmiTitleList = listHdmiTitle_tmp.toArray(new String[listTitle.size()]);
             } else {
                 mHdmiValueList = listHdmiMode.toArray(new String[listValue.size()]);
-                mHdmiTitleList = listHdmiTitle.toArray(new String[listTitle.size()]);
             }
         } else {
             mHdmiValueList = listValue.toArray(new String[listValue.size()]);
-            mHdmiTitleList = listTitle.toArray(new String[listTitle.size()]);
         }
     }
 
     public boolean isTvSupportDolbyVision() {
         String dv_cap = mDolbyVisionSettingManager.isTvSupportDolbyVision();
         tvSupportDolbyVisionType = null;
+        List<String> listValue =
+                Arrays.asList(mContext.getResources().getStringArray(R.array.resolutions));
         if (!dv_cap.equals("")) {
-            for (int i = 0;i < HDMI_LIST.length; i++) {
-                if (dv_cap.contains(HDMI_LIST[i])) {
-                    tvSupportDolbyVisionMode = HDMI_LIST[i];
+            for (int i = 0;i < listValue.size(); i++) {
+                if (dv_cap.contains(listValue.get(i))) {
+                    tvSupportDolbyVisionMode = listValue.get(i);
                     break;
                 }
             }
