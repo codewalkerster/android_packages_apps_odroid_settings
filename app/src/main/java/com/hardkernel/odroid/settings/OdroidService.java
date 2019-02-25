@@ -20,8 +20,6 @@ public class OdroidService extends Service {
 
     final static String Channel_id = "UpdateNotification";
     final static int Notification_id = 0x201920;
-    public OdroidService() {
-    }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -47,22 +45,25 @@ public class OdroidService extends Service {
         PendingIntent installPendingIntent =
                 PendingIntent.getBroadcast(this, 0, installIntent, 0);
 
-        NotificationChannel notiChannel = new NotificationChannel(Channel_id,
-                "updateNoti", NotificationManager.IMPORTANCE_HIGH);
-        notiChannel.setDescription("Update Notification Channel");
-        NotificationManager notiManager = getSystemService(NotificationManager.class);
-        notiManager.createNotificationChannel(notiChannel);
+        createNotificationChannel();;
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, Channel_id)
                 .setSmallIcon(R.drawable.ic_system_update)
                 .setContentTitle("Odroid-Setting Update")
                 .setContentText("Start Update")
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                .addAction(R.drawable.ic_system_update, "Install", installPendingIntent);
+                .addAction(R.drawable.ic_system_update, "Update", installPendingIntent);
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
         notificationManager.notify(Notification_id, builder.build());
 
         return super.onStartCommand(intent,flags,startId);
+    }
+
+    private void createNotificationChannel() {
+        NotificationChannel channel = new NotificationChannel(Channel_id,
+                Channel_id, NotificationManager.IMPORTANCE_HIGH);
+        channel.setDescription("Update Notification channel.");
+        NotificationManager manager = getSystemService(NotificationManager.class);
+        manager.createNotificationChannel(channel);
     }
 
     @Override
