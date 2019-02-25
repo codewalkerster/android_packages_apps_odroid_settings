@@ -27,6 +27,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Settings"
         android:usesCleartextTraffic="true">
+        <receiver
+            android:name=".update.installReceiver"
+            android:enabled="true"
+            android:exported="true"></receiver>
+
+        <service
+            android:name=".OdridService"
+            android:enabled="true"
+            android:exported="true" />
+
         <uses-library android:name="droidlogic.software.core" />
 
         <activity
@@ -156,6 +166,7 @@
                 <category android:name="com.android.settings.SHORTCUT" />
             </intent-filter>
         </activity>
+
         <receiver
             android:name=".cpu.CpuReceiver"
             android:enabled="true">
@@ -178,6 +189,14 @@
                 <action android:name="android.intent.action.DOWNLOAD_COMPLETE" />
             </intent-filter>
         </receiver>
+        <receiver android:name=".update.installReceiver"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_INSTALL" />
+            </intent-filter>
+        </receiver>
+
+        <service android:name=".OdroidService" />
     </application>
 
 </manifest>

@@ -6,12 +6,15 @@ import android.app.AlertDialog;
 import android.app.DownloadManager;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
 import android.os.Environment;
 import android.os.RecoverySystem;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.hardkernel.odroid.settings.OdroidService;
 import com.hardkernel.odroid.settings.update.DownloadReceiver;
 
 class UpdatePackage {
@@ -96,22 +99,13 @@ class UpdatePackage {
 
     public static void installPackage (final Context context, final File packageFile) {
         Log.e(TAG, "installPackage = " + packageFile.getPath());
-        try {
-            RecoverySystem.verifyPackage(packageFile, null, null);
 
-            try {
-                RecoverySystem.installPackage(context, packageFile);
-            } catch (Exception e) {
-                Toast.makeText(context,
-                        "Error while install OTA package: " + e,
-                        Toast.LENGTH_LONG).show();
-            }
-
-        } catch (Exception e) {
-            Toast.makeText(context,
-                    "The package file seems to be corrupted!!\n" +
-                            "Please select another package file...",
-                    Toast.LENGTH_LONG).show();
-        }
+        Intent intent = new Intent(
+                context,
+                OdroidService.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("packageFile", packageFile);
+        intent.putExtras(bundle);
+        context.startService(intent);
     }
 }
