@@ -156,12 +156,15 @@ public class OutputmodeFragment extends LeanbackPreferenceFragment
             final RadioPreference radioPreference = (RadioPreference) preference;
             radioPreference.clearOtherRadioPreferences(getPreferenceScreen());
             if (radioPreference.isChecked()) {
-                preMode = mOutputUiManager.getCurrentMode().trim();
+                //preMode = mOutputUiManager.getCurrentMode().trim();
                 curMode = radioPreference.getKey();
                 setVoutmode();
                 curPreference = radioPreference;
-                mOutputUiManager.change2NewMode(curMode);
-                showDialog();
+                //mOutputUiManager.change2NewMode(curMode);
+                //showDialog();
+
+                // save current resolution mode.
+                bootini.setHdmiMode(curMode);
                 curPreference.setChecked(true);
             } else {
                 radioPreference.setChecked(true);
