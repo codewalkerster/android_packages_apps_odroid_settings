@@ -17,6 +17,7 @@
 package com.hardkernel.odroid.settings.display.outputmode;
 
 import android.app.Activity;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -160,13 +161,13 @@ public class ScreenResolutionFragment extends LeanbackPreferenceFragment impleme
 
     private void updateScreenResolutionDisplay() {
         mOutputUiManager.updateUiMode();
-        ((SwitchPreference)mBestResolutionPref).setChecked(isBestResolution());
+        ((SwitchPreference) mBestResolutionPref).setChecked(isBestResolution());
 
         // set best resolution summary.
         if (isBestResolution()) {
-           mBestResolutionPref.setSummary(R.string.captions_display_on);
-        }else {
-           mBestResolutionPref.setSummary(R.string.captions_display_off);
+            mBestResolutionPref.setSummary(R.string.captions_display_on);
+        } else {
+            mBestResolutionPref.setSummary(R.string.captions_display_off);
         }
 
         // set dolby vision summary.
@@ -186,7 +187,21 @@ public class ScreenResolutionFragment extends LeanbackPreferenceFragment impleme
         } else if (mDolbyVisionSettingManager.getGraphicsPriority().equals("0")) {
             mGraphicsPriorityPref.setSummary(R.string.video_priority);
         }
-        mDisplayModePref.setSummary(getCurrentDisplayMode());
+
+        /* Convert VU's name from resolution */
+        String curDisplayMode = getCurrentDisplayMode();
+        {
+            if (curDisplayMode.equals("800x480p60hz"))
+                curDisplayMode = "ODROID-VU5/7";
+            else if (curDisplayMode.equals("1024x600p60hz"))
+                curDisplayMode = "ODROID-VU7 Plus";
+            else if (curDisplayMode.equals("1024x768p60hz"))
+                curDisplayMode = "ODROID-VU8";
+            else
+            {}
+        }
+
+        mDisplayModePref.setSummary(curDisplayMode);
         if (isHdmiMode()) {
             mBestResolutionPref.setVisible(true);
             mDeepColorPref.setVisible(true);

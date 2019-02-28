@@ -82,7 +82,18 @@ public class bootini {
     }
 
     public static void setHdmiMode(String mode) {
+        mode = convertVUResolution(mode);
         setValue("setenv hdmimode ", mode);
+    }
+
+    private static String convertVUResolution(String mode) {
+        if (mode.equals("ODROID-VU5/7"))
+            return "800x480p60hz";
+        else if (mode.equals("ODROID-VU7 Plus"))
+            return  "1024x600p60hz";
+        else if (mode.equals("ODROID-VU8"))
+            return "1024x768p60hz";
+        return mode;
     }
 
     public static void setVoutMode(String mode) {
