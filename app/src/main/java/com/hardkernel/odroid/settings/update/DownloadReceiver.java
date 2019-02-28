@@ -75,16 +75,7 @@ public class DownloadReceiver extends BroadcastReceiver {
 
                 updatePackage = new UpdatePackage(text.toString());
 
-                int currentVersion = 0;
-                String[] version = Build.VERSION.INCREMENTAL.split("-");
-                if (version.length < 4) {
-                    Toast.makeText(context,
-                            "Not able to detect the version number installed. "
-                                    + "Remote package will be installed anyway!",
-                            Toast.LENGTH_LONG).show();
-                } else {
-                    currentVersion = Integer.parseInt(version[3]);
-                }
+                int currentVersion = Integer.parseInt(Build.VERSION.INCREMENTAL);
 
                 if (currentVersion < updatePackage.name.getVersion()) {
                     updatePackageFromOnline();
