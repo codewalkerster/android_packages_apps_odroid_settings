@@ -115,6 +115,9 @@ public class OutputmodeFragment extends LeanbackPreferenceFragment
             outputmodeTitleList.add(title);
         }
         int currentModeIndex = mOutputUiManager.getCurrentModeIndex();
+
+        currentModeIndex = convertVuIndex(outputmodeTitleList, currentModeIndex);
+
         for (int i = 0; i < outputmodeTitleList.size(); i++) {
             if (i == currentModeIndex) {
                 actions.add(new Action.Builder().key(outputmodeValueList.get(i))
@@ -346,5 +349,17 @@ public class OutputmodeFragment extends LeanbackPreferenceFragment
                 bootini.setVoutMode(voutmode);
             }
         }
+    }
+
+    private int convertVuIndex(ArrayList<String> titleList, int index) {
+        String mode = titleList.get(index);
+        if (mode.equals("800x480p60hz"))
+            return titleList.indexOf("ODROID-VU5/7");
+        else if (mode.equals("1024x600p60hz"))
+            return titleList.indexOf("ODROID-VU7 Plus");
+        else if (mode.equals("1024x768p60hz"))
+            return titleList.indexOf("ODROID-VU8");
+        else
+            return index;
     }
 }
