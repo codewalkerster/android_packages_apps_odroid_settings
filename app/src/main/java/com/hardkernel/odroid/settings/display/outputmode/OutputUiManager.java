@@ -239,14 +239,19 @@ public class OutputUiManager {
         String strColorlist = mOutputModeManager.getHdmiColorSupportList();
         if (strColorlist != null && strColorlist.length() != 0 && !strColorlist.contains("null")) {
             List<String> listHdmiMode = new ArrayList<String>();
+            List<String> listHdmiTitle = new ArrayList<String>();
             for (int i = 0; i < listValue.size(); i++) {
                 if (strColorlist.contains(listValue.get(i))) {
                     listHdmiMode.add(listValue.get(i));
+                    listHdmiTitle.add(listTitle.get(i));
                 }
 
             }
             mHdmiColorValueList = listHdmiMode.toArray(new String[listValue.size()]);
+            mHdmiColorTitleList = listHdmiTitle.toArray(new String[listTitle.size()]);
         } else {
+            mHdmiColorValueList = new String[]{""};
+            mHdmiColorTitleList = new String[]{"No data!"};
             mHdmiColorValueList = new String[]{"No data!"};
         }
     }
