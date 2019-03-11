@@ -84,6 +84,14 @@ public class bootini {
     public static void setHdmiMode(String mode) {
         mode = convertVUResolution(mode);
         setValue("setenv hdmimode ", mode);
+        if (mode.equals("autodetect"))
+            setDisplayAutodetect("true");
+        else
+            setDisplayAutodetect("false");
+    }
+
+    private static void setDisplayAutodetect(String mode) {
+        setValue("setenv display_autodetect ", mode);
     }
 
     private static String convertVUResolution(String mode) {
