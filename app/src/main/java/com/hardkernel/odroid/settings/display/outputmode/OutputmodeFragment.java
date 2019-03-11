@@ -21,6 +21,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.os.RemoteException;
 import android.support.annotation.Keep;
 import android.support.v17.preference.LeanbackPreferenceFragment;
 import android.support.v14.preference.SwitchPreference;
@@ -38,8 +39,12 @@ import com.hardkernel.odroid.settings.RadioPreference;
 
 import android.os.Handler;
 import android.os.Message;
+import android.os.ServiceManager;
+import android.os.IPowerManager;
+import android.os.RemoteException;
 import android.app.AlertDialog;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.LayoutInflater;
@@ -159,15 +164,12 @@ public class OutputmodeFragment extends LeanbackPreferenceFragment
             final RadioPreference radioPreference = (RadioPreference) preference;
             radioPreference.clearOtherRadioPreferences(getPreferenceScreen());
             if (radioPreference.isChecked()) {
-                //preMode = mOutputUiManager.getCurrentMode().trim();
+                preMode = mOutputUiManager.getCurrentMode().trim();
                 curMode = radioPreference.getKey();
                 setVoutmode();
                 curPreference = radioPreference;
-                //mOutputUiManager.change2NewMode(curMode);
-                //showDialog();
+                showDialog();
 
-                // save current resolution mode.
-                bootini.setHdmiMode(curMode);
                 curPreference.setChecked(true);
             } else {
                 radioPreference.setChecked(true);
@@ -201,7 +203,7 @@ public class OutputmodeFragment extends LeanbackPreferenceFragment
             tx_content.setText("Get outputmode empty!");
         } else if (mOutputUiManager.getCurrentModeIndex() < mOutputUiManager.getOutputmodeValueList().size()) {
             tx_content.setText(getResources().getString(R.string.device_outputmode_change)
-                + " " +mOutputUiManager.getOutputmodeValueList().get(mOutputUiManager.getCurrentModeIndex()));
+                + " " +curMode);
         }
         countdown = 10;
         if (timer == null)
@@ -211,13 +213,12 @@ public class OutputmodeFragment extends LeanbackPreferenceFragment
         task = new DialogTimerTask();
         timer.schedule(task, 0, 1000);
     }
+
     private void recoverOutputMode() {
-       mOutputUiManager.change2NewMode(preMode);
-       curMode = preMode;
-       setVoutmode();
-       // need revert Preference display.
-       curPreference = prePreference;
-       mHandler.sendEmptyMessage(MSG_FRESH_UI);
+        curMode = preMode;
+        setVoutmode();
+        curPreference = prePreference;
+        mHandler.sendEmptyMessage(MSG_FRESH_UI);
     }
 
     @Override
@@ -232,14 +233,26 @@ public class OutputmodeFragment extends LeanbackPreferenceFragment
             case R.id.dialog_ok:
                 if (mAlertDialog != null) {
                     mAlertDialog.dismiss();
-                    prePreference = curPreference;
+
+                    // save current resolution mode.
+                    bootini.setHdmiMode(curMode);
+                    reboot();
                 }
                 break;
         }
         task.cancel();
-
-        bootini.setHdmiMode(curMode);
     }
+
+    private void reboot() {
+        try {
+            IPowerManager pm = IPowerManager.Stub.asInterface(ServiceManager.getService(Context.POWER_SERVICE));
+            pm.reboot(false, null, false);
+        } catch (RemoteException e) {
+            Log.e(LOG_TAG, "PowerManager service died!", e);
+            return;
+        }
+    }
+
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
