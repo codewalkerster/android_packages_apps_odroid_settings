@@ -9,40 +9,44 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class bootini {
-    final static String path = "/odm/boot.ini";
+    private final static String path = "/odm/boot.ini";
 
     public static String getBigCoreClock() {
-        return getValue("setenv max_freq_a73 ") + "000";
+        return getValue("max_freq_a73") + "000";
     }
 
     public static String getLittleCoreClock() {
-        return getValue("setenv max_freq_a53 ") + "000";
+        return getValue("max_freq_a53") + "000";
     }
 
     public static String getBigCoreGovernor() {
-        return getValue("setenv governor_a73 ");
+        return getValue("governor_a73");
     }
 
     public static String getLittleCoreGovernor() {
-        return getValue("setenv governor_a53 ");
+        return getValue("governor_a53");
     }
 
     /** Not used,
      *  It works on systemcontrol. read from /proc/cmdline
      */
     public static String getHdmiMode() {
-        return getValue("setenv hdmimode ");
+        return getValue("hdmimode");
     }
 
     public static String getVoutMode() {
-        return getValue("setenv voutmode ");
+        return getValue("voutmode");
     }
 
     public static int getDisplayZoomrate() {
-        return Integer.parseInt(getValue("setenv zoom_rate "));
+        return Integer.parseInt(getValue("zoom_rate"));
     }
 
-    private static String getValue(String startTerm) {
+    private static String getValue(String keyWord) {
+        return _getValue("setenv " + keyWord + " ");
+    }
+
+    private static String _getValue(String startTerm) {
         File boot_ini = new File(path);
         if (boot_ini.exists()) {
             try {
@@ -66,24 +70,24 @@ public class bootini {
     }
 
     public static void setBigCoreFreq(String freq) {
-        setValue("setenv max_freq_a73 ", freq.substring(0, freq.length()-3));
+        setValue("max_freq_a73", freq.substring(0, freq.length()-3));
     }
 
     public static void setLittleCoreFreq(String freq) {
-        setValue("setenv max_freq_a53 ", freq.substring(0, freq.length()-3));
+        setValue("max_freq_a53", freq.substring(0, freq.length()-3));
     }
 
     public static void setBigCoreGovernor(String governor) {
-        setValue("setenv governor_a73 ", governor);
+        setValue("governor_a73", governor);
     }
 
     public static void setLittleCoreGovernor(String governor) {
-        setValue("setenv governor_a53 ", governor);
+        setValue("governor_a53", governor);
     }
 
     public static void setHdmiMode(String mode) {
         mode = convertVUResolution(mode);
-        setValue("setenv hdmimode ", mode);
+        setValue("hdmimode", mode);
         if (mode.equals("autodetect"))
             setDisplayAutodetect("true");
         else
@@ -91,7 +95,7 @@ public class bootini {
     }
 
     private static void setDisplayAutodetect(String mode) {
-        setValue("setenv display_autodetect ", mode);
+        setValue("display_autodetect", mode);
     }
 
     private static String convertVUResolution(String mode) {
@@ -105,14 +109,18 @@ public class bootini {
     }
 
     public static void setVoutMode(String mode) {
-        setValue("setenv voutmode ", mode);
+        setValue("voutmode", mode);
     }
 
     public static void setDisplayZoom(int rate) {
-        setValue("setenv zoom_rate ", String.valueOf(rate));
+        setValue("zoom_rate", String.valueOf(rate));
     }
 
-    private static void setValue (String startTerm,String val) {
+    private static void setValue (String keyWord, String val) {
+        _setValue("setenv " + keyWord + " ", val);
+    }
+
+    private static void _setValue (String startTerm,String val) {
         try {
             File boot_ini = new File(path);
             FileReader fileReader = new FileReader(boot_ini);
