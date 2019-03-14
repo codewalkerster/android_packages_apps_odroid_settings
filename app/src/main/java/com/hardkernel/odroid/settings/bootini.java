@@ -42,6 +42,10 @@ public class bootini {
         return Integer.parseInt(getValue("zoom_rate"));
     }
 
+    public static int getWakeOnLan() {
+        return Integer.parseInt(getValue("enable_wol"));
+    }
+
     private static String getValue(String keyWord) {
         return _getValue("setenv " + keyWord + " ");
     }
@@ -114,6 +118,10 @@ public class bootini {
 
     public static void setDisplayZoom(int rate) {
         setValue("zoom_rate", String.valueOf(rate));
+    }
+
+    public static void setWakeOnLan(int on) {
+        setValue("enable_wol", String.valueOf(on));
     }
 
     private static void setValue (String keyWord, String val) {

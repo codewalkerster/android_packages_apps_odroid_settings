@@ -49,22 +49,16 @@
         android:icon="@drawable/ic_settings_now_movies"
         android:key="playback_settings"
         android:title="@string/playback_settings" />
-	<!--
-    <Preference
-        android:icon="@drawable/ic_volume_up"
-        android:key="sound_effects"
-        android:title="@string/tv_sound" />
-    <Preference
-        android:fragment="com.hardkernel.odroid.settings.SoundFragment"
-        android:icon="@drawable/ic_volume_up"
-        android:key="mbox_sound"
-        android:title="@string/device_sound" />
--->
     <Preference
         android:fragment="com.hardkernel.odroid.settings.PowerKeyActionDefinitionFragment"
         android:icon="@drawable/ic_settings_power"
         android:key="powerkey_action"
         android:title="@string/system_powerkeyaction" />
+    <Preference
+        android:fragment="com.hardkernel.odroid.settings.WakeOnLanFragment"
+        android:icon="@drawable/stat_sys_ethernet_fully"
+        android:key="wol"
+        android:title="@string/wake_on_lan" />
     <Preference
         android:icon="@drawable/ic_info_outline"
         android:key="netflix_esn"

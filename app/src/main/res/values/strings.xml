@@ -71,6 +71,8 @@
     <string name="power_key_shutdown">shutdown</string>
     <string name="power_key_suspend">suspend and resume</string>
 
+    <!-- Wake On Line -->
+    <string name="wake_on_lan">Wake On Lan</string>
     <!-- Title for OK [CHAR LIMIT=50] -->
     <string name="title_ok">OK</string>
     <!-- Title for DNS 2 [CHAR LIMIT=50] -->

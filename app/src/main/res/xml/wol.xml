@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:title="@string/wake_on_lan" >
+
+    <SwitchPreference
+        android:key="wol_switch"
+        android:persistent="false"
+        android:title="@string/wake_on_lan" />
+
+</PreferenceScreen>
