@@ -190,9 +190,9 @@ public class ScreenResolutionFragment extends LeanbackPreferenceFragment impleme
 
         mDisplayModePref.setSummary(curDisplayMode);
         if (isHdmiMode()) {
-            mDeepColorPref.setVisible(false);
+            mDeepColorPref.setVisible(true);
             mDeepColorPref.setSummary(mOutputUiManager.getCurrentColorSpaceTitle());
-            mColorDepthPref.setVisible(false);
+            mColorDepthPref.setVisible(true);
             mColorDepthPref.setSummary(
                 mOutputUiManager.getCurrentColorDepthAttr().contains("8bit") ? "off":"on");
         } else {
