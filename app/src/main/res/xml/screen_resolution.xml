@@ -18,10 +18,6 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     android:title="@string/device_outputmode" >
 
-    <SwitchPreference
-        android:key="best_resolution"
-        android:persistent="false"
-        android:title="@string/device_outputmode_auto"/>
     <Preference android:key="displaymode_setting"
         android:persistent="false"
         android:title="@string/device_displaymode"

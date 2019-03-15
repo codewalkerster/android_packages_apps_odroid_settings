@@ -52,12 +52,11 @@ import com.droidlogic.app.DolbyVisionSettingManager;
 
 
 public class ScreenResolutionFragment extends LeanbackPreferenceFragment implements
-        Preference.OnPreferenceChangeListener, OnClickListener {
+        OnClickListener {
 
     private static final String KEY_COLORSPACE = "colorspace_setting";
     private static final String KEY_COLORDEPTH = "colordepth_setting";
     private static final String KEY_DISPLAYMODE = "displaymode_setting";
-    private static final String KEY_BEST_RESOLUTION = "best_resolution";
     private static final String KEY_DOLBYVISION = "dolby_vision";
     private static final String KEY_DOLBYVISION_PRIORITY = "dolby_vision_graphics_priority";
     private static final String DEFAULT_VALUE = "444,8bit";
@@ -77,7 +76,6 @@ public class ScreenResolutionFragment extends LeanbackPreferenceFragment impleme
     private static final int MSG_PLUG_FRESH_UI = 2;
 
     private DolbyVisionSettingManager mDolbyVisionSettingManager;
-    private Preference mBestResolutionPref;
     private Preference mDisplayModePref;
     private Preference mDeepColorPref;
     private Preference mColorDepthPref;
@@ -101,7 +99,6 @@ public class ScreenResolutionFragment extends LeanbackPreferenceFragment impleme
                         if (mAlertDialog != null) {
                             mAlertDialog.dismiss();
                         }
-                        recoverOutputMode();
                         task.cancel();
                     }
                     countdown--;
@@ -132,8 +129,6 @@ public class ScreenResolutionFragment extends LeanbackPreferenceFragment impleme
         setPreferencesFromResource(R.xml.screen_resolution, null);
 
         mDolbyVisionSettingManager = new DolbyVisionSettingManager((Context) getActivity());
-        mBestResolutionPref = findPreference(KEY_BEST_RESOLUTION);
-        mBestResolutionPref.setOnPreferenceChangeListener(this);
         mDisplayModePref = findPreference(KEY_DISPLAYMODE);
         mDeepColorPref = findPreference(KEY_COLORSPACE);
         mColorDepthPref = findPreference(KEY_COLORDEPTH);
@@ -161,14 +156,6 @@ public class ScreenResolutionFragment extends LeanbackPreferenceFragment impleme
 
     private void updateScreenResolutionDisplay() {
         mOutputUiManager.updateUiMode();
-        ((SwitchPreference) mBestResolutionPref).setChecked(isBestResolution());
-
-        // set best resolution summary.
-        if (isBestResolution()) {
-            mBestResolutionPref.setSummary(R.string.captions_display_on);
-        } else {
-            mBestResolutionPref.setSummary(R.string.captions_display_off);
-        }
 
         // set dolby vision summary.
         if (true == mDolbyVisionSettingManager.isDolbyVisionEnable()) {
@@ -203,25 +190,21 @@ public class ScreenResolutionFragment extends LeanbackPreferenceFragment impleme
 
         mDisplayModePref.setSummary(curDisplayMode);
         if (isHdmiMode()) {
-            mBestResolutionPref.setVisible(true);
             mDeepColorPref.setVisible(true);
             mDeepColorPref.setSummary(mOutputUiManager.getCurrentColorSpaceTitle());
             mColorDepthPref.setVisible(true);
             mColorDepthPref.setSummary(
                 mOutputUiManager.getCurrentColorDepthAttr().contains("8bit") ? "off":"on");
         } else {
-            mBestResolutionPref.setVisible(false);
             mDeepColorPref.setVisible(false);
             mColorDepthPref.setVisible(false);
         }
         boolean dvFlag = mOutputUiManager.isDolbyVisionEnable()
             && mOutputUiManager.isTvSupportDolbyVision();
         if (dvFlag) {
-            mBestResolutionPref.setEnabled(false);
             mDeepColorPref.setEnabled(false);
             mColorDepthPref.setEnabled(false);
         } else {
-            mBestResolutionPref.setEnabled(true);
             mDeepColorPref.setEnabled(true);
             mColorDepthPref.setEnabled(true);
         }
@@ -243,50 +226,12 @@ public class ScreenResolutionFragment extends LeanbackPreferenceFragment impleme
     }
 
     /**
-     * recover previous output mode and best resolution state.
-     */
-    private void recoverOutputMode() {
-        setBestResolution();
-        if (!preMode.equals(getCurrentDisplayMode()))
-            mOutputUiManager.change2NewMode(preMode);
-        if (!preDeepColor.equals(getCurrentDeepColor()))
-            mOutputUiManager.changeColorAttribte(preDeepColor);
-        mHandler.sendEmptyMessage(MSG_FRESH_UI);
-    }
-
-    @Override
-    public boolean onPreferenceChange(Preference preference, Object newValue) {
-        if (TextUtils.equals(preference.getKey(), KEY_BEST_RESOLUTION)) {
-            preMode = getCurrentDisplayMode();
-            preDeepColor = getCurrentDeepColor();
-            setBestResolution();
-            mHandler.sendEmptyMessage(MSG_FRESH_UI);
-            if (isBestResolution()) {
-                showDialog();
-            }
-        }
-        return true;
-    }
-    private boolean isBestResolution() {
-        return mOutputUiManager.isBestOutputmode();
-    }
-
-    /**
      * Taggle best resolution state.
      * if current best resolution state is enable, it will disable best resolution after method.
      * if current best resolution state is disable, it will enable best resolution after method.
      */
-    private void setBestResolution() {
-        mOutputUiManager.change2BestMode();
-    }
     private String getCurrentDisplayMode() {
         return mOutputUiManager.getCurrentMode().trim();
-    }
-    private String getCurrentDeepColor() {
-        String value = mOutputUiManager.getCurrentColorAttribute().toString().trim();
-        if (value.equals("default") || value == "" || value.equals(""))
-            return DEFAULT_VALUE;
-        return value;
     }
     private boolean isHdmiMode() {
         return mOutputUiManager.isHdmiMode();
@@ -337,7 +282,6 @@ public class ScreenResolutionFragment extends LeanbackPreferenceFragment impleme
                 if (mAlertDialog != null) {
                     mAlertDialog.dismiss();
                 }
-                recoverOutputMode();
                 break;
             case R.id.dialog_ok:
                 if (mAlertDialog != null) {
