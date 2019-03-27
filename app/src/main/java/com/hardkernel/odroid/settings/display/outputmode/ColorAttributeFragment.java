@@ -132,7 +132,7 @@ public class ColorAttributeFragment extends LeanbackPreferenceFragment {
             colorTitleList.add(color);
         }
         ArrayList<String> colorValueList = mOutputUiManager.getColorValueList();
-        String value = null;
+        String value;
         String filterValue = null;
         String  curColorSpaceValue = mOutputUiManager.getCurrentColorSpaceAttr();
         Log.i(LOG_TAG,"curColorSpaceValue: "+curColorSpaceValue);
@@ -146,17 +146,18 @@ public class ColorAttributeFragment extends LeanbackPreferenceFragment {
             }
             filterValue += value;
         }
-
-        for (int i = 0; i < OutputUiManager.COLOR_SPACE_LIST.length; i++) {
-            if (filterValue.contains(OutputUiManager.COLOR_SPACE_LIST[i])) {
-                if (curColorSpaceValue.contains(OutputUiManager.COLOR_SPACE_LIST[i])) {
-                    actions.add(new Action.Builder().key(OutputUiManager.COLOR_SPACE_LIST[i])
-                        .title("        " + OutputUiManager.COLOR_SPACE_TITLE[i])
-                        .checked(true).build());
-                } else {
-                    actions.add(new Action.Builder().key(OutputUiManager.COLOR_SPACE_LIST[i])
-                        .title("        " + OutputUiManager.COLOR_SPACE_TITLE[i])
-                        .description("").build());
+        if (filterValue != null) {
+            for (int i = 0; i < OutputUiManager.COLOR_SPACE_LIST.length; i++) {
+                if (filterValue.contains(OutputUiManager.COLOR_SPACE_LIST[i])) {
+                    if (curColorSpaceValue.contains(OutputUiManager.COLOR_SPACE_LIST[i])) {
+                        actions.add(new Action.Builder().key(OutputUiManager.COLOR_SPACE_LIST[i])
+                                .title("        " + OutputUiManager.COLOR_SPACE_TITLE[i])
+                                .checked(true).build());
+                    } else {
+                        actions.add(new Action.Builder().key(OutputUiManager.COLOR_SPACE_LIST[i])
+                                .title("        " + OutputUiManager.COLOR_SPACE_TITLE[i])
+                                .description("").build());
+                    }
                 }
             }
         }

@@ -134,10 +134,11 @@ public class ColorDepthFragment extends LeanbackPreferenceFragment {
         ArrayList<String> colorValueList = mOutputUiManager.getColorValueList();
         String value = null;
         String filterValue = null;
-        String  curColorDepthValue = mOutputUiManager.getCurrentColorAttribute().toString().trim();
+        String  curColorDepthValue = mOutputUiManager.getCurrentColorAttribute().trim();
         Log.i(LOG_TAG,"curColorDepthValue: "+curColorDepthValue);
         if (curColorDepthValue.equals("default"))
             curColorDepthValue = DEFAULT_COLOR_DEPTH_VALUE;
+
         for (int i = 0; i < curValueList.size(); i++) {
             value = colorValueList.get(i).trim();
             curMode = mOutputUiManager.getCurrentMode().trim();
@@ -147,12 +148,14 @@ public class ColorDepthFragment extends LeanbackPreferenceFragment {
             filterValue += value;
         }
 
-        if (filterValue.contains(mOutputUiManager.getCurrentColorSpaceAttr().trim() + "," + ENABLE_COLOR_DEPTH_VALUE)) {
-            actions.add(new Action.Builder().key(ACTION_ON)
-                .title("        " + getString(R.string.on))
-                .checked(curColorDepthValue.contains(ENABLE_COLOR_DEPTH_VALUE) ? true : false)
-                .description("")
-                .build());
+        if (filterValue != null) {
+            if (filterValue.contains(mOutputUiManager.getCurrentColorSpaceAttr().trim() + "," + ENABLE_COLOR_DEPTH_VALUE)) {
+                actions.add(new Action.Builder().key(ACTION_ON)
+                        .title("        " + getString(R.string.on))
+                        .checked(curColorDepthValue.contains(ENABLE_COLOR_DEPTH_VALUE) ? true : false)
+                        .description("")
+                        .build());
+            }
         }
 
         actions.add(new Action.Builder().key(ACTION_OFF)

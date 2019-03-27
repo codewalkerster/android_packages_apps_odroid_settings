@@ -46,6 +46,10 @@ public class bootini {
         return Integer.parseInt(getValue("enable_wol"));
     }
 
+    public static String getColorAttribute() {
+        return getValue("colorattribute");
+    }
+
     private static String getValue(String keyWord) {
         return _getValue("setenv " + keyWord + " ");
     }
@@ -122,6 +126,10 @@ public class bootini {
 
     public static void setWakeOnLan(int on) {
         setValue("enable_wol", String.valueOf(on));
+    }
+
+    public static void setColorAttribute(String color) {
+        setValue("colorattribute", color);
     }
 
     private static void setValue (String keyWord, String val) {
