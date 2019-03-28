@@ -18,6 +18,7 @@ package com.hardkernel.odroid.settings.display.outputmode;
 
 import android.app.Activity;
 import android.app.AlarmManager;
+import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -28,7 +29,9 @@ import android.support.v17.preference.LeanbackPreferenceFragment;
 import android.support.v7.preference.CheckBoxPreference;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceScreen;
+import android.text.Layout;
 import android.text.TextUtils;
+
 import com.hardkernel.odroid.settings.dialog.old.Action;
 import com.hardkernel.odroid.settings.RadioPreference;
 import com.hardkernel.odroid.settings.R;
@@ -38,30 +41,50 @@ import android.os.Handler;
 import android.os.Message;
 import android.provider.Settings;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
+import android.view.View.OnClickListener;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.content.BroadcastReceiver;
-import android.content.IntentFilter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 @Keep
-public class ColorAttributeFragment extends LeanbackPreferenceFragment {
+public class ColorAttributeFragment extends LeanbackPreferenceFragment
+implements OnClickListener{
     private static final String LOG_TAG = "ColorAttributeFragment";
     private OutputUiManager mOutputUiManager;
     private static String saveValue = null;
     private static String curValue = null;
     private static String curMode = null;
+
+    private static String curColor = null;
+    private static String preColor = null;
+    RadioPreference prePreference;
+    RadioPreference curPreference;
+    private View view_dialog;
+    private TextView tx_title;
+    private TextView tx_content;
+    private Timer timer;
+    private TimerTask task;
+    private AlertDialog mAlertDialog = null;
+    private int countdown = 15;
     private static final int MSG_FRESH_UI = 0;
+    private static final int MSG_COUNT_DOWN = 1;
+    private static final int MSG_RESET_COLOR = 2;
     private IntentFilter mIntentFilter;
     public boolean hpdFlag = false;
     private static final String DEFAULT_VALUE = "444";
     private static final String DEFAULT_TITLE = "YCbCr444";
     private static final String DEFAULT_COLOR_DEPTH_VALUE = "8bit";
     private ArrayList<String> colorTitleList = new ArrayList();
+
     private BroadcastReceiver mIntentReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -72,6 +95,7 @@ public class ColorAttributeFragment extends LeanbackPreferenceFragment {
     public static ColorAttributeFragment newInstance() {
         return new ColorAttributeFragment();
     }
+
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         mOutputUiManager = new OutputUiManager(getActivity());
@@ -114,6 +138,7 @@ public class ColorAttributeFragment extends LeanbackPreferenceFragment {
             radioPreference.setLayoutResource(R.layout.preference_reversed_widget);
             if (Info.isChecked()) {
                 radioPreference.setChecked(true);
+                prePreference = curPreference = radioPreference;
             }
             screen.addPreference(radioPreference);
         }
@@ -192,8 +217,9 @@ public class ColorAttributeFragment extends LeanbackPreferenceFragment {
             final RadioPreference radioPreference = (RadioPreference) preference;
             radioPreference.clearOtherRadioPreferences(getPreferenceScreen());
             if (radioPreference.isChecked()) {
-                if (onClickHandle(radioPreference.getKey()) == true) {
-                    radioPreference.setChecked(true);
+                curPreference = radioPreference;
+                if (onClickHandle(curPreference.getKey()) == true) {
+                    curPreference.setChecked(true);
                 }
             } else {
                 radioPreference.setChecked(true);
@@ -204,7 +230,9 @@ public class ColorAttributeFragment extends LeanbackPreferenceFragment {
     }
     public boolean onClickHandle(String key) {
         curValue = key;
-        saveValue= mOutputUiManager.getCurrentColorSpaceAttr().toString().trim();
+        saveValue= mOutputUiManager.getCurrentColorSpaceAttr().trim();
+
+        preColor = mOutputUiManager.getCurrentColorAttribute();
         if (saveValue.equals("default"))
             saveValue = DEFAULT_VALUE;
         curMode = mOutputUiManager.getCurrentMode().trim();
@@ -217,9 +245,68 @@ public class ColorAttributeFragment extends LeanbackPreferenceFragment {
                 curValue = key + "," + DEFAULT_COLOR_DEPTH_VALUE;
                 mOutputUiManager.changeColorAttribte(curValue);
             }
+            curColor = curValue;
+            showDialog();
             return true;
         }
         return false;
+    }
+
+    private void showDialog() {
+        if (mAlertDialog == null) {
+            LayoutInflater inflater = (LayoutInflater)getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+            view_dialog = inflater.inflate(R.layout.dialog_outputmode, null);
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            mAlertDialog = builder.create();
+            mAlertDialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_DIALOG);
+
+            tx_title = (TextView)view_dialog.findViewById(R.id.dialog_title);
+            tx_content = (TextView)view_dialog.findViewById(R.id.dialog_content);
+
+            TextView button_cancel = (TextView)view_dialog.findViewById(R.id.dialog_cancel);
+            TextView button_ok = (TextView)view_dialog.findViewById(R.id.dialog_ok);
+            button_cancel.setOnClickListener(this);
+            button_ok.setOnClickListener(this);
+        }
+        mAlertDialog.show();
+        mAlertDialog.getWindow().setContentView(view_dialog);
+        mAlertDialog.setCancelable(false);
+
+        tx_content.setText(getResources().getString(R.string.device_colorattribute_change)
+        + " " + curValue);
+        countdown = 10;
+        if (timer == null)
+            timer = new Timer();
+        if (task != null)
+            task.cancel();
+        task = new DialogTimerTask();
+        timer.schedule(task, 0, 1000);
+    }
+
+    private void recoverColorAttribute() {
+        curPreference = prePreference;
+        curColor = preColor;
+        mHandler.sendEmptyMessage(MSG_RESET_COLOR);
+        mOutputUiManager.changeColorAttribte(preColor);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.dialog_cancel:
+                if (mAlertDialog != null)
+                    mAlertDialog.dismiss();
+                recoverColorAttribute();
+                break;
+            case R.id.dialog_ok:
+                if (mAlertDialog != null)
+                    mAlertDialog.dismiss();
+                prePreference = curPreference;
+                break;
+        }
+        task.cancel();
     }
 
     private Handler mHandler = new Handler() {
@@ -229,10 +316,35 @@ public class ColorAttributeFragment extends LeanbackPreferenceFragment {
                 case MSG_FRESH_UI:
                     updatePreferenceFragment();
                     break;
+                case MSG_COUNT_DOWN:
+                    tx_title.setText(Integer.toString(countdown) + " " + getResources().getString(R.string.device_countdown));
+                    if (countdown == 0) {
+                        if (mAlertDialog != null) {
+                            recoverColorAttribute();
+                            mAlertDialog.dismiss();
+                        }
+                        task.cancel();
+                    }
+                    countdown--;
+                    break;
+                case MSG_RESET_COLOR:
+                    curPreference.clearOtherRadioPreferences(getPreferenceScreen());
+                    curPreference.setChecked(true);
+                    break;
             }
         }
     };
+
     private boolean isHdmiMode() {
         return mOutputUiManager.isHdmiMode();
+    }
+
+    private class DialogTimerTask extends TimerTask {
+        @Override
+        public void run() {
+            if (mHandler != null) {
+                mHandler.sendEmptyMessage(MSG_COUNT_DOWN);
+            }
+        }
     }
 }
