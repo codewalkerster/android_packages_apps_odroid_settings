@@ -94,7 +94,7 @@ public class ScreenResolutionFragment extends LeanbackPreferenceFragment impleme
                     break;
                 case MSG_COUNT_DOWN:
                     tx_title.setText(Integer.toString(countdown) + " " +
-                        getResources().getString(R.string.device_outputmode_countdown));
+                        getResources().getString(R.string.device_countdown));
                     if (countdown == 0) {
                         if (mAlertDialog != null) {
                             mAlertDialog.dismiss();

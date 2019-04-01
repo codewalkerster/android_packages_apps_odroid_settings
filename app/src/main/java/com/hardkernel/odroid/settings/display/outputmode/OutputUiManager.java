@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.droidlogic.app.OutputModeManager;
 import com.droidlogic.app.DolbyVisionSettingManager;
+import com.hardkernel.odroid.settings.bootini;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -165,7 +166,11 @@ public class OutputUiManager {
     }
 
     public String getCurrentColorAttribute(){
-         return mOutputModeManager.getCurrentColorAttribute();
+        String result = bootini.getColorAttribute();
+
+        if (result == null)
+            result = "default";
+        return result;
     }
 
     public String getCurrentColorSpaceAttr() {
@@ -211,6 +216,7 @@ public class OutputUiManager {
     }
 
     public void changeColorAttribte(final String colorValue) {
+        bootini.setColorAttribute(colorValue);
         mOutputModeManager.setDeepColorAttribute(colorValue);
     }
 
@@ -218,7 +224,7 @@ public class OutputUiManager {
         return mColorTitleList;
     }
 
-    public ArrayList<String> getColorValueList(){
+    public ArrayList<String> getColorValueList() {
         return mColorValueList;
     }
 
@@ -226,14 +232,9 @@ public class OutputUiManager {
         List<String> listValue = new ArrayList<String>();
         List<String> listTitle = new ArrayList<String>();
 
-        mHdmiColorValueList = HDMI_COLOR_LIST;
-        mHdmiColorTitleList = HDMI_COLOR_TITLE;
-
-        for (int i = 0; i < mHdmiColorValueList.length; i++) {
-            if (mHdmiColorValueList[i] != null) {
-                listValue.add(mHdmiColorValueList[i]);
-                listTitle.add(mHdmiColorTitleList[i]);
-            }
+        for (int i =0; i< HDMI_COLOR_TITLE.length; i++) {
+            listValue.add(HDMI_COLOR_LIST[i]);
+            listTitle.add(HDMI_COLOR_TITLE[i]);
         }
 
         String strColorlist = mOutputModeManager.getHdmiColorSupportList();
@@ -245,18 +246,21 @@ public class OutputUiManager {
                     listHdmiMode.add(listValue.get(i));
                     listHdmiTitle.add(listTitle.get(i));
                 }
-
             }
-            mHdmiColorValueList = listHdmiMode.toArray(new String[listValue.size()]);
-            mHdmiColorTitleList = listHdmiTitle.toArray(new String[listTitle.size()]);
+            mHdmiColorValueList = listHdmiMode.toArray(new String[0]);
+            mHdmiColorTitleList = listHdmiTitle.toArray(new String[0]);
         } else {
             mHdmiColorValueList = new String[]{""};
             mHdmiColorTitleList = new String[]{"No data!"};
-            mHdmiColorValueList = new String[]{"No data!"};
         }
+
+        for (int i=0;i<mHdmiColorValueList.length; i++)
+                Log.d(TAG, "color values  - " + mHdmiColorValueList[i]);
     }
 
     public boolean isModeSupportColor(final String curMode, final String curValue){
+        if (curMode.equals("custombuilt"))
+            return true;
         return mOutputModeManager.isModeSupportColor(curMode, curValue);
     }
 
@@ -293,13 +297,6 @@ public class OutputUiManager {
 
     public void change2NewMode(final String mode) {
         mOutputModeManager.setBestMode(mode);
-    }
-
-    public void change2BestMode() {
-        mOutputModeManager.setBestMode(null);
-    }
-    public boolean isBestOutputmode(){
-        return mOutputModeManager.isBestOutputmode();
     }
 
     public void change2DeepColorMode() {

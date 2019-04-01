@@ -263,7 +263,7 @@ public class OutputmodeFragment extends LeanbackPreferenceFragment
                     curPreference.setChecked(true);
                     break;
                 case MSG_COUNT_DOWN:
-                    tx_title.setText(Integer.toString(countdown) + " " + getResources().getString(R.string.device_outputmode_countdown));
+                    tx_title.setText(Integer.toString(countdown) + " " + getResources().getString(R.string.device_countdown));
                     if (countdown == 0) {
                         if (mAlertDialog != null) {
                             mAlertDialog.dismiss();
