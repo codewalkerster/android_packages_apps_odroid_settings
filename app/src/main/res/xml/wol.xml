@@ -7,5 +7,9 @@
         android:key="wol_switch"
         android:persistent="false"
         android:title="@string/wake_on_lan" />
+    <Preference
+        android:key="eth0_address"
+        android:title="@string/eth0_address"
+        android:selectable="false"/>
 
 </PreferenceScreen>
