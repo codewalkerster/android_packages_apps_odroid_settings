@@ -26,8 +26,9 @@ import android.os.SystemProperties;
 import com.hardkernel.odroid.settings.util.DroidUtils;
 import com.hardkernel.odroid.settings.SettingsConstant;
 import com.hardkernel.odroid.settings.R;
+import com.hardkernel.odroid.settings.LeanbackAddBackPreferenceFragment;
 
-public class DisplayFragment extends LeanbackPreferenceFragment {
+public class DisplayFragment extends LeanbackAddBackPreferenceFragment {
 
 	private static final String TAG = "DisplayFragment";
 

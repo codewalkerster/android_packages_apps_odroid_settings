@@ -9,11 +9,12 @@ import android.support.v7.preference.PreferenceScreen;
 import android.support.v17.preference.LeanbackPreferenceFragment;
 import android.widget.EditText;
 
+import com.hardkernel.odroid.settings.LeanbackAddBackPreferenceFragment;
 import com.hardkernel.odroid.settings.R;
 
 import com.hardkernel.odroid.settings.RadioPreference;
 
-public class UpdateServerFragment extends LeanbackPreferenceFragment {
+public class UpdateServerFragment extends LeanbackAddBackPreferenceFragment {
     private static final String TAG = "UpdateServerFragment";
     private Context context = null;
 

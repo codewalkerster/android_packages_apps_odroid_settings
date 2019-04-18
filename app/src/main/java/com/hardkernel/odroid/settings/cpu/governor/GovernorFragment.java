@@ -10,8 +10,9 @@ import com.hardkernel.odroid.settings.R;
 import com.hardkernel.odroid.settings.RadioPreference;
 import com.hardkernel.odroid.settings.bootini;
 import com.hardkernel.odroid.settings.cpu.CPU;
+import com.hardkernel.odroid.settings.LeanbackAddBackPreferenceFragment;
 
-public class GovernorFragment extends LeanbackPreferenceFragment {
+public class GovernorFragment extends LeanbackAddBackPreferenceFragment {
     private static final String TAG = "GovernorFragment";
     public static CPU cpu = null;
 

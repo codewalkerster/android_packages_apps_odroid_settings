@@ -48,10 +48,12 @@ import java.util.TimerTask;
 
 import android.util.Log;
 import com.hardkernel.odroid.settings.R;
+import com.hardkernel.odroid.settings.LeanbackAddBackPreferenceFragment;
+
 import com.droidlogic.app.DolbyVisionSettingManager;
 
 
-public class ScreenResolutionFragment extends LeanbackPreferenceFragment implements
+public class ScreenResolutionFragment extends LeanbackAddBackPreferenceFragment implements
         OnClickListener {
 
     private static final String KEY_COLORSPACE = "colorspace_setting";

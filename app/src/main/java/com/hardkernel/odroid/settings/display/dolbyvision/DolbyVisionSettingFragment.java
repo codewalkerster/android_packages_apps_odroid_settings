@@ -29,12 +29,13 @@ import com.droidlogic.app.OutputModeManager;
 import com.hardkernel.odroid.settings.R;
 import com.hardkernel.odroid.settings.RadioPreference;
 import com.hardkernel.odroid.settings.dialog.old.Action;
+import com.hardkernel.odroid.settings.LeanbackAddBackPreferenceFragment;
 
 import java.util.List;
 import java.util.Map;
 import java.util.ArrayList;
 
-public class DolbyVisionSettingFragment extends LeanbackPreferenceFragment {
+public class DolbyVisionSettingFragment extends LeanbackAddBackPreferenceFragment {
     private static final String TAG = "DolbyVisionSettingFragment";
 
     public static final String KEY_DOLBY_VISION     = "dolby_vision_set";

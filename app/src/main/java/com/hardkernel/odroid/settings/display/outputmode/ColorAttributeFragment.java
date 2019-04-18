@@ -35,6 +35,7 @@ import android.text.TextUtils;
 import com.hardkernel.odroid.settings.dialog.old.Action;
 import com.hardkernel.odroid.settings.RadioPreference;
 import com.hardkernel.odroid.settings.R;
+import com.hardkernel.odroid.settings.LeanbackAddBackPreferenceFragment;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -56,7 +57,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 @Keep
-public class ColorAttributeFragment extends LeanbackPreferenceFragment
+public class ColorAttributeFragment extends LeanbackAddBackPreferenceFragment
 implements OnClickListener{
     private static final String LOG_TAG = "ColorAttributeFragment";
     private OutputUiManager mOutputUiManager;

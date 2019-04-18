@@ -14,13 +14,14 @@ import android.support.v7.preference.Preference;
 import android.widget.Toast;
 
 import com.hardkernel.odroid.settings.R;
+import com.hardkernel.odroid.settings.LeanbackAddBackPreferenceFragment;
 
 import java.io.File;
 
 import static android.app.Activity.RESULT_OK;
 
 
-public class UpdateFragment extends LeanbackPreferenceFragment {
+public class UpdateFragment extends LeanbackAddBackPreferenceFragment {
 
     private static final String TAG = "UpdateFragment";
     public static final int FILE_SELECT_CODE = 101;

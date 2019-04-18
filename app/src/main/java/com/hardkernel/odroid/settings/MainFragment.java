@@ -54,7 +54,7 @@ import com.droidlogic.app.tv.DroidLogicTvUtils;
 import java.util.ArrayList;
 import java.util.Set;
 
-public class MainFragment extends LeanbackPreferenceFragment {
+public class MainFragment extends LeanbackAddBackPreferenceFragment {
     private static final String TAG = "MainFragment";
 
     private static final String KEY_MAIN_MENU = "droidsettings";

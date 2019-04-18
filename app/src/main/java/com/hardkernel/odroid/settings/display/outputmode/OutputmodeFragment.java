@@ -36,6 +36,7 @@ import java.util.List;
 import com.hardkernel.odroid.settings.bootini;
 import com.hardkernel.odroid.settings.dialog.old.Action;
 import com.hardkernel.odroid.settings.RadioPreference;
+import com.hardkernel.odroid.settings.LeanbackAddBackPreferenceFragment;
 
 import android.os.Handler;
 import android.os.Message;
@@ -55,7 +56,7 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 @Keep
-public class OutputmodeFragment extends LeanbackPreferenceFragment
+public class OutputmodeFragment extends LeanbackAddBackPreferenceFragment
         implements Preference.OnPreferenceChangeListener, OnClickListener {
     private static final String LOG_TAG = "OutputmodeFragment";
     private OutputUiManager mOutputUiManager;

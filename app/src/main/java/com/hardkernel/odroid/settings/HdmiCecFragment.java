@@ -42,7 +42,7 @@ import android.os.SystemProperties;
 /**
  * Fragment to control HDMI Cec settings.
  */
-public class HdmiCecFragment extends LeanbackPreferenceFragment {
+public class HdmiCecFragment extends LeanbackAddBackPreferenceFragment {
 
 	private static final String TAG = "HdmiCecFragment";
 

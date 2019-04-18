@@ -28,12 +28,13 @@ import com.hardkernel.odroid.settings.R;
 import com.hardkernel.odroid.settings.RadioPreference;
 import com.hardkernel.odroid.settings.bootini;
 import com.hardkernel.odroid.settings.dialog.old.Action;
+import com.hardkernel.odroid.settings.LeanbackAddBackPreferenceFragment;
 
 import java.util.List;
 import java.util.Map;
 import java.util.ArrayList;
 
-public class DisplayPositionFragment extends LeanbackPreferenceFragment {
+public class DisplayPositionFragment extends LeanbackAddBackPreferenceFragment {
     private static final String TAG = "DisplayPositionFragment";
 
     private static final String SCREEN_POSITION_SCALE = "screen_position_scale";

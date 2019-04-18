@@ -22,12 +22,13 @@ import com.droidlogic.app.SdrManager;
 import com.hardkernel.odroid.settings.R;
 import com.hardkernel.odroid.settings.RadioPreference;
 import com.hardkernel.odroid.settings.dialog.old.Action;
+import com.hardkernel.odroid.settings.LeanbackAddBackPreferenceFragment;
 
 import java.util.List;
 import java.util.Map;
 import java.util.ArrayList;
 
-public class SdrSettingFragment extends LeanbackPreferenceFragment {
+public class SdrSettingFragment extends LeanbackAddBackPreferenceFragment {
 	private static final String TAG = "SdrSettingFragment";
 
 	private static final String SDR_RADIO_GROUP = "sdr";

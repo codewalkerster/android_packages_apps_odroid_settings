@@ -45,7 +45,7 @@ import com.hardkernel.odroid.settings.SettingsConstant;
 import com.hardkernel.odroid.settings.R;
 import com.hardkernel.odroid.settings.tvoption.SoundParameterSettingManager;
 
-public class SoundFragment extends LeanbackPreferenceFragment implements Preference.OnPreferenceChangeListener {
+public class SoundFragment extends LeanbackAddBackPreferenceFragment implements Preference.OnPreferenceChangeListener {
     public static final String TAG = "SoundFragment";
     private static final String KEY_DRCMODE_PASSTHROUGH = "drc_mode";
     private static final String KEY_DIGITALSOUND_CATEGORY = "surround_sound_category";

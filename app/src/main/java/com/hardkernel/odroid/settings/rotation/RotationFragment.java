@@ -12,10 +12,11 @@ import android.util.Log;
 import android.view.Display;
 
 import com.hardkernel.odroid.settings.R;
+import com.hardkernel.odroid.settings.LeanbackAddBackPreferenceFragment;
 
 import com.hardkernel.odroid.settings.RadioPreference;
 
-public class RotationFragment extends LeanbackPreferenceFragment {
+public class RotationFragment extends LeanbackAddBackPreferenceFragment {
     private static final String TAG = "RotationFragment";
 
     public static RotationFragment newInstance() { return new RotationFragment(); }

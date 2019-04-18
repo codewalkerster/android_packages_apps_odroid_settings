@@ -6,8 +6,9 @@ import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceCategory;
 
 import com.hardkernel.odroid.settings.R;
+import com.hardkernel.odroid.settings.LeanbackAddBackPreferenceFragment;
 
-public class CpuFragment extends LeanbackPreferenceFragment {
+public class CpuFragment extends LeanbackAddBackPreferenceFragment {
     private static final String TAG = "CpuFragment";
 
     private static final String KEY_BIG_CORE_CLOCK = "big_core_clock";

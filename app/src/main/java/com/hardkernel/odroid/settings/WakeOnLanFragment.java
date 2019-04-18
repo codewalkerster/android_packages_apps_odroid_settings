@@ -11,7 +11,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 
 
-public class WakeOnLanFragment extends LeanbackPreferenceFragment {
+public class WakeOnLanFragment extends LeanbackAddBackPreferenceFragment {
 
     private static final String KEY_WAKE_ON_LAN_SWITCH = "wol_switch";
     private static final String KEY_MAC_ADDRESS_PREF = "eth0_address";

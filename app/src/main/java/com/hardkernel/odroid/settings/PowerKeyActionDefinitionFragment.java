@@ -40,7 +40,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.ArrayList;
 
-public class PowerKeyActionDefinitionFragment extends LeanbackPreferenceFragment {
+public class PowerKeyActionDefinitionFragment extends LeanbackAddBackPreferenceFragment {
 	private static final String TAG = "PowerKeyActionDefinitionFragment";
 	private static final String POWERKEYACTION_RADIO_GROUP = "PowerKeyAction";
 	private static final String POWER_KEY_DEFINITION = "power_key_definition";

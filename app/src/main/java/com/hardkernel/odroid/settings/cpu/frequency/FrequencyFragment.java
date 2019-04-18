@@ -7,12 +7,13 @@ import android.support.v7.preference.PreferenceScreen;
 import android.support.v17.preference.LeanbackPreferenceFragment;
 
 import com.hardkernel.odroid.settings.R;
+import com.hardkernel.odroid.settings.LeanbackAddBackPreferenceFragment;
 
 import com.hardkernel.odroid.settings.RadioPreference;
 import com.hardkernel.odroid.settings.bootini;
 import com.hardkernel.odroid.settings.cpu.CPU;
 
-public class FrequencyFragment extends LeanbackPreferenceFragment {
+public class FrequencyFragment extends LeanbackAddBackPreferenceFragment {
     private static final String TAG = "FrequencyFragment";
     public static CPU cpu = null;
 

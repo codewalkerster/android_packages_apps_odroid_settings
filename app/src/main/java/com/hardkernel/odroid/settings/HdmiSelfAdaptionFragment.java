@@ -35,7 +35,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.ArrayList;
 
-public class HdmiSelfAdaptionFragment extends LeanbackPreferenceFragment {
+public class HdmiSelfAdaptionFragment extends LeanbackAddBackPreferenceFragment {
     private static final String TAG = "HdmiSelfAdaptionFragment";
 
     private static final String HDMI_SELFADAPTION_RADIO_GROUP = "hdmi_selfadaption";

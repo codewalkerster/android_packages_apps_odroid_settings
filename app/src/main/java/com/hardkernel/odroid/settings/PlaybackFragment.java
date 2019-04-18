@@ -25,7 +25,7 @@ import com.hardkernel.odroid.settings.R;
 
 import com.droidlogic.app.PlayBackManager;
 
-public class PlaybackFragment extends LeanbackPreferenceFragment {
+public class PlaybackFragment extends LeanbackAddBackPreferenceFragment {
     private static final String TAG = "PlaybackFragment";
 
     private static final String KEY_PLAYBACK_HDMI_SELFADAPTION = "playback_hdmi_selfadaption";
