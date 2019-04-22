@@ -1,11 +1,11 @@
 package com.hardkernel.odroid.settings.shortcut;
 
-import com.hardkernel.odroid.settings.BaseSettingsFragment;
-import com.hardkernel.odroid.settings.TvSettingsActivity;
 import android.app.Fragment;
 
-public class ShortcutActivity extends TvSettingsActivity {
+import com.hardkernel.odroid.settings.BaseSettingsFragment;
+import com.hardkernel.odroid.settings.TvSettingsActivity;
 
+public class ShortcutSelectF8Activity extends TvSettingsActivity {
     @Override
     protected Fragment createSettingsFragment() {
         return SettingsFragment.newInstance();
@@ -18,7 +18,7 @@ public class ShortcutActivity extends TvSettingsActivity {
 
         @Override
         public void onPreferenceStartInitialScreen() {
-            final ShortcutFragment fragment = ShortcutFragment.newInstance();
+            final ShortcutF8SelectFragment fragment = ShortcutF8SelectFragment.newInstance();
             startPreferenceFragment(fragment);
         }
     }

@@ -5,7 +5,6 @@ import com.hardkernel.odroid.settings.TvSettingsActivity;
 import android.app.Fragment;
 
 public class ShortcutSelectActivity extends TvSettingsActivity {
-
     @Override
     protected Fragment createSettingsFragment() {
         return SettingsFragment.newInstance();
@@ -21,6 +20,5 @@ public class ShortcutSelectActivity extends TvSettingsActivity {
             final ShortcutSelectFragment fragment = ShortcutSelectFragment.newInstance();
             startPreferenceFragment(fragment);
         }
-
     }
 }
