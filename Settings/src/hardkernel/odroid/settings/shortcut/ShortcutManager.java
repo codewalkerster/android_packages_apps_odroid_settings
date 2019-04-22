@@ -3,11 +3,13 @@ package hardkernel.odroid.settings.shortcut;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.view.KeyEvent;
 import android.view.WindowManager;
 
+import java.security.Key;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,17 +26,29 @@ public class ShortcutManager {
     private static WindowManager wm;
     private static PackageManager pm;
 
+    private static void init(Context context) {
+        if (pm == null)
+            pm = context.getPackageManager();
+        if (wm == null)
+            wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        if (pref == null)
+            pref = context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE);
+    }
+
     public static void initShortcuts(Context context) {
-        pm = context.getPackageManager();
-        wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-        pref = context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE);
+        init(context);
 
         ArrayList<String> appList = getAvailableAppList(context);
-        PackageManager pm = context.getPackageManager();
 
         for (int i = 0; i < 4; i++) {
-            pkg[i] = pref.getString("shortcut_f" + (i+7), null);
+            pkg[i] = pref.getString("shortcut_f" + (i+7), "No shortcut");
 
+            if (pkg[i].equals("home")) {
+                Intent home = new Intent(Intent.ACTION_MAIN);
+                home.setPackage("home");
+                wm.setApplicationShortcut(KeyEvent.KEYCODE_F7 + i, home);
+                continue;
+            }
             for (String app : appList) {
                 if (app.equals(pkg[i])) {
                     wm.setApplicationShortcut(KeyEvent.KEYCODE_F7 + i, pm.getLaunchIntentForPackage(app));
@@ -49,9 +63,13 @@ public class ShortcutManager {
 
     public static CharSequence pkgNameAt(int index) {
         ApplicationInfo app;
+
         try {
+            if (pkg[index].equals("home"))
+                return  "HOME";
             app = pm.getApplicationInfo(pkg[index], PackageManager.GET_META_DATA);
-        } catch(PackageManager.NameNotFoundException e) {
+        } catch(Exception e) {
+            pkg[index] = "No shortcut";
             return "No shortcut";
         }
         return app.loadLabel(pm);
@@ -60,6 +78,7 @@ public class ShortcutManager {
     private static List<ApplicationInfo> appList = null;
 
     public static ArrayList<String> getAvailableAppList(Context context) {
+        init(context);
         appList = pm.getInstalledApplications(PackageManager.GET_META_DATA);
         ArrayList<String> launchApps = new ArrayList<>();
         for (ApplicationInfo appInfo: appList) {
@@ -67,6 +86,8 @@ public class ShortcutManager {
             if (launchApp != null)
                 launchApps.add(appInfo.packageName);
         }
+
+        launchApps.add("home");
 
         return launchApps;
     }
@@ -76,7 +97,7 @@ public class ShortcutManager {
     }
 
     public static void setShortcutPreference(int keycode, String app) {
-        SharedPreferences.Editor edit = pref.edit();
+        Editor edit = pref.edit();
 
         String shortcut_pref =
                 "shortcut_f" + ((keycode - KeyEvent.KEYCODE_F1) + 1);
@@ -85,6 +106,12 @@ public class ShortcutManager {
             wm.setApplicationShortcut(keycode, null);
             edit.putString(shortcut_pref, "No shortcut");
             pkg[keycode - KeyEvent.KEYCODE_F7] = "No shortcut";
+        } else if (app.equals("home")) {
+            Intent home = new Intent(Intent.ACTION_MAIN);
+            home.setPackage(app);
+            wm.setApplicationShortcut(keycode, home);
+            edit.putString(shortcut_pref, app);
+            pkg[keycode - KeyEvent.KEYCODE_F7] = app;
         } else {
             wm.setApplicationShortcut(keycode, pm.getLaunchIntentForPackage(app));
             edit.putString(shortcut_pref, app);
