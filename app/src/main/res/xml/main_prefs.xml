@@ -60,6 +60,12 @@
         android:key="wol"
         android:title="@string/wake_on_lan" />
     <Preference
+        android:fragment="com.hardkernel.odroid.settings.shortcut.ShortcutFragment"
+        android:icon="@drawable/ic_app_shortcut"
+        android:key="shortcut"
+        android:title="@string/app_shortcut"
+        />
+    <Preference
         android:icon="@drawable/ic_info_outline"
         android:key="netflix_esn"
         android:title="@string/netflix_esn"/>

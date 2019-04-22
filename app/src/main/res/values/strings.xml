@@ -75,6 +75,14 @@
     <!-- Wake On Line -->
     <string name="wake_on_lan">Wake On Lan</string>
     <string name="eth0_address">Ethernet MAC address</string>
+
+    <!-- App shortcut -->
+    <string name="app_shortcut">Shortcut</string>
+    <string name="shortcut_title_f7">F7</string>
+    <string name="shortcut_title_f8">F8</string>
+    <string name="shortcut_title_f9">F9</string>
+    <string name="shortcut_title_f10">F10</string>
+
     <!-- Title for OK [CHAR LIMIT=50] -->
     <string name="title_ok">OK</string>
     <!-- Title for DNS 2 [CHAR LIMIT=50] -->
