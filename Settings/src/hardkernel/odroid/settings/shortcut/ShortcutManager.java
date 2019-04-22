@@ -43,8 +43,18 @@ public class ShortcutManager {
         }
     }
 
-    public static String pkgNameAt(int index) {
+    public static String pkgAt(int index) {
         return pkg[index];
+    }
+
+    public static CharSequence pkgNameAt(int index) {
+        ApplicationInfo app;
+        try {
+            app = pm.getApplicationInfo(pkg[index], PackageManager.GET_META_DATA);
+        } catch(PackageManager.NameNotFoundException e) {
+            return "No shortcut";
+        }
+        return app.loadLabel(pm);
     }
 
     private static List<ApplicationInfo> appList = null;
@@ -74,9 +84,11 @@ public class ShortcutManager {
         if (app == null) {
             wm.setApplicationShortcut(keycode, null);
             edit.putString(shortcut_pref, "No shortcut");
+            pkg[keycode - KeyEvent.KEYCODE_F7] = "No shortcut";
         } else {
             wm.setApplicationShortcut(keycode, pm.getLaunchIntentForPackage(app));
             edit.putString(shortcut_pref, app);
+            pkg[keycode - KeyEvent.KEYCODE_F7] = app;
         }
         edit.commit();
     }

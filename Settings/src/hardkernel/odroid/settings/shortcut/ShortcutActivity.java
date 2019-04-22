@@ -1,7 +1,6 @@
 package hardkernel.odroid.settings.shortcut;
 
-import android.app.Fragment;
-
+import androidx.fragment.app.Fragment;
 import hardkernel.odroid.settings.BaseSettingsFragment;
 import hardkernel.odroid.settings.TvSettingsActivity;
 
