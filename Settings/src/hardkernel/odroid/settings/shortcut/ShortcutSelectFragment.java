@@ -20,24 +20,33 @@ public class ShortcutSelectFragment extends LeanbackAddBackPreferenceFragment {
     private static final String NO_SHORTCUT = "No shortcut";
 
     private static PackageManager pm;
-    private static int keycode = KeyEvent.KEYCODE_F7;
+    protected int keycode;
 
     public static ShortcutSelectFragment newInstance() {
         return new ShortcutSelectFragment();
     }
 
+    public ShortcutSelectFragment() {
+        keycode = KeyEvent.KEYCODE_F7;
+    }
+
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-        updatePreferenceFragment();
         pm = getContext().getPackageManager();
+        updatePreferenceFragment();
     }
 
     private static ArrayList<String> appPackageList;
     private void updatePreferenceFragment() {
         final Context themedContext = getPreferenceManager().getContext();
         final PreferenceScreen screen = getPreferenceManager().createPreferenceScreen(themedContext);
-        screen.setTitle(R.string.app_shortcut);
+        String subTitle = themedContext.getString(R.string.app_shortcut);
+        String title = subTitle + " F" + ((keycode - KeyEvent.KEYCODE_F1) + 1);
+
+        screen.setTitle(title);
         setPreferenceScreen(screen);
+
+        String currentApp = String.valueOf(ShortcutManager.pkgAt(keycode - KeyEvent.KEYCODE_F7));
 
         appPackageList = ShortcutManager.getAvailableAppList(getContext());
         final ArrayList<String> appTitles = new ArrayList<>();
@@ -55,7 +64,8 @@ public class ShortcutSelectFragment extends LeanbackAddBackPreferenceFragment {
                 radio.setTitle(NO_SHORTCUT);
                 radio.setIcon(android.R.drawable.ic_delete);
                 radio.setLayoutResource(R.layout.preference_reversed_widget);
-
+                if (currentApp.equals(NO_SHORTCUT))
+                    radio.setChecked(true);
             } else {
                 try {
                     ApplicationInfo app = pm.getApplicationInfo(appTitle, PackageManager.GET_META_DATA);
@@ -64,9 +74,13 @@ public class ShortcutSelectFragment extends LeanbackAddBackPreferenceFragment {
                     radio.setTitle(app.loadLabel(pm));
                     radio.setIcon(app.loadIcon(pm));
                     radio.setLayoutResource(R.layout.preference_reversed_widget);
+                    if (currentApp.equals(app.packageName))
+                        radio.setChecked(true);
                 } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
+
             screen.addPreference(radio);
         }
     }
