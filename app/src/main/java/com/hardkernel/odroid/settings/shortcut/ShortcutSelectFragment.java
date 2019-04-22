@@ -36,6 +36,13 @@ public class ShortcutSelectFragment extends LeanbackAddBackPreferenceFragment {
         updatePreferenceFragment();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        updatePreferenceFragment();
+    }
+
+
     private static ArrayList<String> appPackageList;
     private void updatePreferenceFragment() {
         final Context themedContext = getPreferenceManager().getContext();
@@ -60,27 +67,26 @@ public class ShortcutSelectFragment extends LeanbackAddBackPreferenceFragment {
         for(String appTitle: appTitles) {
             RadioPreference radio = new RadioPreference(themedContext);
             if (appTitle.equals(NO_SHORTCUT)) {
-                radio.setPersistent(false);
                 radio.setTitle(NO_SHORTCUT);
                 radio.setIcon(android.R.drawable.ic_delete);
-                radio.setLayoutResource(R.layout.preference_reversed_widget);
-                if (currentApp.equals(NO_SHORTCUT))
-                    radio.setChecked(true);
+            } else if(appTitle.equals("home")) {
+                radio.setKey("home");
+                radio.setTitle("HOME");
+                radio.setIcon(android.R.drawable.sym_def_app_icon);
             } else {
                 try {
                     ApplicationInfo app = pm.getApplicationInfo(appTitle, PackageManager.GET_META_DATA);
                     radio.setKey(app.packageName);
-                    radio.setPersistent(false);
                     radio.setTitle(app.loadLabel(pm));
                     radio.setIcon(app.loadIcon(pm));
-                    radio.setLayoutResource(R.layout.preference_reversed_widget);
-                    if (currentApp.equals(app.packageName))
-                        radio.setChecked(true);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
-
+            radio.setLayoutResource(R.layout.preference_reversed_widget);
+            radio.setPersistent(false);
+            if (currentApp.equals(appTitle))
+                radio.setChecked(true);
             screen.addPreference(radio);
         }
     }
