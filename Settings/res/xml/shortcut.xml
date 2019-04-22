@@ -4,14 +4,17 @@
     <Preference
         android:key="shortcut_f7"
         android:title="@string/shortcut_title_f7"
-        android:fragment="hardkernel.odroid.settings.shortcut.ShortcutSelectFragment"/>
+        android:fragment="hardkernel.odroid.settings.shortcut.ShortcutF7SelectFragment"/>
     <Preference
         android:key="shortcut_f8"
-        android:title="@string/shortcut_title_f8" />
+        android:title="@string/shortcut_title_f8"
+        android:fragment="hardkernel.odroid.settings.shortcut.ShortcutF8SelectFragment"/>
     <Preference
         android:key="shortcut_f9"
-        android:title="@string/shortcut_title_f9" />
+        android:title="@string/shortcut_title_f9"
+        android:fragment="hardkernel.odroid.settings.shortcut.ShortcutF9SelectFragment"/>
     <Preference
         android:key="shortcut_f10"
-        android:title="@string/shortcut_title_f10" />
+        android:title="@string/shortcut_title_f10"
+        android:fragment="hardkernel.odroid.settings.shortcut.ShortcutF10SelectFragment"/>
 </PreferenceScreen>
