@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:title="@string/app_shortcut">
+    <Preference
+        android:key="shortcut_f7"
+        android:title="@string/shortcut_title_f7"
+        android:fragment="hardkernel.odroid.settings.shortcut.ShortcutSelectFragment"/>
+    <Preference
+        android:key="shortcut_f8"
+        android:title="@string/shortcut_title_f8" />
+    <Preference
+        android:key="shortcut_f9"
+        android:title="@string/shortcut_title_f9" />
+    <Preference
+        android:key="shortcut_f10"
+        android:title="@string/shortcut_title_f10" />
+</PreferenceScreen>

@@ -67,6 +67,11 @@
         android:icon="@drawable/ic_keyboard"
         android:key="keyboard"
         android:title="@string/system_keyboard"/>
+    <Preference
+        android:fragment="hardkernel.odroid.settings.shortcut.ShortcutFragment"
+        android:icon="@drawable/ic_app_shortcut"
+        android:key="shortcut"
+        android:title="@string/app_shortcut"/>
      <Preference
         android:fragment="hardkernel.odroid.settings.device.sound.SoundFragment"
         android:icon="@drawable/ic_volume_up"

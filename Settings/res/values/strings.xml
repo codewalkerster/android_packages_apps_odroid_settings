@@ -2314,6 +2314,13 @@
     <string name="flash_img_failed">Flash image files failed.</string>
     <string name="flash_img_progress">Flashing(!!!Prohibit removal of power supply!!!)</string>
 
+    <!-- App shortcut -->
+    <string name="app_shortcut">Shortcut</string>
+    <string name="shortcut_title_f7">F7</string>
+    <string name="shortcut_title_f8">F8</string>
+    <string name="shortcut_title_f9">F9</string>
+    <string name="shortcut_title_f10">F10</string>
+
     <!-- cpu -->
     <string name="cpu">CPU</string>
     <string name="little_core_clock">Little Core Clocks</string>
