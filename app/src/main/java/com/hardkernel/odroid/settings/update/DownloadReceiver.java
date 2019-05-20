@@ -9,26 +9,43 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.StatFs;
+import android.support.v4.app.NotificationManagerCompat;
 import android.util.Log;
 import android.widget.Toast;
+
+import com.hardkernel.odroid.settings.OdroidService;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.Serializable;
 
 public class DownloadReceiver extends BroadcastReceiver {
 
     public static long enqueue;
-    public static DownloadManager downloadManager = null;
+    private static DownloadManager downloadManager = null;
 
     private static UpdatePackage updatePackage = null;
-    public static Context context = null;
 
     final String TAG = "UpdateDownloadReceiver";
+
+    public static DownloadManager getDownloadManager(Context context) {
+        if (downloadManager == null)
+            downloadManager = (DownloadManager)context.getSystemService(context.DOWNLOAD_SERVICE);
+        return downloadManager;
+    }
+
     @Override
     public void onReceive(Context context, Intent intent) {
+
+        if (intent.getAction().equals("DOWNLOAD_PACKAGE")) {
+            downloadPackage(context);
+            return;
+        }
+
         long id = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, 0L);
         if ( id != enqueue) {
             Log.v(TAG, "Ignoring unrelated download " + id);
@@ -37,7 +54,7 @@ public class DownloadReceiver extends BroadcastReceiver {
 
         DownloadManager.Query query = new DownloadManager.Query();
         query.setFilterById(id);
-        Cursor cursor = downloadManager.query(query);
+        Cursor cursor = getDownloadManager(context).query(query);
 
         if (!cursor.moveToFirst()) {
             Log.e(TAG, "Not able to move the cursor for downloaded content.");
@@ -78,7 +95,7 @@ public class DownloadReceiver extends BroadcastReceiver {
                 int currentVersion = Integer.parseInt(Build.VERSION.INCREMENTAL);
 
                 if (currentVersion < updatePackage.name.getVersion()) {
-                    updatePackageFromOnline();
+                    updatePackageFromOnline(context);
                 } else if (currentVersion > updatePackage.name.getVersion()) {
                     Toast.makeText(context,
                             "The current installed build number might be wrong",
@@ -98,45 +115,35 @@ public class DownloadReceiver extends BroadcastReceiver {
         }
     }
 
-    private void updatePackageFromOnline() {
-        new AlertDialog.Builder(context)
-                .setTitle("New update package is found!")
-                .setMessage("Do you want to download new update package?\n"
-                        + "It would take a few minutes or hours depends on your network speed.\n")
-                .setPositiveButton("Download",
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int whichButton) {
-                                if (sufficientSpace()) {
-                                    updatePackage.requestDownload(context, downloadManager);
-                                }
-                            }
-                        })
-                .setCancelable(true)
-                .create().show();
+    private void updatePackageFromOnline(final Context context) {
+        Intent intent = new Intent(
+                context,
+                OdroidService.class);
+        intent.putExtra("cmd", "updatePackageFromOnline");
+        context.startService(intent);
     }
 
-    private boolean sufficientSpace() {
+    private void downloadPackage(Context context) {
+        if (sufficientSpace(context)) {
+            updatePackage.requestDownload(context);
+        }
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
+        notificationManager.cancel(0x201920);
+    }
+
+    private boolean sufficientSpace(Context context) {
         StatFs stat = new StatFs(UpdatePackage.getDownloadDir(context).getPath());
 
         double available = (double)stat.getAvailableBlocks() * (double)stat.getBlockSize();
 
         if (available < updateManager.PACKAGE_MAXSIZE) {
-            new AlertDialog.Builder(context)
-                    .setTitle("Check free space")
-                    .setMessage("Insufficient free space!\nAbout " +
-                    updateManager.PACKAGE_MAXSIZE / 1024 / 1024 +
-                    "MBytes free space is required.")
-                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                        }
-                    })
-                    .setIcon(android.R.drawable.ic_dialog_alert)
-                    .show();
+            Toast.makeText(context,
+                    "Check free space\n" +
+                    "Insufficient free space\n" +
+                    updateManager.PACKAGE_MAXSIZE /1024 /1024 +
+                    "MBytes free space is required.", Toast.LENGTH_LONG).show();
             return false;
         }
-
         return true;
     }
 }

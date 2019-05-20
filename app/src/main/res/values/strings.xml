@@ -38,7 +38,7 @@
     <string name="update_mirror_server">Mirror</string>
     <string name="update_custom_server">Custom</string>
     <string name="get_custom_url">Please enter your Android update server URL properly.</string>
-
+    <string name="check_update">Check update at Boot</string>
     <!-- Preference which manages cpu settings. -->
     <string name="cpu">CPU</string>
     <string name="little_core_clock">Little Core Clocks</string>

@@ -10,6 +10,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.DocumentsContract;
 import android.support.v17.preference.LeanbackPreferenceFragment;
+import android.support.v14.preference.SwitchPreference;
 import android.support.v7.preference.Preference;
 import android.widget.Toast;
 
@@ -31,6 +32,7 @@ public class UpdateFragment extends LeanbackAddBackPreferenceFragment {
     private static final String KEY_FROM_STORAGE = "update_from_storage";
 
     private static Preference update_server;
+    private static SwitchPreference checkAtUpdate;
 
     public static UpdateFragment newInstance() { return new UpdateFragment(); }
 
@@ -65,23 +67,25 @@ public class UpdateFragment extends LeanbackAddBackPreferenceFragment {
                 break;
         }
         update_server.setSummary(server);
-        DownloadReceiver.downloadManager = (DownloadManager)getContext()
-                .getSystemService(getContext().DOWNLOAD_SERVICE);
 
-        DownloadReceiver.context = getContext();
+        checkAtUpdate = (SwitchPreference) findPreference(updateManager.KEY_CHECK_UPDATE);
+        checkAtUpdate.setChecked(updateManager.isCheckAtBoot());
     }
 
     @Override
     public boolean onPreferenceTreeClick(Preference preference) {
         String key = preference.getKey();
+        Context context = getContext();
 
         switch (key) {
             case KEY_FROM_ONLINE:
-                UpdatePackage.checkLatestVersion(getContext(), DownloadReceiver.downloadManager);
+                UpdatePackage.checkLatestVersion(context);
                 break;
             case KEY_FROM_STORAGE:
                 updatePackageFromStorage();
                 break;
+            case updateManager.KEY_CHECK_UPDATE:
+                updateManager.setCheckUpdate(checkAtUpdate.isChecked());
         }
 
         return super.onPreferenceTreeClick(preference);

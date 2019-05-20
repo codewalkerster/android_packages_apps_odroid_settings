@@ -2,22 +2,18 @@ package com.hardkernel.odroid.settings.update;
 
 import java.io.File;
 
-import android.app.AlertDialog;
 import android.app.DownloadManager;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.RecoverySystem;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.hardkernel.odroid.settings.OdroidService;
-import com.hardkernel.odroid.settings.update.DownloadReceiver;
 
-class UpdatePackage {
+public class UpdatePackage {
     private static final String TAG = "UpdatePackage";
 
     private static long packgeId = -1;
@@ -47,7 +43,7 @@ class UpdatePackage {
     /*
      * Check Update package version to update latest version.
      */
-    public static void checkLatestVersion(Context context, DownloadManager downloadManager) {
+    public static void checkLatestVersion(Context context) {
         String remote = updateManager.getRemoteURL();
 
         /* Remove if the same file is exist */
@@ -62,7 +58,8 @@ class UpdatePackage {
                     Environment.DIRECTORY_DOWNLOADS,
                     updateManager.LATEST_VERSION);
 
-            DownloadReceiver.enqueue = downloadManager.enqueue(request);
+            DownloadReceiver.enqueue = DownloadReceiver
+                    .getDownloadManager(context).enqueue(request);
         } catch (IllegalArgumentException e) {
             Toast.makeText(context,
                     "URL must be HTTPS/HTTPS forms.",
@@ -73,7 +70,7 @@ class UpdatePackage {
     /*
      * Request to download update package if necessary
      */
-    public void requestDownload(Context context, DownloadManager downloadManager) {
+    public void requestDownload(Context context) {
         String name = this.name.getName();
         if (name == null)
             return;
@@ -94,7 +91,8 @@ class UpdatePackage {
         if (file.exists())
             file.delete();
 
-        DownloadReceiver.enqueue = packgeId = downloadManager.enqueue(request);
+        DownloadReceiver.enqueue = packgeId = DownloadReceiver
+                .getDownloadManager(context).enqueue(request);
     }
 
     public static void installPackage (final Context context, final File packageFile) {
@@ -103,6 +101,7 @@ class UpdatePackage {
         Intent intent = new Intent(
                 context,
                 OdroidService.class);
+        intent.putExtra("cmd", "installPackage");
         Bundle bundle = new Bundle();
         bundle.putSerializable("packageFile", packageFile);
         intent.putExtras(bundle);

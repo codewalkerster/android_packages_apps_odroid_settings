@@ -14,6 +14,7 @@ public class updateManager {
     public static final String KEY_OFFICIAL = "server_official";
     public static final String KEY_MIRROR = "server_mirror";
     public static final String KEY_CUSTOM = "server_custom";
+    public static final String KEY_CHECK_UPDATE = "check_update";
 
     private static String server = KEY_MIRROR;
     private static String url = MIRROR_URL;
@@ -34,7 +35,8 @@ public class updateManager {
     private static SharedPreferences pref = null;
 
     public static void setPreference(SharedPreferences sharedPreferences) {
-        pref = sharedPreferences;
+        if (pref == null)
+            pref = sharedPreferences;
     }
 
     public static void initServer() {
@@ -49,14 +51,26 @@ public class updateManager {
         return server;
     }
 
+    public static Boolean isCheckAtBoot() {
+        return pref.getBoolean(KEY_CHECK_UPDATE, true);
+    }
+
+    public static void setCheckUpdate(boolean check) {
+        setPreference(KEY_CHECK_UPDATE, check);
+    }
+
     public static void setServer(String serverName) {
         setPreference(SH_KEY_SERVER, serverName);
         server = serverName;
     }
 
-    private static void setPreference(String target, String value) {
+    private static void setPreference(String target, Object value) {
         final SharedPreferences.Editor editor = pref.edit();
-        editor.putString(target, value);
+
+        if (value instanceof String)
+            editor.putString(target, (String)value);
+        else if (value instanceof Boolean)
+            editor.putBoolean(target, (boolean)value);
         editor.commit();
     }
 }

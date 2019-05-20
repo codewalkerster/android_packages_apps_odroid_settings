@@ -12,6 +12,7 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.widget.Toast;
 
+import com.hardkernel.odroid.settings.update.DownloadReceiver;
 import com.hardkernel.odroid.settings.update.installReceiver;
 
 import java.io.File;
@@ -23,7 +24,42 @@ public class OdroidService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        String cmd = intent.getStringExtra("cmd");
 
+        switch (cmd) {
+            case "installPackage":
+                installPackage(intent);
+                break;
+            case "updatePackageFromOnline":
+                updatePackageFromOnline();
+                break;
+        }
+        return super.onStartCommand(intent,flags,startId);
+    }
+
+    private void updatePackageFromOnline() {
+        Intent downloadIntent = new Intent(this, DownloadReceiver.class);
+        downloadIntent.setAction("DOWNLOAD_PACKAGE");
+        PendingIntent downloadPendingIntent =
+                PendingIntent.getBroadcast(this, 0, downloadIntent, 0);
+
+        createNotificationChannel();
+
+        String message = "Do you want to download new update package?\n"
+                + "It would take a few minutes or hours depends on your network speed.\n";
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, Channel_id)
+                .setSmallIcon(R.drawable.ic_system_update)
+                .setContentTitle("New update package is found!")
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(message))
+                .setContentText(message)
+                .addAction(R.drawable.ic_system_update, "Download", downloadPendingIntent)
+                .setAutoCancel(true);
+
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+        notificationManager.notify(Notification_id, builder.build());
+    }
+
+    private void installPackage(Intent intent) {
         File packageFile = (File)intent.getExtras().getSerializable("packageFile");
 
         Bundle packageBundle = new Bundle();
@@ -32,7 +68,7 @@ public class OdroidService extends Service {
         } catch (Exception e) {
             Toast.makeText(this,
                     "The package file seems to be corrupted!!\n" +
-                    "Please select another package file ...",
+                            "Please select another package file ...",
                     Toast.LENGTH_LONG).show();
         }
 
@@ -45,7 +81,7 @@ public class OdroidService extends Service {
         PendingIntent installPendingIntent =
                 PendingIntent.getBroadcast(this, 0, installIntent, 0);
 
-        createNotificationChannel();;
+        createNotificationChannel();
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, Channel_id)
                 .setSmallIcon(R.drawable.ic_system_update)
@@ -54,8 +90,6 @@ public class OdroidService extends Service {
                 .addAction(R.drawable.ic_system_update, "Update", installPendingIntent);
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
         notificationManager.notify(Notification_id, builder.build());
-
-        return super.onStartCommand(intent,flags,startId);
     }
 
     private void createNotificationChannel() {

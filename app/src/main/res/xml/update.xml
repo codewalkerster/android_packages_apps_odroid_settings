@@ -11,5 +11,8 @@
     <Preference
         android:key="update_from_storage"
         android:title="@string/update_from_storage" />
-
+    <SwitchPreference
+        android:key="check_update"
+        android:persistent="false"
+        android:title="@string/check_update" />
 </PreferenceScreen>
