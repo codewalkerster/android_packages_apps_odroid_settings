@@ -12,6 +12,8 @@ public class CheckVersionReceiver extends BroadcastReceiver {
         if (action.equals(Intent.ACTION_BOOT_COMPLETED)) {
             updateManager.setPreference(context.
                     getSharedPreferences(updateManager.SHPREF_UPDATE_SERVER, Context.MODE_PRIVATE));
+            updateManager.initServer();
+            updateManager.initURL();
 
             if (!updateManager.isCheckAtBoot())
                 return;

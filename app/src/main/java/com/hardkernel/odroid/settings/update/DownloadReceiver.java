@@ -128,13 +128,12 @@ public class DownloadReceiver extends BroadcastReceiver {
             updatePackage.requestDownload(context);
         }
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
-        notificationManager.cancel(0x201920);
+        notificationManager.cancel(OdroidService.Notification_id);
     }
 
     private boolean sufficientSpace(Context context) {
         StatFs stat = new StatFs(UpdatePackage.getDownloadDir(context).getPath());
-
-        double available = (double)stat.getAvailableBlocks() * (double)stat.getBlockSize();
+        long available = stat.getAvailableBytes();
 
         if (available < updateManager.PACKAGE_MAXSIZE) {
             Toast.makeText(context,

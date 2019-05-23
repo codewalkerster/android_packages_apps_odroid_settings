@@ -20,7 +20,7 @@ import java.io.File;
 public class OdroidService extends Service {
 
     final static String Channel_id = "UpdateNotification";
-    final static int Notification_id = 0x201920;
+    final public static int Notification_id = 0x201920;
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -40,23 +40,13 @@ public class OdroidService extends Service {
     private void updatePackageFromOnline() {
         Intent downloadIntent = new Intent(this, DownloadReceiver.class);
         downloadIntent.setAction("DOWNLOAD_PACKAGE");
-        PendingIntent downloadPendingIntent =
-                PendingIntent.getBroadcast(this, 0, downloadIntent, 0);
 
         createNotificationChannel();
 
         String message = "Do you want to download new update package?\n"
                 + "It would take a few minutes or hours depends on your network speed.\n";
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, Channel_id)
-                .setSmallIcon(R.drawable.ic_system_update)
-                .setContentTitle("New update package is found!")
-                .setStyle(new NotificationCompat.BigTextStyle().bigText(message))
-                .setContentText(message)
-                .addAction(R.drawable.ic_system_update, "Download", downloadPendingIntent)
-                .setAutoCancel(true);
-
-        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
-        notificationManager.notify(Notification_id, builder.build());
+        buildNNotify("New update package is found!", message,
+                "Download", downloadIntent);
     }
 
     private void installPackage(Intent intent) {
@@ -78,16 +68,27 @@ public class OdroidService extends Service {
         installIntent.putExtra(installReceiver.INSTALL_NOTIFICATION_ID,
                 installReceiver.INSTALL_NOTIFICATION_VALUE);
         installIntent.putExtra("packageFile", packageBundle);
-        PendingIntent installPendingIntent =
-                PendingIntent.getBroadcast(this, 0, installIntent, 0);
 
         createNotificationChannel();
 
+        buildNNotify("Odroid-Setting Update", "Start Update",
+                "Update", installIntent);
+    }
+
+    private void buildNNotify(String contentTitle, String contentMsg,
+                              String actionTitle, Intent intent) {
+
+        PendingIntent actionIntent = PendingIntent.getBroadcast(
+                this, 0, intent, 0);
+
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, Channel_id)
                 .setSmallIcon(R.drawable.ic_system_update)
-                .setContentTitle("Odroid-Setting Update")
-                .setContentText("Start Update")
-                .addAction(R.drawable.ic_system_update, "Update", installPendingIntent);
+                .setContentTitle(contentTitle)
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(contentMsg))
+                .setContentText(contentMsg)
+                .addAction(R.drawable.ic_system_update, actionTitle, actionIntent)
+                .setAutoCancel(true);
+
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
         notificationManager.notify(Notification_id, builder.build());
     }
