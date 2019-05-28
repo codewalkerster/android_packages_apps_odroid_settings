@@ -58,8 +58,7 @@ public class DisplayFragment extends LeanbackAddBackPreferenceFragment {
 		screenPositionPref.setVisible(true);
 
 		final Preference sdrPref = findPreference(KEY_SDR);
-		//sdrPref.setVisible(SettingsConstant.needDroidlogicSdrFeature(getContext()));
-		sdrPref.setVisible(false);
+		sdrPref.setVisible(SettingsConstant.needDroidlogicSdrFeature(getContext()));
 		final Preference hdrPref = findPreference(KEY_HDR);
 		//hdrPref.setVisible(SettingsConstant.needDroidlogicHdrFeature(getContext()));
 		hdrPref.setVisible(false);
