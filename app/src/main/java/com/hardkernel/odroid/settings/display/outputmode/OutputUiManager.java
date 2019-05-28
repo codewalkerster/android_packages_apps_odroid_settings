@@ -258,9 +258,10 @@ public class OutputUiManager {
                 Log.d(TAG, "color values  - " + mHdmiColorValueList[i]);
     }
 
-    public boolean isModeSupportColor(final String curMode, final String curValue){
-        if (curMode.equals("custombuilt"))
-            return true;
+    public boolean isModeSupportColor(String curMode, final String curValue){
+        if (curMode.equals("autodetect")) {
+            curMode = mValueList.get(0);
+        }
         return mOutputModeManager.isModeSupportColor(curMode, curValue);
     }
 
@@ -399,5 +400,16 @@ public class OutputUiManager {
                 || (!getCurrentColorAttribute().equals("444,8bit"))) {
             changeColorAttribte("444,8bit");
         }
+    }
+
+    public void setValidColorAttribute(String hdmiMode) {
+        for (String colorAttribute: mHdmiColorValueList) {
+            if (isModeSupportColor(hdmiMode, colorAttribute)) {
+                bootini.setColorAttribute(colorAttribute);
+                return;
+            }
+        }
+        // default value
+        bootini.setColorAttribute("444,8bit");
     }
 }
