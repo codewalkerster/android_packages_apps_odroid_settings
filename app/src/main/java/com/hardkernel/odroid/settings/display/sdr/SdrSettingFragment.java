@@ -93,6 +93,8 @@ public class SdrSettingFragment extends LeanbackAddBackPreferenceFragment {
 
 	private ArrayList<Action> getActions() {
 		int mode = mSdrManager.getSdrMode();
+		if (!mSdrManager.isHdrSupport())
+			mode = 0;
 		ArrayList<Action> actions = new ArrayList<Action>();
 		actions.add(new Action.Builder().key(ACTION_AUTO).title(getString(R.string.on))
 				.checked(mode == SdrManager.MODE_AUTO).build());

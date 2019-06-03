@@ -16,12 +16,14 @@
 
 package com.hardkernel.odroid.settings.display;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v17.preference.LeanbackPreferenceFragment;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceCategory;
 
+import com.droidlogic.app.SdrManager;
 import android.os.SystemProperties;
 import com.hardkernel.odroid.settings.util.DroidUtils;
 import com.hardkernel.odroid.settings.SettingsConstant;
@@ -38,6 +40,8 @@ public class DisplayFragment extends LeanbackAddBackPreferenceFragment {
 	private static final String KEY_SDR = "sdr";
 	private static final String KEY_DOLBY_VISION    = "dolby_vision";
 
+	private SdrManager mSdrManager;
+
 	public static DisplayFragment newInstance() {
 		return new DisplayFragment();
 	}
@@ -50,6 +54,7 @@ public class DisplayFragment extends LeanbackAddBackPreferenceFragment {
 	@Override
 	public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
 		setPreferencesFromResource(R.xml.display, null);
+		mSdrManager = new SdrManager((Context) getActivity());
 
 		final Preference outputmodePref = findPreference(KEY_OUTPUTMODE);
 		outputmodePref.setVisible(SettingsConstant.needScreenResolutionFeture(getContext()));
@@ -58,7 +63,10 @@ public class DisplayFragment extends LeanbackAddBackPreferenceFragment {
 		screenPositionPref.setVisible(true);
 
 		final Preference sdrPref = findPreference(KEY_SDR);
-		sdrPref.setVisible(SettingsConstant.needDroidlogicSdrFeature(getContext()));
+		boolean sdrFeature = SettingsConstant.needDroidlogicSdrFeature(getContext());
+		boolean isHdrSupport = mSdrManager.isHdrSupport();
+
+		sdrPref.setVisible(sdrFeature && isHdrSupport);
 		final Preference hdrPref = findPreference(KEY_HDR);
 		//hdrPref.setVisible(SettingsConstant.needDroidlogicHdrFeature(getContext()));
 		hdrPref.setVisible(false);
