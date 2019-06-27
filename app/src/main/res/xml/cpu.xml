@@ -20,11 +20,13 @@
 		<Preference
 			android:key="big_core_clock"
 			android:title="@string/big_core_clock"
-			android:fragment="com.hardkernel.odroid.settings.cpu.frequency.BigCoreFrequencyFragment"/>
+			android:fragment="com.hardkernel.odroid.settings.cpu.frequency.BigCoreFrequencyFragment"
+			android:visibility="gone" />
 		<Preference
 			android:key="big_core_governor"
 			android:title="@string/big_core_governor"
-			android:fragment="com.hardkernel.odroid.settings.cpu.governor.BigCoreGovernorFragment" />
+			android:fragment="com.hardkernel.odroid.settings.cpu.governor.BigCoreGovernorFragment"
+			android:visibility="gone" />
         <Preference
             android:key="little_core_clock"
             android:title="@string/little_core_clock"
