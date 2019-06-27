@@ -43,6 +43,8 @@ public class FrequencyFragment extends LeanbackAddBackPreferenceFragment {
         String[] frequencyList = cpu.frequency.getFrequencies();
 
         for (final String frequency : frequencyList) {
+            if (Integer.parseInt(frequency) < 600000)
+                continue;
             final RadioPreference radioPreference = new RadioPreference(themedContext);
             radioPreference.setKey(frequency);
             radioPreference.setPersistent(false);

@@ -9,6 +9,8 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 
 public class Frequency {
     /* Big cluster */
@@ -28,7 +30,16 @@ public class Frequency {
 
     public String[] getFrequencies() {
         String available_frequencies = getScalingAvailables();
-        return available_frequencies.split(" ");
+        String[] frequencies = available_frequencies.split(" ");
+
+        Arrays.sort(frequencies, new Comparator<String>() {
+            @Override
+            public int compare(String num1, String num2) {
+                return Integer.valueOf(num2) - Integer.valueOf(num1);
+            }
+        });
+
+        return frequencies;
     }
 
     public String getScalingCurrent() {
