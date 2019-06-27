@@ -16,9 +16,11 @@ public class Frequency {
     /* Big cluster */
     private final static String BIG_SCALING_AVAILABLE_FREQ = "/sys/devices/system/cpu/cpufreq/policy2/scaling_available_frequencies";
     private final static String BIG_SCALING_MAX_FREQ = "/sys/devices/system/cpu/cpufreq/policy2/scaling_max_freq";
+    private final static String BIG_SCALING_MIN_FREQ = "/sys/devices/system/cpu/cpufreq/policy2/scaling_min_freq";
     /* Little cluster */
     private final static String LITTLE_SCALING_AVAILABLE_FREQ = "/sys/devices/system/cpu/cpufreq/policy0/scaling_available_frequencies";
     private final static String LITTLE_SCALING_MAX_FREQ = "/sys/devices/system/cpu/cpufreq/policy0/scaling_max_freq";
+    private final static String LITTLE_SCALING_MIN_FREQ = "/sys/devices/system/cpu/cpufreq/policy0/scaling_min_freq";
 
     private static String TAG;
     private CPU.Cluster cluster;
@@ -26,6 +28,29 @@ public class Frequency {
     public Frequency (String tag, CPU.Cluster cluster) {
         TAG = tag;
         this.cluster = cluster;
+    }
+
+    public int getPolicyMin() {
+        FileReader reader;
+        String minFreq;
+        try {
+            switch (cluster) {
+                case Big:
+                    reader = new FileReader(BIG_SCALING_MIN_FREQ);
+                    break;
+                case Little:
+                    reader = new FileReader(LITTLE_SCALING_MIN_FREQ);
+                    break;
+                default:
+                    reader = new FileReader(BIG_SCALING_MIN_FREQ);
+            }
+            BufferedReader bufferedReader = new BufferedReader(reader);
+            minFreq = bufferedReader.readLine();
+        } catch (Exception e) {
+            minFreq = "667000";
+        }
+
+        return Integer.parseInt(minFreq);
     }
 
     public String[] getFrequencies() {
