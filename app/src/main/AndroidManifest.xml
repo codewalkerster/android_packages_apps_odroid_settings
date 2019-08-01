@@ -87,6 +87,16 @@
             android:exported="true"
             android:theme="@style/Theme.Settings.Transparent" />
         <activity
+            android:name=".MiscFragment"
+            android:configChanges="keyboard|keyboardHidden|navigation"
+            android:exported="true"
+            android:theme="@style/Theme.Settings.Transparent" />
+        <activity
+            android:name=".IPSettingsFragment"
+            android:configChanges="keyboard|keyboardHidden|navigation"
+            android:exported="true"
+            android:theme="@style/Theme.Settings.Transparent" />
+        <activity
             android:name=".PowerKeyActionDefinitionActivity"
             android:configChanges="keyboard|keyboardHidden|navigation"
             android:excludeFromRecents="true"

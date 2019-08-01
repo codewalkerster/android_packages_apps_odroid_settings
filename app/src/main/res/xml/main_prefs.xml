@@ -66,6 +66,11 @@
         android:title="@string/app_shortcut"
         />
     <Preference
+        android:fragment="com.hardkernel.odroid.settings.IPSettingsFragment"
+        android:icon="@drawable/ic_menu_ethernet"
+        android:key="misc"
+        android:title="@string/ethernet_settings" />
+    <Preference
         android:icon="@drawable/ic_info_outline"
         android:key="netflix_esn"
         android:title="@string/netflix_esn"/>

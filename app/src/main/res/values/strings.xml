@@ -57,6 +57,18 @@
 
     <!-- Preference which manages play back settings. -->
     <string name="playback_settings">Playback settings</string>
+    <!-- Preference which manages miscellaneous settings. -->
+    <string name="misc_settings">Misc settings</string>
+    <string name="pref_enable_bluetooth_sink">pref_enable_bluetooth_sink</string>
+    <string name="pref_enable_bluetooth_sink_title">Enable Bluetooth Sink profile</string>
+    <string name="pref_enable_gps">pref_enable_gps</string>
+    <string name="pref_enable_gps_title">Enable GPS</string>
+    <string name="pref_force_shutdown_without_dialog">pref_force_shutdown_without_dialog</string>
+    <string name="pref_force_shutdown_without_dialog_title">Force shutdown without dialog</string>
+    <!-- Preference which manages Ethernet settings. -->
+    <string name="ethernet_settings">Ethernet settings</string>
+    <string name="pref_static_ip">pref_static_ip</string>
+    <string name="pref_static_ip_title">IP and Proxy Settings</string>
     <!-- Hdmi self-adaption switch -->
     <string name="playback_hdmi_selfadaption">HDMI self-adaption</string>
     <string name="playback_hdmi_selfadaption_part">part mode</string>
