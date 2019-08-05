@@ -71,6 +71,11 @@
         android:key="misc"
         android:title="@string/ethernet_settings" />
     <Preference
+        android:fragment="com.hardkernel.odroid.settings.HeartBeatFragment"
+        android:icon="@drawable/heartbeat_icon"
+        android:key="led"
+        android:title="@string/led" />
+    <Preference
         android:icon="@drawable/ic_info_outline"
         android:key="netflix_esn"
         android:title="@string/netflix_esn"/>

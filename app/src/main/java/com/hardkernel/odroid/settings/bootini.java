@@ -50,6 +50,10 @@ public class bootini {
         return getValue("colorattribute");
     }
 
+    public static String getHeartBeat() {
+        return getValue("heartbeat");
+    }
+
     private static String getValue(String keyWord) {
         return _getValue("setenv " + keyWord + " ");
     }
@@ -130,6 +134,10 @@ public class bootini {
 
     public static void setColorAttribute(String color) {
         setValue("colorattribute", color);
+    }
+
+    public static void setHeartBeat(String mode) {
+        setValue("heartbeat", mode);
     }
 
     private static void setValue (String keyWord, String val) {

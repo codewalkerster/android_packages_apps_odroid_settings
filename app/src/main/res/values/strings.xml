@@ -95,6 +95,10 @@
     <string name="shortcut_title_f9">F9</string>
     <string name="shortcut_title_f10">F10</string>
 
+    <!-- Led -->
+    <string name="led">Led</string>
+    <string name="heartbeat">Heartbeat</string>
+
     <!-- Title for OK [CHAR LIMIT=50] -->
     <string name="title_ok">OK</string>
     <!-- Title for DNS 2 [CHAR LIMIT=50] -->
