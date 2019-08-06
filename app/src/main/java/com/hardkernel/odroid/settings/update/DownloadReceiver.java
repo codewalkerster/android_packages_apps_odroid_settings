@@ -102,7 +102,7 @@ public class DownloadReceiver extends BroadcastReceiver {
                             Toast.LENGTH_LONG).show();
                 } else {
                     Toast.makeText(context,
-                            "Already latest Andorid image is installed.",
+                            "The latest Android image is already installed.",
                             Toast.LENGTH_LONG).show();
                 }
             } catch (IOException e) {
