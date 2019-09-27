@@ -4,7 +4,7 @@ class packageName {
     private static final String HEADER = "updatepackage";
     private static final String MODEL = "odroidn2";
     private static final String VARIANT = "eng";
-    private static final String BRANCH = "s922_9.0.0_master";
+    private static final String BRANCH = "s922_9.0.0_64_master";
 
     private int version = -1;
 
