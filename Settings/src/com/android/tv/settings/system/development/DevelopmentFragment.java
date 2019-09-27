@@ -19,13 +19,16 @@ package com.android.tv.settings.system.development;
 import android.Manifest;
 import android.app.Activity;
 import android.app.ActivityManager;
+import android.app.AlertDialog;
 import android.app.AppOpsManager;
+import android.app.ProgressDialog;
 import android.app.admin.DevicePolicyManager;
 import android.app.backup.IBackupManager;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.ApplicationInfo;
@@ -36,12 +39,16 @@ import android.net.wifi.WifiManager;
 import android.os.BatteryManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Message;
 import android.os.Parcel;
 import android.os.RemoteException;
 import android.os.ServiceManager;
 import android.os.StrictMode;
 import android.os.SystemProperties;
+import android.os.storage.StorageManager;
+import android.os.storage.VolumeInfo;
 import android.os.UserManager;
 import android.provider.Settings;
 import android.service.persistentdata.PersistentDataBlockManager;
@@ -77,6 +84,7 @@ import com.android.tv.settings.dialog.UsbModeSettings;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -172,6 +180,13 @@ public class DevelopmentFragment extends SettingsPreferenceFragment
     private static final String PERSIST_RK_ADB_ENABLE = "persist.sys.adb_enable";
     private static final String PERSIST_RK_INTERNET_ADB = "persist.internet_adb_enable";
     private static String DEFAULT_LOG_RING_BUFFER_SIZE_IN_BYTES = "262144"; // 256K
+
+    //Go to Loader
+    private static final String KEY_GO_TO_LOADER = "go_to_loader";
+    private static final String KEY_SELECT_FLASH_IMG = "flash_img";
+    public static final String PERSIST_FLASH_IMG = "vendor.flash.success";
+    public static final String PERSIST_IF_PATH = "vendor.flash_if_path";
+    public static final String PERSIST_OF_PATH = "vendor.flash_of_path";
 
     private static final int[] MOCK_LOCATION_APP_OPS = new int[] {AppOpsManager.OP_MOCK_LOCATION};
 
@@ -271,6 +286,45 @@ public class DevelopmentFragment extends SettingsPreferenceFragment
     private AudioDebug mAudioDebug;
     private UsbModeSettings mUsbModeSetting = null;
 
+    public static final int CHECKOUT_FLASH_IMG = 1;
+    public static final int LOADING_IMG = 2;
+    private Preference goToLoader;
+    private ListPreference mFlashImage;
+    private int flashCount = 0;
+    private ProgressDialog progressDialog;
+    private Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case CHECKOUT_FLASH_IMG:
+                    flashCount++;
+                    String flash_img = SystemProperties.get(PERSIST_FLASH_IMG, "0");
+                    Log.i("ROCKCHIP", "flash_img = " + flash_img + ", count = " + flashCount);
+                    if (!TextUtils.isEmpty(flash_img) && flash_img.equals("1")){
+                        progressDialog.dismiss();
+                        Toast.makeText(getPreferenceScreen().getContext(), getResources().getString(R.string.flash_img_success), Toast.LENGTH_LONG).show();
+                        flashCount = 0;
+                        SystemProperties.set(PERSIST_FLASH_IMG, "0");
+                        break;
+                    }
+                    if (flashCount > 20) {
+                        progressDialog.dismiss();
+                        Toast.makeText(getPreferenceScreen().getContext(), getResources().getString(R.string.flash_img_failed), Toast.LENGTH_LONG).show();
+                        flashCount = 0;
+                        break;
+                    }
+                    mHandler.sendEmptyMessageDelayed(CHECKOUT_FLASH_IMG, 500);
+                    break;
+                case LOADING_IMG:
+                    String[] values = (String[]) msg.obj;
+                    mFlashImage.setEntries(values);
+                    mFlashImage.setEntryValues(values);
+                    break;
+            }
+        }
+    };
+
     public static DevelopmentFragment newInstance() {
         return new DevelopmentFragment();
     }
@@ -301,6 +355,8 @@ public class DevelopmentFragment extends SettingsPreferenceFragment
         mAudioDebug = new AudioDebug(getActivity(),
                 (boolean successful) -> onAudioRecorded(successful),
                 (AudioMetrics.Data data) -> updateAudioRecordingMetrics(data));
+        progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setCancelable(false);
 
         super.onCreate(icicle);
     }
@@ -495,6 +551,31 @@ public class DevelopmentFragment extends SettingsPreferenceFragment
             removePreference(KEY_COLOR_MODE);
             mColorModePreference = null;
         }
+
+        String value = SystemProperties.get("ro.flash_img.enable", "false");
+
+        goToLoader = (Preference) findPreference(KEY_GO_TO_LOADER);
+        mFlashImage = (ListPreference) findPreference(KEY_SELECT_FLASH_IMG);
+        if (value != null && value.equals("true")) {
+            mFlashImage.setOnPreferenceChangeListener(this);
+            mFlashImage.setEntries(new String[]{});
+            mFlashImage.setEntryValues(new String[]{});
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    String[] values = getImgPath();
+                    Message message = mHandler.obtainMessage();
+                    message.what = LOADING_IMG;
+                    message.obj = values;
+                    mHandler.sendMessage(message);
+                }
+            }).start();
+        } else {
+            Log.i("ROCKCHIP", "remove ListPreference");
+            debugDebuggingCategory.removePreference(mFlashImage);
+            mFlashImage = null;
+        }
+
     }
 
     private void removePreference(String key) {
@@ -644,6 +725,7 @@ public class DevelopmentFragment extends SettingsPreferenceFragment
     public void onDestroy() {
         super.onDestroy();
         dismissDialogs();
+        mHandler.removeCallbacksAndMessages(null);
     }
 
     void updateSwitchPreference(SwitchPreference switchPreference, boolean value) {
@@ -1762,6 +1844,8 @@ public class DevelopmentFragment extends SettingsPreferenceFragment
             return true;
         } else if (preference == mBtHciSnoopLog) {
             writeBtHciSnoopLogOptions(newValue);
+        } else if (preference == mFlashImage) {
+            flashImageToDevice((String) newValue);
             return true;
         }
         return false;
@@ -1864,5 +1948,84 @@ public class DevelopmentFragment extends SettingsPreferenceFragment
             }
         }
         return dirSize;
+    }
+
+    private List<File> getImgPathList(String path) {
+        List fileList = new ArrayList();
+        File root = new File(path);
+        if (root.exists()) {
+            File[] files = root.listFiles();
+            if (files != null && files.length > 0) {
+                for (File file : files) {
+                Log.i("ROCKCHIP", "file = " + file.getAbsolutePath());
+                    if (file.isFile() && file.getName().endsWith("img")) {
+                        fileList.add(file);
+                        Log.i("ROCKCHIP", "file path = " + file.getAbsolutePath());
+                    } else if (file.isDirectory()) {
+                        fileList.addAll(getImgPathList(file.getAbsolutePath()));
+                    } else {
+                        continue;
+                    }
+                }
+            }
+        }
+        return fileList;
+    }
+
+    private String[] getImgPath() {
+        List<File> fileList = getImgPathList("/mnt/");
+        StorageManager storageManager = (StorageManager) getActivity().getSystemService(Context.STORAGE_SERVICE);
+        List<VolumeInfo> volumeInfos = storageManager.getVolumes();
+        for (VolumeInfo volumeInfo : volumeInfos) {
+            List<File> volumelist = getImgPathList(volumeInfo.getPath().getAbsolutePath());
+            fileList.addAll(volumelist);
+        }
+        String[] paths = new String[fileList.size()];
+        Log.i("ROCKCHIP", "fileList = " + fileList.toString());
+        for (int index = 0; index < fileList.size(); index++) {
+            File file = fileList.get(index);
+            if (file != null && file.getName().endsWith("img")) {
+                Log.i("ROCKCHIP", "path[" + index + "] = " + file.getAbsolutePath());
+                paths[index] = file.getAbsolutePath();
+            }
+        }
+        return paths;
+    }
+
+    private void flashImageToDevice(String path) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getPreferenceScreen().getContext());
+        builder.setTitle(getResources().getString(R.string.select_img_to_flash));
+        final String items[] = new File("/dev/block/by-name").list();
+        builder.setSingleChoiceItems(items, -1, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                SystemProperties.set(PERSIST_OF_PATH, "/dev/block/by-name/" + items[which]);
+            }
+        }).setPositiveButton(getActivity().getResources().getString(R.string.ok), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                SystemProperties.set(PERSIST_IF_PATH, path);
+                SystemProperties.set(PERSIST_FLASH_IMG, "2");
+                progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                progressDialog.setMessage(getActivity().getResources().getString(R.string.flash_img_progress));
+                progressDialog.show();
+                mHandler.sendEmptyMessageDelayed(CHECKOUT_FLASH_IMG, 500);
+            }
+        }).setNegativeButton(getActivity().getResources().getString(R.string.no_button), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                SystemProperties.set(PERSIST_IF_PATH, "");
+                SystemProperties.set(PERSIST_OF_PATH, "");
+                SystemProperties.set(PERSIST_FLASH_IMG, "0");
+            }
+        }).setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                SystemProperties.set(PERSIST_IF_PATH, "");
+                SystemProperties.set(PERSIST_OF_PATH, "");
+                SystemProperties.set(PERSIST_FLASH_IMG, "0");
+            }
+        });
+        builder.show();
     }
 }

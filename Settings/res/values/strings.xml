@@ -2296,4 +2296,10 @@
     <string name="enable_usb_summary">Set the USB connection status</string>
     <string name="usb_connect_to_computer">Connect to Computer</string>
     <string name="usb_disconnect_to_computer">Disconnect to Computer</string>
+
+    <!-- flash image-->
+    <string name="select_img_to_flash">Select Image to Flash\nDangerous:This operation can cause system instability!</string>
+    <string name="flash_img_success">Flash image files successfully.</string>
+    <string name="flash_img_failed">Flash image files failed.</string>
+    <string name="flash_img_progress">Flashing(!!!Prohibit removal of power supply!!!)</string>
 </resources>

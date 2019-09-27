@@ -1122,4 +1122,9 @@
     <string name="enable_usb_summary">设置USB 连接状态</string>
     <string name="usb_connect_to_computer">已连接到计算机</string>
     <string name="usb_disconnect_to_computer">未连接到计算机</string>
+    <!-- 烧写镜像-->
+    <string name="select_img_to_flash">选择镜像进行烧写\n危险:此操作可能导致系统不稳定</string>
+    <string name="flash_img_success">烧写镜像成功</string>
+    <string name="flash_img_failed">烧写镜像失败</string>
+    <string name="flash_img_progress">正在烧写(!!!禁止切断电源!!!)</string>
 </resources>

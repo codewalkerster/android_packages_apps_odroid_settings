@@ -152,6 +152,14 @@
             android:entries="@array/select_logpersist_titles"
             android:entryValues="@array/select_logpersist_values" />
 
+        <Preference
+            android:key="go_to_loader"
+            android:title="@string/go_to_loader"/>
+
+        <ListPreference
+            android:key="flash_img"
+            android:title="@string/select_img_to_flash" />
+
     </PreferenceCategory>
 
     <PreferenceCategory android:key="debug_networking_category"
