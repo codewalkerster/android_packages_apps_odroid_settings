@@ -19,55 +19,8 @@
     android:title="@string/device_sound">
 
     <ListPreference
-        android:key="drc_mode"
+        android:key="sound_select"
         android:persistent="false"
-        android:entries="@array/dolby_sounds_entries"
-        android:entryValues="@array/dolby_sounds_entry_values"
-        android:title="@string/device_sound_dolby"
-        android:summary="%s" />
-    <PreferenceCategory
-        android:key="surround_sound_category"
-        android:title="@string/device_sound_digital">
-        <!--android:layout="@layout/preference_category_compact_layout" -->
-        <ListPreference
-            android:key="digital_sound"
-            android:persistent="false"
-            android:title="@string/device_sound_digital"
-            android:summary="%s" />
-    </PreferenceCategory>
-    <ListPreference
-        android:key="dtsdrc_mode"
-        android:persistent="false"
-        android:entries="@array/dts_sounds_entries"
-        android:entryValues="@array/dts_sounds_entry_values"
-        android:title="@string/device_sound_dts_sound"
-        android:dialogTitle="@string/device_sound_dts_drcscale"
-        android:summary="%s" />
-
-    <ListPreference
-        android:key="dtsdrc_custom_mode"
-        android:persistent="false"
-        android:entries="@array/dts_custom_sounds_entries"
-        android:entryValues="@array/dts_custom_sounds_entry_values"
-        android:title="@string/device_sound_dts_sound"
-        android:dialogTitle="@string/device_sound_dts_drcscale"
-        android:summary="%s" />
-
-    <ListPreference
-        android:key="box_lineout"
-        android:persistent="false"
-        android:entries="@array/tv_offon_entries"
-        android:entryValues="@array/tv_offon_entry_values"
-        android:title="@string/device_box_audio_lineout"
-        android:dialogTitle="@string/device_box_audio_lineout"
-        android:summary="%s" />
-
-    <ListPreference
-        android:key="box_hdmi"
-        android:persistent="false"
-        android:entries="@array/tv_offon_entries"
-        android:entryValues="@array/tv_offon_entry_values"
-        android:title="@string/device_box_audio_hdmi"
-        android:dialogTitle="@string/device_box_audio_hdmi"
+        android:title="@string/device_sound_select"
         android:summary="%s" />
 </PreferenceScreen>

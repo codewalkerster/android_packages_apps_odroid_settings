@@ -132,7 +132,8 @@
     <!-- Title for preference screen controlling sound settings [CHAR LIMIT=50] -->
     <string name="device_sound">Audio Output</string>
     <!-- Title for preference which controls surround sound passthrough function [CHAR LIMIT=50] -->
-    <string name="device_sound_digital">Digital Audio Format</string>
+    <string name="device_sound_select">Output select</string>
+
     <string name="device_sound_digital_auto">Auto detection</string>
     <string name="device_sound_digital_auto_off">OFF</string>
     <string name="device_sound_digital_pcm">PCM</string>
@@ -142,15 +143,12 @@
     <string name="device_sound_dts_downmix">DTS Downmix</string>
     <string name="device_sound_dts_downmix_o">Lo/Ro</string>
     <string name="device_sound_dts_downmix_t">Lt/Rt</string>
-    <string name="device_sound_dts_drcscale">DTS Drcscale</string>
-    <string name="device_sound_dts_sound">Dts sounds</string>
     <string name="device_sound_dts_dialnorm">DTS Dialnorm</string>
     <string name="device_sound_dts_trans">DTS Transcoder</string>
     <string name="device_sound_dts_trans_auto">Auto</string>
     <string name="device_sound_dts_trans_51pcm">5.1 PCM Transcoder</string>
     <string name="device_sound_dts_trans_71pcm">7.1 PCM Transcoder</string>
     <string name="device_sound_dts_mulasset">DTS Mulasset</string>
-    <string name="device_sound_dolby">Dolby sounds</string>
     <string name="device_sound_dolby_drcmode">DRC mode</string>
     <string name="device_sound_dolby_drcoff">OFF</string>
     <string name="device_sound_dolby_drcline">LINE</string>
@@ -166,8 +164,6 @@
     <string name="surround_sound_format_ac4">Dolby AC-4</string>
 
     <!--audio out switch-->
-    <string name="device_box_audio_lineout">Lineout</string>
-    <string name="device_box_audio_hdmi">Hdmi</string>
     <string name="device_tv_audio_speaker">Speaker</string>
     <string name="device_tv_audio_arc">Arc</string>
     <string name="device_audio_spdif">Spdif</string>
