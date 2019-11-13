@@ -15,80 +15,16 @@
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 
-    <string-array name="dolby_sounds_entries">
-        <item>OFF</item>
-        <item>LINE</item>
-        <item>RF</item>
-    </string-array>
-
-    <string-array name="dolby_sounds_entry_values" translatable="false">
-        <item>off</item>
-        <item>line</item>
-        <item>rf</item>
-    </string-array>
-
-    <string-array name="digital_sounds_box_entries">
-        <item>PCM</item>
+    <string-array name="sound_select_entries">
+        <item>HDMI, Line out</item>
+        <!--<item>Unknown</item>-->
         <item>SPDIF</item>
-        <item>AUTO</item>
-        <item>Manual</item>
     </string-array>
 
-    <string-array name="digital_sounds_box_entry_values" translatable="false">
+    <string-array name="sound_select_entry_values" translatable="false">
         <item>0</item>
+        <!--<item>5</item>-->
         <item>1</item>
-        <item>2</item>
-        <item>3</item>
-    </string-array>
-
-    <string-array name="digital_sounds_tv_entries">
-        <item>PCM</item>
-        <item>AUTO</item>
-        <item>Manual</item>
-    </string-array>
-
-    <string-array name="digital_sounds_tv_entry_values" translatable="false">
-        <item>0</item>
-        <item>1</item>
-        <item>2</item>
-    </string-array>
-
-    <string-array name="dts_sounds_entries">
-        <item>0</item>
-        <item>10%</item>
-        <item>20%</item>
-        <item>30%</item>
-        <item>40%</item>
-        <item>50%</item>
-        <item>60%</item>
-        <item>70%</item>
-        <item>80%</item>
-        <item>90%</item>
-        <item>100%</item>
-    </string-array>
-
-    <string-array name="dts_sounds_entry_values" translatable="false">
-        <item>0</item>
-        <item>10</item>
-        <item>20</item>
-        <item>30</item>
-        <item>40</item>
-        <item>50</item>
-        <item>60</item>
-        <item>70</item>
-        <item>80</item>
-        <item>90</item>
-        <item>100</item>
-    </string-array>
-
-    <string-array name="dts_custom_sounds_entries">
-        <item>0</item>
-        <item>100%</item>
-    </string-array>
-
-    <string-array name="dts_custom_sounds_entry_values" translatable="false">
-        <item>0</item>
-        <item>100</item>
     </string-array>
 
     <string-array name="dolby_vision_entries">
@@ -101,14 +37,4 @@
         <item>dolby_vision_sink</item>
         <item>dolby_vision_source</item>
     </string-array>
-    <string-array name="tv_offon_entries">
-        <item>off</item>
-        <item>on</item>
-    </string-array>
-
-    <string-array name="tv_offon_entry_values" translatable="false">
-        <item>0</item>
-        <item>1</item>
-    </string-array>
-
 </resources>

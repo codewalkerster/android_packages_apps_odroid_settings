@@ -90,32 +90,6 @@ public class SoundParameterSettingManager {
         Settings.Global.putInt(mContext.getContentResolver(), OutputModeManager.SOUND_OUTPUT_DEVICE, mode);
     }
 
-    public void setDigitalAudioFormat (int mode) {
-        if (CanDebug()) Log.d(TAG, "setDigitalAudioFormat = " + mode);
-        switch (mode) {
-            case OutputModeManager.DIGITAL_PCM:
-            case OutputModeManager.DIGITAL_SPDIF:
-            case OutputModeManager.DIGITAL_AUTO:
-                mOutputModeManager.setDigitalAudioFormatOut(mode);
-                break;
-            case OutputModeManager.DIGITAL_MANUAL:
-                mOutputModeManager.setDigitalAudioFormatOut(mode,
-                        getAudioManualFormats());
-                break;
-            default:
-                mOutputModeManager.setDigitalAudioFormatOut(
-                        OutputModeManager.DIGITAL_PCM);
-                break;
-        }
-    }
-
-    public int getDigitalAudioFormat() {
-        final int value = Settings.Global.getInt(mContext.getContentResolver(),
-                OutputModeManager.DIGITAL_AUDIO_FORMAT, OutputModeManager.DIGITAL_PCM);
-        if (CanDebug()) Log.d(TAG, "getDigitalAudioFormat value = " + value);
-        return value;
-    }
-
     public void setAudioManualFormats(int id, boolean enabled) {
         HashSet<Integer> fmts = new HashSet<>();
         String enable = getAudioManualFormats();
@@ -145,53 +119,6 @@ public class SoundParameterSettingManager {
             return format;
     }
 
-    public void enableLineOutAudio(boolean mode) {
-        if (CanDebug()) Log.d(TAG, "enableLineOutAudio mode = " + mode);
-        mOutputModeManager.enableBoxLineOutAudio(mode);
-        Settings.Global.putInt(mContext.getContentResolver(),
-                OutputModeManager.BOX_LINE_OUT, mode ? OutputModeManager.BOX_LINE_OUT_ON : OutputModeManager.BOX_LINE_OUT_OFF);
-    }
-
-    public int getLineOutAudioStatus() {
-        final int value = Settings.Global.getInt(mContext.getContentResolver(),
-                OutputModeManager.BOX_LINE_OUT, OutputModeManager.BOX_LINE_OUT_OFF);
-        if (CanDebug()) Log.d(TAG, "getLineOutAudioStatus value = " + value);
-        return value;
-    }
-
-    public void enableHdmiAudio(boolean mode) {
-        if (CanDebug()) Log.d(TAG, "enableHdmiAudio mode = " + mode);
-        mOutputModeManager.enableBoxHdmiAudio(mode);
-        Settings.Global.putInt(mContext.getContentResolver(),
-                OutputModeManager.BOX_HDMI, mode ? OutputModeManager.BOX_HDMI_ON : OutputModeManager.BOX_HDMI_OFF);
-    }
-
-    public int getHdmiAudioStatus() {
-        final int value = Settings.Global.getInt(mContext.getContentResolver(),
-                OutputModeManager.BOX_HDMI, OutputModeManager.BOX_HDMI_ON);
-        if (CanDebug()) Log.d(TAG, "getHdmiAudioStatus value = " + value);
-        return value;
-    }
-
-    public void enableSpeakerAudio(boolean mode) {
-        if (CanDebug()) Log.d(TAG, "enableSpeakerAudio mode = " + mode);
-        mOutputModeManager.enableTvSpeakerAudio(mode);
-        Settings.Global.putInt(mContext.getContentResolver(),
-                OutputModeManager.TV_SPEAKER, mode ? OutputModeManager.TV_SPEAKER_ON : OutputModeManager.TV_SPEAKER_OFF);
-    }
-
-    public int getSpeakerAudioStatus() {
-        final int value = Settings.Global.getInt(mContext.getContentResolver(),
-                OutputModeManager.TV_SPEAKER, OutputModeManager.TV_SPEAKER_OFF);
-        if (CanDebug()) Log.d(TAG, "getSpeakerAudioStatus value = " + value);
-        return value;
-    }
-
-    public void setDrcModePassthroughSetting(int newVal) {
-        Settings.Global.putInt(mContext.getContentResolver(),
-                OutputModeManager.DRC_MODE, newVal);
-    }
-
     public static boolean getSoundEffectsEnabled(ContentResolver contentResolver) {
         return Settings.System.getInt(contentResolver, Settings.System.SOUND_EFFECTS_ENABLED, 1) != 0;
     }
@@ -217,7 +144,6 @@ public class SoundParameterSettingManager {
 
     public void initParameterAfterBoot() {
         Log.d(TAG, "initParameterAfterBoot");
-        setDigitalAudioFormat(getDigitalAudioFormat());
         setDrcModePassthrough();
         mOutputModeManager.initSoundParametersAfterBoot();
     }
@@ -248,4 +174,3 @@ public class SoundParameterSettingManager {
         mOutputModeManager.resetSoundParameters();
     }
 }
-

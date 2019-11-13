@@ -49,9 +49,6 @@ public class OutputModeManager {
     public static final int BOX_LINE_OUT_OFF                        = 0;
     public static final int BOX_LINE_OUT_ON                         = 1;
 
-    public static final String BOX_HDMI                          = "box_hdmi";
-    public static final String PARA_BOX_HDMI_OFF         = "Audio hdmi-out mute=1";
-    public static final String PARA_BOX_HDMI_ON           = "Audio hdmi-out mute=0";
     public static final int BOX_HDMI_OFF                               = 0;
     public static final int BOX_HDMI_ON                                 = 1;
 
@@ -168,14 +165,6 @@ public class OutputModeManager {
         }
     }
 
-    public void enableBoxHdmiAudio(boolean value) {
-        if (value) {
-            mAudioManager.setParameters(PARA_BOX_HDMI_ON);
-        } else {
-            mAudioManager.setParameters(PARA_BOX_HDMI_OFF);
-        }
-    }
-
     public void enableTvSpeakerAudio(boolean value) {
         if (value) {
             mAudioManager.setParameters(PARA_TV_SPEAKER_ON);
@@ -218,8 +207,6 @@ public class OutputModeManager {
         if (!istv) {
             final int boxlineout = Settings.Global.getInt(mResolver, BOX_LINE_OUT, BOX_LINE_OUT_OFF);
             enableBoxLineOutAudio(boxlineout == BOX_LINE_OUT_ON);
-            final int boxhdmi = Settings.Global.getInt(mResolver, BOX_HDMI, BOX_HDMI_ON);
-            enableBoxHdmiAudio(boxhdmi == BOX_HDMI_ON);
         } else {
             final int virtualsurround = Settings.Global.getInt(mResolver, VIRTUAL_SURROUND, VIRTUAL_SURROUND_OFF);
             setVirtualSurround(virtualsurround);
@@ -235,7 +222,6 @@ public class OutputModeManager {
         final boolean istv = OptionParameterManager.getBoolean("ro.vendor.platform.has.tvuimode", false);
         if (!istv) {
             enableBoxLineOutAudio(false);
-            enableBoxHdmiAudio(false);
         } else {
             enableTvSpeakerAudio(false);
             enableTvArcAudio(false);
