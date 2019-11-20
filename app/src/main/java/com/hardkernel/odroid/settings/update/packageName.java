@@ -1,10 +1,13 @@
 package com.hardkernel.odroid.settings.update;
 
+import android.os.Build;
+
 class packageName {
     private static final String HEADER = "updatepackage";
     private static final String MODEL = "odroidn2";
     private static final String VARIANT = "eng";
     private static final String BRANCH = "s922_9.0.0_master";
+    private static final String BRANCH_64 = "s922_9.0.0_64_master";
 
     private int version = -1;
 
@@ -25,12 +28,16 @@ class packageName {
     }
 
     private int parseBuildNumber (String packageName) {
+        String branch = BRANCH;
+        final boolean is64bit = Build.SUPPORTED_64_BIT_ABIS.length > 0;
+        if (is64bit)
+            branch = BRANCH_64;
         String[] s = packageName.split("-");
         if (s.length <= 4)
             return -1;
 
         if (!s[0].equals(HEADER) || !s[1].equals(MODEL) ||
-                !s[2].equals(VARIANT) || !s[3].equals(BRANCH))
+                !s[2].equals(VARIANT) || !s[3].equals(branch))
             return -1;
 
         return Integer.parseInt(s[4].split("\\.")[0]);

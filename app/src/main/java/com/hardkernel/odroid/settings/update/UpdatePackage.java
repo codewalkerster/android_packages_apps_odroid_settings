@@ -6,6 +6,7 @@ import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
@@ -47,16 +48,21 @@ public class UpdatePackage {
         String remote = updateManager.getRemoteURL();
 
         /* Remove if the same file is exist */
+        String latest_version = updateManager.LATEST_VERSION;
+        final boolean is64bit = Build.SUPPORTED_64_BIT_ABIS.length > 0;
+        if (is64bit)
+            latest_version = updateManager.LATEST_VERSION_64;
+
         new File (context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS),
-                updateManager.LATEST_VERSION).delete();
+                latest_version).delete();
         try {
             DownloadManager.Request request = new DownloadManager.Request(
-                    Uri.parse(remote + updateManager.LATEST_VERSION));
+                    Uri.parse(remote + latest_version));
             request.setVisibleInDownloadsUi(false);
             request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN);
             request.setDestinationInExternalFilesDir(context,
                     Environment.DIRECTORY_DOWNLOADS,
-                    updateManager.LATEST_VERSION);
+                    latest_version);
 
             DownloadReceiver.enqueue = DownloadReceiver
                     .getDownloadManager(context).enqueue(request);

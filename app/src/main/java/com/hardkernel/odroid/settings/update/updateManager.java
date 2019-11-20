@@ -10,6 +10,7 @@ public class updateManager {
 
     public static final long PACKAGE_MAXSIZE = 500 * 1024 * 1024;   /* 500MB */
     public static final String LATEST_VERSION = "latestupdate_pie";
+    public static final String LATEST_VERSION_64 = "latestupdate_pie_64";
 
     public static final String KEY_OFFICIAL = "server_official";
     public static final String KEY_MIRROR = "server_mirror";
