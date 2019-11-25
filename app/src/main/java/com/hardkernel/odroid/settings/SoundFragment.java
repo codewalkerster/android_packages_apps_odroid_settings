@@ -73,14 +73,14 @@ public class SoundFragment extends LeanbackAddBackPreferenceFragment implements 
 
         int selected = SystemProperties.getInt(SOUND_SELECT, 0);
         switch (selected) {
-            case 0: //I2S
+            case 0: //Hdmi, lineout I2S
                 soundSelectPref.setSummary("HDMI, Lineout");
                 break;
-            case 1: // SPDIF
+            case 1: // SPDIF on 7pin
                 soundSelectPref.setSummary("SPDIF");
                 break;
-            case 5: // SPDIFB2HDMI
-                soundSelectPref.setSummary("??");
+            case 8: // I2S on 7pin
+                soundSelectPref.setSummary("I2S");
                 break;
         }
     }

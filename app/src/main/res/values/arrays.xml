@@ -17,14 +17,14 @@
 
     <string-array name="sound_select_entries">
         <item>HDMI, Line out</item>
-        <!--<item>Unknown</item>-->
         <item>SPDIF</item>
+        <item>I2S</item>
     </string-array>
 
     <string-array name="sound_select_entry_values" translatable="false">
         <item>0</item>
-        <!--<item>5</item>-->
         <item>1</item>
+        <item>8</item>
     </string-array>
 
     <string-array name="dolby_vision_entries">
