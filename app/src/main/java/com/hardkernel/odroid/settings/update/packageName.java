@@ -27,17 +27,21 @@ class packageName {
         version = parseBuildNumber(packageName);
     }
 
-    private int parseBuildNumber (String packageName) {
+    private String getBranch() {
         String branch = BRANCH;
         final boolean is64bit = Build.SUPPORTED_64_BIT_ABIS.length > 0;
         if (is64bit)
             branch = BRANCH_64;
+        return branch;
+    }
+
+    private int parseBuildNumber (String packageName) {
         String[] s = packageName.split("-");
         if (s.length <= 4)
             return -1;
 
         if (!s[0].equals(HEADER) || !s[1].equals(MODEL) ||
-                !s[2].equals(VARIANT) || !s[3].equals(branch))
+                !s[2].equals(VARIANT) || !s[3].equals(getBranch()))
             return -1;
 
         return Integer.parseInt(s[4].split("\\.")[0]);
@@ -51,7 +55,7 @@ class packageName {
         if (buildNumber == -1)
             return null;
 
-        return HEADER + "-" + MODEL + "-" + VARIANT + "-" + BRANCH + "-"
+        return HEADER + "-" + MODEL + "-" + VARIANT + "-" + getBranch() + "-"
                 + Integer.toString(buildNumber) + ".zip";
     }
 }
