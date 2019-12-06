@@ -48,10 +48,7 @@ public class UpdatePackage {
         String remote = updateManager.getRemoteURL();
 
         /* Remove if the same file is exist */
-        String latest_version = updateManager.LATEST_VERSION;
-        final boolean is64bit = Build.SUPPORTED_64_BIT_ABIS.length > 0;
-        if (is64bit)
-            latest_version = updateManager.LATEST_VERSION_64;
+        String latest_version = updateManager.getLatestVersion();
 
         new File (context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS),
                 latest_version).delete();

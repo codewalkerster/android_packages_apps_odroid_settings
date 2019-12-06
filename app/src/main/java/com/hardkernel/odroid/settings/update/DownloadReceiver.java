@@ -82,10 +82,7 @@ public class DownloadReceiver extends BroadcastReceiver {
             return;
         }
 
-        String latest_version = updateManager.LATEST_VERSION;
-        final boolean is64bit = Build.SUPPORTED_64_BIT_ABIS.length > 0;
-        if (is64bit)
-            latest_version = updateManager.LATEST_VERSION_64;
+        String latest_version = updateManager.getLatestVersion();
 
         if (file.getName().equals(latest_version)) {
             try {

@@ -1,6 +1,7 @@
 package com.hardkernel.odroid.settings.update;
 
 import android.content.SharedPreferences;
+import android.os.Build;
 
 public class updateManager {
     public final static String OFFICIAL_URL =
@@ -24,6 +25,10 @@ public class updateManager {
         return url;
     }
 
+    public static String getLatestVersion() {
+        final boolean is64bit = Build.SUPPORTED_64_BIT_ABIS.length > 0;
+        return is64bit? LATEST_VERSION_64 : LATEST_VERSION;
+    }
     public static void setRemoteURL(String newURL) {
         setPreference(SH_KEY_URL, newURL);
         url = newURL;

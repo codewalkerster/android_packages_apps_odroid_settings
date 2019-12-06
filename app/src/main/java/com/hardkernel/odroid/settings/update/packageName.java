@@ -28,11 +28,8 @@ class packageName {
     }
 
     private String getBranch() {
-        String branch = BRANCH;
         final boolean is64bit = Build.SUPPORTED_64_BIT_ABIS.length > 0;
-        if (is64bit)
-            branch = BRANCH_64;
-        return branch;
+        return is64bit ? BRANCH_64 : BRANCH;
     }
 
     private int parseBuildNumber (String packageName) {
