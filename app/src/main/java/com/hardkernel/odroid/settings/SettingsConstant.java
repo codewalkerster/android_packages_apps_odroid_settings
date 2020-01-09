@@ -17,7 +17,7 @@
 package com.hardkernel.odroid.settings;
 
 import android.content.Context;
-import com.droidlogic.app.SystemControlManager;
+import android.os.SystemProperties;
 
 /**
  * Settings related constants
@@ -39,8 +39,7 @@ public class SettingsConstant {
         return context.getResources().getBoolean(R.bool.display_need_screen_resolution);
     }
     public static boolean needDroidlogicHdmicecFeature(Context context){
-		SystemControlManager sm = SystemControlManager.getInstance();
-        return sm.getPropertyBoolean("ro.vendor.platform.need.display.hdmicec", false);
+        return SystemProperties.getBoolean("ro.vendor.platform.need.display.hdmicec", false);
     }
     public static boolean needDroidlogicPlaybackSetFeature(Context context){
         return context.getResources().getBoolean(R.bool.display_need_playback_set_function);

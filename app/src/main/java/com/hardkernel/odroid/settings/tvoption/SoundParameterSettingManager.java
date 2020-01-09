@@ -29,7 +29,6 @@ import android.content.SharedPreferences;
 import android.content.ContentResolver;
 
 import com.hardkernel.odroid.settings.R;
-import com.droidlogic.app.SystemControlManager;
 import com.droidlogic.app.OutputModeManager;
 
 import com.hardkernel.odroid.settings.SettingsConstant;
@@ -59,8 +58,7 @@ public class SoundParameterSettingManager {
     }
 
     static public boolean CanDebug() {
-        SystemControlManager mSystemControlManager = SystemControlManager.getInstance();
-        return mSystemControlManager.getPropertyBoolean("sys.vendor.soundparameter.debug", false);
+        return SystemProperties.getBoolean("sys.vendor.soundparameter.debug", false);
     }
 
     // 0 1 ~ off on

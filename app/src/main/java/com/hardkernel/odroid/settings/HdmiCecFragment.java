@@ -27,7 +27,6 @@ import android.support.v7.preference.TwoStatePreference;
 import android.text.TextUtils;
 
 import com.droidlogic.app.HdmiCecManager;
-import com.droidlogic.app.SystemControlManager;
 import com.hardkernel.odroid.settings.R;
 
 import java.io.BufferedReader;
@@ -59,8 +58,6 @@ public class HdmiCecFragment extends LeanbackAddBackPreferenceFragment {
 	private TwoStatePreference mCecOnekeyPlayPref;
 	private TwoStatePreference mCecOnekeyPoweroffPref;
 	private TwoStatePreference mCecAutoChangeLanguagePref;
-
-	private SystemControlManager mSystemControlManager = SystemControlManager.getInstance();
 
 	public static HdmiCecFragment newInstance() {
 		return new HdmiCecFragment();
@@ -109,7 +106,7 @@ public class HdmiCecFragment extends LeanbackAddBackPreferenceFragment {
 		case KEY_CEC_AUTO_CHANGE_LANGUAGE:
 			//writeCecOption(HdmiCecManager.HDMI_CONTROL_AUTO_CHANGE_LANGUAGE_ENABLED,
 			//		mCecAutoChangeLanguagePref.isChecked());
-			mSystemControlManager.setProperty(PERSIST_HDMI_CEC_SET_MENU_LANGUAGE, mCecAutoChangeLanguagePref.isChecked() ? "true" : "false");
+			SystemProperties.set(PERSIST_HDMI_CEC_SET_MENU_LANGUAGE, mCecAutoChangeLanguagePref.isChecked() ? "true" : "false");
 			return true;
 		}
 		return super.onPreferenceTreeClick(preference);
@@ -150,7 +147,7 @@ public class HdmiCecFragment extends LeanbackAddBackPreferenceFragment {
 		mCecOnekeyPoweroffPref.setChecked(readCecOption(Settings.Global.HDMI_CONTROL_AUTO_DEVICE_OFF_ENABLED));
 		mCecOnekeyPoweroffPref.setEnabled(hdmiControlEnabled);
 		//mCecAutoChangeLanguagePref.setChecked(readCecOption(HdmiCecManager.HDMI_CONTROL_AUTO_CHANGE_LANGUAGE_ENABLED));
-		mCecAutoChangeLanguagePref.setChecked(mSystemControlManager.getPropertyBoolean(PERSIST_HDMI_CEC_SET_MENU_LANGUAGE, true));
+		mCecAutoChangeLanguagePref.setChecked(SystemProperties.getBoolean(PERSIST_HDMI_CEC_SET_MENU_LANGUAGE, true));
 		mCecAutoChangeLanguagePref.setEnabled(hdmiControlEnabled);
 	}
 
