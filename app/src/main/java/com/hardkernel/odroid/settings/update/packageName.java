@@ -1,15 +1,34 @@
 package com.hardkernel.odroid.settings.update;
 
 import android.os.Build;
+import android.os.SystemProperties;
+
+import java.util.HashMap;
+import java.util.Map;
 
 class packageName {
     private static final String HEADER = "updatepackage";
-    private static final String MODEL = "odroidn2";
+    private static final String MODEL;
     private static final String VARIANT = "eng";
-    private static final String BRANCH = "s922_9.0.0_master";
-    private static final String BRANCH_64 = "s922_9.0.0_64_master";
+    private static final String BRANCH;
 
     private int version = -1;
+
+    static {
+        Map<Integer, String> sdkVersion = new HashMap();
+        sdkVersion.put(28, "9.0.0");
+
+        Map<String, String> modelChip = new HashMap<>();
+        modelChip.put("odroidn2", "s922");
+
+        MODEL = SystemProperties.get("ro.hardware", "odroid");
+        int sdk = Integer.parseInt(SystemProperties.get("ro.build.version.sdk"));
+        boolean is64Bit = Build.SUPPORTED_64_BIT_ABIS.length > 0;
+
+        BRANCH = modelChip.get(MODEL) + "_" +
+                sdkVersion.get(sdk) + "_" +
+                (is64Bit? "64_master": "master");
+    }
 
     public packageName(String packageName) {
         setBuildNumber(packageName);
@@ -28,8 +47,7 @@ class packageName {
     }
 
     private String getBranch() {
-        final boolean is64bit = Build.SUPPORTED_64_BIT_ABIS.length > 0;
-        return is64bit ? BRANCH_64 : BRANCH;
+        return BRANCH;
     }
 
     private int parseBuildNumber (String packageName) {
