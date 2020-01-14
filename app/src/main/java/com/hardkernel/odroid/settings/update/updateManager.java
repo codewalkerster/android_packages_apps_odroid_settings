@@ -2,16 +2,33 @@ package com.hardkernel.odroid.settings.update;
 
 import android.content.SharedPreferences;
 import android.os.Build;
+import android.os.SystemProperties;
+
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class updateManager {
-    public final static String OFFICIAL_URL =
-            "https://dn.odroid.com/S922X/ODROID-N2/Android/";
-    public final static String MIRROR_URL =
-            "https://www.odroid.in/mirror/dn.odroid.com/S922X/ODROID-N2/Android/";
+    public final static String OFFICIAL_URL;
+    public final static String MIRROR_URL;
 
     public static final long PACKAGE_MAXSIZE = 500 * 1024 * 1024;   /* 500MB */
-    public static final String LATEST_VERSION = "latestupdate_pie";
-    public static final String LATEST_VERSION_64 = "latestupdate_pie_64";
+    public static final String LATEST_VERSION;
+
+    static {
+        Map<String, String> modelUrl = new HashMap<>();
+        modelUrl.put("odroidn2", "S922X/ODROID-N2/");
+
+        boolean is64Bit = Build.SUPPORTED_64_BIT_ABIS.length > 0;
+        LATEST_VERSION = "latestupdate_pie" + (is64Bit? "_64": "");
+
+        final String androidUrl = "Android/";
+        String model = SystemProperties.get("ro.hardware", "odroid");
+        OFFICIAL_URL = "https://dn.odroid.com/" +
+                modelUrl.get(model) + androidUrl;
+        MIRROR_URL = "https://www.odroid.in/mirror/dn.odroid.com/" +
+                modelUrl.get(model) + androidUrl;
+    }
 
     public static final String KEY_OFFICIAL = "server_official";
     public static final String KEY_MIRROR = "server_mirror";
@@ -26,9 +43,9 @@ public class updateManager {
     }
 
     public static String getLatestVersion() {
-        final boolean is64bit = Build.SUPPORTED_64_BIT_ABIS.length > 0;
-        return is64bit? LATEST_VERSION_64 : LATEST_VERSION;
+        return LATEST_VERSION;
     }
+
     public static void setRemoteURL(String newURL) {
         setPreference(SH_KEY_URL, newURL);
         url = newURL;
