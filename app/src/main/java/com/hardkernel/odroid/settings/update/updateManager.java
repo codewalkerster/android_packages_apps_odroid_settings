@@ -1,12 +1,13 @@
 package com.hardkernel.odroid.settings.update;
 
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.os.Build;
 import android.os.SystemProperties;
 
 
-import java.util.HashMap;
-import java.util.Map;
+import com.hardkernel.odroid.settings.R;
+import com.hardkernel.odroid.settings.MainApplication;
 
 public class updateManager {
     public final static String OFFICIAL_URL;
@@ -16,18 +17,21 @@ public class updateManager {
     public static final String LATEST_VERSION;
 
     static {
-        Map<String, String> modelUrl = new HashMap<>();
-        modelUrl.put("odroidn2", "S922X/ODROID-N2/");
-
         boolean is64Bit = Build.SUPPORTED_64_BIT_ABIS.length > 0;
-        LATEST_VERSION = "latestupdate_pie" + (is64Bit? "_64": "");
+        LATEST_VERSION = is64Bit? "latestupdate_pie_64": "latestupdate_pie";
 
-        final String androidUrl = "Android/";
-        String model = SystemProperties.get("ro.hardware", "odroid");
-        OFFICIAL_URL = "https://dn.odroid.com/" +
-                modelUrl.get(model) + androidUrl;
-        MIRROR_URL = "https://www.odroid.in/mirror/dn.odroid.com/" +
-                modelUrl.get(model) + androidUrl;
+        int boardIdx = 0;
+        String board = SystemProperties.get("ro.hardware", "odroidn2");
+
+        Resources resource = MainApplication.getAppResources();
+        String[] boardList = resource.getStringArray(R.array.model);
+        for (;boardIdx < boardList.length; boardIdx++) {
+            if (boardList[boardIdx].equals(board))
+                break;
+        }
+
+        OFFICIAL_URL = resource.getStringArray(R.array.official_url)[boardIdx];
+        MIRROR_URL = resource.getStringArray(R.array.mirror_url)[boardIdx];
     }
 
     public static final String KEY_OFFICIAL = "server_official";
