@@ -1,7 +1,11 @@
 package com.hardkernel.odroid.settings.update;
 
+import android.content.res.Resources;
 import android.os.Build;
 import android.os.SystemProperties;
+
+import com.hardkernel.odroid.settings.R;
+import com.hardkernel.odroid.settings.MainApplication;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,14 +22,20 @@ class packageName {
         Map<Integer, String> sdkVersion = new HashMap();
         sdkVersion.put(28, "9.0.0");
 
-        Map<String, String> modelChip = new HashMap<>();
-        modelChip.put("odroidn2", "s922");
-
+        int boardIdx = 0;
         MODEL = SystemProperties.get("ro.hardware", "odroid");
         int sdk = Integer.parseInt(SystemProperties.get("ro.build.version.sdk"));
+
+        Resources resource = MainApplication.getAppResources();
+        String[] boardList = resource.getStringArray(R.array.model);
+        for (;boardIdx < boardList.length; boardIdx++) {
+            if (boardList[boardIdx].equals(MODEL))
+                break;
+        }
+
         boolean is64Bit = Build.SUPPORTED_64_BIT_ABIS.length > 0;
 
-        BRANCH = modelChip.get(MODEL) + "_" +
+        BRANCH = resource.getStringArray(R.array.chip)[boardIdx] + "_" +
                 sdkVersion.get(sdk) + "_" +
                 (is64Bit? "64_master": "master");
     }
