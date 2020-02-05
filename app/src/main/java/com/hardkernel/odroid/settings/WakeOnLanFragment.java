@@ -1,6 +1,5 @@
 package com.hardkernel.odroid.settings;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v17.preference.LeanbackPreferenceFragment;
 import android.support.v7.preference.Preference;
@@ -44,7 +43,7 @@ public class WakeOnLanFragment extends LeanbackAddBackPreferenceFragment {
         wolPref = (TwoStatePreference) findPreference(KEY_WAKE_ON_LAN_SWITCH);
         macPref = (Preference) findPreference(KEY_MAC_ADDRESS_PREF);
 
-        wolSwitch = (bootini.getWakeOnLan() == 1);
+        wolSwitch = (ConfigEnv.getWakeOnLan() == 1);
         try {
             BufferedReader reader = new BufferedReader(new FileReader(ETH_MAC_NODE));
             macPref.setSummary(reader.readLine());
@@ -63,7 +62,7 @@ public class WakeOnLanFragment extends LeanbackAddBackPreferenceFragment {
             case KEY_WAKE_ON_LAN_SWITCH:
                 if (wolPref.isChecked() != wolSwitch) {
                     wolSwitch = wolPref.isChecked();
-                    bootini.setWakeOnLan(wolSwitch ? 1 : 0);
+                    ConfigEnv.setWakeOnLan(wolSwitch ? 1 : 0);
                     if (wolSwitch) {
                         Toast.makeText(getContext(),
                                 "Wake On Lan will be applied after reboot!",

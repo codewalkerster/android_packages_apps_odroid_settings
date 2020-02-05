@@ -8,8 +8,8 @@ import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class bootini {
-    private final static String path = "/odm/boot.ini";
+public class ConfigEnv {
+    private final static String path = "/odm/env.ini";
 
     public static String getBigCoreClock() {
         return getValue("max_freq_a73") + "000";
@@ -55,7 +55,7 @@ public class bootini {
     }
 
     private static String getValue(String keyWord) {
-        return _getValue("setenv " + keyWord + " ");
+        return _getValue(keyWord + "=");
     }
 
     private static String _getValue(String startTerm) {
@@ -141,7 +141,7 @@ public class bootini {
     }
 
     private static void setValue (String keyWord, String val) {
-        _setValue("setenv " + keyWord + " ", val);
+        _setValue(keyWord + "=", val);
     }
 
     private static void _setValue (String startTerm,String val) {

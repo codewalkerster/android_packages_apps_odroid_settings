@@ -9,9 +9,6 @@ package com.hardkernel.odroid.settings.display.position;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.RemoteException;
-import android.provider.Settings;
 import android.support.v14.preference.SwitchPreference;
 import android.support.v17.preference.LeanbackPreferenceFragment;
 import android.support.v7.preference.ListPreference;
@@ -19,20 +16,11 @@ import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceScreen;
 import android.support.v7.preference.TwoStatePreference;
 import android.support.v7.preference.PreferenceCategory;
-import android.util.ArrayMap;
-import android.util.Log;
-import android.text.TextUtils;
 
 import com.droidlogic.app.DisplayPositionManager;
 import com.hardkernel.odroid.settings.R;
-import com.hardkernel.odroid.settings.RadioPreference;
-import com.hardkernel.odroid.settings.bootini;
-import com.hardkernel.odroid.settings.dialog.old.Action;
+import com.hardkernel.odroid.settings.ConfigEnv;
 import com.hardkernel.odroid.settings.LeanbackAddBackPreferenceFragment;
-
-import java.util.List;
-import java.util.Map;
-import java.util.ArrayList;
 
 public class DisplayPositionFragment extends LeanbackAddBackPreferenceFragment {
     private static final String TAG = "DisplayPositionFragment";
@@ -82,6 +70,6 @@ public class DisplayPositionFragment extends LeanbackAddBackPreferenceFragment {
     private void updateMainScreen() {
         int percent = mDisplayPositionManager.getCurrentRateValue();
         mPref.setTitle("current scaling is " + percent +"%");
-        bootini.setDisplayZoom(percent);
+        ConfigEnv.setDisplayZoom(percent);
     }
 }

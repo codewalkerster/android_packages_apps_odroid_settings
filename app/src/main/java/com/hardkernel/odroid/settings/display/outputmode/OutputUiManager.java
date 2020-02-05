@@ -3,37 +3,15 @@ package com.hardkernel.odroid.settings.display.outputmode;
 import com.hardkernel.odroid.settings.R;
 
 import android.content.Context;
-import android.os.Handler;
-import android.os.Message;
-import android.os.SystemClock;
-import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.ImageView;
-import android.widget.ListAdapter;
-import android.widget.ListView;
-import android.widget.TextView;
 
 import com.droidlogic.app.OutputModeManager;
 import com.droidlogic.app.DolbyVisionSettingManager;
-import com.hardkernel.odroid.settings.bootini;
+import com.hardkernel.odroid.settings.ConfigEnv;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.os.UserHandle ;
 
 public class OutputUiManager {
     private static final String TAG = "OutputUiManager";
@@ -166,7 +144,7 @@ public class OutputUiManager {
     }
 
     public String getCurrentColorAttribute(){
-        String result = bootini.getColorAttribute();
+        String result = ConfigEnv.getColorAttribute();
 
         if (result == null)
             result = "default";
@@ -216,7 +194,7 @@ public class OutputUiManager {
     }
 
     public void changeColorAttribte(final String colorValue) {
-        bootini.setColorAttribute(colorValue);
+        ConfigEnv.setColorAttribute(colorValue);
         mOutputModeManager.setDeepColorAttribute(colorValue);
     }
 
@@ -405,11 +383,11 @@ public class OutputUiManager {
     public void setValidColorAttribute(String hdmiMode) {
         for (String colorAttribute: mHdmiColorValueList) {
             if (isModeSupportColor(hdmiMode, colorAttribute)) {
-                bootini.setColorAttribute(colorAttribute);
+                ConfigEnv.setColorAttribute(colorAttribute);
                 return;
             }
         }
         // default value
-        bootini.setColorAttribute("444,8bit");
+        ConfigEnv.setColorAttribute("444,8bit");
     }
 }

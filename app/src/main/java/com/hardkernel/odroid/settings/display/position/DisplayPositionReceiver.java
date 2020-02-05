@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.droidlogic.app.DisplayPositionManager;
-import com.hardkernel.odroid.settings.bootini;
+import com.hardkernel.odroid.settings.ConfigEnv;
 
 public class DisplayPositionReceiver extends BroadcastReceiver {
     private final String TAG = "DisplayPositionReceiver";
@@ -17,7 +17,7 @@ public class DisplayPositionReceiver extends BroadcastReceiver {
             DisplayPositionManager mDisplayPositionManager;
             mDisplayPositionManager = new DisplayPositionManager (context);
 
-            mDisplayPositionManager.zoomByPercent(bootini.getDisplayZoomrate());
+            mDisplayPositionManager.zoomByPercent(ConfigEnv.getDisplayZoomrate());
         }
     }
 }

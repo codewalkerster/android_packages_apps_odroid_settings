@@ -4,7 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-import com.hardkernel.odroid.settings.bootini;
+import com.hardkernel.odroid.settings.ConfigEnv;
 
 public class CpuReceiver extends BroadcastReceiver {
     private final String TAG = "CpuReceiver";
@@ -15,12 +15,12 @@ public class CpuReceiver extends BroadcastReceiver {
         if (action.equals(Intent.ACTION_BOOT_COMPLETED)) {
             CPU cpu;
             cpu = CPU.getCPU(TAG, CPU.Cluster.Little);
-            cpu.governor.set(bootini.getLittleCoreGovernor());
-            cpu.frequency.setScalingMax(bootini.getLittleCoreClock());
+            cpu.governor.set(ConfigEnv.getLittleCoreGovernor());
+            cpu.frequency.setScalingMax(ConfigEnv.getLittleCoreClock());
 
             cpu = CPU.getCPU(TAG, CPU.Cluster.Big);
-            cpu.governor.set(bootini.getBigCoreGovernor());
-            cpu.frequency.setScalingMax(bootini.getBigCoreClock());
+            cpu.governor.set(ConfigEnv.getBigCoreGovernor());
+            cpu.frequency.setScalingMax(ConfigEnv.getBigCoreClock());
         }
     }
 }

@@ -19,7 +19,6 @@ package com.hardkernel.odroid.settings;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.os.RemoteException;
 import android.support.annotation.Keep;
 import android.support.v17.preference.LeanbackPreferenceFragment;
 import android.support.v14.preference.SwitchPreference;
@@ -27,23 +26,12 @@ import android.support.v7.preference.CheckBoxPreference;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceScreen;
 
-import com.hardkernel.odroid.settings.R;
-
 import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.util.Iterator;
-import java.util.List;
 
-import com.hardkernel.odroid.settings.bootini;
-import com.hardkernel.odroid.settings.dialog.old.Action;
-import com.hardkernel.odroid.settings.RadioPreference;
-import com.hardkernel.odroid.settings.LeanbackAddBackPreferenceFragment;
-
-import android.os.Handler;
-import android.os.Message;
 import android.os.ServiceManager;
 import android.os.IPowerManager;
-import android.os.RemoteException;
 import android.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.Log;
@@ -56,10 +44,6 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-
-import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import android.net.EthernetManager;
 import android.net.IpConfiguration;

@@ -33,7 +33,7 @@ public class HeartBeatFragment extends LeanbackAddBackPreferenceFragment {
         setPreferencesFromResource(R.xml.heartbeat, null);
         heartBeatPref = (TwoStatePreference) findPreference(KEY_HEARTBEAT_SWITCH);
 
-        String heartbeatState = bootini.getHeartBeat();
+        String heartbeatState = ConfigEnv.getHeartBeat();
         if (heartbeatState == null) {
             heartBeatPref.setEnabled(false);
             heartbeatState = "1";
@@ -51,7 +51,7 @@ public class HeartBeatFragment extends LeanbackAddBackPreferenceFragment {
             case KEY_HEARTBEAT_SWITCH:
                 if (heartBeatPref.isChecked() != HeartBeatSwitch) {
                     HeartBeatSwitch = heartBeatPref.isChecked();
-                    bootini.setHeartBeat(HeartBeatSwitch ? "1" : "0");
+                    ConfigEnv.setHeartBeat(HeartBeatSwitch ? "1" : "0");
                     Toast.makeText(getContext(),
                             "HeartBeat will turn " + (HeartBeatSwitch ? "on" : "off")
                                     + " after reboot!",

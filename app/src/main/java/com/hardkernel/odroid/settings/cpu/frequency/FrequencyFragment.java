@@ -10,7 +10,7 @@ import com.hardkernel.odroid.settings.R;
 import com.hardkernel.odroid.settings.LeanbackAddBackPreferenceFragment;
 
 import com.hardkernel.odroid.settings.RadioPreference;
-import com.hardkernel.odroid.settings.bootini;
+import com.hardkernel.odroid.settings.ConfigEnv;
 import com.hardkernel.odroid.settings.cpu.CPU;
 
 public class FrequencyFragment extends LeanbackAddBackPreferenceFragment {
@@ -77,8 +77,8 @@ public class FrequencyFragment extends LeanbackAddBackPreferenceFragment {
 
     private void saveFrequency(String frequency) {
         if (cpu.cluster == CPU.Cluster.Little)
-            bootini.setLittleCoreFreq(frequency);
+            ConfigEnv.setLittleCoreFreq(frequency);
         else if (cpu.cluster == CPU.Cluster.Big)
-            bootini.setBigCoreFreq(frequency);
+            ConfigEnv.setBigCoreFreq(frequency);
     }
 }

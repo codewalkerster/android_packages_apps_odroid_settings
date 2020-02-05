@@ -33,7 +33,7 @@ import com.hardkernel.odroid.settings.R;
 
 import java.util.List;
 
-import com.hardkernel.odroid.settings.bootini;
+import com.hardkernel.odroid.settings.ConfigEnv;
 import com.hardkernel.odroid.settings.dialog.old.Action;
 import com.hardkernel.odroid.settings.RadioPreference;
 import com.hardkernel.odroid.settings.LeanbackAddBackPreferenceFragment;
@@ -42,7 +42,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.ServiceManager;
 import android.os.IPowerManager;
-import android.os.RemoteException;
 import android.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.Log;
@@ -106,7 +105,7 @@ public class OutputmodeFragment extends LeanbackAddBackPreferenceFragment
         mIntentFilter = new IntentFilter("android.intent.action.HDMI_PLUGGED");
         mIntentFilter.addAction(Intent.ACTION_TIME_TICK);
 
-        voutmode = bootini.getVoutMode();
+        voutmode = ConfigEnv.getVoutMode();
         mOutputUiManager = new OutputUiManager(getActivity());
 
         updatePreferenceFragment();
@@ -236,8 +235,8 @@ public class OutputmodeFragment extends LeanbackAddBackPreferenceFragment
                     mAlertDialog.dismiss();
 
                     // save current resolution mode.
-                    bootini.setHdmiMode(curMode);
-                    bootini.setDisplayZoom(100);
+                    ConfigEnv.setHdmiMode(curMode);
+                    ConfigEnv.setDisplayZoom(100);
                     mOutputUiManager.setValidColorAttribute(curMode);
                     reboot();
                 }
@@ -357,12 +356,12 @@ public class OutputmodeFragment extends LeanbackAddBackPreferenceFragment
                 || "ODROID-VU8".equals(curMode)) {
             if (voutmode != "dvi") {
                 voutmode = "dvi";
-                bootini.setVoutMode(voutmode);
+                ConfigEnv.setVoutMode(voutmode);
             }
         } else {
             if (voutmode != "hdmi") {
                 voutmode = "hdmi";
-                bootini.setVoutMode(voutmode);
+                ConfigEnv.setVoutMode(voutmode);
             }
         }
     }
