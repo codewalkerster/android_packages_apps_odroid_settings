@@ -20,18 +20,8 @@ public class updateManager {
         boolean is64Bit = Build.SUPPORTED_64_BIT_ABIS.length > 0;
         LATEST_VERSION = is64Bit? "latestupdate_pie_64": "latestupdate_pie";
 
-        int boardIdx = 0;
-        String board = SystemProperties.get("ro.hardware", "odroidn2");
-
-        Resources resource = MainApplication.getAppResources();
-        String[] boardList = resource.getStringArray(R.array.model);
-        for (;boardIdx < boardList.length; boardIdx++) {
-            if (boardList[boardIdx].equals(board))
-                break;
-        }
-
-        OFFICIAL_URL = resource.getStringArray(R.array.official_url)[boardIdx];
-        MIRROR_URL = resource.getStringArray(R.array.mirror_url)[boardIdx];
+        OFFICIAL_URL = SystemProperties.get("ro.url.official", "https://dn.odroid.com/S922X/ODROID-N2/Android/");
+        MIRROR_URL = SystemProperties.get("ro.url.mirror", "https://dn.odroid.com/S922X/ODROID-N2/Android/");
     }
 
     public static final String KEY_OFFICIAL = "server_official";

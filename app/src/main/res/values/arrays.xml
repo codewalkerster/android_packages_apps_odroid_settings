@@ -37,21 +37,4 @@
         <item>dolby_vision_sink</item>
         <item>dolby_vision_source</item>
     </string-array>
-
-
-    <string-array name="model">
-        <item>odroidn2</item>
-    </string-array>
-
-    <string-array name="chip">
-        <item>s922</item>
-    </string-array>
-
-    <string-array name="official_url">
-        <item>https://dn.odroid.com/S922X/ODROID-N2/Android/</item>
-    </string-array>
-
-    <string-array name="mirror_url">
-        <item>https://www.odroid.in/mirror/dn.odroid.com/S922X/ODROID-N2/Android/</item>
-    </string-array>
 </resources>
