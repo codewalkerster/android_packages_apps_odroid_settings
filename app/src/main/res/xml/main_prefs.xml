@@ -81,6 +81,11 @@
         android:key="led"
         android:title="@string/led" />
     <Preference
+        android:fragment="com.hardkernel.odroid.settings.KioskFragment"
+        android:icon="@drawable/kiosk_icon"
+        android:key="kiosk"
+        android:title="@string/kiosk" />
+    <Preference
         android:icon="@drawable/ic_info_outline"
         android:key="netflix_esn"
         android:title="@string/netflix_esn"/>
