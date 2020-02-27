@@ -20,12 +20,7 @@ import com.hardkernel.odroid.settings.R;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.os.AsyncTask;
-import android.os.IBinder;
-import android.os.Parcel;
-import android.os.RemoteException;
-import android.os.SystemProperties;
-import android.util.Log;
+
 
 public class SettingsHelper {
 

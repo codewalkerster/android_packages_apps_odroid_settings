@@ -21,13 +21,13 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.text.TextUtils;
 import android.util.Log;
-import android.os.SystemProperties;
 import android.media.AudioManager;
 import android.app.ActivityManager;
 import android.provider.Settings;
 import android.content.SharedPreferences;
 import android.content.ContentResolver;
 
+import com.hardkernel.odroid.settings.EnvProperty;
 import com.hardkernel.odroid.settings.R;
 import com.droidlogic.app.OutputModeManager;
 
@@ -58,7 +58,7 @@ public class SoundParameterSettingManager {
     }
 
     static public boolean CanDebug() {
-        return SystemProperties.getBoolean("sys.vendor.soundparameter.debug", false);
+        return EnvProperty.getBoolean("sys.vendor.soundparameter.debug", false);
     }
 
     // 0 1 ~ off on

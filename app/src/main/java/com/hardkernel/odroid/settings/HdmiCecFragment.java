@@ -36,7 +36,6 @@ import java.io.IOException;
 
 import java.util.Map;
 import java.util.Set;
-import android.os.SystemProperties;
 
 /**
  * Fragment to control HDMI Cec settings.
@@ -106,7 +105,7 @@ public class HdmiCecFragment extends LeanbackAddBackPreferenceFragment {
 		case KEY_CEC_AUTO_CHANGE_LANGUAGE:
 			//writeCecOption(HdmiCecManager.HDMI_CONTROL_AUTO_CHANGE_LANGUAGE_ENABLED,
 			//		mCecAutoChangeLanguagePref.isChecked());
-			SystemProperties.set(PERSIST_HDMI_CEC_SET_MENU_LANGUAGE, mCecAutoChangeLanguagePref.isChecked() ? "true" : "false");
+			EnvProperty.set(PERSIST_HDMI_CEC_SET_MENU_LANGUAGE, mCecAutoChangeLanguagePref.isChecked() ? "true" : "false");
 			return true;
 		}
 		return super.onPreferenceTreeClick(preference);
@@ -147,7 +146,7 @@ public class HdmiCecFragment extends LeanbackAddBackPreferenceFragment {
 		mCecOnekeyPoweroffPref.setChecked(readCecOption(Settings.Global.HDMI_CONTROL_AUTO_DEVICE_OFF_ENABLED));
 		mCecOnekeyPoweroffPref.setEnabled(hdmiControlEnabled);
 		//mCecAutoChangeLanguagePref.setChecked(readCecOption(HdmiCecManager.HDMI_CONTROL_AUTO_CHANGE_LANGUAGE_ENABLED));
-		mCecAutoChangeLanguagePref.setChecked(SystemProperties.getBoolean(PERSIST_HDMI_CEC_SET_MENU_LANGUAGE, true));
+		mCecAutoChangeLanguagePref.setChecked(EnvProperty.getBoolean(PERSIST_HDMI_CEC_SET_MENU_LANGUAGE, true));
 		mCecAutoChangeLanguagePref.setEnabled(hdmiControlEnabled);
 	}
 

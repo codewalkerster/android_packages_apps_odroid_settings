@@ -2,8 +2,8 @@ package com.hardkernel.odroid.settings.update;
 
 import android.content.res.Resources;
 import android.os.Build;
-import android.os.SystemProperties;
 
+import com.hardkernel.odroid.settings.EnvProperty;
 import com.hardkernel.odroid.settings.R;
 import com.hardkernel.odroid.settings.MainApplication;
 
@@ -22,12 +22,12 @@ class packageName {
         Map<Integer, String> sdkVersion = new HashMap();
         sdkVersion.put(28, "9.0.0");
 
-        int sdk = Integer.parseInt(SystemProperties.get("ro.build.version.sdk"));
+        int sdk = Integer.parseInt(EnvProperty.get("ro.build.version.sdk"));
 
         boolean is64Bit = Build.SUPPORTED_64_BIT_ABIS.length > 0;
 
-        MODEL = SystemProperties.get("ro.hardware", "odroid");
-        BRANCH = SystemProperties.get("ro.chip", "s922") + "_" +
+        MODEL = EnvProperty.get("ro.hardware", "odroid");
+        BRANCH = EnvProperty.get("ro.chip", "s922") + "_" +
                 sdkVersion.get(sdk) + "_" +
                 (is64Bit? "64_master": "master");
     }

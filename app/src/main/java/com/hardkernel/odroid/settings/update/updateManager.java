@@ -3,9 +3,8 @@ package com.hardkernel.odroid.settings.update;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Build;
-import android.os.SystemProperties;
 
-
+import com.hardkernel.odroid.settings.EnvProperty;
 import com.hardkernel.odroid.settings.R;
 import com.hardkernel.odroid.settings.MainApplication;
 
@@ -20,8 +19,8 @@ public class updateManager {
         boolean is64Bit = Build.SUPPORTED_64_BIT_ABIS.length > 0;
         LATEST_VERSION = is64Bit? "latestupdate_pie_64": "latestupdate_pie";
 
-        OFFICIAL_URL = SystemProperties.get("ro.url.official", "https://dn.odroid.com/S922X/ODROID-N2/Android/");
-        MIRROR_URL = SystemProperties.get("ro.url.mirror", "https://dn.odroid.com/S922X/ODROID-N2/Android/");
+        OFFICIAL_URL = EnvProperty.get("ro.url.official", "https://dn.odroid.com/S922X/ODROID-N2/Android/");
+        MIRROR_URL = EnvProperty.get("ro.url.mirror", "https://dn.odroid.com/S922X/ODROID-N2/Android/");
     }
 
     public static final String KEY_OFFICIAL = "server_official";

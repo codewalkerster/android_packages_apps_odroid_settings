@@ -16,31 +16,18 @@
 
 package com.hardkernel.odroid.settings;
 
-import android.content.ContentResolver;
-import android.content.Context;
-import android.media.AudioFormat;
-import android.media.AudioManager;
 import android.os.Bundle;
-import android.os.SystemProperties;
-import android.provider.Settings;
 import android.support.v7.preference.ListPreference;
 import android.support.v7.preference.Preference;
 import android.text.TextUtils;
 
-import com.droidlogic.app.OutputModeManager;
-import com.hardkernel.odroid.settings.SettingsConstant;
 import com.hardkernel.odroid.settings.R;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.util.Properties;
 
 public class SoundFragment extends LeanbackAddBackPreferenceFragment implements Preference.OnPreferenceChangeListener {
     public static final String TAG = "SoundFragment";
     private static final String KEY_SOUND_SELECT = "sound_select";
     private static final String SOUND_SELECT = "media.audio_hal.device";
-    private static final String PROP_FILE = "/odm/default.prop";
 
     public static SoundFragment newInstance() {
         return new SoundFragment();
@@ -71,7 +58,7 @@ public class SoundFragment extends LeanbackAddBackPreferenceFragment implements 
     private void updateFormatPreferencesStates() {
         final ListPreference soundSelectPref = (ListPreference) findPreference(KEY_SOUND_SELECT);
 
-        int selected = SystemProperties.getInt(SOUND_SELECT, 0);
+        int selected = EnvProperty.getInt(SOUND_SELECT, 0);
         switch (selected) {
             case 0: //Hdmi, lineout I2S
                 soundSelectPref.setSummary("HDMI, Lineout");
@@ -89,17 +76,7 @@ public class SoundFragment extends LeanbackAddBackPreferenceFragment implements 
     public boolean onPreferenceChange(Preference preference, Object newValue) {
         if (TextUtils.equals(preference.getKey(), KEY_SOUND_SELECT)) {
             final String selection = (String)newValue;
-            SystemProperties.set(SOUND_SELECT, selection);
-            Properties properties = new Properties();
-            File propertyFile = new File(PROP_FILE);
-            try {
-                FileInputStream inStream = new FileInputStream(propertyFile);
-                properties.load(inStream);
-                properties.setProperty(SOUND_SELECT, selection);
-                FileOutputStream outStream = new FileOutputStream(propertyFile);
-                properties.store(outStream,"Audio Changed");
-                outStream.close();
-            } catch(Exception e) {}
+            EnvProperty.setAndSave(SOUND_SELECT, selection, "Audio Changed");
             updateFormatPreferencesStates();
             return true;
         }

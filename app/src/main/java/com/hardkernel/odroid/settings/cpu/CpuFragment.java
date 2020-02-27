@@ -1,12 +1,12 @@
 package com.hardkernel.odroid.settings.cpu;
 
 import android.os.Bundle;
-import android.os.SystemProperties;
 
 import android.support.v17.preference.LeanbackPreferenceFragment;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceCategory;
 
+import com.hardkernel.odroid.settings.EnvProperty;
 import com.hardkernel.odroid.settings.R;
 import com.hardkernel.odroid.settings.LeanbackAddBackPreferenceFragment;
 
@@ -44,7 +44,7 @@ public class CpuFragment extends LeanbackAddBackPreferenceFragment {
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
 		setPreferencesFromResource(R.xml.cpu, null);
 
-        board = SystemProperties.get("ro.product.board", "odoridn2");
+        board = EnvProperty.get("ro.product.board", "odoridn2");
 
         bigCoreClockPref = findPreference(KEY_BIG_CORE_CLOCK);
         bigCoreGovernorPref = findPreference(KEY_BIG_CORE_GOVERNOR);

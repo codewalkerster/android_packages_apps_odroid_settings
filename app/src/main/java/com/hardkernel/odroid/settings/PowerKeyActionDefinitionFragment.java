@@ -21,9 +21,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.RemoteException;
-import android.os.SystemProperties;
 import android.os.SystemClock;
-import android.os.SystemProperties;
 import android.os.PowerManager;
 import android.provider.Settings;
 import android.support.v17.preference.LeanbackPreferenceFragment;
@@ -110,7 +108,7 @@ public class PowerKeyActionDefinitionFragment extends LeanbackAddBackPreferenceF
 				.checked(checkedKey == SUSPEND).build());
 		actions.add(new Action.Builder().key(POWER_KEY_SHUTDOWN).title(getString(R.string.power_action_shutdown))
 				.checked(checkedKey == SHUTDOWN).build());
-		if (!SystemProperties.getBoolean("ro.platform.has.tvuimode", false)) {
+		if (!EnvProperty.getBoolean("ro.platform.has.tvuimode", false)) {
 			actions.add(new Action.Builder().key(POWER_KEY_RESTART).title(getString(R.string.power_action_restart))
 					.checked(checkedKey == RESTART).build());
 		}

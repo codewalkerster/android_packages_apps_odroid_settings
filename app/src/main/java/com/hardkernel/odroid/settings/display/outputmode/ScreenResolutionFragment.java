@@ -25,7 +25,6 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.os.SystemProperties;
 import android.provider.Settings;
 import android.support.v14.preference.SwitchPreference;
 import android.support.v17.preference.LeanbackPreferenceFragment;
@@ -34,6 +33,7 @@ import android.support.v7.preference.Preference;
 import android.text.TextUtils;
 import android.text.format.DateFormat;
 
+import com.hardkernel.odroid.settings.EnvProperty;
 import com.hardkernel.odroid.settings.SettingsConstant;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -212,7 +212,7 @@ public class ScreenResolutionFragment extends LeanbackAddBackPreferenceFragment 
         }
         //only S912 as Mbox, T962E as Mbox, can display this options
         //T962E as TV and T962X, display in Settings-->Display list.
-        if (SystemProperties.getBoolean("ro.vendor.platform.support.dolbyvision", false) == true) {
+        if (EnvProperty.getBoolean("ro.vendor.platform.support.dolbyvision", false) == true) {
             if (isHdmiMode()) {
                 mDolbyVisionPref.setVisible(true);
                 mGraphicsPriorityPref.setVisible(

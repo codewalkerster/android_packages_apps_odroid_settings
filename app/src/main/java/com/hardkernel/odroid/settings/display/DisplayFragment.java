@@ -24,7 +24,8 @@ import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceCategory;
 
 import com.droidlogic.app.SdrManager;
-import android.os.SystemProperties;
+
+import com.hardkernel.odroid.settings.EnvProperty;
 import com.hardkernel.odroid.settings.util.DroidUtils;
 import com.hardkernel.odroid.settings.SettingsConstant;
 import com.hardkernel.odroid.settings.R;
@@ -72,6 +73,6 @@ public class DisplayFragment extends LeanbackAddBackPreferenceFragment {
 		hdrPref.setVisible(false);
 
 		final Preference dvPref =(Preference) findPreference(KEY_DOLBY_VISION);
-		dvPref.setVisible((SystemProperties.getBoolean("ro.vendor.platform.support.dolbyvision", false) == true));
+		dvPref.setVisible((EnvProperty.getBoolean("ro.vendor.platform.support.dolbyvision", false) == true));
 	}
 }

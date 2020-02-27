@@ -16,8 +16,9 @@
 
 package com.hardkernel.odroid.settings.util;
 
-import android.os.SystemProperties;
 import android.support.v7.preference.Preference;
+
+import com.hardkernel.odroid.settings.EnvProperty;
 
 /**
  * Utilities for working with Droid.
@@ -31,11 +32,11 @@ public final class DroidUtils {
 	}
 
 	public static boolean hasTvUiMode() {
-		return SystemProperties.getBoolean("ro.vendor.platform.has.tvuimode", false);
+		return EnvProperty.getBoolean("ro.vendor.platform.has.tvuimode", false);
 	}
 
 	public static boolean hasMboxUiMode() {
-		return SystemProperties.getBoolean("ro.vendor.platform.has.mboxuimode", false);
+		return EnvProperty.getBoolean("ro.vendor.platform.has.mboxuimode", false);
 	}
 
 	public static void invisiblePreference(Preference preference, boolean tvUiMode) {
