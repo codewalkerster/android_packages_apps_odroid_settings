@@ -48,6 +48,16 @@ public class EnvProperty {
         return true;
     }
 
+    public static boolean setAndSave(String key, Boolean value, String comment) {
+        if (!set(key, value? "true": "false"))
+            return  false;
+
+        if (!save(key, value? "true": "false", comment))
+            return false;
+
+        return true;
+    }
+
     public static boolean setAndSave(String key, String value, String comment) {
         if (!set(key, value))
             return  false;

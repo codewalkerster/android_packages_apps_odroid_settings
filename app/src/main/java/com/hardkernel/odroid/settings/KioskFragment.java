@@ -27,7 +27,7 @@ public class KioskFragment extends LeanbackAddBackPreferenceFragment {
         setPreferencesFromResource(R.xml.kisok, null);
         kioskPref = (TwoStatePreference)findPreference(KEY_KIOSK_SWITCH);
 
-        kioskMode = (EnvProperty.getInt(KIOSK_MODE, 0) == 1);
+        kioskMode = EnvProperty.getBoolean(KIOSK_MODE, false);
         kioskPref.setChecked(kioskMode);
     }
 
@@ -40,7 +40,7 @@ public class KioskFragment extends LeanbackAddBackPreferenceFragment {
         switch (key) {
             case KEY_KIOSK_SWITCH:
                 kioskMode = kioskPref.isChecked();
-                EnvProperty.setAndSave(KIOSK_MODE, kioskMode? "1":"0", "Kiosk Mode");
+                EnvProperty.setAndSave(KIOSK_MODE, kioskMode, "Kiosk Mode");
                 Toast.makeText(getContext(),
                         "Kiosk Mode will " + (kioskMode ? "": "not ")
                                 +"applied after reboot!",
