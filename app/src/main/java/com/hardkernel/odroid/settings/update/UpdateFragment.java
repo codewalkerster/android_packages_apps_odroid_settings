@@ -1,6 +1,5 @@
 package com.hardkernel.odroid.settings.update;
 
-import android.app.DownloadManager;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
@@ -9,9 +8,12 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.DocumentsContract;
+import android.provider.MediaStore;
 import android.support.v17.preference.LeanbackPreferenceFragment;
 import android.support.v14.preference.SwitchPreference;
 import android.support.v7.preference.Preference;
+import android.text.TextUtils;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.hardkernel.odroid.settings.R;
@@ -129,15 +131,32 @@ public class UpdateFragment extends LeanbackAddBackPreferenceFragment {
 
     private static String getPath(Context context, Uri uri) {
         final boolean isKitkat = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
-
         // DocumentProvider
         if (isKitkat && DocumentsContract.isDocumentUri(context, uri)) {
             if (isDownloadDocument(uri)) {
                 final String id = DocumentsContract.getDocumentId(uri);
-                final Uri contentUri = ContentUris.
-                        withAppendedId(Uri.parse("content://downloads/public_downloads"),
+
+                String[] contentUriPrefixesToTry = new String[] {
+                        "content://downloads/public_downloads",
+                        "content://downloads/my_downloads",
+                        "content://downloads/all_downloads",
+                };
+                try {
+                    for (String contentUriPrefix : contentUriPrefixesToTry ) {
+                        final Uri contentUri = ContentUris.withAppendedId(Uri.parse(contentUriPrefix),
                                 Long.valueOf(id));
-                return getDataColumn(context, contentUri, null, null);
+                        try {
+                            String path = getDataColumn(context, contentUri, null, null);
+                            if (path != null) {
+                                return path;
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                } catch (NumberFormatException e) {
+                    return id.replaceFirst("raw:", "");
+                }
             }
         } else if ( "file".equalsIgnoreCase(uri.getScheme())) {
             return uri.getPath();
@@ -149,13 +168,13 @@ public class UpdateFragment extends LeanbackAddBackPreferenceFragment {
     private static String getDataColumn (Context context, Uri uri,
                                          String selection, String[] selectionArgs) {
         Cursor cursor = null;
-        final String column = "_data";
-        final String[] projection = { column };
+        final String[] projection = { MediaStore.Images.Media.DATA };
+
         try {
             cursor = context.getContentResolver().query(uri, projection,
                     selection, selectionArgs, null);
             if (cursor != null && cursor.moveToFirst()) {
-                final int index = cursor.getColumnIndexOrThrow(column);
+                final int index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
                 return cursor.getString(index);
             }
         } finally {
