@@ -323,9 +323,11 @@ public class IPSettingsFragment extends LeanbackAddBackPreferenceFragment
             return -1;
         }
 
-        int networkPrefixLength = -1;
+        int networkPrefixLength = 24;
         try {
-            networkPrefixLength = Integer.parseInt(mEditTextEthPrefix.getText().toString());
+            String temp = mEditTextEthPrefix.getText().toString();
+            if (temp.length() != 0)
+                networkPrefixLength = Integer.parseInt(mEditTextEthPrefix.getText().toString());
             if (networkPrefixLength < 0 || networkPrefixLength > 32) {
                 return -1;
             }
