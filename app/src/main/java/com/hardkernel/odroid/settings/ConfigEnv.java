@@ -12,19 +12,19 @@ public class ConfigEnv {
     private final static String path = "/odm/env.ini";
 
     public static String getBigCoreClock() {
-        return getValue("max_freq_a73") + "000";
+        return getValue("max_freq_big") + "000";
     }
 
     public static String getLittleCoreClock() {
-        return getValue("max_freq_a53") + "000";
+        return getValue("max_freq_little") + "000";
     }
 
     public static String getBigCoreGovernor() {
-        return getValue("governor_a73");
+        return getValue("governor_big");
     }
 
     public static String getLittleCoreGovernor() {
-        return getValue("governor_a53");
+        return getValue("governor_little");
     }
 
     /** Not used,
@@ -82,19 +82,19 @@ public class ConfigEnv {
     }
 
     public static void setBigCoreFreq(String freq) {
-        setValue("max_freq_a73", freq.substring(0, freq.length()-3));
+        setValue("max_freq_big", freq.substring(0, freq.length()-3));
     }
 
     public static void setLittleCoreFreq(String freq) {
-        setValue("max_freq_a53", freq.substring(0, freq.length()-3));
+        setValue("max_freq_little", freq.substring(0, freq.length()-3));
     }
 
     public static void setBigCoreGovernor(String governor) {
-        setValue("governor_a73", governor);
+        setValue("governor_big", governor);
     }
 
     public static void setLittleCoreGovernor(String governor) {
-        setValue("governor_a53", governor);
+        setValue("governor_little", governor);
     }
 
     public static void setHdmiMode(String mode) {
