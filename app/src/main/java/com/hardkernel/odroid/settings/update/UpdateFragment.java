@@ -12,12 +12,14 @@ import android.provider.MediaStore;
 import android.support.v17.preference.LeanbackPreferenceFragment;
 import android.support.v14.preference.SwitchPreference;
 import android.support.v7.preference.Preference;
+import android.support.v7.preference.PreferenceScreen;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.hardkernel.odroid.settings.R;
 import com.hardkernel.odroid.settings.LeanbackAddBackPreferenceFragment;
+import com.hardkernel.odroid.settings.util.DroidUtils;
 
 import java.io.File;
 
@@ -29,10 +31,12 @@ public class UpdateFragment extends LeanbackAddBackPreferenceFragment {
     private static final String TAG = "UpdateFragment";
     public static final int FILE_SELECT_CODE = 101;
 
+    private static final String KEY_UPDATE = "update_title";
     private static final String KEY_FROM_ONLINE = "update_from_online";
     private static final String KEY_SELECT_SERVER = "selected_server";
     private static final String KEY_FROM_STORAGE = "update_from_storage";
 
+    private static PreferenceScreen update;
     private static Preference update_server;
     private static SwitchPreference checkAtUpdate;
 
@@ -55,6 +59,7 @@ public class UpdateFragment extends LeanbackAddBackPreferenceFragment {
     private void refreshStatus() {
         setPreferencesFromResource(R.xml.update, null);
         update_server = findPreference(KEY_SELECT_SERVER);
+        update = (PreferenceScreen)findPreference(KEY_UPDATE);
 
         String server = null;
         switch (updateManager.getServer()) {
@@ -72,6 +77,12 @@ public class UpdateFragment extends LeanbackAddBackPreferenceFragment {
 
         checkAtUpdate = (SwitchPreference) findPreference(updateManager.KEY_CHECK_UPDATE);
         checkAtUpdate.setChecked(updateManager.isCheckAtBoot());
+
+        Preference version = new Preference(getContext());
+        version.setTitle(DroidUtils.is64Bit()? "This is 64bit Android"
+                : "This is 32bit Android");
+        version.setEnabled(false);
+        update.addPreference(version);
     }
 
     @Override

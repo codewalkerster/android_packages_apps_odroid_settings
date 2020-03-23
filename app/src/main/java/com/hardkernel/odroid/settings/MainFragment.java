@@ -119,6 +119,9 @@ public class MainFragment extends LeanbackAddBackPreferenceFragment {
         } else if (!isPackageInstalled(getActivity(), MORE_SETTINGS_APP_PACKAGE)) {
             getPreferenceScreen().removePreference(moreSettingsPref);
         }
+
+        CharSequence title = mainPref.getTitle();
+        mainPref.setTitle(title + (DroidUtils.is64Bit()?" 64bit" : " 32bit"));
     }
 
     @Override
