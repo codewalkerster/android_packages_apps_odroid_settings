@@ -16,6 +16,7 @@
 
 package com.hardkernel.odroid.settings.util;
 
+import android.os.Build;
 import android.support.v7.preference.Preference;
 
 import com.hardkernel.odroid.settings.EnvProperty;
@@ -50,4 +51,7 @@ public final class DroidUtils {
 		}
 	}
 
+	public static boolean is64Bit() {
+		return Build.SUPPORTED_64_BIT_ABIS.length > 0;
+	}
 }

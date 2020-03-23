@@ -7,6 +7,7 @@ import android.util.Log;
 import com.hardkernel.odroid.settings.EnvProperty;
 import com.hardkernel.odroid.settings.R;
 import com.hardkernel.odroid.settings.MainApplication;
+import com.hardkernel.odroid.settings.util.DroidUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -26,10 +27,8 @@ class packageName {
 
         int sdk = Integer.parseInt(EnvProperty.get("ro.build.version.sdk"));
 
-        boolean is64Bit = Build.SUPPORTED_64_BIT_ABIS.length > 0;
-
         MODEL = EnvProperty.get("ro.hardware", "odroid");
-        ARCH = is64Bit ? "64bit" : "32bit";
+        ARCH = DroidUtils.is64Bit() ? "64bit" : "32bit";
     }
 
     public packageName(String packageName) {

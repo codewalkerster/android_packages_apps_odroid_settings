@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:key="update_title"
     android:title="@string/update">
     <Preference
         android:key="update_from_online"

@@ -7,6 +7,7 @@ import android.os.Build;
 import com.hardkernel.odroid.settings.EnvProperty;
 import com.hardkernel.odroid.settings.R;
 import com.hardkernel.odroid.settings.MainApplication;
+import com.hardkernel.odroid.settings.util.DroidUtils;
 
 public class updateManager {
     public final static String OFFICIAL_URL;
@@ -16,8 +17,7 @@ public class updateManager {
     public static final String LATEST_VERSION;
 
     static {
-        boolean is64Bit = Build.SUPPORTED_64_BIT_ABIS.length > 0;
-        LATEST_VERSION = is64Bit? "latestupdate_pie_64": "latestupdate_pie";
+        LATEST_VERSION = DroidUtils.is64Bit()? "latestupdate_pie_64": "latestupdate_pie";
 
         OFFICIAL_URL = EnvProperty.get("ro.url.official", "https://dn.odroid.com/S922X/ODROID-N2/Android/pie/32/");
         MIRROR_URL = EnvProperty.get("ro.url.mirror", "https://dn.odroid.com/S922X/ODROID-N2/Android/pie/32/");
