@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.hardkernel.odroid.settings.ConfigEnv;
+import com.hardkernel.odroid.settings.util.DroidUtils;
 
 public class CpuReceiver extends BroadcastReceiver {
     private final String TAG = "CpuReceiver";
@@ -18,9 +19,11 @@ public class CpuReceiver extends BroadcastReceiver {
             cpu.governor.set(ConfigEnv.getLittleCoreGovernor());
             cpu.frequency.setScalingMax(ConfigEnv.getLittleCoreClock());
 
-            cpu = CPU.getCPU(TAG, CPU.Cluster.Big);
-            cpu.governor.set(ConfigEnv.getBigCoreGovernor());
-            cpu.frequency.setScalingMax(ConfigEnv.getBigCoreClock());
+            if (DroidUtils.isOdroidN2()) {
+                cpu = CPU.getCPU(TAG, CPU.Cluster.Big);
+                cpu.governor.set(ConfigEnv.getBigCoreGovernor());
+                cpu.frequency.setScalingMax(ConfigEnv.getBigCoreClock());
+            }
         }
     }
 }

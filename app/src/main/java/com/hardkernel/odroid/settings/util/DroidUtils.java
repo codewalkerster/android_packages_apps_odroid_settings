@@ -54,4 +54,23 @@ public final class DroidUtils {
 	public static boolean is64Bit() {
 		return Build.SUPPORTED_64_BIT_ABIS.length > 0;
 	}
+
+	public static boolean isOdroidN2() {
+		return getBoard().equals("odroidn2");
+	}
+
+	public static boolean isOdroidC4() {
+		return getBoard().equals("odroidc4");
+	}
+
+	private static String board = null;
+
+	private static String getBoard() {
+		if (board != null)
+			return board;
+
+		board = EnvProperty.get("ro.product.board", "odroidn2");
+
+		return board;
+	}
 }
