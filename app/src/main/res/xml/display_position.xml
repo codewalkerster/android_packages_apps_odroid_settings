@@ -17,7 +17,11 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
         android:key="screen_position"
         android:title="@string/device_position">
-       <PreferenceCategory
+    <SwitchPreference
+        android:key="zoom_or_alignment"
+        android:persistent="true"
+        android:title="ZOOM/ALIGNMENT" />
+    <PreferenceCategory
         android:key="screen_position_scale">
            <Preference
                 android:key="zoom_in"
@@ -25,5 +29,21 @@
            <Preference
                 android:key="zoom_out"
                 android:title="@string/device_position_zoomout"/>
-        </PreferenceCategory>
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:key="screen_alignment">
+        <SeekBarPreference
+            android:key="alignment_left"
+            android:title="LEFT" />
+        <SeekBarPreference
+            android:title="TOP"
+            android:key="alignment_top" />
+        <SeekBarPreference
+            android:title="RIGHT"
+            android:key="alignment_right" />
+        <SeekBarPreference
+            android:title="BOTTOM"
+            android:key="alignment_bottom" />
+
+    </PreferenceCategory>
 </PreferenceScreen>

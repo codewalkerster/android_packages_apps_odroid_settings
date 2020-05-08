@@ -1,5 +1,7 @@
 package com.hardkernel.odroid.settings;
 
+import android.util.Log;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -9,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ConfigEnv {
+    private final static String TAG = "ConfigEnv";
     private final static String path = "/odm/env.ini";
 
     public static String getBigCoreClock() {
@@ -52,6 +55,36 @@ public class ConfigEnv {
 
     public static String getHeartBeat() {
         return getValue("heartbeat");
+    }
+
+    public static String getAdjustScreenWay() {
+        try {
+            return getValue("adjustScreenWay");
+        } catch (Exception e) {
+            setAdjustScreenWay("zoom");
+            return "zoom";
+        }
+    }
+
+    public static int[] getScreenAlignment() {
+        String align[];
+        String alignment;
+
+        try {
+            alignment = getValue("screenAlignment");
+            align = alignment.split(" ");
+            int[] result = {
+                    Integer.valueOf(align[0]), // left
+                    Integer.valueOf(align[1]), // top
+                    Integer.valueOf(align[2]), // right
+                    Integer.valueOf(align[3]) // bottom
+            };
+            return result;
+        } catch (Exception e) {
+            Log.e(TAG, "env.ini doesn't have screenAlignment opation");
+            setScreenAlignment(0, 0, 0, 0);
+        }
+        return new int[]{0, 0, 0, 0};
     }
 
     private static String getValue(String keyWord) {
@@ -140,11 +173,21 @@ public class ConfigEnv {
         setValue("heartbeat", mode);
     }
 
+    public static void setAdjustScreenWay(String way) {
+        setValue("adjustScreenWay", way);
+    }
+
+    public static void setScreenAlignment(int left, int top, int right, int bottom) {
+        String alignment = "" + left + " " + top + " " + right + " " + bottom;
+        setValue("screenAlignment", alignment);
+    }
+
     private static void setValue (String keyWord, String val) {
         _setValue(keyWord + "=", val);
     }
 
     private static void _setValue (String startTerm,String val) {
+        boolean isSet = false;
         try {
             File boot_ini = new File(path);
             FileReader fileReader = new FileReader(boot_ini);
@@ -153,8 +196,15 @@ public class ConfigEnv {
             List<String> lines = new ArrayList<>();
             String line;
             while ((line = reader.readLine()) != null) {
-                if (line.startsWith(startTerm))
+                if (line.startsWith(startTerm)) {
                     line = startTerm + "\"" + val + "\"";
+                    isSet = true;
+                }
+                lines.add(line + "\n");
+            }
+
+            if (isSet == false) {
+                line = startTerm + "\"" + val + "\"";
                 lines.add(line + "\n");
             }
 

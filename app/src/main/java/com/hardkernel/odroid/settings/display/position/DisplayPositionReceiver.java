@@ -17,7 +17,13 @@ public class DisplayPositionReceiver extends BroadcastReceiver {
             DisplayPositionManager mDisplayPositionManager;
             mDisplayPositionManager = new DisplayPositionManager (context);
 
-            mDisplayPositionManager.zoomByPercent(ConfigEnv.getDisplayZoomrate());
+            if (ConfigEnv.getAdjustScreenWay().equals("zoom"))
+                mDisplayPositionManager.zoomByPercent(ConfigEnv.getDisplayZoomrate());
+            else {
+                int[] alignment = ConfigEnv.getScreenAlignment();
+                mDisplayPositionManager.alignBy(alignment[0], alignment[1],
+                        alignment[2], alignment[3]);
+            }
         }
     }
 }
