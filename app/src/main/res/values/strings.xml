@@ -300,4 +300,5 @@
     <string name="kiosk">Kiosk</string>
     <string name="kiosk_mode">Kiosk Mode</string>
     <string name="kiosk_mode_info">Disable the navigation bar and status bar</string>
+    <string name="autoframerate">AUTO FRAMERATE</string>
 </resources>

@@ -38,5 +38,8 @@
         android:key="dolby_vision_graphics_priority"
         android:title="@string/dolby_vision_graphics_priority"
         android:fragment="com.hardkernel.odroid.settings.display.dolbyvision.GraphicsPrioritySettingFragment"/>
-
+    <SwitchPreference
+        android:key="auto_framerate"
+        android:persistent="false"
+        android:title="@string/autoframerate" />
 </PreferenceScreen>

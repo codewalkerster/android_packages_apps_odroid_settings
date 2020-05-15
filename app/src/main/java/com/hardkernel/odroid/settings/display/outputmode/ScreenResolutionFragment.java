@@ -30,6 +30,8 @@ import android.support.v14.preference.SwitchPreference;
 import android.support.v17.preference.LeanbackPreferenceFragment;
 import android.support.v7.preference.ListPreference;
 import android.support.v7.preference.Preference;
+import android.support.v7.preference.TwoStatePreference;
+import android.support.v7.preference.PreferenceScreen;
 import android.text.TextUtils;
 import android.text.format.DateFormat;
 
@@ -61,6 +63,7 @@ public class ScreenResolutionFragment extends LeanbackAddBackPreferenceFragment 
     private static final String KEY_DISPLAYMODE = "displaymode_setting";
     private static final String KEY_DOLBYVISION = "dolby_vision";
     private static final String KEY_DOLBYVISION_PRIORITY = "dolby_vision_graphics_priority";
+    private static final String KEY_AUTOFRAMERATE = "auto_framerate";
     private static final String DEFAULT_VALUE = "444,8bit";
 
     private String preMode;
@@ -86,6 +89,8 @@ public class ScreenResolutionFragment extends LeanbackAddBackPreferenceFragment 
     private OutputUiManager mOutputUiManager;
     private IntentFilter mIntentFilter;
     public boolean hpdFlag = false;
+
+    private AutoFramerateManager autoFramerateManager;
 
     private Handler mHandler = new Handler() {
         @Override
@@ -124,6 +129,7 @@ public class ScreenResolutionFragment extends LeanbackAddBackPreferenceFragment 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mOutputUiManager = new OutputUiManager(getActivity());
+        autoFramerateManager = AutoFramerateManager.getManager();
     }
 
     @Override
@@ -138,9 +144,29 @@ public class ScreenResolutionFragment extends LeanbackAddBackPreferenceFragment 
         mIntentFilter = new IntentFilter("android.intent.action.HDMI_PLUGGED");
         mIntentFilter.addAction(Intent.ACTION_TIME_TICK);
         mGraphicsPriorityPref = findPreference(KEY_DOLBYVISION_PRIORITY);
+
+        TwoStatePreference autoFramePref = (TwoStatePreference)findPreference(KEY_AUTOFRAMERATE);
+
+        if (autoFramerateManager == null)
+            autoFramerateManager = AutoFramerateManager.getManager();
+
+        autoFramePref.setEnabled(autoFramerateManager.canUseIt());
+        autoFramePref.setChecked(autoFramerateManager.isActive());
     }
 
     @Override
+    public boolean onPreferenceTreeClick(Preference preference) {
+        if (preference instanceof SwitchPreference) {
+            TwoStatePreference autoFrame = (TwoStatePreference) preference;
+            if (autoFrame.isChecked())
+                autoFramerateManager.start();
+            else
+                autoFramerateManager.stop();
+        }
+        return super.onPreferenceTreeClick(preference);
+    }
+
+        @Override
     public void onResume() {
         super.onResume();
         getActivity().registerReceiver(mIntentReceiver, mIntentFilter);

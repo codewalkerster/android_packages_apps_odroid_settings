@@ -85,10 +85,23 @@ public class ConfigEnv {
             };
             return result;
         } catch (Exception e) {
-            Log.e(TAG, "env.ini doesn't have screenAlignment opation");
+            Log.e(TAG, "env.ini doesn't have screenAlignment option");
             setScreenAlignment(0, 0, 0, 0);
         }
         return new int[]{0, 0, 0, 0};
+    }
+
+    public static boolean getAutoFramerateState() {
+        try {
+            if (getValue("autoFramerate").equals("true"))
+                return true;
+            else
+                return false;
+        } catch (Exception e) {
+            Log.e(TAG, "env.ini doesn't have autoFramerate option");
+            setAutoFramerate(false);
+        }
+        return false;
     }
 
     private static String getValue(String keyWord) {
@@ -184,6 +197,10 @@ public class ConfigEnv {
     public static void setScreenAlignment(int left, int top, int right, int bottom) {
         String alignment = "" + left + " " + top + " " + right + " " + bottom;
         setValue("screenAlignment", alignment);
+    }
+
+    public static void setAutoFramerate(boolean state) {
+        setValue("autoFramerate", state?"true":"false");
     }
 
     private static void setValue (String keyWord, String val) {
