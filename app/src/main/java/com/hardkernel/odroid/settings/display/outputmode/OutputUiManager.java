@@ -140,6 +140,8 @@ public class OutputUiManager {
     }
 
     public String getCurrentMode(){
+        if (ConfigEnv.getDisplayAutodetect())
+            return "AutoDetect";
          return mOutputModeManager.getCurrentOutputMode();
     }
 

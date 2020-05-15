@@ -41,6 +41,10 @@ public class ConfigEnv {
         return getValue("voutmode");
     }
 
+    public static boolean getDisplayAutodetect() {
+        return getValue("display_autodetect").equals("true");
+    }
+
     public static int getDisplayZoomrate() {
         return Integer.parseInt(getValue("zoom_rate"));
     }
