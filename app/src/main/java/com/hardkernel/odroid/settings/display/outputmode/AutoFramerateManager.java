@@ -13,7 +13,12 @@ public class AutoFramerateManager {
         return manager;
     }
 
-    public void autoApply() {
+    public static void onReceived() {
+        manager = new AutoFramerateManager();
+        manager.autoApply();
+    }
+
+    private void autoApply() {
         if (canUseIt()) {
             tryOnOff();
         }

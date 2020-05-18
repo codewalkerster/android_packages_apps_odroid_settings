@@ -35,7 +35,11 @@ public class ShortcutManager {
             pref = context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE);
     }
 
-    public static void initShortcuts(Context context) {
+    public static void onReceived(Context context) {
+        initShortcuts(context);
+    }
+
+    private static void initShortcuts(Context context) {
         init(context);
 
         for (int i=0;i<4; i++)

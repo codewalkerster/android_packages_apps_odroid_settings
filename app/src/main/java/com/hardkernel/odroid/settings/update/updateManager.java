@@ -1,5 +1,6 @@
 package com.hardkernel.odroid.settings.update;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Build;
@@ -30,6 +31,21 @@ public class updateManager {
 
     private static String server = KEY_MIRROR;
     private static String url = MIRROR_URL;
+
+    public static void onReceived(Context context) {
+        checkVersion(context);
+    }
+
+    private static void checkVersion(Context context) {
+        setPreference(context.getSharedPreferences(SHPREF_UPDATE_SERVER,
+                Context.MODE_PRIVATE));
+        initServer();
+        initURL();
+
+        if (!isCheckAtBoot())
+            return;
+        UpdatePackage.checkLatestVersion(context);
+    }
 
     public static String getRemoteURL() {
         return url;
