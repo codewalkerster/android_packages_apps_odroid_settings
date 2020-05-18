@@ -62,12 +62,13 @@ public class ConfigEnv {
     }
 
     public static String getAdjustScreenWay() {
-        try {
-            return getValue("adjustScreenWay");
-        } catch (Exception e) {
+
+        String value = getValue("adjustScreenWay");
+        if (value == null) {
             setAdjustScreenWay("zoom");
             return "zoom";
         }
+        return value;
     }
 
     public static int[] getScreenAlignment() {
