@@ -237,6 +237,7 @@ public class OutputmodeFragment extends LeanbackAddBackPreferenceFragment
                     // save current resolution mode.
                     ConfigEnv.setHdmiMode(curMode);
                     ConfigEnv.setDisplayZoom(100);
+                    mOutputUiManager.change2NewMode(curMode);
                     mOutputUiManager.setValidColorAttribute(curMode);
                     reboot();
                 }
