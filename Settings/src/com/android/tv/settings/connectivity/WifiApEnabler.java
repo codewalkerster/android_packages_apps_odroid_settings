@@ -142,6 +142,7 @@ public class WifiApEnabler {
     }
 
     private void handleWifiApStateChanged(int state, int reason) {
+        HotPotFragment.isCheck = false;
         switch (state) {
             case WifiManager.WIFI_AP_STATE_ENABLING:
                 mSwitch.setSummary(R.string.wifi_tether_starting);

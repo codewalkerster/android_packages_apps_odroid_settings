@@ -399,8 +399,15 @@ public class HotPotFragment extends LeanbackPreferenceFragment
         return super.onPreferenceTreeClick(preference);
     }
 
+    public static boolean isCheck = false;
+
     @Override
     public boolean onPreferenceChange(Preference preference, Object value) {
+        if(isCheck) {
+            return false;
+        }
+        isCheck = true;
+
         boolean enable = (Boolean) value;
 
         if (enable) {
