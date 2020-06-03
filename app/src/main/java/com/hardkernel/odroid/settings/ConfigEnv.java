@@ -162,11 +162,11 @@ public class ConfigEnv {
     }
 
     private static String convertVUResolution(String mode) {
-        if (mode.equals("ODROID-VU5/7"))
+        if (mode.startsWith("ODROID-VU5")) //VU5, VU5A, VU7
             return "800x480p60hz";
-        else if (mode.equals("ODROID-VU7 Plus"))
+        else if (mode.startsWith("ODROID-VU7")) // VU7+, VU7A+
             return  "1024x600p60hz";
-        else if (mode.equals("ODROID-VU8"))
+        else if (mode.startsWith("ODROID-VU8"))
             return "1024x768p60hz";
         return mode;
     }
