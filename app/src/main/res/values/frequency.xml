@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Odroid-N2 -->
+    <string-array name="n2_little">
+        <item>1992000</item>
+        <item>1896000</item>
+        <item>1704000</item>
+        <item>1608000</item>
+        <item>1512000</item>
+        <item>1398000</item>
+        <item>1200000</item>
+        <item>1000000</item>
+        <item>667000</item>
+        <item>500000</item>
+        <item>250000</item>
+        <item>100000</item>
+    </string-array>
+    <string-array name="n2_big">
+        <item>2004000</item>
+        <item>1908000</item>
+        <item>1800000</item>
+        <item>1704000</item>
+        <item>1608000</item>
+        <item>1512000</item>
+        <item>1398000</item>
+        <item>1200000</item>
+        <item>1000000</item>
+        <item>667000</item>
+        <item>500000</item>
+        <item>250000</item>
+        <item>100000</item>
+    </string-array>
+    <!-- Odroid-N2 Plus -->
+    <string-array name="n2_plus_little">
+        <item>2016000</item>
+        <item>1908000</item>
+        <item>1800000</item>
+        <item>1704000</item>
+        <item>1608000</item>
+        <item>1512000</item>
+        <item>1398000</item>
+        <item>1200000</item>
+        <item>1000000</item>
+        <item>667000</item>
+        <item>500000</item>
+    </string-array>
+    <string-array name="n2_plus_big">
+        <item>2400000</item>
+        <item>2304000</item>
+        <item>2208000</item>
+        <item>2100000</item>
+        <item>2016000</item>
+        <item>1908000</item>
+        <item>1800000</item>
+        <item>1704000</item>
+        <item>1608000</item>
+        <item>1512000</item>
+        <item>1398000</item>
+        <item>1200000</item>
+        <item>1000000</item>
+        <item>667000</item>
+        <item>500000</item>
+    </string-array>
+    <!-- Odroid-C4 -->
+    <string-array name="c4">
+        <item>2100000</item>
+        <item>2016000</item>
+        <item>1908000</item>
+        <item>1800000</item>
+        <item>1704000</item>
+        <item>1608000</item>
+        <item>1512000</item>
+        <item>1404000</item>
+        <item>1200000</item>
+        <item>1000000</item>
+        <item>667000</item>
+        <item>500000</item>
+        <item>250000</item>
+        <item>100000</item>
+    </string-array>
+</resources>

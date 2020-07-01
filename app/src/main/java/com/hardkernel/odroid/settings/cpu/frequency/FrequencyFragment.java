@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceScreen;
 import android.support.v17.preference.LeanbackPreferenceFragment;
+import android.widget.Toast;
 
 import com.hardkernel.odroid.settings.R;
 import com.hardkernel.odroid.settings.LeanbackAddBackPreferenceFragment;
@@ -12,6 +13,7 @@ import com.hardkernel.odroid.settings.LeanbackAddBackPreferenceFragment;
 import com.hardkernel.odroid.settings.RadioPreference;
 import com.hardkernel.odroid.settings.ConfigEnv;
 import com.hardkernel.odroid.settings.cpu.CPU;
+import com.hardkernel.odroid.settings.util.DroidUtils;
 
 public class FrequencyFragment extends LeanbackAddBackPreferenceFragment {
     private static final String TAG = "FrequencyFragment";
@@ -40,7 +42,7 @@ public class FrequencyFragment extends LeanbackAddBackPreferenceFragment {
 
         setPreferenceScreen(screen);
 
-        String[] frequencyList = cpu.frequency.getFrequencies();
+        String[] frequencyList = cpu.frequency.getFrequencies(getContext());
 
         for (final String frequency : frequencyList) {
             if (Integer.parseInt(frequency) < cpu.frequency.getPolicyMin())
@@ -49,13 +51,45 @@ public class FrequencyFragment extends LeanbackAddBackPreferenceFragment {
             final RadioPreference radioPreference = new RadioPreference(themedContext);
             radioPreference.setKey(frequency);
             radioPreference.setPersistent(false);
-            radioPreference.setTitle(frequency);
+            radioPreference.setTitle(getFrequencyTitle(frequency));
             radioPreference.setLayoutResource(R.layout.preference_reversed_widget);
             if (cpu.frequency.getScalingCurrent().equals(frequency)) {
                 radioPreference.setChecked(true);
             }
             screen.addPreference(radioPreference);
         }
+    }
+
+    private String getFrequencyTitle(String frequency) {
+        if (cpu.cluster == CPU.Cluster.Big) {
+            if(DroidUtils.isOdroidN2Plus()) {
+                if (Integer.valueOf(frequency) > 2208000)
+                    return frequency + " (Overclocking)";
+                else
+                    return frequency;
+            }
+            if(DroidUtils.isOdroidN2()) {
+                if(Integer.valueOf(frequency) > 1800000)
+                    return frequency + " (Overclocking)";
+                else
+                    return frequency;
+            }
+        } else { //Little
+            if(DroidUtils.isOdroidN2Plus()) {
+                if (Integer.valueOf(frequency) > 1908000)
+                    return frequency + " (Overclocking)";
+                else
+                    return frequency;
+            }
+            if(DroidUtils.isOdroidN2()) {
+                if(Integer.valueOf(frequency) > 1896000)
+                    return frequency + " (Overclocking)";
+                else
+                    return frequency;
+            }
+        }
+
+        return frequency;
     }
 
     @Override
@@ -65,6 +99,12 @@ public class FrequencyFragment extends LeanbackAddBackPreferenceFragment {
             radioPreference.clearOtherRadioPreferences(getPreferenceScreen());
             if (radioPreference.isChecked()) {
                 String selectedFrequency = radioPreference.getKey();
+                if (cpu.frequency.getPolicyMax()
+                        < Integer.valueOf(selectedFrequency)) {
+                    Toast.makeText(getContext(),
+                            "Selected Clock will be applied after reboot",
+                            Toast.LENGTH_LONG).show();
+                }
                 cpu.frequency.setScalingMax(selectedFrequency);
                 saveFrequency(selectedFrequency);
                 radioPreference.setChecked(true);

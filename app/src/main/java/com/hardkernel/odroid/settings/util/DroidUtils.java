@@ -21,6 +21,9 @@ import android.support.v7.preference.Preference;
 
 import com.hardkernel.odroid.settings.EnvProperty;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+
 /**
  * Utilities for working with Droid.
  */
@@ -57,6 +60,22 @@ public final class DroidUtils {
 
 	public static boolean isOdroidN2() {
 		return getBoard().equals("odroidn2");
+	}
+
+	public static boolean isOdroidN2Plus() {
+		ProcessBuilder cmd = new ProcessBuilder();
+		cmd.command("grep", "Hardware", "/proc/cpuinfo");
+		try {
+			Process process = cmd.start();
+			BufferedReader reader = new BufferedReader (
+					new InputStreamReader(process.getInputStream()));
+			String line = reader.readLine();
+			if (line.length() > 31) // "odroid-n2plus"  string length is longer then 31
+				return true;
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return false;
 	}
 
 	public static boolean isOdroidC4() {

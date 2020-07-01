@@ -1,6 +1,10 @@
 package com.hardkernel.odroid.settings.cpu;
 
+import android.content.Context;
 import android.util.Log;
+
+import com.hardkernel.odroid.settings.R;
+import com.hardkernel.odroid.settings.util.DroidUtils;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -11,51 +15,61 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.List;
 
 public class Frequency {
     /* Big cluster */
-    private final static String BIG_SCALING_AVAILABLE_FREQ = "/sys/devices/system/cpu/cpufreq/policy2/scaling_available_frequencies";
     private final static String BIG_SCALING_MAX_FREQ = "/sys/devices/system/cpu/cpufreq/policy2/scaling_max_freq";
     private final static String BIG_SCALING_MIN_FREQ = "/sys/devices/system/cpu/cpufreq/policy2/scaling_min_freq";
     /* Little cluster */
-    private final static String LITTLE_SCALING_AVAILABLE_FREQ = "/sys/devices/system/cpu/cpufreq/policy0/scaling_available_frequencies";
     private final static String LITTLE_SCALING_MAX_FREQ = "/sys/devices/system/cpu/cpufreq/policy0/scaling_max_freq";
     private final static String LITTLE_SCALING_MIN_FREQ = "/sys/devices/system/cpu/cpufreq/policy0/scaling_min_freq";
 
     private static String TAG;
     private CPU.Cluster cluster;
 
+    private final int policyMax;
+
     public Frequency (String tag, CPU.Cluster cluster) {
         TAG = tag;
         this.cluster = cluster;
+        switch (cluster) {
+            case Big:
+                policyMax = Integer.parseInt(getFreqFrom(BIG_SCALING_MAX_FREQ));
+                break;
+            case Little:
+                policyMax = Integer.parseInt(getFreqFrom(LITTLE_SCALING_MAX_FREQ));
+                break;
+            default:
+                policyMax = Integer.parseInt(getFreqFrom(LITTLE_SCALING_MAX_FREQ));
+        }
+    }
+
+    public int getPolicyMax() {
+        return policyMax;
     }
 
     public int getPolicyMin() {
-        FileReader reader;
         String minFreq;
-        try {
-            switch (cluster) {
-                case Big:
-                    reader = new FileReader(BIG_SCALING_MIN_FREQ);
-                    break;
-                case Little:
-                    reader = new FileReader(LITTLE_SCALING_MIN_FREQ);
-                    break;
-                default:
-                    reader = new FileReader(BIG_SCALING_MIN_FREQ);
-            }
-            BufferedReader bufferedReader = new BufferedReader(reader);
-            minFreq = bufferedReader.readLine();
-        } catch (Exception e) {
-            minFreq = "667000";
+
+        switch (cluster) {
+            case Big:
+                minFreq = getFreqFrom(BIG_SCALING_MIN_FREQ);
+                break;
+            case Little:
+                minFreq = getFreqFrom(LITTLE_SCALING_MIN_FREQ);
+                break;
+            default:
+                minFreq = getFreqFrom(LITTLE_SCALING_MIN_FREQ);
         }
+        if (minFreq == null)
+            minFreq = "667000";
 
         return Integer.parseInt(minFreq);
     }
 
-    public String[] getFrequencies() {
-        String available_frequencies = getScalingAvailables();
-        String[] frequencies = available_frequencies.split(" ");
+    public String[] getFrequencies(Context context) {
+        String[] frequencies = (String[]) getScalingAvailables(context).toArray();
 
         Arrays.sort(frequencies, new Comparator<String>() {
             @Override
@@ -69,29 +83,18 @@ public class Frequency {
 
     public String getScalingCurrent() {
         String freq = null;
-        FileReader fileReader;
 
-        try {
-            switch (cluster) {
-                case Big:
-                    fileReader = new FileReader(BIG_SCALING_MAX_FREQ);
-                    break;
-                case Little:
-                    fileReader = new FileReader(LITTLE_SCALING_MAX_FREQ);
-                    break;
-                default:
-                    fileReader = new FileReader(BIG_SCALING_MAX_FREQ);
-                    break;
-            }
+        switch (cluster) {
+            case Big:
+                freq = getFreqFrom(BIG_SCALING_MAX_FREQ);
+                break;
+            case Little:
+                freq = getFreqFrom(LITTLE_SCALING_MAX_FREQ);
 
-            BufferedReader bufferedReader = new BufferedReader(fileReader);
-            freq = bufferedReader.readLine();
-            bufferedReader.close();
-            Log.e(TAG, freq);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+                break;
+            default:
+                freq = getFreqFrom(LITTLE_SCALING_MAX_FREQ);
+                break;
         }
 
         return freq;
@@ -110,7 +113,7 @@ public class Frequency {
                     fileWriter = new FileWriter(LITTLE_SCALING_MAX_FREQ);
                     break;
                 default:
-                    fileWriter = new FileWriter(BIG_SCALING_MAX_FREQ);
+                    fileWriter = new FileWriter(LITTLE_SCALING_MAX_FREQ);
                     break;
             }
 
@@ -124,34 +127,42 @@ public class Frequency {
         }
     }
 
-    private String getScalingAvailables() {
-        String available_frequencies = null;
+    private String getFreqFrom(String node) {
+        String freq = null;
+
+        FileReader fileReader;
+
         try {
-            FileReader fileReader;
+            fileReader = new FileReader(node);
 
-            switch (cluster) {
-                case Big:
-                    fileReader = new FileReader(BIG_SCALING_AVAILABLE_FREQ);
-                    break;
-                case Little:
-                    fileReader = new FileReader(LITTLE_SCALING_AVAILABLE_FREQ);
-                    break;
-                default:
-                    fileReader = new FileReader(BIG_SCALING_AVAILABLE_FREQ);
-                    break;
-            }
-
-            BufferedReader bufferedReader= new BufferedReader(fileReader);
-            available_frequencies = bufferedReader.readLine();
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            freq = bufferedReader.readLine();
             bufferedReader.close();
-            Log.e(TAG, available_frequencies);
+            Log.e(TAG, node + " " + freq);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        return available_frequencies;
+        return freq;
     }
 
+
+    private List<String> getScalingAvailables(Context context) {
+        int id = 0;
+        if (DroidUtils.isOdroidN2()) {
+            if (DroidUtils.isOdroidN2Plus())
+                id = (CPU.Cluster.Big == cluster)?
+                        R.array.n2_plus_big
+                        : R.array.n2_plus_little;
+            else
+                id = (CPU.Cluster.Big == cluster)?
+                    R.array.n2_big
+                    : R.array.n2_little;
+        } else if (DroidUtils.isOdroidC4())
+            id = R.array.c4;
+
+        return Arrays.asList(context.getResources().getStringArray(id));
+    }
 }
