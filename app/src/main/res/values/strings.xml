@@ -301,4 +301,6 @@
     <string name="kiosk_mode">Kiosk Mode</string>
     <string name="kiosk_mode_info">Disable the navigation bar and status bar</string>
     <string name="autoframerate">AUTO FRAMERATE</string>
+    <string name="gpu">GPU</string>
+    <string name="scale_mode">Governor</string>
 </resources>

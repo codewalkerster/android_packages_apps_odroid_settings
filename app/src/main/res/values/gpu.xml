@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="gpu_scale_mode">
+        <item>interactive</item> <!-- scaling, dvfs -->
+        <item>FS Scaling</item> <!-- FS Scaling, dvfs with fixed num PP -->
+        <item>Performance</item> <!-- Scaling disabled, Always max clock -->
+        <item>Turbo</item> <!-- Turbo, Always max with ignoring temp -->
+    </string-array>
+</resources>

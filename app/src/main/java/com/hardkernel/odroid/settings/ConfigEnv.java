@@ -105,6 +105,16 @@ public class ConfigEnv {
         return false;
     }
 
+    public static String getGpuScaleMode() {
+        String mode = getValue("gpuScaleMode");
+
+        if (mode == null) {
+            mode = "2";
+            setGpuScaleMode(mode);
+        }
+        return mode;
+    }
+
     private static String getValue(String keyWord) {
         return _getValue(keyWord + "=");
     }
@@ -202,6 +212,10 @@ public class ConfigEnv {
 
     public static void setAutoFramerate(boolean state) {
         setValue("autoFramerate", state?"true":"false");
+    }
+
+    public static void setGpuScaleMode(String mode) {
+        setValue("gpuScaleMode", mode);
     }
 
     private static void setValue (String keyWord, String val) {

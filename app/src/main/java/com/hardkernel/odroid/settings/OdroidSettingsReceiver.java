@@ -9,6 +9,7 @@ import com.hardkernel.odroid.settings.display.outputmode.AutoFramerateManager;
 import com.hardkernel.odroid.settings.display.position.DisplayPositionReceiver;
 import com.hardkernel.odroid.settings.shortcut.ShortcutManager;
 import com.hardkernel.odroid.settings.update.updateManager;
+import com.hardkernel.odroid.settings.gpu.GpuReceiver;
 
 public class OdroidSettingsReceiver extends BroadcastReceiver {
 
@@ -20,6 +21,7 @@ public class OdroidSettingsReceiver extends BroadcastReceiver {
             ShortcutManager.onReceived(context);
             updateManager.onReceived(context);
             AutoFramerateManager.onReceived();
+            GpuReceiver.onReceive();
         }
     }
 }
