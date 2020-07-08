@@ -148,7 +148,6 @@ public class Frequency {
         return freq;
     }
 
-
     private List<String> getScalingAvailables(Context context) {
         int id = 0;
         if (DroidUtils.isOdroidN2()) {

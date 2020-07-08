@@ -115,6 +115,28 @@ public class ConfigEnv {
         return mode;
     }
 
+    public static String getOverlay() {
+        String overlays = getValue("overlays");
+
+        if (overlays == null) {
+            overlays = "";
+            setOverlay(overlays);
+        }
+
+        return overlays;
+    }
+
+    public static String getOverlaySize() {
+        String size = getValue("overlays_resize");
+
+        if (size == null) {
+            size = "16384";
+            setOverlaySize(size);
+        }
+
+        return size;
+    }
+
     private static String getValue(String keyWord) {
         return _getValue(keyWord + "=");
     }
@@ -216,6 +238,14 @@ public class ConfigEnv {
 
     public static void setGpuScaleMode(String mode) {
         setValue("gpuScaleMode", mode);
+    }
+
+    public static void setOverlay(String overlay) {
+        setValue("overlays", overlay);
+    }
+
+    public static void setOverlaySize(String size) {
+        setValue("overlays_resize", size);
     }
 
     private static void setValue (String keyWord, String val) {
