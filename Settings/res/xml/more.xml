@@ -101,6 +101,11 @@
         android:icon="@drawable/ic_volume_up"
         android:title="@string/advanced_sound_settings_title" />
     <Preference
+        android:icon="@drawable/dtb_overlay_icon"
+        android:key="dtbo"
+        android:title="@string/overlay_title"
+        android:fragment="hardkernel.odroid.settings.dtbo.DTBOverlayFragment" />
+    <Preference
         android:fragment="hardkernel.odroid.settings.develop.DevelopFragment"
         android:icon="@drawable/ic_settings_develop"
         android:key="amlogic_developer_options"
