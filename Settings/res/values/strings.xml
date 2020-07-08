@@ -2321,6 +2321,11 @@
     <string name="big_core_clock">Big Core Clocks</string>
     <string name="big_core_governor">Big Core Governors</string>
 
+    <!-- DTBO -->
+    <string name="overlays">DTB Overlay List</string>
+    <string name="overlay_size">DTBO Size Resize</string>
+    <string name="overlay_title">DTB Overlay</string>
+
     <!-- gpu -->
     <string name="gpu">GPU</string>
     <string name="gpu_clock">GPU Max Clock</string>

@@ -32,6 +32,11 @@
         android:key="cpu"
         android:title="@string/cpu"
         android:fragment="hardkernel.odroid.settings.cpu.CpuFragment" />
+    <Preference
+        android:icon="@drawable/dtb_overlay_icon"
+        android:key="dtbo"
+        android:title="@string/overlay_title"
+        android:fragment="hardkernel.odroid.settings.dtbo.DTBOverlayFragment" />
     <!-- android:icon="@drawable/ic_gpu" -->
     <Preference
         android:key="gpu"
