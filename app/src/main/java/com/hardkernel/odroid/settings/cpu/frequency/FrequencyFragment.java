@@ -88,16 +88,6 @@ public class FrequencyFragment extends LeanbackAddBackPreferenceFragment {
                     return frequency;
             }
         }
-
-        if (cpu.cluster == CPU.Cluster.Little) {
-            if (DroidUtils.isOdroidC4()) {
-                if (Integer.valueOf(frequency) > 2016000)
-                    return frequency + " (Overclocking)";
-                else
-                    return frequency;
-            }
-        }
-
         return frequency;
     }
 
