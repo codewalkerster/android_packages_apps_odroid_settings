@@ -96,6 +96,11 @@
         android:key="dtbo"
         android:title="@string/overlay_title" />
     <Preference
+        android:fragment="com.hardkernel.odroid.settings.MouseAccelFragment"
+        android:icon="@drawable/mouse_accel"
+        android:key="mouse_accel"
+        android:title="@string/mouse_accel" />
+    <Preference
         android:icon="@drawable/ic_info_outline"
         android:key="netflix_esn"
         android:title="@string/netflix_esn"/>

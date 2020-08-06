@@ -306,4 +306,6 @@
     <string name="overlays">DTB Overlay List</string>
     <string name="overlay_size">DTBO Size Resize</string>
     <string name="overlay_title">DTB Overlay</string>
+    <string name="mouse_accel">Mouse Acceleration</string>
+    <string name="mouse_accel_info">Configure the Mouse pointer speed Acceleration.</string>
 </resources>
