@@ -43,7 +43,7 @@ public class MouseAccelFragment extends LeanbackAddBackPreferenceFragment {
                 EnvProperty.setAndSave(MOUSE_ACCELERATION, mouseAccel, "Add Mouse Acceleration Option");
                 Toast.makeText(getContext(),
                         "Mouse Acceleration will " + (mouseAccel ? "" : "not ")
-                                + "applied after reboot!",
+                                + "be applied after reboot!",
                         Toast.LENGTH_LONG).show();
                 return true;
         }
