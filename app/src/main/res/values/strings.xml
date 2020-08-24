@@ -308,4 +308,6 @@
     <string name="overlay_title">DTB Overlay</string>
     <string name="mouse_accel">Mouse Acceleration</string>
     <string name="mouse_accel_info">Configure the Mouse pointer speed Acceleration.</string>
+    <string name="landscape_0">0</string>
+    <string name="landscape_180">180</string>
 </resources>
