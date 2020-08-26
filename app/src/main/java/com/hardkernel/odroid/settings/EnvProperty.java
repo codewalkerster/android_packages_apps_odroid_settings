@@ -3,6 +3,7 @@ package com.hardkernel.odroid.settings;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.util.Properties;
 import android.os.SystemProperties;
 
@@ -25,13 +26,23 @@ public class EnvProperty {
         return SystemProperties.get(key, defaultValue);
     }
 
+    public static String getFromFile(String key) {
+        try {
+            InputStream inputStream = new FileInputStream(PROP_FILE);
+            Properties properties = new Properties();
+            properties.load(inputStream);
+            return properties.getProperty(key);
+        } catch (Exception e) {}
+        return "";
+    }
+
     public static boolean set (String key, String value) {
         SystemProperties.set(key, value);
 
         return true;
     }
 
-    private static boolean save (String key, String value, String comment) {
+    public static boolean save (String key, String value, String comment) {
         Properties properties = new Properties();
         File propertyFile = new File(PROP_FILE);
         try {

@@ -20,6 +20,7 @@ import android.os.Bundle;
 import android.support.v7.preference.ListPreference;
 import android.support.v7.preference.Preference;
 import android.text.TextUtils;
+import android.widget.Toast;
 
 import com.hardkernel.odroid.settings.R;
 
@@ -28,6 +29,8 @@ public class SoundFragment extends LeanbackAddBackPreferenceFragment implements 
     public static final String TAG = "SoundFragment";
     private static final String KEY_SOUND_SELECT = "sound_select";
     private static final String SOUND_SELECT = "media.audio_hal.device";
+    private static final String KEY_BT_A2DP = "bluetooth_select";
+    private static final String BT_SELECT = "ro.service.bt.a2dp_sink";
 
     public static SoundFragment newInstance() {
         return new SoundFragment();
@@ -52,6 +55,12 @@ public class SoundFragment extends LeanbackAddBackPreferenceFragment implements 
         soundSelectPref.setEntryValues(getArrayString(R.array.sound_select_entry_values));
         soundSelectPref.setOnPreferenceChangeListener(this);
 
+        final ListPreference bluetoothA2dpSelectPref = (ListPreference) findPreference(KEY_BT_A2DP);
+
+        bluetoothA2dpSelectPref.setEntries(getArrayString(R.array.bluetooth_a2dp_entries));
+        bluetoothA2dpSelectPref.setEntryValues(getArrayString(R.array.bluetooth_a2dp_entry_values));
+        bluetoothA2dpSelectPref.setOnPreferenceChangeListener(this);
+
         updateFormatPreferencesStates();
     }
 
@@ -70,6 +79,14 @@ public class SoundFragment extends LeanbackAddBackPreferenceFragment implements 
                 soundSelectPref.setSummary("I2S");
                 break;
         }
+
+        final ListPreference bluetoothA2dpSelectPref = (ListPreference) findPreference(KEY_BT_A2DP);
+        String is_a2dp_sink = EnvProperty.getFromFile(BT_SELECT);
+        if (Boolean.valueOf(is_a2dp_sink)) {
+            bluetoothA2dpSelectPref.setSummary("A2DP SINK");
+        } else {
+            bluetoothA2dpSelectPref.setSummary("A2DP");
+        }
     }
 
     @Override
@@ -78,7 +95,16 @@ public class SoundFragment extends LeanbackAddBackPreferenceFragment implements 
             final String selection = (String)newValue;
             EnvProperty.setAndSave(SOUND_SELECT, selection, "Audio Changed");
             updateFormatPreferencesStates();
-            return true;
+        }
+
+        if (TextUtils.equals(preference.getKey(), KEY_BT_A2DP)) {
+            final String select = (String)newValue;
+            EnvProperty.save(BT_SELECT, select, "Bt Sink Changed");
+            updateFormatPreferencesStates();
+
+            Toast.makeText(getContext(),
+                    "The A2DP Configuration will be applied after reboot",
+                    Toast.LENGTH_LONG).show();
         }
         return true;
     }

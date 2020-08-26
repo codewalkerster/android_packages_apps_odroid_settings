@@ -27,6 +27,16 @@
         <item>8</item>
     </string-array>
 
+    <string-array name="bluetooth_a2dp_entries">
+        <item>A2DP</item>
+        <item>A2DP SINK</item>
+    </string-array>
+
+    <string-array name="bluetooth_a2dp_entry_values" translatable="false">
+        <item>false</item>
+        <item>true</item>
+    </string-array>
+
     <string-array name="dolby_vision_entries">
         <item>Dolby Vision OFF</item>
         <item>Dolby Vision Follow Sink</item>
