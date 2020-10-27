@@ -113,7 +113,7 @@ public class DownloadReceiver extends BroadcastReceiver {
             }
         } else if (id == updatePackage.downloadedPackageId()) {
             UpdatePackage.installPackage(context,
-                    new File(updatePackage.localUri(context).getPath()));
+                    new File(updatePackage.localUri().getPath()));
         }
     }
 
@@ -134,7 +134,7 @@ public class DownloadReceiver extends BroadcastReceiver {
     }
 
     private boolean sufficientSpace(Context context) {
-        StatFs stat = new StatFs(UpdatePackage.getDownloadDir(context).getPath());
+        StatFs stat = new StatFs(UpdatePackage.DOWNLOAD_DIR);
         long available = stat.getAvailableBytes();
 
         if (available < updateManager.PACKAGE_MAXSIZE) {

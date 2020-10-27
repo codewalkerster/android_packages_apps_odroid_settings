@@ -20,6 +20,7 @@ public class UpdatePackage {
     private static long packgeId = -1;
     private static long version_checkId = -1; /* TODO: use it when check version */
 
+    public static final String DOWNLOAD_DIR = "/storage/emulated/0/Download";
     packageName name;
 
     UpdatePackage(String name) {
@@ -30,12 +31,8 @@ public class UpdatePackage {
         name = new packageName(buildNumber);
     }
 
-    static File getDownloadDir(Context context) {
-        return context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS);
-    }
-
-    public static Uri localUri(Context context) {
-        return Uri.parse("file://" + getDownloadDir(context) + "/update.zip");
+    public static Uri localUri() {
+        return Uri.parse("file://" + DOWNLOAD_DIR + "/update.zip");
     }
 
     public static long downloadedPackageId() { return packgeId; }
@@ -85,12 +82,12 @@ public class UpdatePackage {
         request.setDescription(uri.getPath());
         request.setNotificationVisibility(
                 DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-        request.setDestinationUri(localUri(context));
+        request.setDestinationUri(localUri());
 
-        Log.d(TAG, "Requesting to download " + uri.getPath() + " to " + localUri(context));
+        Log.d(TAG, "Requesting to download " + uri.getPath() + " to " + localUri());
 
         /* Remove if the same file is exist */
-        File file = new File(localUri(context).getPath());
+        File file = new File(localUri().getPath());
         if (file.exists())
             file.delete();
 
