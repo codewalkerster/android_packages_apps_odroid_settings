@@ -1,6 +1,9 @@
 package com.hardkernel.odroid.settings.update;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 import android.app.DownloadManager;
 import android.content.Context;
@@ -33,6 +36,26 @@ public class UpdatePackage {
 
     public static Uri localUri() {
         return Uri.parse("file://" + DOWNLOAD_DIR + "/update.zip");
+    }
+
+    public static File copyToCache(File src) {
+        File dest = new File("/cache/update.zip");
+        if (dest.exists()) {
+            dest.delete();
+        }
+        try {
+            Path result = Files.move(src.toPath(), dest.toPath());
+            if (result.toString().equals("/cache/update.zip")) {
+                Log.d(TAG, "Move update file to /cache partition");
+            } else {
+                Log.d(TAG, "Move failed");
+            }
+        } catch (IOException e) {
+            Log.d(TAG, e.toString());
+            e.printStackTrace();
+        }
+
+        return dest;
     }
 
     public static long downloadedPackageId() { return packgeId; }
@@ -103,7 +126,7 @@ public class UpdatePackage {
                 OdroidService.class);
         intent.putExtra("cmd", "installPackage");
         Bundle bundle = new Bundle();
-        bundle.putSerializable("packageFile", packageFile);
+        bundle.putSerializable("packageFile", copyToCache(packageFile));
         intent.putExtras(bundle);
         context.startService(intent);
     }
