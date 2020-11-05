@@ -47,7 +47,7 @@ android_app {
         "statslog-tvsettings",
         "TwoPanelSettingsLib"
     ],
-
+    jni_libs: ["libtvsettings-jni"],
     resource_dirs: ["res"],
 
     srcs: [
