@@ -126,6 +126,11 @@ public class DeviceFragment extends LeanbackPreferenceFragment implements Prefer
         mResolutionPreference = (ListPreference) findPreference(KEY_RESOLUTION);
         mColorPreference = (ListPreference) findPreference(KEY_COLOR);
 
+        if ("false".equals(SystemProperties.get("persist.sys.show_color_option", "false"))) {
+	    getPreferenceScreen().removePreference(mColorPreference);
+            mColorPreference = null;
+        }
+
         mZoomPreference = findPreference(KEY_ZOOM);
         mTextTitle = (TextView) getActivity().findViewById(androidx.preference.R.id.decor_title);
         if (!mIsUseDisplayd) {
@@ -142,20 +147,24 @@ public class DeviceFragment extends LeanbackPreferenceFragment implements Prefer
             return;
         mResolutionPreference.setEntries(mDisplayInfo.getModes());
         mResolutionPreference.setEntryValues(mDisplayInfo.getModes());
-        mColorPreference.setEntries(mDisplayInfo.getColors());
-        mColorPreference.setEntryValues(mDisplayInfo.getColors());
+        if (mColorPreference != null) {
+            mColorPreference.setEntries(mDisplayInfo.getColors());
+            mColorPreference.setEntryValues(mDisplayInfo.getColors());
+        }
         mTextTitle.setText(mDisplayInfo.getDescription());
     }
 
 
     protected void initEvent() {
         mResolutionPreference.setOnPreferenceChangeListener(this);
-        mColorPreference.setOnPreferenceChangeListener(this);
+        if (mColorPreference != null)
+            mColorPreference.setOnPreferenceChangeListener(this);
+
         mZoomPreference.setOnPreferenceClickListener(this);
         mAdvancedSettingsPreference.setOnPreferenceClickListener(this);
     }
     public void updateColorValue() {
-        if (mDisplayInfo == null)
+        if (mDisplayInfo == null || mColorPreference == null)
             return;
         String curColorMode = DrmDisplaySetting.getColorMode();
         Log.i(TAG, "curColorMode:" + curColorMode);
