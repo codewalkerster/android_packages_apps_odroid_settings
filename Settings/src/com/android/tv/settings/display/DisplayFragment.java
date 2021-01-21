@@ -159,6 +159,15 @@ public class DisplayFragment extends LeanbackPreferenceFragment {
         mDisplayDeviceCategory.removeAll();
         List<DisplayInfo> displayInfos = getDisplayInfos();
         Log.i(TAG, "rebuildView->displayInfos:" + displayInfos);
+        if (displayInfos.size() <= 0) {
+            try {
+                Log.i(TAG, "sleep for waiting native status update");
+                Thread.sleep(1500);
+                displayInfos = getDisplayInfos();
+                Log.i(TAG, "after sleep rebuildView->displayInfos:" + displayInfos);
+            } catch (InterruptedException e) {
+            }
+        }
         if (displayInfos.size() > 0) {
             for (DisplayInfo displayInfo : displayInfos) {
                 Intent intent = new Intent();
