@@ -21,6 +21,7 @@ import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
 import android.graphics.Bitmap;
+import android.graphics.Rect;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.graphics.drawable.BitmapDrawable;
@@ -64,8 +65,6 @@ public class ScreenScaleActivity extends Activity {
     private int mDefaultDpi = 160;
     private float mDpiRatio = 0;
     private int mkeylast = -1;
-    public static final String PROPERTY_OVERSCAN_MAIN = "persist.sys.overscan.main";
-    public static final String PROPERTY_OVERSCAN_AUX = "persist.sys.overscan.aux";
     /**
      * 标识平台
      */
@@ -226,7 +225,7 @@ public class ScreenScaleActivity extends Activity {
          * (ImageView)findViewById(R.id.button_left); mUpButton =
          * (ImageView)findViewById(R.id.button_up); mDownButton =
          * (ImageView)findViewById(R.id.button_down);
-         * 
+         *
          * mRightButton.setOnClickListener(mOnClick);
          * mLeftButton.setOnClickListener(mOnClick);
          * mUpButton.setOnClickListener(mOnClick);
@@ -375,18 +374,22 @@ public class ScreenScaleActivity extends Activity {
         mPlatform = getIntent().getStringExtra(ConstData.IntentKey.PLATFORM);
         mIsUseDisplayd = false;// SystemProperties.getBoolean("ro.rk.displayd.enable", true);
         mDisplayInfo = (DisplayInfo) getIntent().getSerializableExtra(ConstData.IntentKey.DISPLAY_INFO);
-        String overScan;
+        Object rkDisplayOutputManager = null;
+        try {
+            rkDisplayOutputManager = Class.forName("android.os.RkDisplayOutputManager").newInstance();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if(rkDisplayOutputManager == null) return;
+        Rect overScan;
         if (!mIsUseDisplayd) {
-            if (mDisplayInfo.getDisplayId() == 0) {
-                overScan = SystemProperties.get(PROPERTY_OVERSCAN_MAIN);
-            } else {
-                overScan = SystemProperties.get(PROPERTY_OVERSCAN_AUX);
-            }
-            if (TextUtils.isEmpty(overScan))
-                return;
+            overScan = (Rect)ReflectUtils.invokeMethod(rkDisplayOutputManager, "getOverScan",
+            new Class[] { int.class }, new Object[] { mDisplayInfo.getDisplayId() });
+            if (overScan == null) return;
             try {
-                mLeftScale = Integer.parseInt(overScan.split(",")[0].split("\\s+")[1]);
-                mBottomScale = Integer.parseInt(overScan.split(",")[3]);
+                mLeftScale = overScan.left;
+                mBottomScale = overScan.bottom;
+                Log.i(TAG, "mLeftScale = " + mLeftScale + ", mBottomScale = " + mBottomScale);
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e(TAG, "mLeft = " + mLeftScale + ",mBottom = " + mBottomScale);
