@@ -2070,12 +2070,6 @@
     <!-- Strings for Dialog deny button -->
     <string name="deny">Deny</string>
     <!--string name="progress_scanning">Searching</string -->
-    <!-- power -->
-    <string name="power_key">Power Key</string>
-    <string name="power_key_definition">Power Key Definition</string>
-    <string name="dormancy">Dormancy</string>
-    <string name="power_off">Power Off</string>
-    <string name="reboot">Reboot</string>
 
     <string name="yes">"Yes"</string>
     <!-- Strings for Dialog no button -->
@@ -2250,4 +2244,37 @@
     <string name="keyboard_layout_dialog_setup_button">Set up keyboard layouts</string>
     <string name="keyboard_layout_dialog_title">Choose keyboard layout</string>
     <string name="keyboard_layout_dialog_switch_hint">To switch, press Control-Spacebar</string>
+    <string name="default_launcher">Default Launcher</string>
+
+<!-- power -->
+    <string name="power_key">Power Key</string>
+    <string name="power_key_definition">Power Key Definition</string>
+    <string name="dormancy">Dormancy</string>
+    <string name="power_off">Power Off</string>
+    <string name="reboot">Reboot</string>
+    <!-- auto pair -->
+    <string name="pair_searching">Searching</string>
+    <string name="pair_pairing">remote begines pairring</string>
+    <string name="pair_paired">remote is pairred</string>
+    <string name="pair_connecting">remote begines connecting</string>
+    <string name="pair_connected">remote is connected</string>
+    <string name="autopait_timeout_error">not find device, continue searching</string>
+    <string name="pair_fail">remote pairs fail</string>
+    <string name="pair_status_error">pair_status_error</string>
+    <!--performance -->
+    <string name="performance_float">Performance Dialog</string>
+    <string name="cpu_title">CPU:</string>
+    <string name="cpu_model">cpu curFrq:</string>
+    <string name="cpu_usage">cpu usage:</string>
+    <string name="cpu_temp">cpu temperature:</string>
+    <string name="ram_title">RAM:</string>
+    <string name="ram_total">ram total:</string>
+    <string name="ram_usage">sys ram free:</string>
+    <string name="network_title">Network:</string>
+    <string name="network_speed">net speed:</string>
+    <string name="network_mac">wifi mac:</string>
+    <string name="network_mac2">ethernet mac:</string>
+
+    <!--Go To Loader -->
+    <string name="go_to_loader">Go to Loader</string>
 </resources>

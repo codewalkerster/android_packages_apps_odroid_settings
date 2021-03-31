@@ -24,7 +24,7 @@ import com.android.tv.settings.TvSettingsActivity;
 /**
  * Activity which shows the build / model / legal info / etc.
  */
-public class AdvanceSettingsActivity extends TvSettingsActivity {
+public class DefaultLauncherActivity extends TvSettingsActivity {
 
     @Override
     protected Fragment createSettingsFragment() {
@@ -39,7 +39,7 @@ public class AdvanceSettingsActivity extends TvSettingsActivity {
 
         @Override
         public void onPreferenceStartInitialScreen() {
-			final AdvanceSettingsFragment fragment = AdvanceSettingsFragment.newInstance();
+            final DefaultLauncherFragment fragment = DefaultLauncherFragment.newInstance();
             startPreferenceFragment(fragment);
         }
     }

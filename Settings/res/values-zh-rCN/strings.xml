@@ -1092,4 +1092,18 @@
     <string name="device_apps_app_management_ui_mode_appliance">器具</string>
     <string name="device_apps_app_management_ui_mode_watch">手表</string>
     <string name="device_apps_app_management_ui_mode_vr_headset">VR头戴设备</string>
+
+    <string name="default_launcher">默认启动器</string>
+    <!-- power -->
+    <string name="power_key">电源键</string>
+    <string name="power_key_definition">电源键定义</string>
+    <string name="dormancy">休眠</string>
+    <string name="power_off">关机</string>
+    <string name="reboot">重启</string>
+   <!--performance -->
+    <string name="performance_float">性能浮窗</string>
+    <string name="fixed_rotation">锁定屏幕方向</string>
+    <string name="hdmi_rotation">屏幕旋转</string>
+    <!-- 进入Loader -->
+    <string name="go_to_loader">进入Loader</string>
 </resources>
