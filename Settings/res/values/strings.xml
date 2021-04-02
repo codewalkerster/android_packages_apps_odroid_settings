@@ -189,6 +189,7 @@
     <!-- Preference and title which changes system sounds settings. [CHAR LIMIT=50] -->
     <string name="device_sound_effects">System sounds</string>
     <string name="device_sound_bootsafe">Enforce safe volume</string>
+    <string name="device_sound_disable_volume">Disable the volume</string>
     <string name="device_bit_stream">Decode &#038; BitStream</string>
     <string name="hdmi">HDMI</string>
     <!-- Preference which manages apps. [CHAR LIMIT=50] -->
@@ -2277,4 +2278,19 @@
 
     <!--Go To Loader -->
     <string name="go_to_loader">Go to Loader</string>
+
+    <!-- Internet ADB -->
+    <string name="enable_internet_adb">Internet Adb</string>
+    <string name="enable_internet_adb_summary">enabled internet adb</string>
+
+    <!-- abc -->
+    <string name="enable_abc">Android bug collector</string>
+    <string name="enable_abc_summary" >"Save recent boot logs in /data/logs"</string>
+    <string name="abc_tip_head" >The current /data/vendor/logs directory size is:</string>
+    <string name="abc_tip_end" > MB. Free up space now！</string>
+
+    <string name="enable_usb">USB settings</string>
+    <string name="enable_usb_summary">Set the USB connection status</string>
+    <string name="usb_connect_to_computer">Connect to Computer</string>
+    <string name="usb_disconnect_to_computer">Disconnect to Computer</string>
 </resources>

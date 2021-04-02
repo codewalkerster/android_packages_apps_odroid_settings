@@ -93,6 +93,7 @@
     <string name="device_surround_sound" msgid="6272196310566546860">"环绕声"</string>
     <string name="device_sound_effects" msgid="7793281745920228622">"系统声音"</string>
     <string name="device_sound_bootsafe">开机音量保护</string>
+    <string name="device_sound_disable_volume">禁止调节音量</string>
     <string name="device_bit_stream">解码与源码</string>
     <string name="device_apps" msgid="1971794537385509294">"应用"</string>
     <string name="device_storage" msgid="5536683600091277826">"存储空间"</string>
@@ -1106,4 +1107,19 @@
     <string name="hdmi_rotation">屏幕旋转</string>
     <!-- 进入Loader -->
     <string name="go_to_loader">进入Loader</string>
+
+    <!-- Internet ADB -->
+    <string name="enable_internet_adb">网络 Adb</string>
+    <string name="enable_internet_adb_summary">打开网络 adb</string>
+
+    <!-- enable abc -->
+    <string name="enable_abc" >"Android日志收集器"</string>
+    <string name="enable_abc_summary" >"保存近几次开机log到/data/logs目录"</string>
+    <string name="abc_tip_head" >当前data/vendor/logs目录大小为：</string>
+    <string name="abc_tip_end" > MB，请注意清理！</string>
+
+    <string name="enable_usb">USB连接状态</string>
+    <string name="enable_usb_summary">设置USB 连接状态</string>
+    <string name="usb_connect_to_computer">已连接到计算机</string>
+    <string name="usb_disconnect_to_computer">未连接到计算机</string>
 </resources>
