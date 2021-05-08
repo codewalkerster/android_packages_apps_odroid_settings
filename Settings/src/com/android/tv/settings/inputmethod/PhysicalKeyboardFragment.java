@@ -183,10 +183,10 @@ public class PhysicalKeyboardFragment extends SettingsPreferenceFragment
     }
 
     private void showKeyboardLayoutDialog(InputDeviceIdentifier inputDeviceIdentifier) {
-        /* KeyboardLayoutDialogFragment fragment = new KeyboardLayoutDialogFragment(
+        KeyboardLayoutDialogFragment fragment = new KeyboardLayoutDialogFragment(
                 inputDeviceIdentifier);
         fragment.setTargetFragment(this, 0);
-        fragment.show(getActivity().getFragmentManager(), "keyboardLayout"); */
+        fragment.show(getFragmentManager(), KeyboardLayoutDialogFragment.class.getSimpleName());
     }
 
     private void registerShowVirtualKeyboardSettingsObserver() {

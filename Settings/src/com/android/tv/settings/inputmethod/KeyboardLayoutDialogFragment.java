@@ -42,7 +42,6 @@ import android.widget.TextView;
 
 import com.android.internal.logging.nano.MetricsProto;
 import com.android.tv.settings.R;
-import com.android.settingslib.core.lifecycle.ObservableDialogFragment;
 import com.android.settingslib.core.instrumentation.Instrumentable;
 import com.android.settingslib.core.instrumentation.MetricsFeatureProvider;
 import com.android.settingslib.core.instrumentation.VisibilityLoggerMixin;
@@ -50,7 +49,7 @@ import com.android.settingslib.core.instrumentation.VisibilityLoggerMixin;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class KeyboardLayoutDialogFragment extends ObservableDialogFragment
+public class KeyboardLayoutDialogFragment extends DialogFragment
         implements Instrumentable, InputDeviceListener, LoaderCallbacks<KeyboardLayoutDialogFragment.Keyboards> {
     private static final String KEY_INPUT_DEVICE_IDENTIFIER = "inputDeviceIdentifier";
 
