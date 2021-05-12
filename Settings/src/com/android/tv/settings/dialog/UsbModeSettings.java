@@ -35,8 +35,8 @@ public class UsbModeSettings {
     private File file = null;
 
     private StorageManager mStorageManager = null;
-    private String mMode = null;
-    private String mSocName = null;
+    private String mMode = "";
+    private String mSocName = "";
 
     private Context mContext;
 
@@ -55,7 +55,12 @@ public class UsbModeSettings {
         }
         file = getFile();
         mStorageManager = (StorageManager) mContext.getSystemService(Context.STORAGE_SERVICE);
-        checkFile();
+        boolean ret = checkFile();
+        String mode = ReadFromFile(file);
+        if(ret && !TextUtils.isEmpty(mode)) {
+            mMode = mode;
+        }
+
     }
 
     private File getFile() {
