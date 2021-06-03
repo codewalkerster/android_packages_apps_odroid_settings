@@ -1,16 +1,23 @@
 package com.hardkernel.odroid.settings;
 
+import android.app.AlertDialog;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.IBinder;
 import android.os.RecoverySystem;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
+import android.view.Gravity;
+import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Toast;
+import android.widget.TextView;
 
 import com.hardkernel.odroid.settings.update.DownloadReceiver;
 import com.hardkernel.odroid.settings.update.installReceiver;
@@ -77,11 +84,46 @@ public class OdroidService extends Service {
 
     private void buildNNotify(String contentTitle, String contentMsg,
                               String actionTitle, Intent intent) {
+        String kioskMode = EnvProperty.getFromFile("kiosk_mode");
+        if (kioskMode.equals("true")) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
+            View view = View.inflate(this, R.layout.update_dialog, null);
 
-        PendingIntent actionIntent = PendingIntent.getBroadcast(
-                this, 0, intent, 0);
+            TextView alertTitle = (TextView) view.findViewById(R.id.update_dialog_title);
+            alertTitle.setText(contentTitle);
+            TextView alertMsg = (TextView) view.findViewById(R.id.update_dialog_message);
 
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, Channel_id)
+            AlertDialog alert = builder.create();
+
+            CountDownTimer timer = new CountDownTimer (10000, 1000) {
+                public void onTick(long milliseconds) {
+                    alertMsg.setText(contentMsg + "(" +  (milliseconds / 1000)  + ")");
+                }
+                public void onFinish() {
+                    if (alert.isShowing()) {
+                        alert.dismiss();
+                    }
+                }
+            };
+            TextView actionBtn = (TextView) view.findViewById(R.id.update_dialog_ok);
+            actionBtn.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    sendBroadcast(intent);
+                    alert.dismiss();
+                    timer.cancel();
+                }
+            });
+            actionBtn.setText(actionTitle);
+            alert.setView(view);
+            alert.getWindow().setType(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY -1);
+            alert.show();
+            timer.start();
+            Window alertWindow = alert.getWindow();
+            alertWindow.setGravity(Gravity.CENTER);
+        } else {
+            PendingIntent actionIntent = PendingIntent.getBroadcast(
+                    this, 0, intent, 0);
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(this, Channel_id)
                 .setSmallIcon(R.drawable.ic_system_update)
                 .setContentTitle(contentTitle)
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(contentMsg))
@@ -89,8 +131,9 @@ public class OdroidService extends Service {
                 .addAction(R.drawable.ic_system_update, actionTitle, actionIntent)
                 .setAutoCancel(true);
 
-        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
-        notificationManager.notify(Notification_id, builder.build());
+            NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+            notificationManager.notify(Notification_id, builder.build());
+        }
     }
 
     private void createNotificationChannel() {
