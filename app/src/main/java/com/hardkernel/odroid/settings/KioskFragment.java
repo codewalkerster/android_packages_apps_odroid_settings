@@ -42,7 +42,7 @@ public class KioskFragment extends LeanbackAddBackPreferenceFragment {
                 kioskMode = kioskPref.isChecked();
                 EnvProperty.setAndSave(KIOSK_MODE, kioskMode, "Kiosk Mode");
                 Toast.makeText(getContext(),
-                        "Kiosk Mode will " + (kioskMode ? "": "not ")
+                        "KIOSK MODE will " + (kioskMode ? "": "not ")
                                 +"applied after reboot!",
                         Toast.LENGTH_LONG).show();
                 return true;
