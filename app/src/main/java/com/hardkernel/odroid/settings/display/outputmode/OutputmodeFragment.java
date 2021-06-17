@@ -41,7 +41,7 @@ import com.hardkernel.odroid.settings.LeanbackAddBackPreferenceFragment;
 import android.os.Handler;
 import android.os.Message;
 import android.os.ServiceManager;
-import android.os.IPowerManager;
+import android.os.PowerManager;
 import android.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.Log;
@@ -237,7 +237,6 @@ public class OutputmodeFragment extends LeanbackAddBackPreferenceFragment
                     // save current resolution mode.
                     ConfigEnv.setHdmiMode(curMode);
                     ConfigEnv.setDisplayZoom(100);
-                    mOutputUiManager.change2NewMode(curMode);
                     mOutputUiManager.setValidColorAttribute(curMode);
                     reboot();
                 }
@@ -247,13 +246,9 @@ public class OutputmodeFragment extends LeanbackAddBackPreferenceFragment
     }
 
     private void reboot() {
-        try {
-            IPowerManager pm = IPowerManager.Stub.asInterface(ServiceManager.getService(Context.POWER_SERVICE));
-            pm.reboot(false, null, false);
-        } catch (RemoteException e) {
-            Log.e(LOG_TAG, "PowerManager service died!", e);
-            return;
-        }
+        PowerManager pm = (PowerManager) getActivity().getSystemService(Context.POWER_SERVICE);
+        String reason = PowerManager.REBOOT_REQUESTED_BY_DEVICE_OWNER;
+        pm.reboot(reason);
     }
 
     private Handler mHandler = new Handler() {
