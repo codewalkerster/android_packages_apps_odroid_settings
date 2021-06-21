@@ -164,7 +164,7 @@ public class OutputmodeFragment extends LeanbackAddBackPreferenceFragment
             final RadioPreference radioPreference = (RadioPreference) preference;
             radioPreference.clearOtherRadioPreferences(getPreferenceScreen());
             if (radioPreference.isChecked()) {
-                preMode = mOutputUiManager.getCurrentMode().trim();
+                preMode = mOutputUiManager.getCurrentMode();
                 curMode = radioPreference.getKey();
                 setVoutmode();
                 curPreference = radioPreference;
@@ -347,13 +347,19 @@ public class OutputmodeFragment extends LeanbackAddBackPreferenceFragment
     }
 
     private void setVoutmode() {
-        if (curMode.startsWith("ODROID-VU")) {
-            if (voutmode != "dvi") {
+        if (curMode.equals("ODROID-VU7A Plus") ||
+                curMode.equals("ODROID-VU5A")) {
+            if (!voutmode.equals("hdmi")) {
+                voutmode = "hdmi";
+                ConfigEnv.setVoutMode(voutmode);
+            }
+        } else if (curMode.startsWith("ODROID-VU")) {
+            if (!voutmode.equals("dvi")) {
                 voutmode = "dvi";
                 ConfigEnv.setVoutMode(voutmode);
             }
         } else {
-            if (voutmode != "hdmi") {
+            if (!voutmode.equals("hdmi")) {
                 voutmode = "hdmi";
                 ConfigEnv.setVoutMode(voutmode);
             }
@@ -362,10 +368,18 @@ public class OutputmodeFragment extends LeanbackAddBackPreferenceFragment
 
     private int convertVuIndex(ArrayList<String> titleList, int index) {
         String mode = titleList.get(index);
-        if (mode.equals("800x480p60hz"))
-            return titleList.indexOf("ODROID-VU5/7");
-        else if (mode.equals("1024x600p60hz"))
-            return titleList.indexOf("ODROID-VU7 Plus");
+        if (mode.equals("800x480p60hz")) {
+            if (voutmode.equals("hdmi"))
+                return titleList.indexOf("ODROID-VU5A");
+            else
+                return titleList.indexOf("ODROID-VU5/7");
+        }
+        else if (mode.equals("1024x600p60hz")) {
+            if (voutmode.equals("hdmi"))
+                return titleList.indexOf("ODROID-VU7A Plus");
+            else
+                return titleList.indexOf("ODROID-VU7 Plus");
+        }
         else if (mode.equals("1024x768p60hz"))
             return titleList.indexOf("ODROID-VU8");
         else

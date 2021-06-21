@@ -206,10 +206,18 @@ public class ScreenResolutionFragment extends LeanbackAddBackPreferenceFragment 
         /* Convert VU's name from resolution */
         String curDisplayMode = getCurrentDisplayMode();
         {
-            if (curDisplayMode.equals("800x480p60hz"))
-                curDisplayMode = "ODROID-VU5/7";
-            else if (curDisplayMode.equals("1024x600p60hz"))
-                curDisplayMode = "ODROID-VU7 Plus";
+            if (curDisplayMode.equals("800x480p60hz")) {
+                if (mOutputUiManager.isVoutmodeHdmi())
+                    curDisplayMode = "ODROID-VU5A";
+                else
+                    curDisplayMode = "ODROID-VU5/7";
+            }
+            else if (curDisplayMode.equals("1024x600p60hz")) {
+                if (mOutputUiManager.isVoutmodeHdmi())
+                    curDisplayMode = "ODROID-VU7A Plus";
+                else
+                    curDisplayMode = "ODROID-VU7 Plus";
+            }
             else if (curDisplayMode.equals("1024x768p60hz"))
                 curDisplayMode = "ODROID-VU8";
             else
@@ -259,7 +267,7 @@ public class ScreenResolutionFragment extends LeanbackAddBackPreferenceFragment 
      * if current best resolution state is disable, it will enable best resolution after method.
      */
     private String getCurrentDisplayMode() {
-        return mOutputUiManager.getCurrentMode().trim();
+        return mOutputUiManager.getCurrentMode();
     }
     private boolean isHdmiMode() {
         return mOutputUiManager.isHdmiMode();

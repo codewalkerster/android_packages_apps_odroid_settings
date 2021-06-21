@@ -165,7 +165,7 @@ implements OnClickListener {
 
         for (int i = 0; i < curValueList.size(); i++) {
             value = colorValueList.get(i).trim();
-            curMode = mOutputUiManager.getCurrentMode().trim();
+            curMode = mOutputUiManager.getCurrentMode();
             if (!isModeSupportColor(curMode, value)) {
                 continue;
             }
@@ -227,7 +227,7 @@ implements OnClickListener {
         preColor = mOutputUiManager.getCurrentColorAttribute();
         if (saveValue.equals("default"))
             saveValue = DEFAULT_COLOR_DEPTH_VALUE;
-        curMode = mOutputUiManager.getCurrentMode().trim();
+        curMode = mOutputUiManager.getCurrentMode();
         Log.i(LOG_TAG,"Set Color Depth Value: "+curValue + "CurValue: "+saveValue);
 
         if (!curValue.equals(saveValue)) {

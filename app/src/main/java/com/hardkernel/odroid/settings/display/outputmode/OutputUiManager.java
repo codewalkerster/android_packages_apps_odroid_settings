@@ -139,10 +139,14 @@ public class OutputUiManager {
         return true;
     }
 
+    public boolean isVoutmodeHdmi() {
+        return ConfigEnv.getVoutMode().equals("hdmi");
+    }
+
     public String getCurrentMode(){
         if (ConfigEnv.getDisplayAutodetect())
             return "AutoDetect";
-         return mOutputModeManager.getCurrentOutputMode();
+         return mOutputModeManager.getCurrentOutputMode().trim();
     }
 
     public String getCurrentColorAttribute(){
