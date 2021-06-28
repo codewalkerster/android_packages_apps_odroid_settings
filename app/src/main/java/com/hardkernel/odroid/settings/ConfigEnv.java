@@ -181,12 +181,13 @@ public class ConfigEnv {
     }
 
     public static void setHdmiMode(String mode) {
-        mode = convertVUResolution(mode);
-        setValue("hdmimode", mode);
         if (mode.equals("autodetect"))
             setDisplayAutodetect("true");
         else
             setDisplayAutodetect("false");
+        setDisableHPD(mode.startsWith("ODROID-VU"));
+        mode = convertVUResolution(mode);
+        setValue("hdmimode", mode);
     }
 
     private static void setDisplayAutodetect(String mode) {
@@ -246,6 +247,10 @@ public class ConfigEnv {
 
     public static void setOverlaySize(String size) {
         setValue("overlays_resize", size);
+    }
+
+    public static void setDisableHPD(boolean state) {
+        setValue("disablehpd", state?"true":"false");
     }
 
     private static void setValue (String keyWord, String val) {
