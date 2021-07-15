@@ -67,6 +67,12 @@ public class UpdatePackage {
     public static void checkLatestVersion(Context context) {
         String remote = updateManager.getRemoteURL();
 
+        if (remote.indexOf("https://") != 0) {
+            StringBuffer str = new StringBuffer(remote);
+            remote = "";
+            remote = str.insert(0, "https://").toString();
+        }
+
         /* Remove if the same file is exist */
         String latest_version = updateManager.getLatestVersion();
 
