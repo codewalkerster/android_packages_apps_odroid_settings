@@ -873,6 +873,11 @@
               <meta-data android:name="hardkernel.odroid.settings.FRAGMENT_CLASS"
                   android:value="hardkernel.odroid.settings.inputmethod.KeyboardLayoutPickerFragment" />
         </activity>
+        <activity
+            android:name=".cpu.CpuActivity"
+            android:configChanges="keyboard|keyboardHidden|navigation"
+            android:excludeFromRecents="true"
+            android.exported="true" />
     </application>
 
 </manifest>

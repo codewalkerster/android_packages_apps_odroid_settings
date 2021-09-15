@@ -2302,4 +2302,11 @@
     <string name="flash_img_success">Flash image files successfully.</string>
     <string name="flash_img_failed">Flash image files failed.</string>
     <string name="flash_img_progress">Flashing(!!!Prohibit removal of power supply!!!)</string>
+
+    <!-- cpu -->
+    <string name="cpu">CPU</string>
+    <string name="little_core_clock">Little Core Clocks</string>
+    <string name="little_core_governor">Little Core Governors</string>
+    <string name="big_core_clock">Big Core Clocks</string>
+    <string name="big_core_governor">Big Core Governors</string>
 </resources>

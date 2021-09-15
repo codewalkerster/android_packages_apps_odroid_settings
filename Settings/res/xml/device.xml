@@ -18,11 +18,6 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
                   android:title="@string/device_pref_category_title">
     <Preference
-        android:fragment="hardkernel.odroid.settings.display.DisplayFragment"
-        android:icon="@drawable/icon_display"
-        android:key="displaies"
-        android:title="@string/display_category_title"/>
-    <Preference
         android:fragment="hardkernel.odroid.settings.about.AboutFragment"
         android:icon="@drawable/ic_info_outline"
         android:key="about_device"
@@ -32,11 +27,21 @@
         android:key="bluetooth"
         android:title="@string/bluetooth"
         android:fragment="hardkernel.odroid.settings.bluetooth.BluetoothFragment" />
+    <!-- android:icon="@drawable/ic_cpu" -->
+    <Preference
+        android:key="cpu"
+        android:title="@string/cpu"
+        android:fragment="hardkernel.odroid.settings.cpu.CpuFragment" />
     <Preference
         android:fragment="hardkernel.odroid.settings.system.DateTimeFragment"
         android:icon="@drawable/ic_access_time"
         android:key="date_time"
         android:title="@string/system_date_time"/>
+    <Preference
+        android:fragment="hardkernel.odroid.settings.display.DisplayFragment"
+        android:icon="@drawable/icon_display"
+        android:key="displaies"
+        android:title="@string/display_category_title"/>
     <Preference
         android:fragment="hardkernel.odroid.settings.system.LanguageFragment"
         android:icon="@drawable/ic_language"
