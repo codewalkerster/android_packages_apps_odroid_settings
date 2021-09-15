@@ -20,6 +20,11 @@
     android:title="@string/more_pref_category_title" >
 
     <Preference
+        android:fragment="hardkernel.odroid.settings.cpu.CpuFragment"
+        android:icon="@drawable/ic_settings_display"
+        android:key="cpu"
+        android:title="@string/cpu" />
+    <Preference
         android:fragment="hardkernel.odroid.settings.display.DisplayFragment"
         android:icon="@drawable/ic_settings_display"
         android:key="display"

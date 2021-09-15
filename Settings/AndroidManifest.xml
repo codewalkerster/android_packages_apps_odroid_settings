@@ -360,6 +360,12 @@
                 android:exported="false"/>
 
         <activity
+            android:name=".cpu.CpuActivity"
+            android:configChanges="keyboard|keyboardHidden|navigation"
+            android:excludeFromRecents="true"
+            android.exported="true" />
+
+        <activity
                 android:configChanges="keyboard|keyboardHidden|navigation"
                 android:name=".display.rotation.RotationActivity"
                 android:theme="@style/Theme.Settings.Transparent"
@@ -420,7 +426,6 @@
         <service android:name="hardkernel.odroid.settings.sliceprovider.accessories.DroidCachedDeviceManageService"
             android:exported="true"
             android:singleUser="true" />
-
     </application>
 
 </manifest>

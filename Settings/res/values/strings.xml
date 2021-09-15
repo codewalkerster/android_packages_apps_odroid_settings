@@ -2941,4 +2941,11 @@
     <string name="find_my_remote_integration_title" translatable="false">@string/settings_find_my_remote_title</string>
     <string name="find_my_remote_integration_hint">When Find my remote is enabled, you can play a sound to locate your Google TV remote if it\'s misplaced.</string>
     <string name="find_my_remote_play_sound">Play sound</string>
+
+    <!-- cpu -->
+    <string name="cpu">CPU</string>
+    <string name="little_core_clock">Little Core Clocks</string>
+    <string name="little_core_governor">Little Core Governors</string>
+    <string name="big_core_clock">Big Core Clocks</string>
+    <string name="big_core_governor">Big Core Governors</string>
 </resources>

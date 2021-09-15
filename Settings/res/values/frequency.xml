@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Odroid-C5 -->
+    <string-array name="c5">
+        <item>500000</item>
+        <item>666666</item>
+        <item>1000000</item>
+        <item>1200000</item>
+        <item>1404000</item>
+        <item>1608000</item>
+        <item>1800000</item>
+        <item>2004000</item>
+        <item>2208000</item>
+        <item>2304000</item>
+        <item>2400000</item>
+        <item>2508000</item>
+    </string-array>
+</resources>
