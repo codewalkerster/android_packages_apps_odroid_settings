@@ -18,7 +18,7 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
                   android:title="@string/device_energy_saver">
 
-    <com.android.tv.settings.device.display.daydream.DreamTimePreference
+    <hardkernel.odroid.settings.device.display.daydream.DreamTimePreference
         android:key="sleepTime"
         android:persistent="true"
         android:title="@string/device_energy_saver_screen_off"

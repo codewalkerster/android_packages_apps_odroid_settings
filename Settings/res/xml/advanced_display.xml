@@ -22,7 +22,7 @@
         android:key="game_mode"
         android:persistent="true"
         android:title="@string/game_mode_title"/>
-    <com.android.tv.twopanelsettings.slices.EmbeddedSliceSwitchPreference
+    <hardkernel.odroid.twopanelsettings.slices.EmbeddedSliceSwitchPreference
         android:key="hdr_match_content"
         custom:uri="@string/hdr_settings_slice_uri"
         custom:isPreferenceVisible="false" />

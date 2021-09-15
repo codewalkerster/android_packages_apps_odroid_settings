@@ -28,7 +28,7 @@
     <Preference
         android:key="see_all_apps"
         android:title="@string/apps_see_all_apps"
-        android:fragment="com.android.tv.settings.device.apps.AllAppsFragment" />
+        android:fragment="hardkernel.odroid.settings.device.apps.AllAppsFragment" />
 
     <PreferenceCategory
         android:key="permissions"
@@ -42,11 +42,11 @@
         <Preference
             android:key="special_access"
             android:title="@string/special_access"
-            android:fragment="com.android.tv.settings.device.apps.specialaccess.SpecialAppAccess"/>
+            android:fragment="hardkernel.odroid.settings.device.apps.specialaccess.SpecialAppAccess"/>
     </PreferenceCategory>
 
     <Preference
-        android:fragment="com.android.tv.settings.system.SecurityFragment"
+        android:fragment="hardkernel.odroid.settings.system.SecurityFragment"
         android:key="security"
         android:title="@string/system_security"/>
 </PreferenceScreen>

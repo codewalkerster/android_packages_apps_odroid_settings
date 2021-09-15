@@ -25,7 +25,7 @@
             android:key="service"
             android:persistent="true"
             android:title="@string/accessibility_shortcut_service"
-            android:fragment="com.android.tv.settings.accessibility.AccessibilityShortcutServiceFragment"/>
+            android:fragment="hardkernel.odroid.settings.accessibility.AccessibilityShortcutServiceFragment"/>
     <Preference
             android:enabled="false"
             android:selectable="false"

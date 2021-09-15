@@ -18,7 +18,7 @@
 <manifest android:sharedUserId="android.uid.system"
      android:versionCode="1"
      android:versionName="1.0"
-     package="com.android.tv.settings"
+     package="hardkernel.odroid.settings"
      xmlns:android="http://schemas.android.com/apk/res/android"
      xmlns:tools="http://schemas.android.com/tools">
 
@@ -617,7 +617,7 @@
              android:name=".device.storage.NewStorageActivity"
              android:taskAffinity="">
             <intent-filter>
-                <action android:name="com.android.tv.settings.action.NEW_STORAGE"/>
+                <action android:name="hardkernel.odroid.settings.action.NEW_STORAGE"/>
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
@@ -626,7 +626,7 @@
              android:exported="false"
              android:name=".device.storage.UnmountActivity">
             <intent-filter>
-                <action android:name="com.android.tv.settings.action.UNMOUNT_STORAGE"/>
+                <action android:name="hardkernel.odroid.settings.action.UNMOUNT_STORAGE"/>
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
@@ -639,7 +639,7 @@
              android:exported="false"
              android:name=".device.storage.MigrateStorageActivity">
             <intent-filter>
-                <action android:name="com.android.tv.settings.action.MIGRATE_STORAGE"/>
+                <action android:name="hardkernel.odroid.settings.action.MIGRATE_STORAGE"/>
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
@@ -648,7 +648,7 @@
              android:exported="false"
              android:name=".device.apps.MoveAppActivity">
             <intent-filter>
-                <action android:name="com.android.tv.settings.action.MOVE_APP"/>
+                <action android:name="hardkernel.odroid.settings.action.MOVE_APP"/>
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
@@ -741,19 +741,7 @@
             </intent-filter>
         </activity>
 
-        <!-- FileProvider to share a generated license html file.
-                         Note that "com.android.settings.files"
-             is set here as its authorities because a Uri
-                         permission grant should be allowed to share a file with an external browser but it is
-                         allowed only for Settings' authorities in ActivityManagerService.  -->
-        <provider android:authorities="com.android.settings.files"
-             android:exported="false"
-             android:grantUriPermissions="true"
-             android:name="androidx.core.content.FileProvider">
-            <meta-data android:name="android.support.FILE_PROVIDER_PATHS"
-                 android:resource="@xml/file_paths"/>
-        </provider>
-        <provider android:authorities="com.android.tv.settings.name"
+        <provider android:authorities="hardkernel.odroid.settings.name"
              android:exported="true"
              android:name=".name.SuggestionContentProvider">
             <intent-filter>
@@ -782,7 +770,7 @@
              android:exported="true"
              android:launchMode="singleTop"
              android:name=".ActionDisabledByAdminDialog"
-             android:taskAffinity="com.android.tv.settings"
+             android:taskAffinity="hardkernel.odroid.settings"
              android:theme="@style/Theme.Settings.Transparent">
             <intent-filter android:priority="1">
                 <action android:name="android.settings.SHOW_ADMIN_SUPPORT_DETAILS"/>

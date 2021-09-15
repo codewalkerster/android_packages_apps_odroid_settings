@@ -37,7 +37,7 @@
     <Preference
         android:key="bit_stream"
         android:title="@string/device_bit_stream"
-        android:fragment="com.android.tv.settings.device.sound.BitStreamFragment"/>
+        android:fragment="hardkernel.odroid.settings.device.sound.BitStreamFragment"/>
 
     <PreferenceCategory
         android:key="surround_sound_category"

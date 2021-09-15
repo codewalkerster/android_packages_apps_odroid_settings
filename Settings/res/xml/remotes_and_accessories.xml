@@ -22,7 +22,7 @@
         android:key="add_accessory"
         android:title="@string/accessories_add">
         <intent
-            android:targetClass="com.android.tv.settings.accessories.AddAccessoryActivity"
-            android:targetPackage="com.android.tv.settings"/>
+            android:targetClass="hardkernel.odroid.settings.accessories.AddAccessoryActivity"
+            android:targetPackage="hardkernel.odroid.settings"/>
     </Preference>
 </PreferenceScreen>

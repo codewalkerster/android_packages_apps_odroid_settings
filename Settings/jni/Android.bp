@@ -1,5 +1,5 @@
 cc_library_shared {
-    name: "libtvsettings-jni",
+    name: "libodroidsettings-jni",
     compile_multilib: "both",
     system_ext_specific: true,
     multilib: {

@@ -1,22 +1,22 @@
 genrule {
-    name: "statslog-tvsettings-java-gen",
+    name: "statslog-odroidsettings-java-gen",
     tools: ["stats-log-api-gen"],
     cmd: "$(location stats-log-api-gen) --java $(out) --module tv_settings"
-        + " --javaPackage com.android.tv.twopanelsettings.slices --javaClass TvSettingsStatsLog",
-    out: ["com/android/tv/twopanelsettings/slices/TvSettingsStatsLog.java"],
+        + " --javaPackage hardkernel.odroid.twopanelsettings.slices --javaClass OdroidSettingsStatsLog",
+    out: ["hardkernel/odroid/twopanelsettings/slices/OdroidSettingsStatsLog.java"],
 }
 
-// This is needed to provide TvSettingsStatsLog as a library for TwoPanelSettingsOverlay makefile.
+// This is needed to provide OdroidSettingsStatsLog as a library for TwoPanelSettingsOverlay makefile.
 java_library {
-    name: "statslog-tvsettings",
+    name: "statslog-odroidsettings",
     srcs: [
-        ":statslog-tvsettings-java-gen",
+        ":statslog-odroidsettings-java-gen",
     ],
 }
 
 android_library {
 
-    name: "TwoPanelSettingsLib",
+    name: "TwoPanelOdroidSettingsLib",
     defaults: ["SettingsLibDefaults"],
 
     srcs: [
@@ -41,7 +41,7 @@ android_library {
         "androidx.lifecycle_lifecycle-extensions",
         "androidx.lifecycle_lifecycle-common-java8",
         "androidx.cardview_cardview",
-        "statslog-tvsettings",
+        "statslog-odroidsettings",
     ],
 
     min_sdk_version: "21",

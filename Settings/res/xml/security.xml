@@ -21,7 +21,7 @@
         android:key="unknown_sources"
         android:title="@string/security_unknown_sources_title"
         android:summary="@string/security_unknown_sources_desc"
-        android:fragment="com.android.tv.settings.device.apps.specialaccess.ExternalSources" />
+        android:fragment="hardkernel.odroid.settings.device.apps.specialaccess.ExternalSources" />
     <PreferenceCategory
         android:key="restricted_profile_group"
         android:title="@string/user_new_profile_name">
@@ -34,7 +34,7 @@
         <Preference
             android:key="restricted_profile_apps"
             android:title="@string/restricted_profile_configure_apps_title"
-            android:fragment="com.android.tv.settings.users.AppRestrictionsFragment" />
+            android:fragment="hardkernel.odroid.settings.users.AppRestrictionsFragment" />
         <Preference
             android:key="restricted_profile_pin"
             android:title="@string/restricted_profile_change_password_title" />

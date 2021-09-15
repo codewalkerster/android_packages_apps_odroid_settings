@@ -26,31 +26,31 @@
         android:key="erase"
         android:title="@string/storage_format" />
 
-    <com.android.tv.settings.device.storage.StoragePreference
+    <hardkernel.odroid.settings.device.storage.StoragePreference
         android:key="apps_usage"
         android:title="@string/storage_apps_usage"
         android:icon="@drawable/storage_indicator_apps" />
-    <com.android.tv.settings.device.storage.StoragePreference
+    <hardkernel.odroid.settings.device.storage.StoragePreference
         android:key="dcim_usage"
         android:title="@string/storage_dcim_usage"
         android:icon="@drawable/storage_indicator_dcim" />
-    <com.android.tv.settings.device.storage.StoragePreference
+    <hardkernel.odroid.settings.device.storage.StoragePreference
         android:key="music_usage"
         android:title="@string/storage_music_usage"
         android:icon="@drawable/storage_indicator_music" />
-    <com.android.tv.settings.device.storage.StoragePreference
+    <hardkernel.odroid.settings.device.storage.StoragePreference
         android:key="downloads_usage"
         android:title="@string/storage_downloads_usage"
         android:icon="@drawable/storage_indicator_downloads" />
-    <com.android.tv.settings.device.storage.StoragePreference
+    <hardkernel.odroid.settings.device.storage.StoragePreference
         android:key="cache_usage"
         android:title="@string/storage_media_cache_usage"
         android:icon="@drawable/storage_indicator_cache" />
-    <com.android.tv.settings.device.storage.StoragePreference
+    <hardkernel.odroid.settings.device.storage.StoragePreference
         android:key="misc_usage"
         android:title="@string/storage_media_misc_usage"
         android:icon="@drawable/storage_indicator_misc" />
-    <com.android.tv.settings.device.storage.StoragePreference
+    <hardkernel.odroid.settings.device.storage.StoragePreference
         android:key="available"
         android:title="@string/storage_available"
         android:icon="@drawable/storage_indicator_available" />

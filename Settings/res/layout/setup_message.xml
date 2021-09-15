@@ -13,7 +13,7 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-<com.android.tv.settings.connectivity.setup.MessagePageFrameLayout
+<hardkernel.odroid.settings.connectivity.setup.MessagePageFrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
@@ -51,4 +51,4 @@
 
     </LinearLayout>
 
-</com.android.tv.settings.connectivity.setup.MessagePageFrameLayout>
+</hardkernel.odroid.settings.connectivity.setup.MessagePageFrameLayout>

@@ -20,7 +20,7 @@
     <SwitchPreference
         android:key="development_settings_enable"
         android:title="@string/development_settings_enable"
-        android:fragment="com.android.tv.settings.system.development.EnableDevelopmentDialog"
+        android:fragment="hardkernel.odroid.settings.system.development.EnableDevelopmentDialog"
     />
     <Preference
         android:key="bugreport"
@@ -60,7 +60,7 @@
         android:key="oem_unlock_enable"
         android:title="@string/oem_unlock_enable"
         android:summary="@string/oem_unlock_enable_summary"
-        android:fragment="com.android.tv.settings.system.development.OemUnlockDialog" />
+        android:fragment="hardkernel.odroid.settings.system.development.OemUnlockDialog" />
 
     <PreferenceScreen
         android:key="running_apps"
@@ -76,7 +76,7 @@
     <!-- TODO: implement this-->
     <!--android:fragment="com.android.settings.applications.ConvertToFbe" />-->
 
-    <com.android.tv.settings.system.development.ColorModePreference
+    <hardkernel.odroid.settings.system.development.ColorModePreference
         android:key="color_mode"
         android:title="@string/picture_color_mode"
         android:summary="@string/picture_color_mode_desc"
@@ -89,29 +89,29 @@
             android:key="enable_usb"
             android:title="@string/enable_usb"
             android:summary="@string/enable_usb_summary"
-            android:fragment="com.android.tv.settings.system.development.AdbDialog" />
+            android:fragment="hardkernel.odroid.settings.system.development.AdbDialog" />
 
         <SwitchPreference
             android:key="enable_adb"
             android:title="@string/enable_adb"
             android:summary="@string/enable_adb_summary"
-            android:fragment="com.android.tv.settings.system.development.AdbDialog" />
+            android:fragment="hardkernel.odroid.settings.system.development.AdbDialog" />
 
         <SwitchPreference
             android:key="enable_internet_adb"
             android:title="@string/enable_internet_adb"
             android:summary="@string/enable_internet_adb_summary"
-            android:fragment="com.android.tv.settings.system.development.AdbDialog" />
+            android:fragment="hardkernel.odroid.settings.system.development.AdbDialog" />
 
         <SwitchPreference
             android:key="enable_abc"
             android:title="@string/enable_abc"
             android:summary="@string/enable_abc_summary"
-            android:fragment="com.android.tv.settings.system.development.AdbDialog" />
+            android:fragment="hardkernel.odroid.settings.system.development.AdbDialog" />
 
         <Preference android:key="clear_adb_keys"
                     android:title="@string/clear_adb_keys"
-                    android:fragment="com.android.tv.settings.system.development.AdbKeysDialog" />
+                    android:fragment="hardkernel.odroid.settings.system.development.AdbKeysDialog" />
 
         <SwitchPreference
             android:key="enable_terminal"
@@ -379,7 +379,7 @@
         <Preference
             android:key="inactive_apps"
             android:title="@string/inactive_apps_title"
-            android:fragment="com.android.tv.settings.system.development.InactiveApps" />
+            android:fragment="hardkernel.odroid.settings.system.development.InactiveApps" />
 
         <SwitchPreference
             android:key="force_allow_on_external"

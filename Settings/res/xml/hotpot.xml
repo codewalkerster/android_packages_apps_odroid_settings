@@ -18,8 +18,8 @@
         android:title="@string/wifi_tether_configure_ap_text"
         android:persistent="false" >
 		<intent
-        android:targetClass="com.android.tv.settings.connectivity.HotpotDialogActivity"  
-        android:targetPackage="com.android.tv.settings"/>
+        android:targetClass="hardkernel.odroid.settings.connectivity.HotpotDialogActivity"  
+        android:targetPackage="hardkernel.odroid.settings"/>
 	</Preference>
 
     <SwitchPreference

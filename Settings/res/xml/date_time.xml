@@ -26,13 +26,13 @@
                     android:entryValues="@array/auto_date_time_entry_values" />
 
 
-    <com.android.tv.settings.system.LeanbackPickerDialogPreference
+    <hardkernel.odroid.settings.system.LeanbackPickerDialogPreference
         android:key="set_date"
         android:persistent="true"
         android:title="@string/system_set_date"
         app:pickerType="date" />
 
-    <com.android.tv.settings.system.LeanbackPickerDialogPreference
+    <hardkernel.odroid.settings.system.LeanbackPickerDialogPreference
         android:key="set_time"
         android:persistent="true"
         android:title="@string/system_set_time"
@@ -41,7 +41,7 @@
     <Preference android:key="set_time_zone"
                 android:persistent="true"
                 android:title="@string/system_set_time_zone"
-                android:fragment="com.android.tv.settings.system.TimeZoneFragment" />
+                android:fragment="hardkernel.odroid.settings.system.TimeZoneFragment" />
 
     <SwitchPreference android:key="use_24_hour"
                       android:persistent="true"

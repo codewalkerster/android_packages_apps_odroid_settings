@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#define LOG_TAG "tvsettings.native.cpp"
+#define LOG_TAG "odroidSettings.native.cpp"
 #include <utils/Log.h>
 #include <stdio.h>
 #include "jni.h"
@@ -179,7 +179,7 @@ static jintArray getMaxMin(JNIEnv *env, jobject thiz, jfloat maxDst, jfloat minD
 	return array;
 }
 
-static const char *classPathName = "com/android/tv/settings/util/JniCall";
+static const char *classPathName = "hardkernel/odroid/settings/util/JniCall";
 
 static JNINativeMethod methods[] = {
 	{"get", "(DD)[I", (void *)get},

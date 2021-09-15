@@ -40,32 +40,32 @@
     <PreferenceCategory
         android:key="captions_style"
         android:title="@string/captions_captionstyle">
-        <com.android.tv.settings.RadioPreference
+        <hardkernel.odroid.settings.RadioPreference
             android:key="captions_style_0"
             android:persistent="true"
             android:title="@string/captions_style_0"
             app:radioGroup="captions_style" />
-        <com.android.tv.settings.RadioPreference
+        <hardkernel.odroid.settings.RadioPreference
             android:key="captions_style_1"
             android:persistent="true"
             android:title="@string/captions_style_1"
             app:radioGroup="captions_style" />
-        <com.android.tv.settings.RadioPreference
+        <hardkernel.odroid.settings.RadioPreference
             android:key="captions_style_2"
             android:persistent="true"
             android:title="@string/captions_style_2"
             app:radioGroup="captions_style" />
-        <com.android.tv.settings.RadioPreference
+        <hardkernel.odroid.settings.RadioPreference
             android:key="captions_style_3"
             android:persistent="true"
             android:title="@string/captions_style_3"
             app:radioGroup="captions_style" />
-        <com.android.tv.settings.RadioPreference
+        <hardkernel.odroid.settings.RadioPreference
             android:key="captions_style_custom"
             android:persistent="true"
             android:title="@string/captions_style_custom"
             app:radioGroup="captions_style"
-            android:fragment="com.android.tv.settings.system.development.CaptionCustomFragment" />
+            android:fragment="hardkernel.odroid.settings.system.development.CaptionCustomFragment" />
     </PreferenceCategory>
 
 </PreferenceScreen>

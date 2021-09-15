@@ -23,8 +23,8 @@
             android:title="@string/accessibility_captions">
         <intent
                 android:action="android.intent.action.MAIN"
-                android:targetClass="com.android.tv.settings.system.CaptionSetupActivity"
-                android:targetPackage="com.android.tv.settings"/>
+                android:targetClass="hardkernel.odroid.settings.system.CaptionSetupActivity"
+                android:targetPackage="hardkernel.odroid.settings"/>
     </Preference>
 
     <SwitchPreference
@@ -36,12 +36,12 @@
     <Preference
             android:key="text_to_speech"
             android:title="@string/system_accessibility_tts_output"
-            android:fragment="com.android.tv.settings.system.TextToSpeechFragment"/>
+            android:fragment="hardkernel.odroid.settings.system.TextToSpeechFragment"/>
 
     <Preference
             android:key="accessibility_shortcut"
             android:title="@string/accessibility_shortcut"
-            android:fragment="com.android.tv.settings.accessibility.AccessibilityShortcutFragment"/>
+            android:fragment="hardkernel.odroid.settings.accessibility.AccessibilityShortcutFragment"/>
 
     <PreferenceCategory
             android:key="system_accessibility_services"

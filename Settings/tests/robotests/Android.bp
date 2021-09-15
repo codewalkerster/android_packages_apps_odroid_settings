@@ -3,13 +3,13 @@
 //############################################
 
 android_robolectric_test {
-    name: "TvSettingsRoboTests",
+    name: "OdroidSettingsRoboTests",
 
     srcs: ["src/**/*.java"],
 
     java_resource_dirs: ["config"],
 
-    instrumentation_for: "TvSettings",
+    instrumentation_for: "OdroidSettings",
 
     test_options: {
         timeout: 36000,

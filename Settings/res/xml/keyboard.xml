@@ -35,7 +35,7 @@
     <!-- List of input methods are inserted here with order=2 -->
 
     <Preference
-        android:fragment="com.android.tv.settings.inputmethod.AvailableVirtualKeyboardFragment"
+        android:fragment="hardkernel.odroid.settings.inputmethod.AvailableVirtualKeyboardFragment"
         android:key="manageKeyboards"
         android:order="3"
         android:title="@string/manage_keyboards"/>
@@ -48,7 +48,7 @@
         <Preference
             android:key="currentAutofill"
             android:title="@string/title_current_autofill_service"
-            android:fragment="com.android.tv.settings.autofill.AutofillPickerFragment"
+            android:fragment="hardkernel.odroid.settings.autofill.AutofillPickerFragment"
             android:summary="%s" />
 
     </PreferenceCategory>
@@ -60,11 +60,11 @@
         <!-- <Preference
             android:key="virtual_keyboard_pref"
             android:title="@string/virtual_keyboard_category"
-            android:fragment="com.android.tv.settings.inputmethod.VirtualKeyboardFragment" /> -->
+            android:fragment="hardkernel.odroid.settings.inputmethod.VirtualKeyboardFragment" /> -->
         <Preference
             android:key="physical_keyboard_pref"
             android:title="@string/physical_keyboard_title"
-            android:fragment="com.android.tv.settings.inputmethod.PhysicalKeyboardFragment" />
+            android:fragment="hardkernel.odroid.settings.inputmethod.PhysicalKeyboardFragment" />
     </PreferenceCategory>
 
 </PreferenceScreen>

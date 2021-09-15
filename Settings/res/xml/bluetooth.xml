@@ -27,7 +27,7 @@
         android:key="bluetooth_paried"
         android:title="@string/bluetooth_paired" 
         android:order="1"/>
-    <com.android.tv.settings.bluetooth.BluetoothProgressCategory
+    <hardkernel.odroid.settings.bluetooth.BluetoothProgressCategory
         android:key="bluetooth_avaliable"
         android:title="@string/avaliable_bluetooth" 
         android:order="2"/>

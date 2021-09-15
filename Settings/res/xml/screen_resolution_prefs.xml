@@ -22,7 +22,7 @@
 		android:key="auto_switch_resolution"
 		android:title="@string/auto_switch_resolution"/>
     
-	  <com.android.tv.settings.connectivity.CollapsibleCategory
+	  <hardkernel.odroid.settings.connectivity.CollapsibleCategory
         android:key="resolution_list"
         android:title="@string/resolution_list"
         android:layout="@layout/preference_category_compact_layout" />

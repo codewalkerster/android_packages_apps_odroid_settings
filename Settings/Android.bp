@@ -13,20 +13,20 @@
 // limitations under the License.
 
 prebuilt_etc {
-    name: "privapp_whitelist_com.android.tv.settings",
+    name: "privapp_whitelist_hardkernel.odroid.settings",
     system_ext_specific: true,
     sub_dir: "permissions",
-    src: "com.android.tv.settings.xml",
+    src: "hardkernel.odroid.settings.xml",
     filename_from_src: true,
 }
 
 android_app {
-    name: "TvSettings",
+    name: "OdroidSettings",
     defaults: ["SettingsLibDefaults"],
     platform_apis: true,
     certificate: "platform",
     system_ext_specific: true,
-    required: ["privapp_whitelist_com.android.tv.settings"],
+    required: ["privapp_whitelist_hardkernel.odroid.settings"],
 
     optimize: {
         proguard_flags_files: ["proguard.cfg"],
@@ -44,10 +44,10 @@ android_app {
         "androidx.lifecycle_lifecycle-extensions",
         "androidx.lifecycle_lifecycle-common-java8",
         "androidx.annotation_annotation",
-        "statslog-tvsettings",
-        "TwoPanelSettingsLib"
+        "statslog-odroidsettings",
+        "TwoPanelOdroidSettingsLib"
     ],
-    jni_libs: ["libtvsettings-jni"],
+    jni_libs: ["libodroidsettings-jni"],
     resource_dirs: ["res"],
 
     srcs: [

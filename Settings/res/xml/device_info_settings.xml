@@ -47,15 +47,15 @@
         android:key="reset"
         android:title="@string/device_reset">
         <intent
-            android:targetClass="com.android.tv.settings.device.storage.ResetActivity"
-            android:targetPackage="com.android.tv.settings"/>
+            android:targetClass="hardkernel.odroid.settings.device.storage.ResetActivity"
+            android:targetPackage="hardkernel.odroid.settings"/>
     </Preference>
 
     <!-- Device status - launches as activity, must run in separate process -->
     <Preference android:key="status_info"
         android:title="@string/device_status"
         android:summary="@string/device_status_summary"
-        android:fragment="com.android.tv.settings.about.StatusFragment" />
+        android:fragment="hardkernel.odroid.settings.about.StatusFragment" />
 
     <!-- Manual -->
     <Preference
@@ -68,7 +68,7 @@
     <Preference
         android:key="container"
         android:title="@string/about_legal_info"
-        android:fragment="com.android.tv.settings.about.LegalFragment" />
+        android:fragment="hardkernel.odroid.settings.about.LegalFragment" />
 
     <Preference
         android:key="regulatory_info"

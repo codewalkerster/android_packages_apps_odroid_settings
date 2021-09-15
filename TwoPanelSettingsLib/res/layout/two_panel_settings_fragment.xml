@@ -41,7 +41,7 @@
     be exactly X amount of previous pane's blank paddingEnd blending into the real paddingStart of
     current preference pane to consist the larger visual paddingStart.
 -->
-<com.android.tv.twopanelsettings.TwoPanelSettingsRootView
+<hardkernel.odroid.twopanelsettings.TwoPanelSettingsRootView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/two_panel_fragment_container"
     android:layout_width="match_parent"
@@ -49,7 +49,7 @@
     android:orientation="horizontal"
     android:background="@color/tp_fragment_container_background_color">
 
-    <com.android.tv.twopanelsettings.TwoPanelScrollView
+    <hardkernel.odroid.twopanelsettings.TwoPanelScrollView
         android:id="@+id/scrollview"
         android:layout_width="@dimen/tp_settings_panes_width"
         android:layout_height="match_parent"
@@ -273,6 +273,6 @@
                 android:layout_height="match_parent" />
 
         </LinearLayout>
-    </com.android.tv.twopanelsettings.TwoPanelScrollView>
+    </hardkernel.odroid.twopanelsettings.TwoPanelScrollView>
 
-</com.android.tv.twopanelsettings.TwoPanelSettingsRootView>
+</hardkernel.odroid.twopanelsettings.TwoPanelSettingsRootView>

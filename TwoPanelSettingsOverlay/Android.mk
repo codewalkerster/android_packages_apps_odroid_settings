@@ -24,19 +24,19 @@ LOCAL_STATIC_ANDROID_LIBRARIES := \
     androidx.legacy_legacy-preference-v14 \
     androidx.leanback_leanback-preference \
     androidx.leanback_leanback \
-    TwoPanelSettingsLib \
+    TwoPanelOdroidSettingsLib \
 
 LOCAL_STATIC_JAVA_LIBRARIES := \
     androidx.annotation_annotation \
-    statslog-tvsettings
+    statslog-odroidsettings
 
 LOCAL_USE_AAPT2 := true
-LOCAL_PACKAGE_NAME := TwoPanelSettingsOverlay
+LOCAL_PACKAGE_NAME := TwoPanelOdroidSettingsOverlay
 LOCAL_PRIVATE_PLATFORM_APIS := true
 LOCAL_CERTIFICATE := platform
 LOCAL_PRIVILEGED_MODULE := true
 LOCAL_SYSTEM_EXT_MODULE := true
-LOCAL_REQUIRED_MODULES := privapp_whitelist_com.android.tv.settings
+LOCAL_REQUIRED_MODULES := privapp_whitelist_hardkernel.odroid.settings
 LOCAL_FULL_LIBS_MANIFEST_FILES := $(SETTINGS_TWO_PANEL_PATH)/AndroidManifest.xml
 
 LOCAL_PROGUARD_FLAG_FILES := ../Settings/proguard.cfg
@@ -49,9 +49,9 @@ endif
 
 include frameworks/base/packages/SettingsLib/common.mk
 
-LOCAL_OVERRIDES_PACKAGES := TvSettings
+LOCAL_OVERRIDES_PACKAGES := OdroidSettings
 
-LOCAL_JACK_COVERAGE_INCLUDE_FILTER := com.android.tv.settings.*,com.android.settingslib.*,com.android.tv.twopanelsettingsoverlay.*
+LOCAL_JACK_COVERAGE_INCLUDE_FILTER := hardkernel.odroid.settings.*,com.android.settingslib.*,hardkernel.odroid.twopanelsettingsoverlay.*
 
 include $(BUILD_PACKAGE)
 

@@ -20,11 +20,11 @@
     <Preference
         android:key="changeName"
         android:title="@string/accessory_change_name"
-        android:fragment="com.android.tv.settings.accessories.BluetoothAccessoryFragment$ChangeNameFragment" />
+        android:fragment="hardkernel.odroid.settings.accessories.BluetoothAccessoryFragment$ChangeNameFragment" />
     <Preference
         android:key="unpair"
         android:title="@string/accessory_unpair"
-        android:fragment="com.android.tv.settings.accessories.BluetoothAccessoryFragment$UnpairConfirmFragment" />
+        android:fragment="hardkernel.odroid.settings.accessories.BluetoothAccessoryFragment$UnpairConfirmFragment" />
     <Preference
         android:key="battery" />
 
