@@ -2309,4 +2309,9 @@
     <string name="little_core_governor">Little Core Governors</string>
     <string name="big_core_clock">Big Core Clocks</string>
     <string name="big_core_governor">Big Core Governors</string>
+
+    <!-- gpu -->
+    <string name="gpu">GPU</string>
+    <string name="gpu_clock">GPU Max Clock</string>
+    <string name="gpu_governor">GPU Governor</string>
 </resources>

@@ -32,6 +32,11 @@
         android:key="cpu"
         android:title="@string/cpu"
         android:fragment="hardkernel.odroid.settings.cpu.CpuFragment" />
+    <!-- android:icon="@drawable/ic_gpu" -->
+    <Preference
+        android:key="gpu"
+        android:title="@string/gpu"
+        android:fragment="hardkernel.odroid.settings.gpu.GpuFragment" />
     <Preference
         android:fragment="hardkernel.odroid.settings.system.DateTimeFragment"
         android:icon="@drawable/ic_access_time"
