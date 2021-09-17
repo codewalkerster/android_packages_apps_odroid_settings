@@ -1340,6 +1340,11 @@
             android:configChanges="keyboard|keyboardHidden|navigation"
             android:excludeFromRecents="true"
             android.exported="true" />
+        <activity
+            android:name=".gpu.GpuActivity"
+            android:configChanges="keyboard|keyboardHidden|navigation"
+            android:excludeFromRecents="true"
+            android.exported="true" />
     </application>
 
 </manifest>
