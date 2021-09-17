@@ -25,6 +25,11 @@
         android:key="cpu"
         android:title="@string/cpu" />
     <Preference
+        android:fragment="hardkernel.odroid.settings.gpu.GpuFragment"
+        android:icon="@drawable/ic_settings_display"
+        android:key="gpu"
+        android:title="@string/gpu" />
+    <Preference
         android:fragment="hardkernel.odroid.settings.display.DisplayFragment"
         android:icon="@drawable/ic_settings_display"
         android:key="display"

@@ -1,0 +1,86 @@
+/*
+ * Copyright (C) 2025 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License
+ */
+package hardkernel.odroid.settings.gpu;
+
+import android.content.Context;
+import android.os.Bundle;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceScreen;
+import hardkernel.odroid.settings.R;
+
+import hardkernel.odroid.settings.RadioPreference;
+//import hardkernel.odroid.settings.ConfigEnv;
+import hardkernel.odroid.settings.gpu.GPU;
+import hardkernel.odroid.settings.SettingsPreferenceFragment;
+
+public class GovernorFragment extends SettingsPreferenceFragment {
+    private static final String TAG = "GovernorFragment";
+    public static GPU gpu = null;
+
+    public static GovernorFragment newInstance() { return new GovernorFragment(); }
+
+    @Override
+    public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
+        if (gpu == null)
+            gpu = GPU.getGPU(TAG);
+        updatePreferenceFragment();
+    }
+
+    private void updatePreferenceFragment() {
+        final Context themedContext = getPreferenceManager().getContext();
+        final PreferenceScreen screen = getPreferenceManager().createPreferenceScreen(themedContext);
+
+        screen.setTitle(R.string.gpu_governor);
+        setPreferenceScreen(screen);
+
+        String[] governorList = gpu.governor.getGovernors();
+
+        for (final String governor : governorList) {
+            final RadioPreference radioPreference = new RadioPreference(themedContext);
+            radioPreference.setKey(governor);
+            radioPreference.setPersistent(false);
+            radioPreference.setTitle(governor);
+            radioPreference.setLayoutResource(R.layout.preference_reversed_widget);
+            if (gpu.governor.getCurrent().equals(governor)) {
+                radioPreference.setChecked(true);
+            }
+            screen.addPreference(radioPreference);
+        }
+    }
+
+    @Override
+    public boolean onPreferenceTreeClick(Preference preference) {
+        if (preference instanceof RadioPreference) {
+            final RadioPreference radioPreference = (RadioPreference)preference;
+            radioPreference.clearOtherRadioPreferences(getPreferenceScreen());
+            if (radioPreference.isChecked()) {
+                String selectedGovernor = radioPreference.getKey();
+                gpu.governor.set(selectedGovernor);
+                saveGovernor(selectedGovernor);
+                radioPreference.setChecked(true);
+            } else {
+                radioPreference.setChecked(true);
+            }
+        }
+        return super.onPreferenceTreeClick(preference);
+    }
+
+    private void saveGovernor(String governor) {
+        /*
+            ConfigEnv.setGpuGovernor(governor);
+            */
+    }
+}
