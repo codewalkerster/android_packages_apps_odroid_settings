@@ -30,8 +30,6 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.res.Resources;
 import android.media.AudioManager;
-import android.media.tv.TvInputInfo;
-import android.media.tv.TvInputManager;
 import android.os.Bundle;
 import android.os.UserHandle;
 import android.provider.Settings;
@@ -154,17 +152,8 @@ public class DevicePrefFragment extends SettingsPreferenceFragment implements
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        final TvInputManager manager = (TvInputManager) getContext().getSystemService(
-                Context.TV_INPUT_SERVICE);
-        if (manager != null) {
-            for (final TvInputInfo input : manager.getTvInputList()) {
-                if (input.isPassthroughInput()) {
-                    mInputSettingNeeded = true;
-                }
-            }
-        }
-        mAudioManager = getContext().getSystemService(AudioManager.class);
         mInputSettingNeeded = true;
+        mAudioManager = getContext().getSystemService(AudioManager.class);
         super.onCreate(savedInstanceState);
     }
 

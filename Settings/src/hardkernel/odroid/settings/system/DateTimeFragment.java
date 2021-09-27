@@ -69,7 +69,6 @@ public class DateTimeFragment extends SettingsPreferenceFragment implements
     private static final String HOURS_12 = "12";
     private static final String HOURS_24 = "24";
 
-    //    private TvInputManager mTvInputManager;
     private TimeManager mTimeManager;
     private final Calendar mDummyDate = Calendar.getInstance();
 
@@ -94,8 +93,6 @@ public class DateTimeFragment extends SettingsPreferenceFragment implements
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-//        mTvInputManager =
-//                (TvInputManager) getActivity().getSystemService(Context.TV_INPUT_SERVICE);
         super.onCreate(savedInstanceState);
     }
 
@@ -199,8 +196,6 @@ public class DateTimeFragment extends SettingsPreferenceFragment implements
                 setAutoDateTime(true);
             } else if (TextUtils.equals(value, AUTO_DATE_TIME_TS)) {
                 throw new IllegalStateException("TS date is not yet implemented");
-//                mTvInputManager.syncTimefromBroadcast(true);
-//                setAutoDateTime(false);
             } else if (TextUtils.equals(value, AUTO_DATE_TIME_OFF)) {
                 logEntrySelected(TvSettingsEnums.SYSTEM_DATE_TIME_AUTOMATIC_OFF);
                 setAutoDateTime(false);
@@ -257,10 +252,6 @@ public class DateTimeFragment extends SettingsPreferenceFragment implements
     }
 
     private String getAutoDateTimeState() {
-//        if(mTvInputManager.isUseBroadcastDateTime()) {
-//            return AUTO_DATE_TIME_TS;
-//        }
-
         int value = Settings.Global.getInt(getContext().getContentResolver(),
                 Settings.Global.AUTO_TIME, 0);
         if(value > 0) {

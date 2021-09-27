@@ -20,7 +20,6 @@ import android.content.Context;
 import android.hardware.hdmi.HdmiControlManager;
 import android.icu.text.MessageFormat;
 import android.media.tv.TvInputInfo;
-import android.media.tv.TvInputManager;
 import android.os.Bundle;
 import android.os.UserHandle;
 import android.os.SystemProperties;
@@ -70,7 +69,6 @@ public class InputsFragment extends SettingsPreferenceFragment {
     private TwoStatePreference mCecAudioControlPref;
     private TwoStatePreference mCecAudioAmplifierControlPref;
 
-    private TvInputManager mTvInputManager;
     private HdmiControlManager mHdmiControlManager;
     private Map<String, String> mCustomLabels;
     private Set<String> mHiddenIds;
@@ -82,7 +80,6 @@ public class InputsFragment extends SettingsPreferenceFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mTvInputManager = (TvInputManager) getContext().getSystemService(Context.TV_INPUT_SERVICE);
         mHdmiControlManager = getContext().getSystemService(HdmiControlManager.class);
     }
 
@@ -121,45 +118,6 @@ public class InputsFragment extends SettingsPreferenceFragment {
                 == HdmiControlManager.TV_WAKE_ON_ONE_TOUCH_PLAY_ENABLED);
         mCecAudioControlPref.setChecked(Boolean.parseBoolean(SystemProperties.get(PROP_CEC_AUDIO_CONTROL_FOR_TV, "false")));
         mCecAudioAmplifierControlPref.setChecked(Boolean.parseBoolean(SystemProperties.get(PROP_CEC_AUDIO_AMPLIFIER_CONTROL_FOR_TV, "false")));
-
-        for (TvInputInfo info : mTvInputManager.getTvInputList()) {
-            if (info.getType() == TvInputInfo.TYPE_TUNER
-                    || !TextUtils.isEmpty(info.getParentId())) {
-                continue;
-            }
-
-            int state;
-            try {
-                state = mTvInputManager.getInputState(info.getId());
-            } catch (IllegalArgumentException e) {
-                // Input is gone while iterating. Ignore.
-                continue;
-            }
-
-            InputPreference inputPref = (InputPreference) findPreference(makeInputPrefKey(info));
-            if (inputPref == null) {
-                inputPref = new InputPreference(getPreferenceManager().getContext());
-            }
-            inputPref.refresh(info);
-
-            switch (state) {
-                case TvInputManager.INPUT_STATE_CONNECTED:
-                    mStandbyGroup.removePreference(inputPref);
-                    mDisconnectedGroup.removePreference(inputPref);
-                    mConnectedGroup.addPreference(inputPref);
-                    break;
-                case TvInputManager.INPUT_STATE_CONNECTED_STANDBY:
-                    mConnectedGroup.removePreference(inputPref);
-                    mDisconnectedGroup.removePreference(inputPref);
-                    mStandbyGroup.addPreference(inputPref);
-                    break;
-                case TvInputManager.INPUT_STATE_DISCONNECTED:
-                    mConnectedGroup.removePreference(inputPref);
-                    mStandbyGroup.removePreference(inputPref);
-                    mDisconnectedGroup.addPreference(inputPref);
-                    break;
-            }
-        }
 
         final int connectedCount = mConnectedGroup.getPreferenceCount();
         MessageFormat msgFormat = new MessageFormat(
