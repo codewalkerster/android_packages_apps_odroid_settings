@@ -34,10 +34,6 @@
         android:key="zoom"
         android:title="@string/zoom" />
 
-    <CheckBoxPreference
-        android:key="fixed_rotation"
-        android:title="@string/fixed_rotation" />
-
     <ListPreference
         android:key="rotation"
         android:title="@string/hdmi_rotation"
