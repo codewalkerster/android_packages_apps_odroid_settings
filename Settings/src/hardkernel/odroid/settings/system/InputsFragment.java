@@ -18,7 +18,6 @@ package hardkernel.odroid.settings.system;
 
 import android.content.Context;
 import android.media.tv.TvInputInfo;
-import android.media.tv.TvInputManager;
 import android.os.Bundle;
 import android.os.UserHandle;
 import android.provider.Settings;
@@ -57,7 +56,6 @@ public class InputsFragment extends SettingsPreferenceFragment {
     private TwoStatePreference mDeviceAutoOffPref;
     private TwoStatePreference mTvAutoOnPref;
 
-    private TvInputManager mTvInputManager;
     private Map<String, String> mCustomLabels;
     private Set<String> mHiddenIds;
 
@@ -68,7 +66,6 @@ public class InputsFragment extends SettingsPreferenceFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mTvInputManager = (TvInputManager) getContext().getSystemService(Context.TV_INPUT_SERVICE);
     }
 
     @Override
@@ -100,45 +97,6 @@ public class InputsFragment extends SettingsPreferenceFragment {
         mDeviceAutoOffPref.setChecked(readCecOption(
                 Settings.Global.HDMI_CONTROL_AUTO_DEVICE_OFF_ENABLED));
         mTvAutoOnPref.setChecked(readCecOption(Settings.Global.HDMI_CONTROL_AUTO_WAKEUP_ENABLED));
-
-        for (TvInputInfo info : mTvInputManager.getTvInputList()) {
-            if (info.getType() == TvInputInfo.TYPE_TUNER
-                    || !TextUtils.isEmpty(info.getParentId())) {
-                continue;
-            }
-
-            int state;
-            try {
-                state = mTvInputManager.getInputState(info.getId());
-            } catch (IllegalArgumentException e) {
-                // Input is gone while iterating. Ignore.
-                continue;
-            }
-
-            InputPreference inputPref = (InputPreference) findPreference(makeInputPrefKey(info));
-            if (inputPref == null) {
-                inputPref = new InputPreference(getPreferenceManager().getContext());
-            }
-            inputPref.refresh(info);
-
-            switch (state) {
-                case TvInputManager.INPUT_STATE_CONNECTED:
-                    mConnectedGroup.addPreference(inputPref);
-                    mStandbyGroup.removePreference(inputPref);
-                    mDisconnectedGroup.removePreference(inputPref);
-                    break;
-                case TvInputManager.INPUT_STATE_CONNECTED_STANDBY:
-                    mConnectedGroup.removePreference(inputPref);
-                    mStandbyGroup.addPreference(inputPref);
-                    mDisconnectedGroup.removePreference(inputPref);
-                    break;
-                case TvInputManager.INPUT_STATE_DISCONNECTED:
-                    mConnectedGroup.removePreference(inputPref);
-                    mStandbyGroup.removePreference(inputPref);
-                    mDisconnectedGroup.addPreference(inputPref);
-                    break;
-            }
-        }
 
         final int connectedCount = mConnectedGroup.getPreferenceCount();
         mConnectedGroup.setTitle(getResources().getQuantityString(
