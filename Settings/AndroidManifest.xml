@@ -84,6 +84,8 @@
                  android:priority="3">
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LEANBACK_SETTINGS"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
 
             <!-- Intent filter used to display this activity as a launcher
@@ -93,8 +95,6 @@
                  android:priority="3">
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LEANBACK_LAUNCHER"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
 
@@ -690,19 +690,6 @@
             <intent-filter android:priority="1">
                 <action android:name="android.bluetooth.adapter.action.REQUEST_DISCOVERABLE"/>
                 <action android:name="android.bluetooth.adapter.action.REQUEST_ENABLE"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-            </intent-filter>
-        </activity>
-
-        <!-- Triggered when user-selected home app isn't encryption aware -->
-        <activity android:configChanges="locale|keyboard|keyboardHidden|navigation|screenLayout|fontScale|uiMode|orientation|screenSize|smallestScreenSize|layoutDirection"
-             android:excludeFromRecents="true"
-             android:exported="true"
-             android:name=".system.FallbackHome"
-             android:theme="@style/FallbackHome">
-            <intent-filter android:priority="-1000">
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.HOME"/>
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
