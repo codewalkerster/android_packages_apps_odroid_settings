@@ -43,7 +43,6 @@ import android.view.accessibility.AccessibilityEvent;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.leanback.preference.LeanbackPreferenceFragmentCompat;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.preference.Preference;
@@ -55,6 +54,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.settingslib.core.lifecycle.Lifecycle;
 import com.android.tv.settings.library.overlay.FlavorUtils;
+import hardkernel.odroid.settings.LeanbackAddBackPreferenceFragment;
 import hardkernel.odroid.settings.util.SettingsPreferenceUtil;
 import hardkernel.odroid.settings.widget.SettingsViewModel;
 import hardkernel.odroid.settings.widget.TsPreference;
@@ -63,10 +63,10 @@ import com.android.tv.twopanelsettings.TwoPanelSettingsFragment;
 import java.util.Collections;
 
 /**
- * A {@link LeanbackPreferenceFragmentCompat} that has hooks to observe fragment lifecycle events
+ * A {@link LeanbackAddBackPreferenceFragment} that has hooks to observe fragment lifecycle events
  * and allow for instrumentation.
  */
-public abstract class SettingsPreferenceFragment extends LeanbackPreferenceFragmentCompat
+public abstract class SettingsPreferenceFragment extends LeanbackAddBackPreferenceFragment
         implements LifecycleOwner,
         TwoPanelSettingsFragment.PreviewableComponentCallback {
     private final Lifecycle mLifecycle = new Lifecycle(this);

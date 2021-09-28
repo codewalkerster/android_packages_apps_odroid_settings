@@ -1,13 +1,14 @@
 package hardkernel.odroid.settings;
 
 import android.app.Activity;
-import androidx.fragment.app.FragmentManager;
+import android.content.Context;
+import android.content.ContextWrapper;
 import android.os.Bundle;
-import androidx.leanback.preference.LeanbackPreferenceFragmentCompat;
+import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.widget.TextView;
-
-import static java.security.AccessController.getContext;
+import androidx.fragment.app.FragmentManager;
+import androidx.leanback.preference.LeanbackPreferenceFragmentCompat;
 
 public abstract class LeanbackAddBackPreferenceFragment extends LeanbackPreferenceFragmentCompat {
     @Override
@@ -22,9 +23,17 @@ public abstract class LeanbackAddBackPreferenceFragment extends LeanbackPreferen
                 if (fm.getBackStackEntryCount() > 0) {
                     fm.popBackStack();
                 } else {
-                    ((Activity)getContext()).onBackPressed();
+                    unwrap(v.getContext()).onBackPressed();
                 }
             }
         });
+    }
+    private static Activity unwrap(Context context) {
+        while (!(context instanceof Activity) &&
+                (context instanceof ContextWrapper)) {
+            context = ((ContextWrapper) context).getBaseContext();
+        }
+
+        return (Activity) context;
     }
 }

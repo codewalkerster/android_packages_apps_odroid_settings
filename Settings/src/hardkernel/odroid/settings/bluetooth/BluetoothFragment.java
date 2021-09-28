@@ -1,5 +1,3 @@
-
-
 package hardkernel.odroid.settings.bluetooth;
 
 import android.content.Context;
@@ -49,13 +47,9 @@ import android.widget.Toast;
 
 import com.android.internal.logging.MetricsLogger;
 
-import hardkernel.odroid.settings.R;
-//import hardkernel.odroid.settings.search.Index;
 import com.android.settingslib.WirelessUtils;
 import com.android.settingslib.bluetooth.LocalBluetoothAdapter;
 import com.android.settingslib.bluetooth.LocalBluetoothManager;
-//import hardkernel.odroid.settings.data.ConstData;
-//import hardkernel.odroid.settings.vpn.*;
 
 import android.annotation.UiThread;
 import android.annotation.WorkerThread;

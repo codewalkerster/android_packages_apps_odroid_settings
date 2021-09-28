@@ -1,6 +1,5 @@
 package hardkernel.odroid.settings.connectivity;
 
-import androidx.leanback.preference.LeanbackPreferenceFragment;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.Dialog;
