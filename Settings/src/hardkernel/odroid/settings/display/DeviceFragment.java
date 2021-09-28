@@ -22,7 +22,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.hardware.display.DisplayManager;
 import android.os.Bundle;
-import androidx.leanback.preference.LeanbackPreferenceFragment;
 import androidx.preference.ListPreference;
 import androidx.preference.CheckBoxPreference;
 import androidx.preference.Preference;
@@ -36,6 +35,7 @@ import androidx.annotation.Keep;
 
 import hardkernel.odroid.settings.R;
 import hardkernel.odroid.settings.data.ConstData;
+import hardkernel.odroid.settings.LeanbackAddBackPreferenceFragment;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -46,7 +46,7 @@ import android.os.ServiceManager;
 
 
 @Keep
-public class DeviceFragment extends LeanbackPreferenceFragment implements Preference.OnPreferenceChangeListener,
+public class DeviceFragment extends LeanbackAddBackPreferenceFragment implements Preference.OnPreferenceChangeListener,
         Preference.OnPreferenceClickListener {
     protected static final String TAG = "DeviceFragment";
     public static final String KEY_RESOLUTION = "resolution";

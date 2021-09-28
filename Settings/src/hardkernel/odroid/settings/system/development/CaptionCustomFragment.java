@@ -22,15 +22,15 @@ import android.provider.Settings;
 import android.text.TextUtils;
 
 import androidx.annotation.Keep;
-import androidx.leanback.preference.LeanbackPreferenceFragment;
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
 import androidx.preference.TwoStatePreference;
 
 import hardkernel.odroid.settings.R;
+import hardkernel.odroid.settings.LeanbackAddBackPreferenceFragment;
 
 @Keep
-public class CaptionCustomFragment extends LeanbackPreferenceFragment implements
+public class CaptionCustomFragment extends LeanbackAddBackPreferenceFragment implements
         Preference.OnPreferenceChangeListener {
 
     private static final String KEY_FONT_FAMILY = "font_family";

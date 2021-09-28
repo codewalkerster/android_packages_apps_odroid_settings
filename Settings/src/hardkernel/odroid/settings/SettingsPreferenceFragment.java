@@ -37,7 +37,6 @@ import android.view.View;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.leanback.preference.LeanbackPreferenceFragment;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.preference.PreferenceScreen;
 
@@ -51,7 +50,7 @@ import hardkernel.odroid.twopanelsettings.TwoPanelSettingsFragment;
  * A {@link LeanbackPreferenceFragment} that has hooks to observe fragment lifecycle events
  * and allow for instrumentation.
  */
-public abstract class SettingsPreferenceFragment extends LeanbackPreferenceFragment
+public abstract class SettingsPreferenceFragment extends LeanbackAddBackPreferenceFragment
         implements LifecycleOwner, Instrumentable,
         TwoPanelSettingsFragment.PreviewableComponentCallback {
     private final Lifecycle mLifecycle = new Lifecycle(this);

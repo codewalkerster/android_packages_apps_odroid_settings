@@ -22,13 +22,13 @@ import android.os.storage.VolumeRecord;
 import android.text.TextUtils;
 import android.util.Log;
 
-import androidx.leanback.preference.LeanbackPreferenceFragment;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceScreen;
 
 import hardkernel.odroid.settings.R;
+import hardkernel.odroid.settings.LeanbackAddBackPreferenceFragment;
 
-public class MissingStorageFragment extends LeanbackPreferenceFragment {
+public class MissingStorageFragment extends LeanbackAddBackPreferenceFragment {
 
     private static final String TAG = "MissingStorageFragment";
 

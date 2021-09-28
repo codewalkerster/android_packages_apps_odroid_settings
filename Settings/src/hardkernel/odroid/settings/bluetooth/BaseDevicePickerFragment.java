@@ -4,7 +4,6 @@
 package hardkernel.odroid.settings.bluetooth;
 
 import android.os.Bundle;
-import androidx.leanback.preference.LeanbackPreferenceFragment;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import androidx.preference.Preference;
@@ -22,10 +21,12 @@ import com.android.settingslib.bluetooth.LocalBluetoothManager;
 import java.util.Collection;
 import java.util.WeakHashMap;
 
+import hardkernel.odroid.settings.LeanbackAddBackPreferenceFragment;
+
 /**
  * @author GaoFei
  */
-public abstract class BaseDevicePickerFragment extends LeanbackPreferenceFragment implements BluetoothCallback {
+public abstract class BaseDevicePickerFragment extends LeanbackAddBackPreferenceFragment implements BluetoothCallback {
 
     private static final String TAG = "BaseDevicePickerFragment";
 

@@ -26,7 +26,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.hardware.display.DisplayManager;
 import android.os.Bundle;
-import androidx.leanback.preference.LeanbackPreferenceFragment;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceCategory;
 import androidx.preference.PreferenceScreen;
@@ -36,8 +35,9 @@ import android.os.SystemProperties;
 
 import hardkernel.odroid.settings.R;
 import hardkernel.odroid.settings.data.ConstData;
+import hardkernel.odroid.settings.LeanbackAddBackPreferenceFragment;
 
-public class DisplayFragment extends LeanbackPreferenceFragment {
+public class DisplayFragment extends LeanbackAddBackPreferenceFragment {
     private static final String TAG = "DisplayFragment";
     public static final String KEY_MAIN_DISPLAY = "main_display";
     public static final String KEY_SECOND_DISPLAY = "second_display";

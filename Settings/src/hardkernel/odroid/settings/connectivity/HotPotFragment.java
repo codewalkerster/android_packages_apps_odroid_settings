@@ -1,6 +1,5 @@
 package hardkernel.odroid.settings.connectivity;
 
-import androidx.leanback.preference.LeanbackPreferenceFragment;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.Dialog;
@@ -30,6 +29,7 @@ import android.app.DialogFragment;
 import android.app.Fragment;
 
 import hardkernel.odroid.settings.R;
+import hardkernel.odroid.settings.LeanbackAddBackPreferenceFragment;
 import com.android.internal.logging.nano.MetricsProto.MetricsEvent;
 
 import java.lang.ref.WeakReference;
@@ -40,7 +40,7 @@ import static android.net.ConnectivityManager.TETHERING_BLUETOOTH;
 import static android.net.ConnectivityManager.TETHERING_USB;
 import static android.net.ConnectivityManager.TETHERING_WIFI;
 
-public class HotPotFragment extends LeanbackPreferenceFragment
+public class HotPotFragment extends LeanbackAddBackPreferenceFragment
         implements Preference.OnPreferenceChangeListener/*,
          DialogInterface.OnClickListener, DialogCreatable  */{
 

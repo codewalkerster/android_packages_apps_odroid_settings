@@ -1,5 +1,3 @@
-
-
 package hardkernel.odroid.settings.bluetooth;
 
 import android.content.Context;
@@ -9,7 +7,6 @@ import android.os.Handler;
 import android.os.SystemClock;
 import android.provider.Settings;
 import androidx.preference.SwitchPreference;
-import androidx.leanback.preference.LeanbackPreferenceFragment;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceCategory;
 import androidx.preference.TwoStatePreference;
@@ -21,6 +18,7 @@ import java.util.List;
 
 import com.android.internal.net.VpnProfile;
 import hardkernel.odroid.settings.R;
+import hardkernel.odroid.settings.LeanbackAddBackPreferenceFragment;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -51,13 +49,9 @@ import android.widget.Toast;
 
 import com.android.internal.logging.MetricsLogger;
 
-import hardkernel.odroid.settings.R;
-//import hardkernel.odroid.settings.search.Index;
 import com.android.settingslib.WirelessUtils;
 import com.android.settingslib.bluetooth.LocalBluetoothAdapter;
 import com.android.settingslib.bluetooth.LocalBluetoothManager;
-//import hardkernel.odroid.settings.data.ConstData;
-//import hardkernel.odroid.settings.vpn.*;
 
 import android.annotation.UiThread;
 import android.annotation.WorkerThread;
@@ -124,7 +118,7 @@ import static android.os.UserManager.DISALLOW_CONFIG_BLUETOOTH;
 import android.bluetooth.BluetoothDevice;
 
 @Keep
-public class BluetoothFragment extends LeanbackPreferenceFragment implements Preference.OnPreferenceClickListener, BluetoothCallback {
+public class BluetoothFragment extends LeanbackAddBackPreferenceFragment implements Preference.OnPreferenceClickListener, BluetoothCallback {
     private static final String TAG = "BluetoothFragment";
     private static final String BTOPP_ACTION_OPEN_RECEIVED_FILES =
             "android.btopp.intent.action.OPEN_RECEIVED_FILES";
