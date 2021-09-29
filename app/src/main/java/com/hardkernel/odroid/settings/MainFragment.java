@@ -85,6 +85,10 @@ public class MainFragment extends LeanbackAddBackPreferenceFragment {
         super.onCreate(savedInstanceState);
     }
 
+    private String[] getArrayString(int resid) {
+        return getActivity().getResources().getStringArray(resid);
+    }
+
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         setPreferencesFromResource(R.xml.main_prefs, null);

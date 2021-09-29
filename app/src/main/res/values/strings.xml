@@ -311,4 +311,8 @@
     <string name="landscape_0">0</string>
     <string name="landscape_180">180</string>
     <string name="bluetooth_select">Bluetooth A2dp Select</string>
+
+    <!-- Bluetooth Service -->
+    <string name="bluetooth">Bluetooth</string>
+    <string name="bluetooth_service">Bluetooth Service</string>
 </resources>

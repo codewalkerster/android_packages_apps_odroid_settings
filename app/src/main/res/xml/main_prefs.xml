@@ -101,6 +101,12 @@
         android:key="mouse_accel"
         android:title="@string/mouse_accel" />
     <Preference
+        android:fragment="com.hardkernel.odroid.settings.BluetoothFragment"
+        android:icon="@drawable/ic_bluetooth"
+        android:key="bluetooth"
+        android:title="@string/bluetooth" />
+
+    <Preference
         android:icon="@drawable/ic_info_outline"
         android:key="netflix_esn"
         android:title="@string/netflix_esn"/>

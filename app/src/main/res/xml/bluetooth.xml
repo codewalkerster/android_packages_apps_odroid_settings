@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:title="@string/bluetooth">
+    <PreferenceCategory
+        android:title="@string/bluetooth">
+        <SwitchPreference
+            android:key="bt_service"
+            android:persistent="true"
+            android:title="@string/bluetooth_service" />
+    </PreferenceCategory>
+</PreferenceScreen>
