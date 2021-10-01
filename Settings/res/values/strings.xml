@@ -2314,4 +2314,8 @@
     <string name="gpu">GPU</string>
     <string name="gpu_clock">GPU Max Clock</string>
     <string name="gpu_governor">GPU Governor</string>
+
+    <!-- mouse -->
+    <string name="mouse_accel">Mouse Acceleration</string>
+    <string name="mouse_accel_info">Configure the Mouse pointer speed Acceleration.</string>
 </resources>

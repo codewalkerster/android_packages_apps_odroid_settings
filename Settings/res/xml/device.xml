@@ -127,6 +127,11 @@
         android:icon="@drawable/ic_accessibility_new"
         android:key="accessibility"
         android:title="@string/system_accessibility"/>
+    <Preference
+        android:fragment="hardkernel.odroid.settings.MouseAccelFragment"
+        android:icon="@drawable/ic_mouse"
+        android:key="mouse"
+        android:title="@string/mouse_accel" />
     <hardkernel.odroid.settings.LongClickPreference
         android:icon="@drawable/ic_restart_alt"
         android:key="reboot"
