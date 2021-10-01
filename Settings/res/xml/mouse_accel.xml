@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:title="@string/mouse_accel">
+    <PreferenceCategory
+        android:key="mouse_accel_info"
+        android:title="@string/mouse_accel_info">
+        <SwitchPreference
+            android:key="mouse_accel_switch"
+            android:persistent="true"
+            android:title="@string/mouse_accel" />
+    </PreferenceCategory>
+</PreferenceScreen>
