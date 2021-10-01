@@ -10,7 +10,7 @@ import hardkernel.odroid.settings.R;
 import hardkernel.odroid.settings.LeanbackAddBackPreferenceFragment;
 
 import hardkernel.odroid.settings.RadioPreference;
-//import com.hardkernel.odroid.settings.ConfigEnv;
+import hardkernel.odroid.settings.ConfigEnv;
 import hardkernel.odroid.settings.gpu.GPU;
 
 public class FrequencyFragment extends LeanbackAddBackPreferenceFragment {
@@ -76,8 +76,6 @@ public class FrequencyFragment extends LeanbackAddBackPreferenceFragment {
     }
 
     private void saveFrequency(String frequency) {
-        /*
             ConfigEnv.setGpuFreq(frequency);
-            */
     }
 }

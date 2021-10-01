@@ -7,7 +7,7 @@ import androidx.preference.PreferenceScreen;
 import hardkernel.odroid.settings.R;
 
 import hardkernel.odroid.settings.RadioPreference;
-//import hardkernel.odroid.settings.ConfigEnv;
+import hardkernel.odroid.settings.ConfigEnv;
 import hardkernel.odroid.settings.cpu.CPU;
 import hardkernel.odroid.settings.LeanbackAddBackPreferenceFragment;
 
@@ -70,11 +70,6 @@ public class GovernorFragment extends LeanbackAddBackPreferenceFragment {
     }
 
     private void saveGovernor(String governor) {
-        /*
-        if (cpu.cluster == CPU.Cluster.Little)
-            ConfigEnv.setLittleCoreGovernor(governor);
-        else if (cpu.cluster == CPU.Cluster.Big)
-            ConfigEnv.setBigCoreGovernor(governor);
-            */
+        ConfigEnv.setCpuGovernor(governor);
     }
 }
