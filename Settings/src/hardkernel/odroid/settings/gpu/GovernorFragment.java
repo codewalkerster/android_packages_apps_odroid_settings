@@ -7,7 +7,7 @@ import androidx.preference.PreferenceScreen;
 import hardkernel.odroid.settings.R;
 
 import hardkernel.odroid.settings.RadioPreference;
-//import hardkernel.odroid.settings.ConfigEnv;
+import hardkernel.odroid.settings.ConfigEnv;
 import hardkernel.odroid.settings.gpu.GPU;
 import hardkernel.odroid.settings.LeanbackAddBackPreferenceFragment;
 
@@ -64,8 +64,6 @@ public class GovernorFragment extends LeanbackAddBackPreferenceFragment {
     }
 
     private void saveGovernor(String governor) {
-        /*
             ConfigEnv.setGpuGovernor(governor);
-            */
     }
 }
