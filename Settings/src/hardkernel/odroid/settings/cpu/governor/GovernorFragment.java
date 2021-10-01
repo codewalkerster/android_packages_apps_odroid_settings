@@ -23,7 +23,7 @@ import hardkernel.odroid.settings.R;
 import hardkernel.odroid.settings.SettingsPreferenceFragment;
 
 import hardkernel.odroid.settings.RadioPreference;
-//import hardkernel.odroid.settings.ConfigEnv;
+import hardkernel.odroid.settings.ConfigEnv;
 import hardkernel.odroid.settings.cpu.CPU;
 
 public class GovernorFragment extends SettingsPreferenceFragment {
@@ -85,11 +85,6 @@ public class GovernorFragment extends SettingsPreferenceFragment {
     }
 
     private void saveGovernor(String governor) {
-        /*
-        if (cpu.cluster == CPU.Cluster.Little)
-            ConfigEnv.setLittleCoreGovernor(governor);
-        else if (cpu.cluster == CPU.Cluster.Big)
-            ConfigEnv.setBigCoreGovernor(governor);
-            */
+        ConfigEnv.setCpuGovernor(governor);
     }
 }

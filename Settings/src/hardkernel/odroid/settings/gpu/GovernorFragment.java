@@ -22,7 +22,7 @@ import androidx.preference.PreferenceScreen;
 import hardkernel.odroid.settings.R;
 
 import hardkernel.odroid.settings.RadioPreference;
-//import hardkernel.odroid.settings.ConfigEnv;
+import hardkernel.odroid.settings.ConfigEnv;
 import hardkernel.odroid.settings.gpu.GPU;
 import hardkernel.odroid.settings.SettingsPreferenceFragment;
 
@@ -79,8 +79,6 @@ public class GovernorFragment extends SettingsPreferenceFragment {
     }
 
     private void saveGovernor(String governor) {
-        /*
             ConfigEnv.setGpuGovernor(governor);
-            */
     }
 }

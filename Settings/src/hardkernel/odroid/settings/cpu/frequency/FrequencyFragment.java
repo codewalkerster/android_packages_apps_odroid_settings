@@ -25,7 +25,7 @@ import hardkernel.odroid.settings.R;
 import hardkernel.odroid.settings.SettingsPreferenceFragment;
 
 import hardkernel.odroid.settings.RadioPreference;
-//import com.hardkernel.odroid.settings.ConfigEnv;
+import hardkernel.odroid.settings.ConfigEnv;
 import hardkernel.odroid.settings.cpu.CPU;
 
 public class FrequencyFragment extends SettingsPreferenceFragment {
@@ -97,11 +97,6 @@ public class FrequencyFragment extends SettingsPreferenceFragment {
     }
 
     private void saveFrequency(String frequency) {
-        /*
-        if (cpu.cluster == CPU.Cluster.Little)
-            ConfigEnv.setLittleCoreFreq(frequency);
-        else if (cpu.cluster == CPU.Cluster.Big)
-            ConfigEnv.setBigCoreFreq(frequency);
-            */
+        ConfigEnv.setCpuFreq(frequency);
     }
 }
