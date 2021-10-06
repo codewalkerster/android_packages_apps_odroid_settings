@@ -269,7 +269,7 @@ public class DeviceFragment extends LeanbackAddBackPreferenceFragment implements
         } else if (preference == mRotationPreference) {
             final Context context = getPreferenceManager().getContext();
             int degree = Integer.parseInt((String) obj) / 90;
-            Settings.System.putInt(context.getContentResolver(), Settings.System.ACCELEROMETER_ROTATION, 0);
+            Settings.System.putInt(context.getContentResolver(), Settings.System.ACCELEROMETER_ROTATION, 1);
             Settings.System.putInt(context.getContentResolver(), Settings.System.USER_ROTATION, degree);
         }
         return true;
