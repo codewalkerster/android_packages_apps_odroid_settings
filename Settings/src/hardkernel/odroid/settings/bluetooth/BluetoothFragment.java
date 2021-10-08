@@ -245,23 +245,26 @@ public class BluetoothFragment extends LeanbackAddBackPreferenceFragment impleme
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         setPreferencesFromResource(R.xml.bluetooth, null);
         mLocalManager = Utils.getLocalBtManager(getContext());
+        mPreferenceBluetoothEnable = (SwitchPreference) findPreference(KEY_BLUETOOTH_ENABLE);
+        mPreferenceBluetoothRename = (Preference) findPreference(KEY_BLUETOOTH_RENAME);
+        mPreferenceBluetoothRefresh = findPreference(KEY_BLUETOOTH_REFRESH);
+        mPreferenceBluetoothReceived = findPreference(KEY_BLUETOOTH_RECEIVED);
         if (mLocalManager == null) {
             Log.i(TAG,"mLocalManager = null");
             // Bluetooth is not supported
             mLocalAdapter = null;
             mPreferenceBluetoothEnable.setEnabled(false);
+            mPreferenceBluetoothRename.setVisible(false);
+            mPreferenceBluetoothRefresh.setVisible(false);
+            mPreferenceBluetoothReceived.setVisible(false);
         } else {
             Log.i(TAG,"mLocalManager != null");
             mLocalAdapter = mLocalManager.getBluetoothAdapter();
         }
         mInitiateDiscoverable = true;
         mPreferenceScreen = getPreferenceScreen();
-        mPreferenceBluetoothEnable = (SwitchPreference) findPreference(KEY_BLUETOOTH_ENABLE);
-        mPreferenceBluetoothRename = (Preference) findPreference(KEY_BLUETOOTH_RENAME);
         mCategoryBluetoothAvailable = (BluetoothProgressCategory) findPreference(KEY_BLUETOOTH_AVAILABLE);
         mCategoryBluetoothPaired = (PreferenceCategory) findPreference(KEY_BLUETOOTH_PAIRED);
-        mPreferenceBluetoothRefresh = findPreference(KEY_BLUETOOTH_REFRESH);
-        mPreferenceBluetoothReceived = findPreference(KEY_BLUETOOTH_RECEIVED);
     }
 
     @Override
