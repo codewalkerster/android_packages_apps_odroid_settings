@@ -19,6 +19,11 @@
     android:title="@string/bluetooth" >
 
     <SwitchPreference
+        android:key="bluetooth_service"
+        android:persistent="false"
+        android:title="@string/bluetooth_service" />
+
+    <SwitchPreference
         android:key="bluetooth_enable"
         android:persistent="false"
         android:title="@string/bluetooth" />

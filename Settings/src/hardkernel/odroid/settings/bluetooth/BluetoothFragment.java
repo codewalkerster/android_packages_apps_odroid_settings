@@ -17,6 +17,7 @@ import com.android.settingslib.wifi.AccessPointPreference;
 import java.util.List;
 
 import com.android.internal.net.VpnProfile;
+import hardkernel.odroid.settings.EnvProperty;
 import hardkernel.odroid.settings.R;
 import hardkernel.odroid.settings.LeanbackAddBackPreferenceFragment;
 
@@ -101,7 +102,6 @@ import java.util.Collections;
 
 import static android.app.AppOpsManager.OP_ACTIVATE_VPN;
 
-import android.os.SystemProperties;
 import androidx.annotation.Keep;
 import androidx.annotation.VisibleForTesting;
 import android.text.BidiFormatter;
@@ -122,6 +122,7 @@ public class BluetoothFragment extends LeanbackAddBackPreferenceFragment impleme
     private static final String TAG = "BluetoothFragment";
     private static final String BTOPP_ACTION_OPEN_RECEIVED_FILES =
             "android.btopp.intent.action.OPEN_RECEIVED_FILES";
+    private static final String KEY_BLUETOOTH_SERVICE = "bluetooth_service";
     private static final String KEY_BLUETOOTH_ENABLE = "bluetooth_enable";
     private static final String KEY_BLUETOOTH_RENAME = "bluetooth_rename";
     private static final String KEY_BLUETOOTH_PAIRED = "bluetooth_paried";
@@ -135,6 +136,10 @@ public class BluetoothFragment extends LeanbackAddBackPreferenceFragment impleme
     static final String EXTRA_SHOW_ALL_FILES = "android.btopp.intent.extra.SHOW_ALL";
     @VisibleForTesting
     static final String EXTRA_DIRECTION = "direction";
+
+    static final String PERSIST_BLUETOOTH_SERVICE_DOWN = "persist.bt.service.down";
+
+    private boolean mIsBtServiceDown;
 
     private LocalBluetoothAdapter mLocalAdapter;
     private LocalBluetoothManager mLocalManager;
@@ -151,6 +156,7 @@ public class BluetoothFragment extends LeanbackAddBackPreferenceFragment impleme
     private Preference mPreferenceBluetoothRename;
     private Preference mPreferenceBluetoothRefresh;
     private Preference mPreferenceBluetoothReceived;
+    private TwoStatePreference mPreferenceBluetoothService;
     private SwitchPreference mPreferenceBluetoothEnable;
     private PreferenceCategory mCategoryBluetoothPaired;
     private BluetoothProgressCategory mCategoryBluetoothAvailable;
@@ -199,6 +205,8 @@ public class BluetoothFragment extends LeanbackAddBackPreferenceFragment impleme
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        mIsBtServiceDown = EnvProperty.getBoolean(PERSIST_BLUETOOTH_SERVICE_DOWN, true);
     }
 
     @Override
@@ -245,10 +253,14 @@ public class BluetoothFragment extends LeanbackAddBackPreferenceFragment impleme
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         setPreferencesFromResource(R.xml.bluetooth, null);
         mLocalManager = Utils.getLocalBtManager(getContext());
+        mPreferenceBluetoothService = (TwoStatePreference) findPreference(KEY_BLUETOOTH_SERVICE);
         mPreferenceBluetoothEnable = (SwitchPreference) findPreference(KEY_BLUETOOTH_ENABLE);
         mPreferenceBluetoothRename = (Preference) findPreference(KEY_BLUETOOTH_RENAME);
         mPreferenceBluetoothRefresh = findPreference(KEY_BLUETOOTH_REFRESH);
         mPreferenceBluetoothReceived = findPreference(KEY_BLUETOOTH_RECEIVED);
+
+        mPreferenceBluetoothService.setChecked(!mIsBtServiceDown);
+
         if (mLocalManager == null) {
             Log.i(TAG,"mLocalManager = null");
             // Bluetooth is not supported
@@ -285,6 +297,13 @@ public class BluetoothFragment extends LeanbackAddBackPreferenceFragment impleme
             new BluetoothNameDialogFragment().show(getFragmentManager(),
                     "rename device");
             return true;
+        } else if (preference == mPreferenceBluetoothService) {
+            mIsBtServiceDown = !mPreferenceBluetoothService.isChecked();
+            EnvProperty.set(PERSIST_BLUETOOTH_SERVICE_DOWN, mIsBtServiceDown);
+
+            Toast.makeText(getContext(),
+                    R.string.bluetooth_service_state,
+                    Toast.LENGTH_LONG).show();
         } else if (preference == mPreferenceBluetoothEnable) {
             refreshSwitchView();
             return true;

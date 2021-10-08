@@ -19,6 +19,12 @@ public class EnvProperty {
         return SystemProperties.get(key, defaultValue);
     }
 
+    public static boolean set (String key, boolean value) {
+        SystemProperties.set(key, String.valueOf(value));
+
+        return true;
+    }
+
     public static boolean set (String key, String value) {
         SystemProperties.set(key, value);
 
