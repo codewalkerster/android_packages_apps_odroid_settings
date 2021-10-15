@@ -401,6 +401,10 @@
         \n\nThere seemed to be no horses nor animals of any kind; the men carried things around in little green carts, which they pushed before them.
         Everyone seeemed happy and contented and prosperous.
     </string>
+    <!-- Title for preference to allow kiosk mode for display. [CHAR LIMIT=50] -->
+    <string name="kiosk_mode_title">Kiosk mode</string>
+    <!-- message for announce to apply kiosk mode after reboot -->
+    <string name="kiosk_mode_message">Kiosk mode will be applied after reboot</string>
 
     <!-- Title for preference for HDR format selection. [CHAR LIMIT=50] -->
     <string name="hdr_format_selection_title">Format selection</string>
