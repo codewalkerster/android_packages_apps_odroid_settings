@@ -245,7 +245,10 @@
     <string name="kiosk_mode_title">Kiosk mode</string>
     <!-- message for announce to apply kiosk mode after reboot -->
     <string name="kiosk_mode_message">Kiosk mode will be applied after reboot</string>
-
+    <!-- Title for preference to hide volume icon for display. [CHAR LIMIT=50] -->
+    <string name="sysbar_volume_title">SystemBar Voluem Icon Hide</string>
+    <!-- message for announce to apply sysbar volume statue change  after reboot -->
+    <string name="sysbar_volume_message">SystemBar Voluem Icon Setting  will be applied after reboot</string>
 
     <!-- Title of dialog asking user to confirm before clearing all caches. [CHAR LIMIT=48] -->
     <string name="device_storage_clear_cache_title">Clear cached data?</string>

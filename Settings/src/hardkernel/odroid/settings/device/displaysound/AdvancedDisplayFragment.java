@@ -39,9 +39,13 @@ import hardkernel.odroid.settings.EnvProperty;
 public class AdvancedDisplayFragment extends SettingsPreferenceFragment {
     private static final String KEY_GAME_MODE = "game_mode";
     private static final String KEY_KIOSK_MODE = "kiosk_mode";
+    private static final String KEY_SYSTEMBAR_VOLUME = "sysbar_volume";
 
     private static final String PERSIST_KIOSK_MODE = "persist.kiosk_mode";
+    private static final String PERSIST_SYSTEMBAR_VOLUME_HIDE = "persist.systembar.volume.hide";
+
     private static Boolean kiosk_mode = false;
+    private static Boolean sysbar_volume = false;
 
     @Override
     public int getMetricsCategory() {
@@ -57,6 +61,10 @@ public class AdvancedDisplayFragment extends SettingsPreferenceFragment {
         kiosk_mode = EnvProperty.getBoolean(PERSIST_KIOSK_MODE, false);
         SwitchPreference kioskModePreference = findPreference(KEY_KIOSK_MODE);
         kioskModePreference.setChecked(kiosk_mode);
+
+        sysbar_volume = EnvProperty.getBoolean(PERSIST_SYSTEMBAR_VOLUME_HIDE, false);
+        SwitchPreference sysbarVolumePreference = findPreference(KEY_SYSTEMBAR_VOLUME);
+        sysbarVolumePreference.setChecked(sysbar_volume);
     }
 
     @Override
@@ -69,7 +77,14 @@ public class AdvancedDisplayFragment extends SettingsPreferenceFragment {
             Toast.makeText(getContext(),
                     R.string.kiosk_mode_message,
                     Toast.LENGTH_LONG).show();
+        } else if (TextUtils.equals(preference.getKey(), KEY_SYSTEMBAR_VOLUME)) {
+            sysbar_volume = ((SwitchPreference) preference).isChecked();
+            EnvProperty.set(PERSIST_SYSTEMBAR_VOLUME_HIDE, sysbar_volume);
+            Toast.makeText(getContext(),
+                    R.string.sysbar_volume_message,
+                    Toast.LENGTH_LONG).show();
         }
+
         return super.onPreferenceTreeClick(preference);
     }
 

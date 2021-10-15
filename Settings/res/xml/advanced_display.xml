@@ -26,6 +26,10 @@
         android:key="kiosk_mode"
         android:persistent="true"
         android:title="@string/kiosk_mode_title"/>
+    <SwitchPreference
+        android:key="sysbar_volume"
+        android:persistent="true"
+        android:title="@string/sysbar_volume_title"/>
     <hardkernel.odroid.twopanelsettings.slices.EmbeddedSliceSwitchPreference
         android:key="hdr_match_content"
         custom:uri="@string/hdr_settings_slice_uri"
