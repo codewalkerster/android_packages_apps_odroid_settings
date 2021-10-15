@@ -241,6 +241,10 @@
     <string name="advanced_sound_settings_title">Advanced sound settings</string>
     <!-- Title for preference to allow game mode for display. [CHAR LIMIT=50] -->
     <string name="game_mode_title">Allow game mode</string>
+    <!-- Title for preference to allow kiosk mode for display. [CHAR LIMIT=50] -->
+    <string name="kiosk_mode_title">Kiosk mode</string>
+    <!-- message for announce to apply kiosk mode after reboot -->
+    <string name="kiosk_mode_message">Kiosk mode will be applied after reboot</string>
 
 
     <!-- Title of dialog asking user to confirm before clearing all caches. [CHAR LIMIT=48] -->
