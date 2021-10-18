@@ -28,6 +28,10 @@ public class ConfigEnv {
         return getValue("gpu_governor");
     }
 
+    public static String getHeartBeat() {
+        return getValue("heartbeat");
+    }
+
     private static String getValue(String keyWord) {
         return _getValue(keyWord + "=");
     }
@@ -69,6 +73,10 @@ public class ConfigEnv {
 
     public static void setGpuGovernor(String governor) {
         setValue("gpu_governor", governor);
+    }
+
+    public static void setHeartBeat(String mode) {
+        setValue("heartbeat", mode);
     }
 
     private static void setValue (String keyWord, String val) {

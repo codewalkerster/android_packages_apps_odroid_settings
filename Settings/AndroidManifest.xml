@@ -870,6 +870,11 @@
             android:configChanges="keyboard|keyboardHidden|navigation"
             android:excludeFromRecents="true"
             android.exported="true" />
+        <activity
+            android:name=".HeartBeatActivity"
+            android:configChanges="keyboard|keyboardHidden|navigation"
+            android:excludeFromRecents="true"
+            android.exported="true" />
         <receiver
             android:name=".OdroidSettingsReceiver"
             android:enabled="true">

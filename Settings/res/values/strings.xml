@@ -2329,4 +2329,8 @@
     <!-- mouse -->
     <string name="mouse_accel">Mouse Acceleration</string>
     <string name="mouse_accel_info">Configure the Mouse pointer speed Acceleration.</string>
+
+    <!-- LED -->
+    <string name="led">LED</string>
+    <string name="heartbeat">HeartBeat</string>
 </resources>

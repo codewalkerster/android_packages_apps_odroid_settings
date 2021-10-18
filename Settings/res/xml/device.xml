@@ -38,6 +38,11 @@
         android:title="@string/gpu"
         android:fragment="hardkernel.odroid.settings.gpu.GpuFragment" />
     <Preference
+        android:icon="@drawable/heartbeat_icon"
+        android:key="led"
+        android:title="@string/led"
+        android:fragment="hardkernel.odroid.settings.HeartBeatFragment" />
+    <Preference
         android:fragment="hardkernel.odroid.settings.system.DateTimeFragment"
         android:icon="@drawable/ic_access_time"
         android:key="date_time"
