@@ -205,8 +205,6 @@ public class BluetoothFragment extends LeanbackAddBackPreferenceFragment impleme
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        mIsBtServiceDown = EnvProperty.getBoolean(PERSIST_BLUETOOTH_SERVICE_DOWN, true);
     }
 
     @Override
@@ -259,6 +257,7 @@ public class BluetoothFragment extends LeanbackAddBackPreferenceFragment impleme
         mPreferenceBluetoothRefresh = findPreference(KEY_BLUETOOTH_REFRESH);
         mPreferenceBluetoothReceived = findPreference(KEY_BLUETOOTH_RECEIVED);
 
+        mIsBtServiceDown = EnvProperty.getBoolean(PERSIST_BLUETOOTH_SERVICE_DOWN, true);
         mPreferenceBluetoothService.setChecked(!mIsBtServiceDown);
 
         if (mLocalManager == null) {
