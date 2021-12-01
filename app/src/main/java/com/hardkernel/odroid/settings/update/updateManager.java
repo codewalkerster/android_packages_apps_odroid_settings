@@ -48,7 +48,14 @@ public class updateManager {
     }
 
     public static String getRemoteURL() {
-        return url;
+        String remote = url;
+        if (remote.indexOf("https://") != 0) {
+            StringBuffer str = new StringBuffer(remote);
+            remote = "";
+            remote = str.insert(0, "https://").toString();
+        }
+
+        return remote;
     }
 
     public static String getLatestVersion() {
