@@ -20,6 +20,7 @@ import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.os.SystemProperties;
 
 /**
  * BluetoothPairingRequest is a receiver for any Bluetooth pairing request. It
@@ -30,32 +31,36 @@ public final class BluetoothPairingRequest extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        String action = intent.getAction();
-        if (!action.equals(BluetoothDevice.ACTION_PAIRING_REQUEST)) {
+        if ("tablet".equals(SystemProperties.get("ro.target.product"))) {
             return;
-        }
+        } else {
+            String action = intent.getAction();
+            if (!action.equals(BluetoothDevice.ACTION_PAIRING_REQUEST)) {
+                return;
+            }
 
-        // convert broadcast intent into activity intent (same action string)
-        BluetoothDevice device =
-                intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-        int type = intent.getIntExtra(BluetoothDevice.EXTRA_PAIRING_VARIANT,
-                BluetoothDevice.ERROR);
-        Intent pairingIntent = new Intent();
-        pairingIntent.setClass(context, BluetoothPairingDialog.class);
-        pairingIntent.putExtra(BluetoothDevice.EXTRA_DEVICE, device);
-        pairingIntent.putExtra(BluetoothDevice.EXTRA_PAIRING_VARIANT, type);
-        if (type == BluetoothDevice.PAIRING_VARIANT_PASSKEY_CONFIRMATION ||
-                type == BluetoothDevice.PAIRING_VARIANT_DISPLAY_PASSKEY ||
-                type == BluetoothDevice.PAIRING_VARIANT_DISPLAY_PIN) {
-            int pairingKey = intent.getIntExtra(BluetoothDevice.EXTRA_PAIRING_KEY,
+            // convert broadcast intent into activity intent (same action string)
+            BluetoothDevice device =
+                    intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+            int type = intent.getIntExtra(BluetoothDevice.EXTRA_PAIRING_VARIANT,
                     BluetoothDevice.ERROR);
-            pairingIntent.putExtra(BluetoothDevice.EXTRA_PAIRING_KEY, pairingKey);
-        }
-        pairingIntent.setAction(BluetoothDevice.ACTION_PAIRING_REQUEST);
-        pairingIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            Intent pairingIntent = new Intent();
+            pairingIntent.setClass(context, BluetoothPairingDialog.class);
+            pairingIntent.putExtra(BluetoothDevice.EXTRA_DEVICE, device);
+            pairingIntent.putExtra(BluetoothDevice.EXTRA_PAIRING_VARIANT, type);
+            if (type == BluetoothDevice.PAIRING_VARIANT_PASSKEY_CONFIRMATION ||
+                    type == BluetoothDevice.PAIRING_VARIANT_DISPLAY_PASSKEY ||
+                    type == BluetoothDevice.PAIRING_VARIANT_DISPLAY_PIN) {
+                int pairingKey = intent.getIntExtra(BluetoothDevice.EXTRA_PAIRING_KEY,
+                        BluetoothDevice.ERROR);
+                pairingIntent.putExtra(BluetoothDevice.EXTRA_PAIRING_KEY, pairingKey);
+            }
+            pairingIntent.setAction(BluetoothDevice.ACTION_PAIRING_REQUEST);
+            pairingIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
-        // In Canvas, always start the pairing activity when we get the pairing broadcast,
-        // as opposed to displaying a notification that will start the pairing activity.
-        context.startActivity(pairingIntent);
+            // In Canvas, always start the pairing activity when we get the pairing broadcast,
+            // as opposed to displaying a notification that will start the pairing activity.
+            context.startActivity(pairingIntent);
+        }
     }
 }
