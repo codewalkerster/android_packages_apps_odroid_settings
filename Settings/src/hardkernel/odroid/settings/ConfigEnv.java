@@ -10,7 +10,7 @@ import java.util.List;
 
 public class ConfigEnv {
     private final static String TAG = "ConfigEnv";
-    private final static String path = "/fat/env.ini";
+    private final static String path = "/fat/config.ini";
 
     public static String getCpuFreq() {
         return getValue("cpu_max_freq");
