@@ -1,8 +1,10 @@
-package hardkernel.odroid.settings;
+package hardkernel.odroid.settings.mouse;
 
-import android.app.Fragment;
+import androidx.fragment.app.Fragment;
+import hardkernel.odroid.settings.BaseSettingsFragment;
+import hardkernel.odroid.settings.TvSettingsActivity;
 
-public class MouseAccelActivity extends TvSettingsActivity {
+public class MouseActivity extends TvSettingsActivity {
     @Override
     protected Fragment createSettingsFragment() {
         return SettingsFragment.newInstance();
@@ -15,7 +17,7 @@ public class MouseAccelActivity extends TvSettingsActivity {
 
         @Override
         public void onPreferenceStartInitialScreen() {
-            final MouseAccelFragment fragment = MouseAccelFragment.newInstance();
+            final MouseFragment fragment = MouseFragment.newInstance();
             startPreferenceFragment(fragment);
         }
     }

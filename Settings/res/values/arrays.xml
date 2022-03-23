@@ -486,4 +486,13 @@
         <item>0</item>
     </string-array>
 
+    <string-array name="mouse_right_entries">
+        <item>Secondary</item>
+        <item>Back</item>
+    </string-array>
+
+    <string-array name="mouse_right_entry_values">
+        <item>secondary</item>
+        <item>back</item>
+    </string-array>
 </resources>
