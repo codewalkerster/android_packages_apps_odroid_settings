@@ -30,7 +30,7 @@
         android:key="gpu"
         android:title="@string/gpu" />
     <Preference
-        android:fragment="hardkernel.odroid.settings.MouseAccelFragment"
+        android:fragment="hardkernel.odroid.settings.mouse.MouseFragment"
         android:icon="@drawable/ic_mouse"
         android:key="mouse"
         android:title="@string/mouse_accel" />

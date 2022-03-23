@@ -13,18 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License
  */
-package hardkernel.odroid.settings;
+package hardkernel.odroid.settings.mouse;
 
 import androidx.fragment.app.Fragment;
 
 import hardkernel.odroid.settings.TvSettingsActivity;
 import hardkernel.odroid.settings.overlay.FlavorUtils;
 
-public class MouseAccelActivity extends TvSettingsActivity {
+public class MouseActivity extends TvSettingsActivity {
 
     @Override
     protected Fragment createSettingsFragment() {
         return FlavorUtils.getFeatureFactory(this).getSettingsFragmentProvider()
-            .newSettingsFragment(MouseAccelFragment.class.getName(), null);
+            .newSettingsFragment(MouseFragment.class.getName(), null);
     }
 }
