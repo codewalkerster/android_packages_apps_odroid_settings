@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-    android:title="@string/mouse_accel">
+    android:title="@string/mouse">
     <PreferenceCategory
         android:key="mouse_accel_info"
         android:title="@string/mouse_accel_info">
@@ -8,5 +8,14 @@
             android:key="mouse_accel_switch"
             android:persistent="true"
             android:title="@string/mouse_accel" />
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:key="mouse_right_info"
+        android:title="@string/mouse_right_info">
+        <ListPreference
+            android:key="mouse_right_select"
+            android:title="@string/mouse_right"
+            android:entries="@array/mouse_right_entries"
+            android:entryValues="@array/mouse_right_entry_values"/>
     </PreferenceCategory>
 </PreferenceScreen>
