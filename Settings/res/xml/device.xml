@@ -32,11 +32,6 @@
         android:key="cpu"
         android:title="@string/cpu"
         android:fragment="hardkernel.odroid.settings.cpu.CpuFragment" />
-    <Preference
-        android:icon="@drawable/dtb_overlay_icon"
-        android:key="dtbo"
-        android:title="@string/overlay_title"
-        android:fragment="hardkernel.odroid.settings.dtbo.DTBOverlayFragment" />
     <!-- android:icon="@drawable/ic_gpu" -->
     <Preference
         android:key="gpu"
@@ -67,6 +62,11 @@
         android:icon="@drawable/ic_keyboard"
         android:key="keyboard"
         android:title="@string/system_keyboard"/>
+    <Preference
+        android:fragment="hardkernel.odroid.settings.mouse.MouseFragment"
+        android:icon="@drawable/ic_mouse"
+        android:key="mouse"
+        android:title="@string/mouse" />
     <Preference
         android:fragment="hardkernel.odroid.settings.shortcut.ShortcutFragment"
         android:icon="@drawable/ic_app_shortcut"
@@ -121,6 +121,11 @@
         android:key="energysaver"
         android:title="@string/device_energy_saver"/>
     <Preference
+        android:icon="@drawable/dtb_overlay_icon"
+        android:key="dtbo"
+        android:title="@string/overlay_title"
+        android:fragment="hardkernel.odroid.settings.dtbo.DTBOverlayFragment" />
+    <Preference
         android:fragment="hardkernel.odroid.settings.system.development.DevelopmentFragment"
         android:icon="@drawable/ic_settings_developeroptions"
         android:key="developer"
@@ -142,11 +147,6 @@
         android:icon="@drawable/ic_accessibility_new"
         android:key="accessibility"
         android:title="@string/system_accessibility"/>
-    <Preference
-        android:fragment="hardkernel.odroid.settings.mouse.MouseFragment"
-        android:icon="@drawable/ic_mouse"
-        android:key="mouse"
-        android:title="@string/mouse" />
     <hardkernel.odroid.settings.LongClickPreference
         android:icon="@drawable/ic_restart_alt"
         android:key="reboot"
