@@ -2342,8 +2342,8 @@
     <string name="mouse">Mouse</string>
     <string name="mouse_accel">Mouse Acceleration</string>
     <string name="mouse_accel_info">Configure the Mouse pointer speed Acceleration.</string>
-    <string name="mouse_right">Mouse Right Button</string>
-    <string name="mouse_right_info">Select Mouse Right Button function.</string>
+    <string name="mouse_right">Right Button as Back Button</string>
+    <string name="mouse_right_info">Mouse Right Button as Back Button ON/OFF.</string>
 
     <!-- LED -->
     <string name="led">LED</string>
