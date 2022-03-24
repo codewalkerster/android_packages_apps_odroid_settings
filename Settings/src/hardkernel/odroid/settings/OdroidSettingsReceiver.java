@@ -14,6 +14,7 @@ public class OdroidSettingsReceiver extends BroadcastReceiver {
         if (intent.getAction().equals(Intent.ACTION_BOOT_COMPLETED)) {
             CpuReceiver.onReceive();
             GpuReceiver.onReceive();
+            ShortcutReceiver.onReceive(context);
         }
     }
 }
