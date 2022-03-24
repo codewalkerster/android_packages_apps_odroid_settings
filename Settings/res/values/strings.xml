@@ -2347,5 +2347,5 @@
 
     <!-- LED -->
     <string name="led">LED</string>
-    <string name="heartbeat">HeartBeat</string>
+    <string name="heartbeat">Blue LED</string>
 </resources>
