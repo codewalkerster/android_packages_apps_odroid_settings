@@ -1,28 +1,25 @@
 package hardkernel.odroid.settings.mouse;
 
 import android.os.Bundle;
-import androidx.preference.ListPreference;
+import android.widget.Toast;
 import androidx.preference.Preference;
 import androidx.preference.TwoStatePreference;
-import android.util.Log;
-import android.widget.Toast;
 
 import hardkernel.odroid.settings.R;
 import hardkernel.odroid.settings.LeanbackAddBackPreferenceFragment;
 import hardkernel.odroid.settings.EnvProperty;
 
-public class MouseFragment extends LeanbackAddBackPreferenceFragment
-        implements Preference.OnPreferenceChangeListener {
+public class MouseFragment extends LeanbackAddBackPreferenceFragment {
     private static final String TAG = "MouseFragment";
     private static final String KEY_MOUSE_ACCELERATION_SWITCH = "mouse_accel_switch";
-    private static final String KEY_MOUSE_RIGHT_BUTTON_LIST = "mouse_right_select";
+    private static final String KEY_MOUSE_RIGHT_BUTTON_SWITCH = "mouse_right_select";
     private static final String MOUSE_ACCELERATION = "persist.mouse_acceleration";
     private static final String MOUSE_RIGHT = "persist.mouse.right";
     private TwoStatePreference mouseAccelPref;
-    private ListPreference mouseRightListPref;
+    private TwoStatePreference mouseRightPref;
 
-    public static boolean mouseAccel = true;
-    public static String mouseRight;
+    private static boolean mouseAccel = true;
+    private static String mouseRight;
 
     public static MouseFragment newInstance() {
         return new MouseFragment();
@@ -34,19 +31,25 @@ public class MouseFragment extends LeanbackAddBackPreferenceFragment
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        refreshStatus();
+    }
+
+    @Override
     public void onCreatePreferences(Bundle saveInstanceState, String rootKey) {
         setPreferencesFromResource(R.xml.mouse, null);
         mouseAccelPref = (TwoStatePreference) findPreference(KEY_MOUSE_ACCELERATION_SWITCH);
+        mouseRightPref = (TwoStatePreference) findPreference(KEY_MOUSE_RIGHT_BUTTON_SWITCH);
 
+        refreshStatus();
+    }
+
+    private void refreshStatus() {
         mouseAccel = EnvProperty.getBoolean(MOUSE_ACCELERATION, true);
         mouseAccelPref.setChecked(mouseAccel);
-
-        mouseRightListPref = (ListPreference) findPreference(KEY_MOUSE_RIGHT_BUTTON_LIST);
-
         mouseRight = EnvProperty.get(MOUSE_RIGHT, "secondary");
-        mouseRightListPref.setValue(mouseRight);
-
-        mouseRightListPref.setOnPreferenceChangeListener(this);
+        mouseRightPref.setChecked(mouseRight.equals("back"));
     }
 
     @Override
@@ -65,20 +68,11 @@ public class MouseFragment extends LeanbackAddBackPreferenceFragment
                         + " after reboot!",
                         Toast.LENGTH_LONG).show();
                 return true;
+            case KEY_MOUSE_RIGHT_BUTTON_SWITCH:
+                EnvProperty.set(MOUSE_RIGHT, mouseRightPref.isChecked()?
+                        "back":
+                        "secondary");
         }
         return super.onPreferenceTreeClick(preference);
-    }
-
-    @Override
-    public boolean onPreferenceChange(Preference preference, Object obj) {
-        Log.i(TAG, "onPreferenceChange:" + obj);
-        if ((ListPreference) preference == mouseRightListPref) {
-            if (mouseRight != (String) obj) {
-                EnvProperty.set(MOUSE_RIGHT, (String) obj);
-                mouseRight = (String) obj;
-            }
-        }
-
-        return true;
     }
 }
