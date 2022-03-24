@@ -33,7 +33,7 @@
         android:fragment="hardkernel.odroid.settings.mouse.MouseFragment"
         android:icon="@drawable/ic_mouse"
         android:key="mouse"
-        android:title="@string/mouse_accel" />
+        android:title="@string/mouse" />
     <Preference
         android:fragment="hardkernel.odroid.settings.display.DisplayFragment"
         android:icon="@drawable/ic_settings_display"

@@ -12,10 +12,9 @@
     <PreferenceCategory
         android:key="mouse_right_info"
         android:title="@string/mouse_right_info">
-        <ListPreference
-            android:key="mouse_right_select"
-            android:title="@string/mouse_right"
-            android:entries="@array/mouse_right_entries"
-            android:entryValues="@array/mouse_right_entry_values"/>
+        <SwitchPreference
+            android:key="mouse_right"
+            android:persistent="true"
+            android:title="@string/mouse_right" />
     </PreferenceCategory>
 </PreferenceScreen>
