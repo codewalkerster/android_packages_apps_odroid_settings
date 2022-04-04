@@ -2348,4 +2348,7 @@
     <!-- LED -->
     <string name="led">LED</string>
     <string name="heartbeat">Blue LED</string>
+
+    <!-- Update check -->
+    <string name="check_update">Check Update at Boot</string>
 </resources>

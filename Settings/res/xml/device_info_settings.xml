@@ -38,6 +38,11 @@
             android:targetClass="@string/additional_system_update_menu" />
     </Preference>
 
+    <SwitchPreference
+        android:key="check_update"
+        android:persistent="true"
+        android:title="@string/check_update" />
+
     <Preference android:key="device_name"
         android:title="@string/device_name" >
         <intent android:action="android.settings.DEVICE_NAME" />
