@@ -49,6 +49,7 @@ import androidx.annotation.Nullable;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceScreen;
+import androidx.preference.SwitchPreference;
 
 import com.android.settingslib.DeviceInfoUtils;
 import com.android.settingslib.RestrictedLockUtils;
@@ -62,6 +63,7 @@ import hardkernel.odroid.settings.SettingsPreferenceFragment;
 import com.android.tv.settings.library.overlay.FlavorUtils;
 import hardkernel.odroid.settings.name.DeviceManager;
 import com.android.tv.twopanelsettings.slices.CustomContentDescriptionPreference;
+import hardkernel.odroid.settings.EnvProperty;
 
 import java.util.HashMap;
 import java.util.Locale;
@@ -96,6 +98,7 @@ public class AboutFragment extends SettingsPreferenceFragment {
     private static final String KEY_TUTORIALS = "tutorials";
     private static final String KEY_RESET = "reset";
     private static final String KEY_RESET_OPTIONS = "reset_options";
+    private static final String KEY_CHECK_UPDATE = "check_update";
 
     static final int TAPS_TO_BE_A_DEVELOPER = 7;
 
@@ -258,6 +261,9 @@ public class AboutFragment extends SettingsPreferenceFragment {
         PreferenceUtils.resolveSystemActivityOrRemove(getActivity(), screen, regulatoryPref, 0);
 
         updateTutorials();
+
+        final SwitchPreference updateCheckPref = (SwitchPreference) findPreference(KEY_CHECK_UPDATE);
+        updateCheckPref.setChecked(EnvProperty.get("persist.update.check", "false").equals("true"));
     }
 
     private void removePreference(@Nullable Preference preference) {
@@ -405,6 +411,10 @@ public class AboutFragment extends SettingsPreferenceFragment {
                         "hardkernel.odroid.settings",
                         "hardkernel.odroid.settings.device.storage.ResetActivity");
                 startActivity(factoryResetIntent);
+                break;
+            case KEY_CHECK_UPDATE:
+                EnvProperty.set("persist.update.check",
+                        ((SwitchPreference)preference).isChecked()?"true":"false");
                 break;
         }
         return super.onPreferenceTreeClick(preference);
