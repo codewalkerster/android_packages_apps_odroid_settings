@@ -2,9 +2,7 @@ package hardkernel.odroid.settings.cpu;
 
 import android.content.Context;
 import android.util.Log;
-
 import hardkernel.odroid.settings.R;
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
@@ -123,6 +121,8 @@ public class Frequency {
             Log.e(TAG, "set freq : " + freq);
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (NullPointerException e) {
+            Log.e(TAG, "set by null value. Check your config.ini");
         }
     }
 

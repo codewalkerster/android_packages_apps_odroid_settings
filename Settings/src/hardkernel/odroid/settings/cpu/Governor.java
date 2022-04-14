@@ -1,7 +1,6 @@
 package hardkernel.odroid.settings.cpu;
 
 import android.util.Log;
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
@@ -87,6 +86,8 @@ public class Governor {
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
+        } catch (NullPointerException e) {
+            Log.e(TAG, "set by null value. Check your config.ini");
         }
     }
 
