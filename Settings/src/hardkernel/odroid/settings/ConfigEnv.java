@@ -13,7 +13,10 @@ public class ConfigEnv {
     private final static String path = "/fat/config.ini";
 
     public static String getCpuFreq() {
-        return getValue("cpu_max_freq");
+        String value = getValue("cpu_max_freq");
+        if (value.length() > 4)
+            return value;
+        return value + "000";
     }
 
     public static String getCpuGovernor() {
@@ -21,7 +24,10 @@ public class ConfigEnv {
     }
 
     public static String getGpuFreq() {
-        return getValue("gpu_max_freq");
+        String value = getValue("gpu_max_freq");
+        if (value.length() > 4)
+            return value;
+        return value + "000000";
     }
 
     public static String getGpuGovernor() {
@@ -56,7 +62,7 @@ public class ConfigEnv {
     }
 
     public static void setCpuFreq(String freq) {
-        setValue("cpu_max_freq", freq);
+        setValue("cpu_max_freq", freq.substring(0, freq.length() - 3));
     }
 
     public static void setCpuGovernor(String governor) {
@@ -64,7 +70,7 @@ public class ConfigEnv {
     }
 
     public static void setGpuFreq(String freq) {
-        setValue("gpu_max_freq", freq);
+        setValue("gpu_max_freq", freq.substring(0, freq.length() - 6));
     }
 
     public static void setGpuGovernor(String governor) {
