@@ -16,7 +16,7 @@ public class ConfigEnv {
         String value = getValue("cpu_max_freq");
         if (value.length() > 4)
             return value;
-        return value + "000";;
+        return value + "000";
     }
 
     public static String getCpuGovernor() {
