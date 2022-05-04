@@ -2351,4 +2351,6 @@
 
     <!-- Update check -->
     <string name="check_update">Check Update at Boot</string>
+    <string name="camera">Camera</string>
+    <string name="irFilter">Ir Filter</string>
 </resources>

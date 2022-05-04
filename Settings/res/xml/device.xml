@@ -72,6 +72,11 @@
         android:icon="@drawable/ic_app_shortcut"
         android:key="shortcut"
         android:title="@string/app_shortcut"/>
+    <Preference
+        android:key="camera"
+        android:title="@string/camera"
+        android:fragment="hardkernel.odroid.settings.camera.CameraFragment" />
+        <!-- android:icon= -->
      <Preference
         android:fragment="hardkernel.odroid.settings.device.sound.SoundFragment"
         android:icon="@drawable/ic_volume_up"

@@ -48,6 +48,7 @@ import hardkernel.odroid.settings.R;
 import hardkernel.odroid.settings.SettingsPreferenceFragment;
 import hardkernel.odroid.settings.about.RebootConfirmFragment;
 import hardkernel.odroid.settings.autofill.AutofillHelper;
+import hardkernel.odroid.settings.camera.OV5647;
 import hardkernel.odroid.settings.inputmethod.InputMethodHelper;
 import hardkernel.odroid.settings.system.SecurityFragment;
 import hardkernel.odroid.twopanelsettings.TwoPanelSettingsFragment;
@@ -73,8 +74,10 @@ public class DevicePrefFragment extends SettingsPreferenceFragment implements
     private static final String KEY_GOOGLE_SETTINGS = "google_settings";
     private static final String KEY_HOME_SETTINGS = "home";
     private static final String KEY_REBOOT = "reboot";
+    private static final String KEY_CAMERA = "camera";
 
     private Preference mSoundsPref;
+    private Preference mCameraPref;
     private boolean mInputSettingNeeded;
     private PackageManager mPm;
 
@@ -94,6 +97,11 @@ public class DevicePrefFragment extends SettingsPreferenceFragment implements
         if (restartPref != null) {
             restartPref.setLongClickListener(this);
         }
+
+        mCameraPref = findPreference(KEY_CAMERA);
+
+        if (!OV5647.isIrFilterAvailable())
+            mCameraPref.setVisible(false);
     }
 
     @Override
