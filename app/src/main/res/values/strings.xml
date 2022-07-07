@@ -296,6 +296,13 @@
     <string name="tv_ok">OK</string>
     <string name="tv_cancel">cancel</string>
 
+    <string name="pq_custom">Custom Settings</string>
+    <string name="pq_brightness">Brightness</string>
+    <string name="pq_contrast">Contrast</string>
+    <string name="pq_saturation">Saturation</string>
+    <string name="pq_sharpness">Sharpness</string>
+    <string name="pq_hue">Hue</string>
+
     <!-- Kiosk -->
     <string name="kiosk">KIOSK</string>
     <string name="kiosk_mode">KIOSK MODE</string>
@@ -315,4 +322,5 @@
     <!-- Bluetooth Service -->
     <string name="bluetooth">Bluetooth</string>
     <string name="bluetooth_service">Bluetooth Service</string>
+    <string name="pq_reset">Reset</string>
 </resources>

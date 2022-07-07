@@ -37,4 +37,9 @@
             android:key="dolby_vision"
             android:title="@string/dolby_vision_tv"
             android:fragment="com.hardkernel.odroid.settings.display.dolbyvision.DolbyVisionSettingFragment"/>
+        <Preference
+            android:fragment="com.hardkernel.odroid.settings.pqsettings.AdjustValueFragment"
+            android:key="pq_custom"
+            android:title="@string/pq_custom" />
+
 </PreferenceScreen>

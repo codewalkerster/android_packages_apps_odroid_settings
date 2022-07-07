@@ -179,6 +179,11 @@
                 <category android:name="com.android.settings.SHORTCUT" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".pqsettings.AdjustValueActivity"
+            android:configChanges="keyboard|keyboardHidden|navigation"
+            android:excludeFromRecents="true"
+            android:exported="false" />
 
         <receiver
             android:name=".OdroidSettingsReceiver"

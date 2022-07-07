@@ -105,7 +105,6 @@
         android:icon="@drawable/ic_bluetooth"
         android:key="bluetooth"
         android:title="@string/bluetooth" />
-
     <Preference
         android:icon="@drawable/ic_info_outline"
         android:key="netflix_esn"

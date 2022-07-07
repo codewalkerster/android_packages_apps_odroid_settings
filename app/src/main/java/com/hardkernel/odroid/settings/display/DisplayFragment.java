@@ -33,45 +33,51 @@ import com.hardkernel.odroid.settings.LeanbackAddBackPreferenceFragment;
 
 public class DisplayFragment extends LeanbackAddBackPreferenceFragment {
 
-	private static final String TAG = "DisplayFragment";
+    private static final String TAG = "DisplayFragment";
 
-	private static final String KEY_POSITION = "position";
-	private static final String KEY_OUTPUTMODE = "outputmode";
-	private static final String KEY_HDR = "hdr";
-	private static final String KEY_SDR = "sdr";
-	private static final String KEY_DOLBY_VISION    = "dolby_vision";
+    private static final String KEY_POSITION = "position";
+    private static final String KEY_OUTPUTMODE = "outputmode";
+    private static final String KEY_HDR = "hdr";
+    private static final String KEY_SDR = "sdr";
+    private static final String KEY_DOLBY_VISION    = "dolby_vision";
+    private static final String KEY_PQ_SETTINGS = "pq_custom";
 
-	private SdrManager mSdrManager;
+    private static final String PERSIST_PQ_SETTINGS = "persist.pq.settings";
 
-	public static DisplayFragment newInstance() {
-		return new DisplayFragment();
-	}
+    private SdrManager mSdrManager;
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-	}
+    public static DisplayFragment newInstance() {
+        return new DisplayFragment();
+    }
 
-	@Override
-	public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-		setPreferencesFromResource(R.xml.display, null);
-		mSdrManager = new SdrManager((Context) getActivity());
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
 
-		final Preference outputmodePref = findPreference(KEY_OUTPUTMODE);
-		outputmodePref.setVisible(SettingsConstant.needScreenResolutionFeture(getContext()));
+    @Override
+    public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
+        setPreferencesFromResource(R.xml.display, null);
+        mSdrManager = new SdrManager((Context) getActivity());
 
-		final Preference screenPositionPref = findPreference(KEY_POSITION);
-		screenPositionPref.setVisible(true);
+        final Preference outputmodePref = findPreference(KEY_OUTPUTMODE);
+        outputmodePref.setVisible(SettingsConstant.needScreenResolutionFeture(getContext()));
 
-		final Preference sdrPref = findPreference(KEY_SDR);
-		boolean sdrFeature = SettingsConstant.needDroidlogicSdrFeature(getContext());
-		sdrPref.setVisible(sdrFeature);
+        final Preference screenPositionPref = findPreference(KEY_POSITION);
+        screenPositionPref.setVisible(true);
 
-		final Preference hdrPref = findPreference(KEY_HDR);
-		boolean hdrFeature = SettingsConstant.needDroidlogicHdrFeature(getContext());
-		hdrPref.setVisible(hdrFeature);
+        final Preference sdrPref = findPreference(KEY_SDR);
+        boolean sdrFeature = SettingsConstant.needDroidlogicSdrFeature(getContext());
+        sdrPref.setVisible(sdrFeature);
 
-		final Preference dvPref =(Preference) findPreference(KEY_DOLBY_VISION);
-		dvPref.setVisible(false);
-	}
+        final Preference hdrPref = findPreference(KEY_HDR);
+        boolean hdrFeature = SettingsConstant.needDroidlogicHdrFeature(getContext());
+        hdrPref.setVisible(hdrFeature);
+
+        final Preference dvPref =(Preference) findPreference(KEY_DOLBY_VISION);
+        dvPref.setVisible(false);
+
+        final Preference pqCustomPref = findPreference(KEY_PQ_SETTINGS);
+        pqCustomPref.setVisible(EnvProperty.getBoolean(PERSIST_PQ_SETTINGS, true));
+    }
 }
