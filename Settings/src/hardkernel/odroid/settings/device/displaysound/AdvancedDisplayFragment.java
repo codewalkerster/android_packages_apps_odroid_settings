@@ -40,12 +40,15 @@ public class AdvancedDisplayFragment extends SettingsPreferenceFragment {
     private static final String KEY_GAME_MODE = "game_mode";
     private static final String KEY_KIOSK_MODE = "kiosk_mode";
     private static final String KEY_SYSTEMBAR_VOLUME = "sysbar_volume";
+    private static final String KEY_NATIVE_UI = "native_ui";
 
     private static final String PERSIST_KIOSK_MODE = "persist.kiosk_mode";
     private static final String PERSIST_SYSTEMBAR_VOLUME_HIDE = "persist.systembar.volume.hide";
+    private static final String PERSIST_NATIVE_UI = "persist.framebuffer.support4kUI";
 
     private static Boolean kiosk_mode = false;
     private static Boolean sysbar_volume = false;
+    private static Boolean native_ui = false;
 
     @Override
     public int getMetricsCategory() {
@@ -65,6 +68,10 @@ public class AdvancedDisplayFragment extends SettingsPreferenceFragment {
         sysbar_volume = EnvProperty.getBoolean(PERSIST_SYSTEMBAR_VOLUME_HIDE, false);
         SwitchPreference sysbarVolumePreference = findPreference(KEY_SYSTEMBAR_VOLUME);
         sysbarVolumePreference.setChecked(sysbar_volume);
+
+        native_ui = EnvProperty.getBoolean(PERSIST_NATIVE_UI, false);
+        SwitchPreference nativeUiPreference = findPreference(KEY_NATIVE_UI);
+        nativeUiPreference.setChecked(native_ui);
     }
 
     @Override
@@ -82,6 +89,12 @@ public class AdvancedDisplayFragment extends SettingsPreferenceFragment {
             EnvProperty.set(PERSIST_SYSTEMBAR_VOLUME_HIDE, sysbar_volume);
             Toast.makeText(getContext(),
                     R.string.sysbar_volume_message,
+                    Toast.LENGTH_LONG).show();
+        } else if (TextUtils.equals(preference.getKey(), KEY_NATIVE_UI)) {
+            native_ui = ((SwitchPreference) preference).isChecked();
+            EnvProperty.set(PERSIST_NATIVE_UI, native_ui);
+            Toast.makeText (getContext(),
+                    R.string.native_uit_message,
                     Toast.LENGTH_LONG).show();
         }
 

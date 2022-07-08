@@ -30,6 +30,10 @@
         android:key="sysbar_volume"
         android:persistent="true"
         android:title="@string/sysbar_volume_title"/>
+    <SwitchPreference
+        android:key="native_ui"
+        android:persistent="true"
+        android:title="@string/native_ui" />
     <hardkernel.odroid.twopanelsettings.slices.EmbeddedSliceSwitchPreference
         android:key="hdr_match_content"
         custom:uri="@string/hdr_settings_slice_uri"

@@ -2353,4 +2353,6 @@
     <string name="check_update">Check Update at Boot</string>
     <string name="camera">Camera</string>
     <string name="irFilter">Ir Filter</string>
+    <string name="native_ui">Support native 4K UI</string>
+    <string name="native_uit_message">Apply Native 4K UI Setting After reboot</string>
 </resources>
