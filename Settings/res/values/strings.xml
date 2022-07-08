@@ -3011,4 +3011,7 @@
     <string name="boblight_on">Boblight ON</string>
     <string name="boblight_config_info">Boblight LED strip config target file path.</string>
     <string name="boblight_config_path">Boblight LED Config Target</string>
+
+    <string name="native_ui">Support native 4K UI</string>
+    <string name="native_uit_message">Apply Native 4K UI Setting After reboot</string>
 </resources>

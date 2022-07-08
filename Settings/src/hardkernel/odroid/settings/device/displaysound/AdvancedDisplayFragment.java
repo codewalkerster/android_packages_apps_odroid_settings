@@ -40,6 +40,11 @@ import hardkernel.odroid.settings.EnvProperty;
 @Keep
 public class AdvancedDisplayFragment extends SettingsPreferenceFragment {
     private static final String KEY_GAME_MODE = "game_mode";
+    private static final String KEY_NATIVE_UI = "native_ui";
+
+    private static final String PERSIST_NATIVE_UI = "persist.framebuffer.support4kUI";
+
+    private static Boolean native_ui = false;
 
     @Override
     public void onCreatePreferences(Bundle bundle, String s) {
@@ -47,6 +52,9 @@ public class AdvancedDisplayFragment extends SettingsPreferenceFragment {
         SwitchPreference gameModePreference = findPreference(KEY_GAME_MODE);
         gameModePreference.setChecked(getGameModeStatus() == 1);
 
+        native_ui = EnvProperty.getBoolean(PERSIST_NATIVE_UI, false);
+        SwitchPreference nativeUiPreference = findPreference(KEY_NATIVE_UI);
+        nativeUiPreference.setChecked(native_ui);
     }
 
     @Override
@@ -56,6 +64,12 @@ public class AdvancedDisplayFragment extends SettingsPreferenceFragment {
                     TvSettingsEnums.DISPLAY_SOUND_ADVANCED_DISPLAY_GAME_MODE,
                     ((SwitchPreference) preference).isChecked());
             setGameModeStatus(((SwitchPreference) preference).isChecked() ? 1 : 0);
+       } else if (TextUtils.equals(preference.getKey(), KEY_NATIVE_UI)) {
+            native_ui = ((SwitchPreference) preference).isChecked();
+            EnvProperty.set(PERSIST_NATIVE_UI, native_ui);
+            Toast.makeText (getContext(),
+                    R.string.native_uit_message,
+                    Toast.LENGTH_LONG).show();
         }
         return super.onPreferenceTreeClick(preference);
     }

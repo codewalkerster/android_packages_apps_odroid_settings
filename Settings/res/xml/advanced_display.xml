@@ -31,4 +31,8 @@
         android:key="kiosk_mode"
         android:persistent="true"
         android:title="@string/kiosk_mode_title"/>
+    <SwitchPreference
+        android:key="native_ui"
+        android:persistent="true"
+        android:title="@string/native_ui" />
 </PreferenceScreen>
