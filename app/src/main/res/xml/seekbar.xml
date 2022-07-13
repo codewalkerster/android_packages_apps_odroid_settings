@@ -48,7 +48,8 @@
         android:id="@+id/seekbar_contrast"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:max="100"
+        android:max="59"
+        android:min="45"
         android:layout_marginTop="@dimen/pq_seekbar_item_marginTop"
         android:layout_marginBottom="@dimen/pq_seekbar_item_marginBottom"
         />
@@ -104,7 +105,8 @@
         android:id="@+id/seekbar_hue"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:max="100"
+        android:max="75"
+        android:min="45"
         android:layout_marginTop="@dimen/pq_seekbar_item_marginTop"
         android:layout_marginBottom="@dimen/pq_seekbar_item_marginBottom"
         />
