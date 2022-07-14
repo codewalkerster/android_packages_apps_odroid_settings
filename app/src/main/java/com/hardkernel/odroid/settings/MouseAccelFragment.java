@@ -8,7 +8,7 @@ import android.widget.Toast;
 public class MouseAccelFragment extends LeanbackAddBackPreferenceFragment {
 
     private static final String KEY_MOUSE_ACCELERATION_SWITCH = "mouse_accel_switch";
-    private static final String MOUSE_ACCELERATION = "mouse_acceleration";
+    private static final String MOUSE_ACCELERATION = "persist.mouse_acceleration";
     private TwoStatePreference mouseAccelPref;
 
     public static boolean mouseAccel = true;
@@ -40,7 +40,7 @@ public class MouseAccelFragment extends LeanbackAddBackPreferenceFragment {
         switch (key) {
             case KEY_MOUSE_ACCELERATION_SWITCH:
                 mouseAccel = mouseAccelPref.isChecked();
-                EnvProperty.setAndSave(MOUSE_ACCELERATION, mouseAccel, "Add Mouse Acceleration Option");
+                EnvProperty.set(MOUSE_ACCELERATION, mouseAccel ? "true" : "false");
                 Toast.makeText(getContext(),
                         "Mouse Acceleration will " + (mouseAccel ? "" : "not ")
                                 + "be applied after reboot!",
