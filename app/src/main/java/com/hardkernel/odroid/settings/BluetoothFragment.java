@@ -10,7 +10,7 @@ import android.os.Bundle;
 
 public class BluetoothFragment extends LeanbackAddBackPreferenceFragment {
     private static final String KEY_BT_SERVICE_SWITCH = "bt_service";
-    private static final String BT_SERVICE = "feature.disable_bt";
+    private static final String BT_SERVICE = "persist.feature.disable_bt";
 
     private TwoStatePreference btServicePref;
 
@@ -42,7 +42,7 @@ public class BluetoothFragment extends LeanbackAddBackPreferenceFragment {
             switch (key) {
                 case KEY_BT_SERVICE_SWITCH:
                     btServiceDisable = !btServicePref.isChecked();
-                    EnvProperty.setAndSave(BT_SERVICE, btServiceDisable, "Bt Service");
+                    EnvProperty.set(BT_SERVICE, btServiceDisable ? "true" : "false");
 
                     Toast.makeText(getContext(),
                             "Bluetooth Service status will be applied after reboot",
