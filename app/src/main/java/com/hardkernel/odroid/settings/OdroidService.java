@@ -84,8 +84,8 @@ public class OdroidService extends Service {
 
     private void buildNNotify(String contentTitle, String contentMsg,
                               String actionTitle, Intent intent) {
-        String kioskMode = EnvProperty.getFromFile("kiosk_mode");
-        if (kioskMode.equals("true")) {
+        boolean kioskMode = EnvProperty.getBoolean("persist.kiosk_mode", false);
+        if (kioskMode) {
             AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
             View view = View.inflate(this, R.layout.update_dialog, null);
 

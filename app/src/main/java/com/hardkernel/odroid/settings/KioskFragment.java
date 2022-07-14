@@ -8,7 +8,7 @@ import android.widget.Toast;
 public class KioskFragment extends LeanbackAddBackPreferenceFragment {
 
     private static final String KEY_KIOSK_SWITCH = "kiosk_switch";
-    private static final String KIOSK_MODE = "kiosk_mode";
+    private static final String KIOSK_MODE = "persist.kiosk_mode";
     private TwoStatePreference kioskPref;
 
     public static boolean kioskMode = false;
@@ -40,7 +40,7 @@ public class KioskFragment extends LeanbackAddBackPreferenceFragment {
         switch (key) {
             case KEY_KIOSK_SWITCH:
                 kioskMode = kioskPref.isChecked();
-                EnvProperty.setAndSave(KIOSK_MODE, kioskMode, "Kiosk Mode");
+                EnvProperty.set(KIOSK_MODE, kioskMode ? "true" : "false");
                 Toast.makeText(getContext(),
                         "KIOSK MODE will " + (kioskMode ? "": "not ")
                                 +"applied after reboot!",
