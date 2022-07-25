@@ -45,10 +45,12 @@ public class AdvancedDisplayFragment extends SettingsPreferenceFragment {
     private static final String PERSIST_KIOSK_MODE = "persist.kiosk_mode";
     private static final String PERSIST_SYSTEMBAR_VOLUME_HIDE = "persist.systembar.volume.hide";
     private static final String PERSIST_NATIVE_UI = "persist.framebuffer.support4kUI";
+    private static final String PERSIST_CHANGED_RESOLUTION = "persist.changed.resolution";
 
     private static Boolean kiosk_mode = false;
     private static Boolean sysbar_volume = false;
     private static Boolean native_ui = false;
+    private static Boolean changed_resolution = false;
 
     @Override
     public int getMetricsCategory() {
@@ -72,6 +74,8 @@ public class AdvancedDisplayFragment extends SettingsPreferenceFragment {
         native_ui = EnvProperty.getBoolean(PERSIST_NATIVE_UI, false);
         SwitchPreference nativeUiPreference = findPreference(KEY_NATIVE_UI);
         nativeUiPreference.setChecked(native_ui);
+
+        changed_resolution = EnvProperty.getBoolean(PERSIST_CHANGED_RESOLUTION, false);
     }
 
     @Override
@@ -96,6 +100,8 @@ public class AdvancedDisplayFragment extends SettingsPreferenceFragment {
             Toast.makeText (getContext(),
                     R.string.native_uit_message,
                     Toast.LENGTH_LONG).show();
+            changed_resolution = !changed_resolution;
+            EnvProperty.set(PERSIST_CHANGED_RESOLUTION, changed_resolution);
         }
 
         return super.onPreferenceTreeClick(preference);
