@@ -8,7 +8,7 @@ import java.util.Arrays;
  *
  * @author GaoFei
  */
-class DisplayInfo implements Serializable {
+public class DisplayInfo implements Serializable {
     private int displayId;
     private int type;
     private String description;

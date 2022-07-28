@@ -18,6 +18,12 @@ package hardkernel.odroid.settings.device.displaysound;
 
 import static android.provider.Settings.Secure.MINIMAL_POST_PROCESSING_ALLOWED;
 
+import android.util.Log;
+import hardkernel.odroid.settings.display.DisplayInfo;
+import hardkernel.odroid.settings.display.DrmDisplaySetting;
+import java.util.ArrayList;
+import java.util.List;
+
 import android.os.Bundle;
 import android.provider.Settings;
 import android.text.TextUtils;
@@ -37,6 +43,8 @@ import hardkernel.odroid.settings.EnvProperty;
  */
 @Keep
 public class AdvancedDisplayFragment extends SettingsPreferenceFragment {
+    private static final String TAG = "AdvancedDisplayFragment";
+
     private static final String KEY_GAME_MODE = "game_mode";
     private static final String KEY_KIOSK_MODE = "kiosk_mode";
     private static final String KEY_SYSTEMBAR_VOLUME = "sysbar_volume";
@@ -71,11 +79,16 @@ public class AdvancedDisplayFragment extends SettingsPreferenceFragment {
         SwitchPreference sysbarVolumePreference = findPreference(KEY_SYSTEMBAR_VOLUME);
         sysbarVolumePreference.setChecked(sysbar_volume);
 
-        native_ui = EnvProperty.getBoolean(PERSIST_NATIVE_UI, false);
         SwitchPreference nativeUiPreference = findPreference(KEY_NATIVE_UI);
-        nativeUiPreference.setChecked(native_ui);
 
         changed_resolution = EnvProperty.getBoolean(PERSIST_CHANGED_RESOLUTION, false);
+
+        if (isSupport4k()) {
+            native_ui = EnvProperty.getBoolean(PERSIST_NATIVE_UI, false);
+            nativeUiPreference.setChecked(native_ui);
+        } else {
+            getPreferenceScreen().removePreference(nativeUiPreference);
+        }
     }
 
     @Override
@@ -116,5 +129,23 @@ public class AdvancedDisplayFragment extends SettingsPreferenceFragment {
     private void setGameModeStatus(int state) {
         Settings.Secure.putInt(getActivity().getContentResolver(), MINIMAL_POST_PROCESSING_ALLOWED,
                 state);
+    }
+
+    private boolean isSupport4k() {
+        boolean is4k = false;
+        List<DisplayInfo> displayInfos = new ArrayList<DisplayInfo>();
+
+        displayInfos.addAll(DrmDisplaySetting.getDisplayInfoList());
+
+        for (DisplayInfo info : displayInfos) {
+            String resolutionValue = DrmDisplaySetting.getCurDisplayMode(info);
+            Log.i(TAG, "drm resolutionValue:" + resolutionValue);
+            if (resolutionValue.startsWith("3840x2160")) {
+                is4k = true;
+                break;
+            }
+        }
+
+        return is4k;
     }
 }
