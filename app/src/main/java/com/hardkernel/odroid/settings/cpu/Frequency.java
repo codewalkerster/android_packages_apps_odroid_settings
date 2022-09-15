@@ -151,7 +151,7 @@ public class Frequency {
     private List<String> getScalingAvailables(Context context) {
         int id = 0;
         if (DroidUtils.isOdroidN2()) {
-            if (DroidUtils.isOdroidN2Plus())
+            if (DroidUtils.isOdroidN2PlusLite())
                 id = (CPU.Cluster.Big == cluster)?
                         R.array.n2_plus_big
                         : R.array.n2_plus_little;

@@ -22,6 +22,8 @@ import android.support.v7.preference.Preference;
 import com.hardkernel.odroid.settings.EnvProperty;
 
 import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.FileInputStream;
 import java.io.InputStreamReader;
 
 /**
@@ -59,7 +61,7 @@ public final class DroidUtils {
 	}
 
 	public static boolean isOdroidN2() {
-		return getBoard().equals("odroidn2");
+		return getBoard().equals("odroidn2") || getBoard().equals("odroidn2l");
 	}
 
 	public static boolean isOdroidN2Plus() {
@@ -72,6 +74,28 @@ public final class DroidUtils {
 			String line = reader.readLine();
 			if (line.length() > 31) // "odroid-n2plus"  string length is longer then 31
 				return true;
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+
+	public static boolean isOdroidN2PlusLite() {
+		String model = "";
+		try
+		{
+			InputStream input = new FileInputStream("/sys/firmware/devicetree/base/model");
+			if (input != null) {
+				InputStreamReader reader = new InputStreamReader(input);
+				BufferedReader buffer = new BufferedReader(reader);
+				model = buffer.readLine();
+			}
+			if (model.contains("Hardkernel ODROID-N2Plus")) {
+				return true;
+			} else if (model.contains("Hardkernel ODROID-N2Lite")) {
+				return true;
+			} else
+				return false;
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
