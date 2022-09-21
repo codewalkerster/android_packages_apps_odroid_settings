@@ -65,22 +65,6 @@ public final class DroidUtils {
 	}
 
 	public static boolean isOdroidN2Plus() {
-		ProcessBuilder cmd = new ProcessBuilder();
-		cmd.command("grep", "Hardware", "/proc/cpuinfo");
-		try {
-			Process process = cmd.start();
-			BufferedReader reader = new BufferedReader (
-					new InputStreamReader(process.getInputStream()));
-			String line = reader.readLine();
-			if (line.length() > 31) // "odroid-n2plus"  string length is longer then 31
-				return true;
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
-		return false;
-	}
-
-	public static boolean isOdroidN2PlusLite() {
 		String model = "";
 		try
 		{
@@ -90,9 +74,8 @@ public final class DroidUtils {
 				BufferedReader buffer = new BufferedReader(reader);
 				model = buffer.readLine();
 			}
-			if (model.contains("Hardkernel ODROID-N2Plus")) {
-				return true;
-			} else if (model.contains("Hardkernel ODROID-N2Lite")) {
+			if (model.contains("Hardkernel ODROID-N2Plus")
+					|| model.contains("Hardkernel ODROID-N2L")) {
 				return true;
 			} else
 				return false;
