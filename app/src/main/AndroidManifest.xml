@@ -95,7 +95,7 @@
             android:exported="true"
             android:theme="@style/Theme.Settings.Transparent" />
         <activity
-            android:name=".IPSettingsFragment"
+            android:name=".IPSettingsActivity"
             android:configChanges="keyboard|keyboardHidden|navigation"
             android:exported="true"
             android:theme="@style/Theme.Settings.Transparent" />
