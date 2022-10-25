@@ -2838,7 +2838,7 @@
     <string name="settings_cec_explain">HDMI-CEC allows you to control and automatically turn on/off other HDMI-CEC enabled devices with a single remote control.\n\nNote: Ensure HDMI-CEC is enabled on your TV and other HDMI devices. Manufacturers often have different names for HDMI-CEC, for example:\nSamsung: Anynet+\nLG: SimpLink\nSony: BRAVIA Sync\nPhilips: EasyLink\nSharp: Aquos Link</string>
 
     <!-- Uri to be overlaid by partner to show remote control infrared settings. -->
-    <string name="bluetooth_ir_entry_slice_uri" translatable="false" />
+    <string name="bluetooth_ir_entry_slice_uri" translatable="false">content://com.google.android.tv.axel.sliceprovider/main</string>
     <!-- Title for remote control infrared settings. -->
     <string name="bluetooth_ir_entry_title">Set up remote buttons</string>
     <!-- Subtitle for remote control infrared settings. -->

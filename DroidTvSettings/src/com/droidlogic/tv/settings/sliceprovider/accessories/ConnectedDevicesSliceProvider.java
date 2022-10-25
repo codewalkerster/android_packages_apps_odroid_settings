@@ -544,6 +544,7 @@ public class ConnectedDevicesSliceProvider extends SliceProvider implements
                     .setTitle(getString(R.string.bluetooth_official_remote_category))
                     .setKey(KEY_OFFICIAL_REMOTE_CATEGORY));
         }
+
         if (isIrSettingsUriValid) {
             psb.addPreference(new RowBuilder()
                     .setKey(KEY_IR)
