@@ -62,7 +62,8 @@ public class FrequencyFragment extends LeanbackAddBackPreferenceFragment {
 
     private String getFrequencyTitle(String frequency) {
         if (cpu.cluster == CPU.Cluster.Big) {
-            if(DroidUtils.isOdroidN2Plus()) {
+            if(DroidUtils.isOdroidN2Plus() ||
+                    DroidUtils.isOdroidN2L()) {
                 if (Integer.valueOf(frequency) > 2208000)
                     return frequency + " (Overclocking)";
                 else
@@ -74,7 +75,8 @@ public class FrequencyFragment extends LeanbackAddBackPreferenceFragment {
                     return frequency;
             }
         } else { //Little
-            if(DroidUtils.isOdroidN2Plus()) {
+            if(DroidUtils.isOdroidN2Plus() ||
+                    DroidUtils.isOdroidN2L()) {
                 if (Integer.valueOf(frequency) > 1908000)
                     return frequency + " (Overclocking)";
                 else

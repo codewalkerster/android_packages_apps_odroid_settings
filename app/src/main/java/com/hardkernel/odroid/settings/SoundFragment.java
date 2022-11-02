@@ -23,6 +23,7 @@ import android.text.TextUtils;
 import android.widget.Toast;
 
 import com.hardkernel.odroid.settings.R;
+import com.hardkernel.odroid.settings.util.DroidUtils;
 
 
 public class SoundFragment extends LeanbackAddBackPreferenceFragment implements Preference.OnPreferenceChangeListener {
@@ -31,6 +32,9 @@ public class SoundFragment extends LeanbackAddBackPreferenceFragment implements 
     private static final String SOUND_SELECT = "media.audio_hal.device";
     private static final String KEY_BT_A2DP = "bluetooth_select";
     private static final String BT_SELECT = "ro.service.bt.a2dp_sink";
+
+    private static final CharSequence[] n2lEntry = {"HDMI"};
+    private static final CharSequence[] n2lEntryValue = {"0"};
 
     public static SoundFragment newInstance() {
         return new SoundFragment();
@@ -51,9 +55,15 @@ public class SoundFragment extends LeanbackAddBackPreferenceFragment implements 
 
         final ListPreference soundSelectPref = (ListPreference) findPreference(KEY_SOUND_SELECT);
 
-        soundSelectPref.setEntries(getArrayString(R.array.sound_select_entries));
-        soundSelectPref.setEntryValues(getArrayString(R.array.sound_select_entry_values));
-        soundSelectPref.setOnPreferenceChangeListener(this);
+        if (DroidUtils.isOdroidN2L()) { // N2L Only HDMI
+            soundSelectPref.setEntries(n2lEntry);
+            soundSelectPref.setEntryValues(n2lEntryValue);
+            soundSelectPref.setOnPreferenceChangeListener(this);
+        } else {
+            soundSelectPref.setEntries(getArrayString(R.array.sound_select_entries));
+            soundSelectPref.setEntryValues(getArrayString(R.array.sound_select_entry_values));
+            soundSelectPref.setOnPreferenceChangeListener(this);
+        }
 
         final ListPreference bluetoothA2dpSelectPref = (ListPreference) findPreference(KEY_BT_A2DP);
 

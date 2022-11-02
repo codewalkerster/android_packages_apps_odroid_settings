@@ -65,28 +65,39 @@ public final class DroidUtils {
 	}
 
 	public static boolean isOdroidN2Plus() {
-		String model = "";
-		try
-		{
+		return getModelName().contains("Hardkernel ODROID-N2Plus") ?
+			true : false;
+	}
+
+	public static boolean isOdroidN2L() {
+		return getModelName().contains("Hardkernel ODROID-N2L") ?
+			true : false;
+	}
+
+	public static boolean isOdroidC4() {
+		return getBoard().equals("odroidc4");
+	}
+
+	private static String model = null;
+
+	private static String getModelName() {
+		if (model != null)
+			return model;
+
+		model = "";
+
+		try {
 			InputStream input = new FileInputStream("/sys/firmware/devicetree/base/model");
 			if (input != null) {
 				InputStreamReader reader = new InputStreamReader(input);
 				BufferedReader buffer = new BufferedReader(reader);
 				model = buffer.readLine();
 			}
-			if (model.contains("Hardkernel ODROID-N2Plus")
-					|| model.contains("Hardkernel ODROID-N2L")) {
-				return true;
-			} else
-				return false;
-		} catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return false;
-	}
 
-	public static boolean isOdroidC4() {
-		return getBoard().equals("odroidc4");
+		return model;
 	}
 
 	private static String board = null;
