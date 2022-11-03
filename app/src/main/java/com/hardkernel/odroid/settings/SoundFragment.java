@@ -80,7 +80,10 @@ public class SoundFragment extends LeanbackAddBackPreferenceFragment implements 
         int selected = EnvProperty.getInt(SOUND_SELECT, 0);
         switch (selected) {
             case 0: //Hdmi, lineout I2S
-                soundSelectPref.setSummary("HDMI, Lineout");
+                if (DroidUtils.isOdroidN2L())
+                    soundSelectPref.setSummary("HDMI");
+                else
+                    soundSelectPref.setSummary("HDMI, Lineout");
                 break;
             case 1: // SPDIF on 7pin
                 soundSelectPref.setSummary("SPDIF");
