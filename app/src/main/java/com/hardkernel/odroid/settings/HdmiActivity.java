@@ -22,9 +22,9 @@ import com.hardkernel.odroid.settings.TvSettingsActivity;
 import android.app.Fragment;
 
 /**
- * Activity to control HDMI CEC settings.
+ * Activity to control HDMI stuffs settings.
  */
-public class HdmiCecActivity extends TvSettingsActivity {
+public class HdmiActivity extends TvSettingsActivity {
 
     @Override
     protected Fragment createSettingsFragment() {
@@ -39,7 +39,7 @@ public class HdmiCecActivity extends TvSettingsActivity {
 
         @Override
         public void onPreferenceStartInitialScreen() {
-            final HdmiCecFragment fragment = HdmiCecFragment.newInstance();
+            final HdmiFragment fragment = HdmiFragment.newInstance();
             startPreferenceFragment(fragment);
         }
     }

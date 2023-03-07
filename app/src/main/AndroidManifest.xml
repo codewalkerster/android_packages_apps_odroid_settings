@@ -70,32 +70,22 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="cpu.CpuActivity"
+            android:name="cpungpu.CpunGpuActivity"
             android:configChanges="keyboard|keyboardHidden|navigation"
             android:excludeFromRecents="true"
             android:exported="true" />
         <activity
-            android:name=".HdmiCecActivity"
+            android:name=".HdmiActivity"
             android:configChanges="keyboard|keyboardHidden|navigation"
             android:excludeFromRecents="true"
             android:exported="true" />
-        <activity
-            android:name=".PlaybackActivity"
-            android:configChanges="keyboard|keyboardHidden|navigation"
-            android:excludeFromRecents="true"
-            android:exported="true" />
-        <activity
-            android:name=".HdmiSelfAdaptionFragment"
-            android:configChanges="keyboard|keyboardHidden|navigation"
-            android:exported="true"
-            android:theme="@style/Theme.Settings.Transparent" />
         <activity
             android:name=".MiscFragment"
             android:configChanges="keyboard|keyboardHidden|navigation"
             android:exported="true"
             android:theme="@style/Theme.Settings.Transparent" />
         <activity
-            android:name=".IPSettingsActivity"
+            android:name=".EthernetSettingsActivity"
             android:configChanges="keyboard|keyboardHidden|navigation"
             android:exported="true"
             android:theme="@style/Theme.Settings.Transparent" />

@@ -1,4 +1,4 @@
-package com.hardkernel.odroid.settings.cpu;
+package com.hardkernel.odroid.settings.cpungpu;
 
 import com.hardkernel.odroid.settings.BaseSettingsFragment;
 import com.hardkernel.odroid.settings.TvSettingsActivity;
@@ -6,9 +6,9 @@ import com.hardkernel.odroid.settings.TvSettingsActivity;
 import android.app.Fragment;
 
 /**
- * Activity to control the CPU settings.
+ * Activity to control the CPU and GPU settings.
  */
-public class CpuActivity extends TvSettingsActivity {
+public class CpunGpuActivity extends TvSettingsActivity {
 	@Override
 	protected Fragment createSettingsFragment() {
 		return SettingsFragment.newInstance();
@@ -22,7 +22,7 @@ public class CpuActivity extends TvSettingsActivity {
 
 		@Override
 		public void onPreferenceStartInitialScreen() {
-			final CpuFragment fragment = CpuFragment.newInstance();
+			final CpunGpuFragment fragment = CpunGpuFragment.newInstance();
 			startPreferenceFragment(fragment);
 		}
 	}

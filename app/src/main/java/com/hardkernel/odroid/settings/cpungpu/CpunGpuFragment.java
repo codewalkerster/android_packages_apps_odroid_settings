@@ -1,4 +1,4 @@
-package com.hardkernel.odroid.settings.cpu;
+package com.hardkernel.odroid.settings.cpungpu;
 
 import android.os.Bundle;
 
@@ -11,23 +11,29 @@ import com.hardkernel.odroid.settings.R;
 import com.hardkernel.odroid.settings.LeanbackAddBackPreferenceFragment;
 import com.hardkernel.odroid.settings.util.DroidUtils;
 
-public class CpuFragment extends LeanbackAddBackPreferenceFragment {
-    private static final String TAG = "CpuFragment";
+import com.hardkernel.odroid.settings.cpu.CPU;
+import com.hardkernel.odroid.settings.gpu.GPU;
+
+public class CpunGpuFragment extends LeanbackAddBackPreferenceFragment {
+    private static final String TAG = "CpunGpuFragment";
 
     private static final String KEY_BIG_CORE_CLOCK = "big_core_clock";
-	private static final String KEY_BIG_CORE_GOVERNOR = "big_core_governor";
-	private static final String KEY_LITTLE_CORE_CLOCK = "little_core_clock";
-	private static final String KEY_LITTLE_CORE_GOVERNOR = "little_core_governor";
+    private static final String KEY_BIG_CORE_GOVERNOR = "big_core_governor";
+    private static final String KEY_LITTLE_CORE_CLOCK = "little_core_clock";
+    private static final String KEY_LITTLE_CORE_GOVERNOR = "little_core_governor";
+    private static final String KEY_SCALE_MODE = "gpu_scale_mode";
 
-	private Preference bigCoreClockPref  = null;
-	private Preference bigCoreGovernorPref = null;
-	private Preference littleCoreClockPref  = null;
-	private Preference littleCoreGovernorPref = null;
+    private Preference bigCoreClockPref  = null;
+    private Preference bigCoreGovernorPref = null;
+    private Preference littleCoreClockPref  = null;
+    private Preference littleCoreGovernorPref = null;
+    private Preference sclaeModePref = null;
 
-	private CPU cpu;
+    private CPU cpu;
+    private GPU gpu;
 
-    public static CpuFragment newInstance() {
-        return new CpuFragment();
+    public static CpunGpuFragment newInstance() {
+        return new CpunGpuFragment();
     }
 
     @Override
@@ -41,17 +47,19 @@ public class CpuFragment extends LeanbackAddBackPreferenceFragment {
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-		setPreferencesFromResource(R.xml.cpu, null);
+        setPreferencesFromResource(R.xml.cpungpu, null);
         bigCoreClockPref = findPreference(KEY_BIG_CORE_CLOCK);
         bigCoreGovernorPref = findPreference(KEY_BIG_CORE_GOVERNOR);
 
-		littleCoreClockPref = findPreference(KEY_LITTLE_CORE_CLOCK);
-		littleCoreGovernorPref = findPreference(KEY_LITTLE_CORE_GOVERNOR);
+        littleCoreClockPref = findPreference(KEY_LITTLE_CORE_CLOCK);
+        littleCoreGovernorPref = findPreference(KEY_LITTLE_CORE_GOVERNOR);
 
-		refreshStatus();
+        sclaeModePref = findPreference(KEY_SCALE_MODE);
+
+        refreshStatus();
     }
 
-	private void refreshStatus() {
+    private void refreshStatus() {
         String currentClock;
         String currentGovernor;
         if (DroidUtils.isOdroidC4()) {
@@ -74,7 +82,12 @@ public class CpuFragment extends LeanbackAddBackPreferenceFragment {
         currentClock = cpu.frequency.getScalingCurrent();
         currentGovernor = cpu.governor.getCurrent();
 
-		littleCoreClockPref.setSummary(currentClock);
-		littleCoreGovernorPref.setSummary(currentGovernor);
-	}
+        littleCoreClockPref.setSummary(currentClock);
+        littleCoreGovernorPref.setSummary(currentGovernor);
+
+        gpu = GPU.getGPU(TAG);
+        gpu.initList(getContext());
+
+        sclaeModePref.setSummary(gpu.getScaleMode());
+    }
 }

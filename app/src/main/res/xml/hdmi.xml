@@ -16,11 +16,35 @@
 -->
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-    android:title="@string/playback_settings" >
+    android:title="@string/hdmi" >
 
+    <PreferenceCategory
+        android:key="hdmi_cec"
+        android:title="@string/cec" >
+    <SwitchPreference
+        android:key="cec_switch"
+        android:persistent="false"
+        android:title="@string/cec_switch" />
+    <SwitchPreference
+        android:key="cec_onekey_play"
+        android:persistent="false"
+        android:title="@string/cec_one_key_play" />
+    <SwitchPreference
+        android:key="cec_onekey_poweroff"
+        android:persistent="false"
+        android:title="@string/cec_one_key_power_off" />
+    <SwitchPreference
+        android:key="cec_auto_change_language"
+        android:persistent="false"
+        android:title="@string/cec_auto_change_language" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:key="hdmi_playback"
+        android:title="@string/playback_settings" >
     <Preference
         android:key="playback_hdmi_selfadaption"
         android:title="@string/playback_hdmi_selfadaption"
         android:fragment="com.hardkernel.odroid.settings.HdmiSelfAdaptionFragment"/>
-
+    </PreferenceCategory>
 </PreferenceScreen>

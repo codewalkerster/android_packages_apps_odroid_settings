@@ -24,6 +24,7 @@ import android.support.v17.preference.LeanbackPreferenceFragment;
 import android.support.v14.preference.SwitchPreference;
 import android.support.v7.preference.CheckBoxPreference;
 import android.support.v7.preference.Preference;
+import android.support.v7.preference.TwoStatePreference;
 import android.support.v7.preference.PreferenceScreen;
 
 import java.net.Inet4Address;
@@ -44,6 +45,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import android.net.EthernetManager;
 import android.net.IpConfiguration;
@@ -55,10 +57,13 @@ import android.net.Proxy;
 import android.net.ProxyInfo;
 import android.net.StaticIpConfiguration;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+
 @Keep
-public class IPSettingsFragment extends LeanbackAddBackPreferenceFragment
+public class EthernetSettingsFragment extends LeanbackAddBackPreferenceFragment
         implements Preference.OnPreferenceChangeListener, OnClickListener {
-    private static final String LOG_TAG = "IPSettingsFragment";
+    private static final String LOG_TAG = "EthernetSettingsFragment";
 
     final static int DHCP = 0;
     final static int STATIC_IP = 1;
@@ -91,24 +96,42 @@ public class IPSettingsFragment extends LeanbackAddBackPreferenceFragment
     private IpConfiguration mIpConfiguration;
 
     private Preference mStaticIPPref;
+    private TwoStatePreference wolPref;
+    private Preference macPref;
 
     private static final String KEY_IP_SETTINGS = "pref_static_ip";
+    private static final String KEY_MAC_ADDRESS_PREF = "eth0_address";
+    private static final String KEY_WAKE_ON_LAN_SWITCH = "wol_switch";
 
+    private static boolean wolSwitch = false;
 
-    public static IPSettingsFragment newInstance() {
-        return new IPSettingsFragment();
+    private static final String ETH_MAC_NODE ="/sys/class/net/eth0/address";
+
+    public static EthernetSettingsFragment newInstance() {
+        return new EthernetSettingsFragment();
     }
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-        setPreferencesFromResource(R.xml.ip_settings, null);
+        setPreferencesFromResource(R.xml.ethernet_settings, null);
 
         mStaticIPPref = findPreference(KEY_IP_SETTINGS);
+        wolPref = (TwoStatePreference) findPreference(KEY_WAKE_ON_LAN_SWITCH);
+        macPref = (Preference) findPreference(KEY_MAC_ADDRESS_PREF);
+
         mEthernetManager = (EthernetManager) getActivity().getSystemService(Context.ETHERNET_SERVICE);
         if (mEthernetManager != null) {
             Log.i(LOG_TAG, "Connected to EthernetManager");
         } else {
             Log.e(LOG_TAG, "Unable connect to EthernetManager");
+        }
+
+        wolSwitch = (ConfigEnv.getWakeOnLan() == 1);
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(ETH_MAC_NODE));
+            macPref.setSummary(reader.readLine());
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -116,6 +139,11 @@ public class IPSettingsFragment extends LeanbackAddBackPreferenceFragment
     @Override
     public void onResume() {
         super.onResume();
+        updatePreferenceFragment();
+    }
+
+    private void updatePreferenceFragment() {
+        wolPref.setChecked(wolSwitch);
     }
 
     @Override
@@ -130,12 +158,34 @@ public class IPSettingsFragment extends LeanbackAddBackPreferenceFragment
 
     @Override
     public boolean onPreferenceTreeClick(Preference preference) {
-		                showDialog();
-        if (preference instanceof RadioPreference) {
+        final String key = preference.getKey();
 
+        if (key == null) {
+            return super.onPreferenceTreeClick(preference);
         }
+
+        switch (key) {
+            case KEY_WAKE_ON_LAN_SWITCH: {
+                if (wolPref.isChecked() != wolSwitch) {
+                    wolSwitch = wolPref.isChecked();
+                    ConfigEnv.setWakeOnLan(wolSwitch ? 1 : 0);
+                    if (wolSwitch) {
+                        Toast.makeText(getContext(),
+                            "Wake On Lan will be applied after reboot!",
+                            Toast.LENGTH_LONG).show();
+                    }
+                }
+            }
+            break;
+            case KEY_IP_SETTINGS: {
+                showDialog();
+            }
+            break;
+        }
+
         return super.onPreferenceTreeClick(preference);
     }
+
     private void showDialog () {
         if (mAlertDialog == null) {
             LayoutInflater inflater = (LayoutInflater)getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -144,11 +194,6 @@ public class IPSettingsFragment extends LeanbackAddBackPreferenceFragment
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             mAlertDialog = builder.create();
             mAlertDialog.getWindow().setType(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY);
-
-
-
-//            tx_title = (TextView)view_dialog.findViewById(R.id.dialog_title);
-//            tx_content = (TextView)view_dialog.findViewById(R.id.dialog_content);
 
             TextView button_cancel = (TextView)view_dialog.findViewById(R.id.dialog_cancel);
             button_cancel.setOnClickListener(this);
@@ -218,7 +263,6 @@ public class IPSettingsFragment extends LeanbackAddBackPreferenceFragment
 
     }
 
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -241,8 +285,6 @@ public class IPSettingsFragment extends LeanbackAddBackPreferenceFragment
                 break;
         }
     }
-
-
 
     @Override
     public boolean onPreferenceChange(Preference preference, Object newValue) {

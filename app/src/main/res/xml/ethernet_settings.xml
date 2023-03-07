@@ -16,23 +16,17 @@
 -->
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-    android:title="@string/cec_control" >
-
+    android:title="@string/ethernet_settings" >
+    <Preference
+        android:key="@string/pref_static_ip"
+        android:title="@string/pref_static_ip_title"
+        android:summary="DHCP"/>
     <SwitchPreference
-        android:key="cec_switch"
+        android:key="wol_switch"
         android:persistent="false"
-        android:title="@string/cec_switch" />
-    <SwitchPreference
-        android:key="cec_onekey_play"
-        android:persistent="false"
-        android:title="@string/cec_one_key_play" />
-    <SwitchPreference
-        android:key="cec_onekey_poweroff"
-        android:persistent="false"
-        android:title="@string/cec_one_key_power_off" />
-    <SwitchPreference
-        android:key="cec_auto_change_language"
-        android:persistent="false"
-        android:title="@string/cec_auto_change_language" />
-
+        android:title="@string/wake_on_lan" />
+    <Preference
+        android:key="eth0_address"
+        android:title="@string/eth0_address"
+        android:selectable="false"/>
 </PreferenceScreen>

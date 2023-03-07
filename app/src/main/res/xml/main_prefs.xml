@@ -25,15 +25,10 @@
         android:key="update"
         android:title="@string/update" />
     <Preference
-        android:fragment="com.hardkernel.odroid.settings.cpu.CpuFragment"
+        android:fragment="com.hardkernel.odroid.settings.cpungpu.CpunGpuFragment"
         android:icon="@drawable/ic_settings_more"
-        android:key="cpu"
-        android:title="@string/cpu" />
-    <Preference
-        android:fragment="com.hardkernel.odroid.settings.gpu.GpuFragment"
-        android:icon="@drawable/ic_gpu"
-        android:key="gpu"
-        android:title="@string/gpu" />
+        android:key="cpungpu"
+        android:title="@string/cpungpu" />
     <Preference
         android:fragment="com.hardkernel.odroid.settings.rotation.RotationFragment"
         android:icon="@drawable/ic_sync"
@@ -45,15 +40,10 @@
         android:key="display"
         android:title="@string/device_display" />
     <Preference
-        android:fragment="com.hardkernel.odroid.settings.HdmiCecFragment"
-        android:icon="@drawable/ic_settings_outputs"
-        android:key="hdmicec"
-        android:title="@string/system_cec" />
-    <Preference
-        android:fragment="com.hardkernel.odroid.settings.PlaybackFragment"
-        android:icon="@drawable/ic_settings_now_movies"
-        android:key="playback_settings"
-        android:title="@string/playback_settings" />
+        android:fragment="com.hardkernel.odroid.settings.HdmiFragment"
+        android:icon="@drawable/ic_hdmi"
+        android:key="hdmi"
+        android:title="@string/hdmi" />
     <Preference
         android:fragment="com.hardkernel.odroid.settings.SoundFragment"
         android:icon="@drawable/ic_volume_up"
@@ -65,18 +55,13 @@
         android:key="powerkey_action"
         android:title="@string/system_powerkeyaction" />
     <Preference
-        android:fragment="com.hardkernel.odroid.settings.WakeOnLanFragment"
-        android:icon="@drawable/stat_sys_ethernet_fully"
-        android:key="wol"
-        android:title="@string/wake_on_lan" />
-    <Preference
         android:fragment="com.hardkernel.odroid.settings.shortcut.ShortcutFragment"
         android:icon="@drawable/ic_app_shortcut"
         android:key="shortcut"
         android:title="@string/app_shortcut"
         />
     <Preference
-        android:fragment="com.hardkernel.odroid.settings.IPSettingsFragment"
+        android:fragment="com.hardkernel.odroid.settings.EthernetSettingsFragment"
         android:icon="@drawable/ic_menu_ethernet"
         android:key="misc"
         android:title="@string/ethernet_settings" />

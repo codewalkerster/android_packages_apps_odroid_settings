@@ -39,12 +39,15 @@
     <string name="update_custom_server">Custom</string>
     <string name="get_custom_url">Please enter your Android update server URL properly.</string>
     <string name="check_update">Check update at Boot</string>
-    <!-- Preference which manages cpu settings. -->
+    <!-- Preference which manages cpu & gpu settings. -->
+    <string name="cpungpu">CPU &amp; GPU </string>
     <string name="cpu">CPU</string>
     <string name="little_core_clock">Little Core Clocks</string>
     <string name="little_core_governor">Little Core Governors</string>
     <string name="big_core_clock">Big Core Clocks</string>
     <string name="big_core_governor">Big Core Governors</string>
+    <string name="gpu">GPU</string>
+    <string name="scale_mode">Governor</string>
 
     <!-- Preference which manages rotation settings. -->
     <string name="rotation">Rotation</string>
@@ -172,8 +175,8 @@
     <string name="sync_failed">Sync failed</string>
     <!-- Animation description for the sync active icon. -->
     <string name="sync_active">Sync active</string>
-    <string name="system_cec">HDMI CEC</string>
-    <string name="cec_control">CEC Control</string>
+    <string name="hdmi">HDMI</string>
+    <string name="cec">HDMI CEC</string>
     <string name="cec_switch">CEC Switch</string>
     <string name="cec_one_key_play">One key play</string>
     <string name="cec_one_key_power_off">One key power off</string>
@@ -308,8 +311,7 @@
     <string name="kiosk_mode">KIOSK MODE</string>
     <string name="kiosk_mode_info">Disable the navigation bar and status bar</string>
     <string name="autoframerate">AUTO FRAMERATE</string>
-    <string name="gpu">GPU</string>
-    <string name="scale_mode">Governor</string>
+
     <string name="overlays">DTB Overlay List</string>
     <string name="overlay_size">DTBO Size Resize</string>
     <string name="overlay_title">DTB Overlay</string>
