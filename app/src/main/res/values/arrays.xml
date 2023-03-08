@@ -57,4 +57,18 @@
         <item>false</item>
         <item>true</item>
     </string-array>
+
+    <string-array name="media_encoder_names">
+        <item>H265</item>
+        <item>H265-CCTV</item>
+        <item>H264</item>
+        <item>H264-CCTV</item>
+    </string-array>
+
+    <string-array name="media_encoder_values">
+        <item>vendor/etc/media_profiles_V1_0_hevc.xml</item>
+        <item>vendor/etc/media_profiles_V1_0_hevc_cctv.xml</item>
+        <item>vendor/etc/media_profiles_V1_0_h264.xml</item>
+        <item>vendor/etc/media_profiles_V1_0_h264_cctv.xml</item>
+    </string-array>
 </resources>

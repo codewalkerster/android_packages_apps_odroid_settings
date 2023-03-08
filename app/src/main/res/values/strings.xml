@@ -325,4 +325,8 @@
     <string name="bluetooth">Bluetooth</string>
     <string name="bluetooth_service">Bluetooth Service</string>
     <string name="pq_reset">Reset</string>
+
+    <!-- MediaCodec -->
+    <string name="encoder_title">Video Encoder</string>
+    <string name="default_encoder">Default Video Encoder</string>
 </resources>

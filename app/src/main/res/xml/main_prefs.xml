@@ -50,6 +50,11 @@
         android:key="mbox_sound"
         android:title="@string/device_sound" />
     <Preference
+        android:fragment="com.hardkernel.odroid.settings.VideoEncoderFragment"
+        android:icon="@drawable/ic_encoder"
+        android:key="video_encoder"
+        android:title="@string/encoder_title" />
+    <Preference
         android:fragment="com.hardkernel.odroid.settings.PowerKeyActionDefinitionFragment"
         android:icon="@drawable/ic_settings_power"
         android:key="powerkey_action"
