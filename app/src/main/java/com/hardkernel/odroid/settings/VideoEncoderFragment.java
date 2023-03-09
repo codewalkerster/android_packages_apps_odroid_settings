@@ -11,6 +11,7 @@ import android.widget.Toast;
 import com.hardkernel.odroid.settings.EnvProperty;
 import com.hardkernel.odroid.settings.R;
 import com.hardkernel.odroid.settings.RadioPreference;
+import com.hardkernel.odroid.settings.dtbo.Overlay;
 import com.hardkernel.odroid.settings.util.DroidUtils;
 
 public class VideoEncoderFragment extends LeanbackAddBackPreferenceFragment {
@@ -80,14 +81,23 @@ public class VideoEncoderFragment extends LeanbackAddBackPreferenceFragment {
             if (radio.isChecked()) {
                 String key = radio.getKey().toString();
                 if (!key.equals(currentEncoder)) {
+                    String title = radio.getTitle().toString();
                     Toast.makeText(getContext(),
                             "Changed Video Encoder to "
-                            + radio.getTitle()
+                            + title
                             + ", and it will be applied after reboot!",
                             Toast.LENGTH_LONG).show();
                     currentEncoder = key;
                     EnvProperty.save("media.settings.xml", key,
                             "Change video encoder to " + radio.getTitle());
+                    if (DroidUtils.isOdroidN2()
+                            && title.contains("H265")) {
+                        String dtbo = Overlay.get();
+                        if (!dtbo.contains("codec_mm_cma")) {
+                            dtbo += " codec_mm_cma";
+                            Overlay.set(dtbo);
+                        }
+                    }
                 }
             } else {
                 radio.setChecked(true);
