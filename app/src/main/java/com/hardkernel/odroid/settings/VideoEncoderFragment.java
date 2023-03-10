@@ -52,10 +52,6 @@ public class VideoEncoderFragment extends LeanbackAddBackPreferenceFragment {
         screen.addPreference(categoryPref);
 
         for (int i=0; i < encoderNames.length; i++) {
-            if (DroidUtils.isOdroidN2()
-                    && encoderNames[i].contains("H265")
-                    && (getTotalMemSize() < MEM_2G))
-                continue;
             final String value = encoderValues[i];
             final RadioPreference radio = new RadioPreference(themedContext);
             radio.setKey(value);
@@ -90,7 +86,7 @@ public class VideoEncoderFragment extends LeanbackAddBackPreferenceFragment {
                     currentEncoder = key;
                     EnvProperty.save("media.settings.xml", key,
                             "Change video encoder to " + radio.getTitle());
-                    if (DroidUtils.isOdroidN2()
+                    if (getTotalMemSize() >= MEM_2G
                             && title.contains("H265")) {
                         String dtbo = Overlay.get();
                         if (!dtbo.contains("codec_mm_cma")) {
