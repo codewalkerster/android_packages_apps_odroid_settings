@@ -1188,6 +1188,9 @@
 
     <!-- Security -->
     <skip />
+    <!-- Security menu on the Settings activate Switch title & description -->
+    <string name="security_menu_enable">Security Menu Activate</string>
+    <string name="security_menu_enable_desc">Activate Security Menu on the Settings</string>
     <!-- Title for action to allow installation of applications from unknown sources [CHAR LIMIT=50]-->
     <string name="security_unknown_sources_title">Unknown sources</string>
     <!-- Description for action to allow installation of applications from unknown sources [CHAR LIMIT=NONE]-->

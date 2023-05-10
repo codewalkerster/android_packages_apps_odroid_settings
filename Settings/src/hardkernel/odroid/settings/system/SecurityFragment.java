@@ -34,6 +34,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
+import android.os.SystemProperties;
 import android.os.UserHandle;
 import android.os.UserManager;
 import android.text.TextUtils;
@@ -46,6 +47,7 @@ import androidx.leanback.preference.LeanbackSettingsFragment;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceGroup;
+import androidx.preference.TwoStatePreference;
 
 import com.android.internal.logging.nano.MetricsProto;
 import hardkernel.odroid.settings.R;
@@ -71,6 +73,7 @@ public class SecurityFragment extends SettingsPreferenceFragment
     private static final String TAG = "SecurityFragment";
 
     private static final String KEY_UNKNOWN_SOURCES = "unknown_sources";
+    private static final String KEY_SECURITY_MENU_ENABLE = "security_menu_enable";
     private static final String KEY_RESTRICTED_PROFILE_GROUP = "restricted_profile_group";
     private static final String KEY_RESTRICTED_PROFILE_ENTER = "restricted_profile_enter";
     private static final String KEY_RESTRICTED_PROFILE_EXIT = "restricted_profile_exit";
@@ -98,6 +101,7 @@ public class SecurityFragment extends SettingsPreferenceFragment
     private static final int PIN_MODE_RESTRICTED_PROFILE_DELETE = 4;
 
     private Preference mUnknownSourcesPref;
+    private TwoStatePreference mSecurityMenuEnablePref;
     private PreferenceGroup mRestrictedProfileGroup;
     private Preference mRestrictedProfileEnterPref;
     private Preference mRestrictedProfileExitPref;
@@ -204,6 +208,7 @@ public class SecurityFragment extends SettingsPreferenceFragment
         setPreferencesFromResource(R.xml.security, null);
 
         mUnknownSourcesPref = findPreference(KEY_UNKNOWN_SOURCES);
+        mSecurityMenuEnablePref = (TwoStatePreference) findPreference(KEY_SECURITY_MENU_ENABLE);
         mRestrictedProfileGroup = (PreferenceGroup) findPreference(KEY_RESTRICTED_PROFILE_GROUP);
         mRestrictedProfileEnterPref = findPreference(KEY_RESTRICTED_PROFILE_ENTER);
         mRestrictedProfileExitPref = findPreference(KEY_RESTRICTED_PROFILE_EXIT);
@@ -214,6 +219,9 @@ public class SecurityFragment extends SettingsPreferenceFragment
     }
 
     private void refresh() {
+        mSecurityMenuEnablePref.setVisible(true);
+        mSecurityMenuEnablePref
+            .setChecked(SystemProperties.getBoolean("persist.sys.security.enabled", false));
         if (mRestrictedProfile.isCurrentUser()) {
             // We are in restricted profile
             mUnknownSourcesPref.setVisible(false);
@@ -275,6 +283,10 @@ public class SecurityFragment extends SettingsPreferenceFragment
             return super.onPreferenceTreeClick(preference);
         }
         switch (key) {
+            case KEY_SECURITY_MENU_ENABLE:
+                SystemProperties.set("persist.sys.security.enabled",
+                        String.valueOf(mSecurityMenuEnablePref.isChecked()));
+                return true;
             case KEY_RESTRICTED_PROFILE_ENTER:
                 logEntrySelected(TvSettingsEnums.APPS_SECURITY_RESTRICTIONS_ENTER_PROFILE);
                 if (mRestrictedProfile.enterUser()) {
