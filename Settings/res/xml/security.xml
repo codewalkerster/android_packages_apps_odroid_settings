@@ -22,6 +22,10 @@
         android:title="@string/security_unknown_sources_title"
         android:summary="@string/security_unknown_sources_desc"
         android:fragment="hardkernel.odroid.settings.device.apps.specialaccess.ExternalSources" />
+    <SwitchPreference
+        android:key="security_menu_enable"
+        android:summary="@string/security_menu_enable_desc"
+        android:title="@string/security_menu_enable" />
     <PreferenceCategory
         android:key="restricted_profile_group"
         android:title="@string/user_new_profile_name">
