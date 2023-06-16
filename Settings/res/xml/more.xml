@@ -40,6 +40,11 @@
         android:key="shortcut"
         android:title="@string/app_shortcut" />
     <Preference
+        android:fragment="hardkernel.odroid.settings.amblight.AmblightFragment"
+        android:icon="@drawable/ic_amblight"
+        android:key="amblight"
+        android:title="@string/amblight"/>
+    <Preference
         android:fragment="hardkernel.odroid.settings.device.displaysound.DisplaySoundFragment"
         android:icon="@drawable/ic_display_sound"
         android:key="sound_effects"
