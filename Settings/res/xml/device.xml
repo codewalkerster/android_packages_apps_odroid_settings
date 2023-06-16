@@ -73,6 +73,11 @@
         android:key="shortcut"
         android:title="@string/app_shortcut"/>
     <Preference
+        android:fragment="hardkernel.odroid.settings.amblight.AmblightFragment"
+        android:icon="@drawable/ic_amblight"
+        android:key="amblight"
+        android:title="@string/amblight"/>
+    <Preference
         android:key="camera"
         android:title="@string/camera"
         android:fragment="hardkernel.odroid.settings.camera.CameraFragment" />

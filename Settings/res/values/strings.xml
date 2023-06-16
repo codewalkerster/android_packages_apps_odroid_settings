@@ -2358,4 +2358,11 @@
     <string name="irFilter">Ir Filter</string>
     <string name="native_ui">Support native 4K UI</string>
     <string name="native_uit_message">Apply Native 4K UI Setting After reboot</string>
+
+    <!-- Ambient Light -->
+    <string name="amblight">Ambient Light</string>
+    <string name="boblight_on_info">Enable Boblight daemon service.</string>
+    <string name="boblight_on">Boblight ON</string>
+    <string name="boblight_config_info">Boblight LED strip config target file path.</string>
+    <string name="boblight_config_path">Boblight LED Config Target</string>
 </resources>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:title="@string/amblight">
+    <PreferenceCategory
+        android:key="boblight_on_info"
+        android:title="@string/boblight_on_info">
+        <SwitchPreference
+            android:key="boblight_on_switch"
+            android:persistent="true"
+            android:title="@string/boblight_on" />
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:key="boblight_config_info"
+        android:title="@string/boblight_config_info">
+        <Preference
+            android:key="boblight_config_path"
+            android:persistent="true"
+            android:title="@string/boblight_config_path" />
+    </PreferenceCategory>
+</PreferenceScreen>
