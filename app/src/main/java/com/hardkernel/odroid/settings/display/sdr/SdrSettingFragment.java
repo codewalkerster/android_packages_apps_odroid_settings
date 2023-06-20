@@ -19,6 +19,7 @@ import android.util.ArrayMap;
 import android.util.Log;
 
 import com.droidlogic.app.SdrManager;
+import com.hardkernel.odroid.settings.ConfigEnv;
 import com.hardkernel.odroid.settings.R;
 import com.hardkernel.odroid.settings.RadioPreference;
 import com.hardkernel.odroid.settings.dialog.old.Action;
@@ -46,9 +47,9 @@ public class SdrSettingFragment extends LeanbackAddBackPreferenceFragment {
 		@Override
 		public void run() {
 			if (ACTION_AUTO.equals(mNewSdrMode)) {
-				mSdrManager.setSdrMode(SdrManager.MODE_AUTO);
+				ConfigEnv.setSdr2Hdr(SdrManager.HDR_POLICY_HDR_ON);
 			} else if (ACTION_OFF.equals(mNewSdrMode)) {
-				mSdrManager.setSdrMode(SdrManager.MODE_OFF);
+				ConfigEnv.setSdr2Hdr(SdrManager.HDR_POLICY_HDR_OFF);
 			}
 		}
 	};
@@ -92,14 +93,14 @@ public class SdrSettingFragment extends LeanbackAddBackPreferenceFragment {
 	}
 
 	private ArrayList<Action> getActions() {
-		int mode = mSdrManager.getSdrMode();
+		int mode = ConfigEnv.getSdr2Hdr();
 		if (!mSdrManager.isHdrSupport())
 			mode = 0;
 		ArrayList<Action> actions = new ArrayList<Action>();
 		actions.add(new Action.Builder().key(ACTION_AUTO).title(getString(R.string.on))
-				.checked(mode == SdrManager.MODE_AUTO).build());
+				.checked(mode == SdrManager.HDR_POLICY_HDR_ON).build());
 		actions.add(new Action.Builder().key(ACTION_OFF).title(getString(R.string.off))
-				.checked(mode == SdrManager.MODE_OFF).build());
+				.checked(mode == SdrManager.HDR_POLICY_HDR_OFF).build());
 		return actions;
 	}
 

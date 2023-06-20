@@ -10,6 +10,8 @@ import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.droidlogic.app.SdrManager;
+
 public class ConfigEnv {
     private final static String TAG = "ConfigEnv";
     private final static String path = "/odm/env.ini";
@@ -137,6 +139,15 @@ public class ConfigEnv {
         return size;
     }
 
+    public static int getSdr2Hdr() {
+        String value = getValue("hdr_policy");
+        if (value == null) {
+            value = "0";
+            setSdr2Hdr(SdrManager.HDR_POLICY_HDR_ON);
+        }
+        return Integer.parseInt(value);
+    }
+
     private static String getValue(String keyWord) {
         return _getValue(keyWord + "=");
     }
@@ -150,8 +161,11 @@ public class ConfigEnv {
                 BufferedReader reader = new BufferedReader(fileReader);
                 while ((line = reader.readLine()) != null) {
                     if (line.startsWith(startTerm)) {
-                        return line.substring(line.indexOf("\"") +1,
-                                line.lastIndexOf("\""));
+                        String value = line.split("=")[1];
+                        if (value.startsWith("\"")) {
+                            return value.split("\"")[0];
+                        } else
+                            return value;
                     }
                 }
                 reader.close();
@@ -246,18 +260,22 @@ public class ConfigEnv {
     }
 
     public static void setOverlaySize(String size) {
-        setValue("overlays_resize", size);
+        setValue("overlays_resize", Integer.valueOf(size));
     }
 
     public static void setDisableHPD(boolean state) {
         setValue("disablehpd", state?"true":"false");
     }
 
+    public static void setSdr2Hdr(int mode) {
+        setValue("hdr_policy", mode);
+    }
+
     private static void setValue (String keyWord, String val) {
         _setValue(keyWord + "=", val);
     }
 
-    private static void _setValue (String startTerm,String val) {
+    private static void _setValue (String startTerm, String val) {
         boolean isSet = false;
         try {
             File boot_ini = new File(path);
@@ -276,6 +294,46 @@ public class ConfigEnv {
 
             if (isSet == false) {
                 line = startTerm + "\"" + val + "\"";
+                lines.add(line + "\n");
+            }
+
+            fileReader.close();
+            reader.close();
+
+            FileWriter fileWriter = new FileWriter(boot_ini);
+            BufferedWriter writer = new BufferedWriter(fileWriter);
+            for (String newline : lines)
+                writer.write(newline);
+            writer.flush();
+            writer.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void setValue (String keyWord, int val) {
+        _setValue(keyWord + "=", val);
+    }
+
+    private static void _setValue (String startTerm, int val) {
+        boolean isSet = false;
+        try {
+            File boot_ini = new File(path);
+            FileReader fileReader = new FileReader(boot_ini);
+            BufferedReader reader = new BufferedReader(fileReader);
+
+            List<String> lines = new ArrayList<>();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                if (line.startsWith(startTerm)) {
+                    line = startTerm + val;
+                    isSet = true;
+                }
+                lines.add(line + "\n");
+            }
+
+            if (isSet == false) {
+                line = startTerm + val;
                 lines.add(line + "\n");
             }
 
