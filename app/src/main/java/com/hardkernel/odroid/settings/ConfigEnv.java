@@ -162,8 +162,9 @@ public class ConfigEnv {
                 while ((line = reader.readLine()) != null) {
                     if (line.startsWith(startTerm)) {
                         String value = line.split("=")[1];
+
                         if (value.startsWith("\"")) {
-                            return value.split("\"")[0];
+                            return value.split("\"")[1];
                         } else
                             return value;
                     }
