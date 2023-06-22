@@ -329,4 +329,11 @@
     <!-- MediaCodec -->
     <string name="encoder_title">Video Encoder</string>
     <string name="default_encoder">Default Video Encoder</string>
+
+    <!-- Ambient Light -->
+    <string name="amblight">Ambient Light</string>
+    <string name="boblight_on_info">Enable Boblight daemon service.</string>
+    <string name="boblight_on">Boblight ON</string>
+    <string name="boblight_config_info">Boblight LED strip config target file path.</string>
+    <string name="boblight_config_path">Boblight LED Config Target</string>
 </resources>

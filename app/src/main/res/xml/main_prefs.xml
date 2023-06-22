@@ -71,6 +71,11 @@
         android:key="misc"
         android:title="@string/ethernet_settings" />
     <Preference
+        android:fragment="com.hardkernel.odroid.settings.AmblightFragment"
+        android:icon="@drawable/ic_amblight"
+        android:key="amblight"
+        android:title="@string/amblight" />
+    <Preference
         android:fragment="com.hardkernel.odroid.settings.HeartBeatFragment"
         android:icon="@drawable/heartbeat_icon"
         android:key="led"
