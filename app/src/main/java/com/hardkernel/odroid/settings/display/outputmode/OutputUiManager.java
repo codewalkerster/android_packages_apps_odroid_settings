@@ -393,7 +393,11 @@ public class OutputUiManager {
                 return;
             }
         }
+        if (hdmiMode.startsWith("2160p")) {
+            ConfigEnv.setColorAttribute("420,8bit");
+        } else {
         // default value
-        ConfigEnv.setColorAttribute("444,8bit");
+            ConfigEnv.setColorAttribute("444,8bit");
+        }
     }
 }

@@ -234,10 +234,13 @@ public class OutputmodeFragment extends LeanbackAddBackPreferenceFragment
                 if (mAlertDialog != null) {
                     mAlertDialog.dismiss();
 
+                    mOutputUiManager.setValidColorAttribute(curMode);
+                    if (curMode.startsWith("2160p")) {
+                        curMode = curMode + "420";
+                    }
                     // save current resolution mode.
                     ConfigEnv.setHdmiMode(curMode);
                     ConfigEnv.setDisplayZoom(100);
-                    mOutputUiManager.setValidColorAttribute(curMode);
                     reboot();
                 }
                 break;
