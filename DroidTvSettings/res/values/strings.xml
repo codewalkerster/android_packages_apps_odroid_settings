@@ -2350,6 +2350,7 @@
     <string name="cec_arc_switch_description">Allow the TV control ARC device</string>
     <string name="earc_switch_description">Allow the TV control ARC and eARC device</string>
     <string name="cec_wait">Updating, please wait</string>
+    <string name="cec_status_update">Updating the CEC status—this will take a few seconds</string>
     <string name="power_action_suspend">suspend</string>
     <string name="power_action_force_suspend">force suspend</string>
     <string name="power_action_restart">restart</string>

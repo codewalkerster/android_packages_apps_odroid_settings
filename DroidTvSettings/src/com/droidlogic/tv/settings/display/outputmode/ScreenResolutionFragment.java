@@ -16,49 +16,33 @@
 
 package com.droidlogic.tv.settings.display.outputmode;
 
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.SystemProperties;
-import android.provider.Settings;
 import android.text.TextUtils;
-import android.text.format.DateFormat;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.LayoutInflater;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.TextView;
 import android.util.Log;
 
 import androidx.preference.SwitchPreference;
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
 
-import java.util.Timer;
-import java.util.TimerTask;
-
 import com.droidlogic.app.DolbyVisionSettingManager;
 import com.droidlogic.app.OutputModeManager;
-import com.droidlogic.app.SystemControlManager;
 import com.droidlogic.tv.settings.R;
 import com.droidlogic.tv.settings.SettingsPreferenceFragment;
+import com.droidlogic.tv.settings.sliceprovider.manager.DisplayCapabilityManager;
 import com.droidlogic.tv.settings.sliceprovider.ueventobserver.SetModeUEventObserver;
 import com.droidlogic.tv.settings.SettingsConstant;
 
-
 public class ScreenResolutionFragment extends SettingsPreferenceFragment implements
-        Preference.OnPreferenceChangeListener, OnClickListener {
-    private static final String LOG_TAG = "ScreenResolutionFragment";
-    private static final String KEY_COLORSPACE = "colorspace_setting";
-    private static final String KEY_COLORDEPTH = "colordepth_setting";
+        Preference.OnPreferenceChangeListener {
+    private static final String TAG = "ScreenResolutionFragment";
+    private static final String KEY_COLOR_FORMAT = "color_format_key";
     private static final String KEY_DISPLAYMODE = "displaymode_setting";
     private static final String KEY_BEST_RESOLUTION = "best_resolution";
     private static final String KEY_BEST_DOLBYVISION = "best_dolbyvision";
@@ -68,47 +52,38 @@ public class ScreenResolutionFragment extends SettingsPreferenceFragment impleme
     private static final String KEY_DOLBYVISION_PRIORITY = "dolby_vision_graphics_priority";
     private static final String DEVICE_DISPLAY_RESET = "device_display_reset";
 
-    private static final String DEFAULT_VALUE = "444,8bit";
+    private Preference mBestResolutionPref;
+    private Preference mBestDolbyVisionPref;
+    private Preference mDisplayModePref;
+    private Preference mColorFormat;
+    private Preference mDolbyVisionPref;
+    private Preference mHdrPriorityPref;
+    private Preference mHdrPolicyPref;
+    private Preference mGraphicsPriorityPref;
+
     private static final String HDMI_OUTPUT_MODE = "dummy_l";
 
     private static final String SETTINGS_PACKAGE = "com.droidlogic.tv.settings";
     private static final String SETTINGS_ACTIVITY_DisplayResetActivity =
             "com.droidlogic.tv.settings.sliceprovider.dialog.DisplayResetActivity";
 
-    private static boolean DEBUG = Log.isLoggable(LOG_TAG,Log.DEBUG);
-    private static final int DV_LL_RGB            = 3;
-    private static final int DV_LL_YUV            = 2;
-    private static final int DV_ENABLE            = 1;
-    private static final int DV_DISABLE           = 0;
+    private static final int DV_LL_RGB          = 3;
+    private static final int DV_LL_YUV          = 2;
+    private static final int DV_ENABLE          = 1;
+
+
+    private static final int DV_PRIORITY        = 0;
+    private static final int HDR_PRIORITY       = 1;
+    private static final int SDR_PRIORITY       = 2;
 
     private String preMode;
-    private String preDeepColor;
-    private View view_dialog;
-    private TextView tx_title;
-    private TextView tx_content;
-    private Timer timer;
-    private TimerTask task;
-    private AlertDialog mAlertDialog = null;
     private SetModeUEventObserver mSetModeUEventObserver;
-    private int countdown = 15;
-    private static String mode = null;
     private static final int MSG_FRESH_UI = 0;
-    private static final int MSG_COUNT_DOWN = 1;
-    private static final int MSG_PLUG_FRESH_UI = 2;
 
-    private OutputModeManager mOutputModeManager;
     private DolbyVisionSettingManager mDolbyVisionSettingManager;
-    private Preference mBestResolutionPref;
-    private Preference mBestDolbyVisionPref;
-    private Preference mDisplayModePref;
-    private Preference mDeepColorPref;
-    private Preference mColorDepthPref;
-    private Preference mDolbyVisionPref;
-    private Preference mHdrPriorityPref;
-    private Preference mHdrPolicyPref;
-    private Preference mGraphicsPriorityPref;
-    private OutputUiManager mOutputUiManager;
-    private SystemControlManager mSystemControlManager;
+    private OutputModeManager mOutputModeManager;
+
+    private DisplayCapabilityManager mDisplayCapabilityManager;
     private IntentFilter mIntentFilter;
     public boolean hpdFlag = false;
 
@@ -117,23 +92,13 @@ public class ScreenResolutionFragment extends SettingsPreferenceFragment impleme
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case MSG_FRESH_UI:
-                    if (DEBUG) Log.d(LOG_TAG,"CurrentOutputMode:" + mOutputModeManager.getCurrentOutputMode()+" HdmiMode:" + isHdmiMode());
-                    if (!(HDMI_OUTPUT_MODE.equals(mOutputModeManager.getCurrentOutputMode())
+                    Log.d(TAG, "CurrentOutputMode:" + mDisplayCapabilityManager.getCurrentMode() + " HdmiMode:" + isHdmiMode());
+                    if (!(HDMI_OUTPUT_MODE.equals(mDisplayCapabilityManager.getCurrentMode())
                             && isHdmiMode())) {
-                       updateScreenResolutionDisplay();
+                        updateScreenResolutionDisplay();
                     }
                     break;
-                case MSG_COUNT_DOWN:
-                    tx_title.setText(Integer.toString(countdown) + " " +
-                        getResources().getString(R.string.device_outputmode_countdown));
-                    if (countdown == 0) {
-                        if (mAlertDialog != null) {
-                            mAlertDialog.dismiss();
-                        }
-                        recoverOutputMode();
-                        task.cancel();
-                    }
-                    countdown--;
+                default:
                     break;
             }
         }
@@ -141,7 +106,7 @@ public class ScreenResolutionFragment extends SettingsPreferenceFragment impleme
     private BroadcastReceiver mIntentReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            hpdFlag = intent.getBooleanExtra ("state", false);
+            hpdFlag = intent.getBooleanExtra("state", false);
             mHandler.sendEmptyMessageDelayed(MSG_FRESH_UI, hpdFlag ^ isHdmiMode() ? 2000 : 1000);
         }
     };
@@ -152,7 +117,10 @@ public class ScreenResolutionFragment extends SettingsPreferenceFragment impleme
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        mOutputUiManager = new OutputUiManager(getActivity());
+        mDisplayCapabilityManager = DisplayCapabilityManager.getDisplayCapabilityManager(getActivity());
+        mOutputModeManager = OutputModeManager.getInstance(getActivity());
+        mDolbyVisionSettingManager = new DolbyVisionSettingManager((Context) getActivity());
+
         mIntentFilter = new IntentFilter("android.intent.action.HDMI_PLUGGED");
         mIntentFilter.addAction(Intent.ACTION_TIME_TICK);
         getActivity().registerReceiver(mIntentReceiver, mIntentFilter);
@@ -162,17 +130,12 @@ public class ScreenResolutionFragment extends SettingsPreferenceFragment impleme
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         setPreferencesFromResource(R.xml.screen_resolution, null);
-
-        mOutputModeManager = OutputModeManager.getInstance(getActivity());
-        mSystemControlManager = SystemControlManager.getInstance();
-        mDolbyVisionSettingManager = new DolbyVisionSettingManager((Context) getActivity());
         mBestResolutionPref = findPreference(KEY_BEST_RESOLUTION);
         mBestDolbyVisionPref = findPreference(KEY_BEST_DOLBYVISION);
         mBestResolutionPref.setOnPreferenceChangeListener(this);
         mBestDolbyVisionPref.setOnPreferenceChangeListener(this);
         mDisplayModePref = findPreference(KEY_DISPLAYMODE);
-        mDeepColorPref = findPreference(KEY_COLORSPACE);
-        mColorDepthPref = findPreference(KEY_COLORDEPTH);
+        mColorFormat = findPreference(KEY_COLOR_FORMAT);
         mDolbyVisionPref = findPreference(KEY_DOLBYVISION);
         mHdrPriorityPref = findPreference(KEY_HDR_PRIORITY);
         mHdrPolicyPref = findPreference(KEY_HDR_POLICY);
@@ -202,72 +165,66 @@ public class ScreenResolutionFragment extends SettingsPreferenceFragment impleme
     }
 
     private void updateScreenResolutionDisplay() {
-        if (DEBUG)
-            Log.d(LOG_TAG,"showUI and at this time current isBestOutputmode? "+ isBestResolution());
+        Log.i(TAG, "showUI and at this time current isBestOutputmode? "
+                + mDisplayCapabilityManager.isBestResolution());
 
         if (getContext() == null) {
-            Log.d(LOG_TAG,"context is NULL");
+            Log.d(TAG, "context is NULL");
             return;
         }
 
-        mOutputUiManager.updateUiMode();
-
         // output mode.
-        mDisplayModePref.setSummary(mOutputUiManager.getOutputmodeTitleList().get(mOutputUiManager.getCurrentModeIndex()));
+        mDisplayCapabilityManager.refresh();
+        mDisplayModePref.setSummary(mDisplayCapabilityManager.getCurrentMode());
 
-        boolean dvFlag = mOutputUiManager.isTvSupportDolbyVision()
-                && (mOutputModeManager.getHdrPriority() == OutputUiManager.DV_PRIORITY);
-        boolean cfFlag = !(mOutputUiManager.isDolbyVisionEnable() && mOutputUiManager.isTvSupportDolbyVision()
-                && (mOutputModeManager.getHdrPriority() == OutputUiManager.DV_PRIORITY));
+        boolean dvFlag = mDisplayCapabilityManager.isTvSupportDolbyVision()
+                && (mOutputModeManager.getHdrPriority() == DV_PRIORITY);
+        boolean cfFlag = !(mDisplayCapabilityManager.isDolbyVisionEnable() && mDisplayCapabilityManager.isTvSupportDolbyVision()
+                && (mOutputModeManager.getHdrPriority() == DV_PRIORITY));
         //socSupportDv: if the chip is G12A/G12B/SM1 and T962E/E2 etc, it will be true
         //platformSupportDv: if the chip support dv and the code contains dovi.ko, it will be true
         boolean isSocSupportDv = mDolbyVisionSettingManager.isSocSupportDolbyVision();
-        boolean socSupportDv   = isSocSupportDv &&
+        boolean socSupportDv = isSocSupportDv &&
                 (!SettingsConstant.needDroidlogicTvFeature(getPreferenceManager().getContext()) || SystemProperties.getBoolean("vendor.tv.soc.as.mbox", false));
         boolean platformSupportDv = mDolbyVisionSettingManager.isMboxSupportDolbyVision();
-        boolean displayConfig    = SettingsConstant.needDroidlogicBestDolbyVision(getPreferenceManager().getContext());
-        boolean customConfig     = mOutputModeManager.isSupportNetflix();
-        boolean debugConfig      = mOutputModeManager.isSupportDisplayDebug();
+        boolean displayConfig = SettingsConstant.needDroidlogicBestDolbyVision(getPreferenceManager().getContext());
+        boolean customConfig = mOutputModeManager.isSupportNetflix();
+        boolean debugConfig = mOutputModeManager.isSupportDisplayDebug();
 
-        Log.d(LOG_TAG,"isSocSupportDv "+ isSocSupportDv);
-        Log.d(LOG_TAG,"platformSupportDv "+ platformSupportDv);
-        Log.d(LOG_TAG,"socSupportDv "+ socSupportDv);
-        Log.d(LOG_TAG,"displayConfig "+ displayConfig);
-        Log.d(LOG_TAG,"customConfig "+ customConfig);
-        Log.d(LOG_TAG,"debugConfig "+ debugConfig);
+        Log.i(TAG, "isSocSupportDv " + isSocSupportDv);
+        Log.i(TAG, "platformSupportDv " + platformSupportDv);
+        Log.i(TAG, "socSupportDv " + socSupportDv);
+        Log.i(TAG, "displayConfig " + displayConfig);
+        Log.i(TAG, "customConfig " + customConfig);
+        Log.i(TAG, "debugConfig " + debugConfig);
 
         if (isHdmiMode()) {
 
             mBestResolutionPref.setVisible(true);
             mBestResolutionPref.setEnabled(true);
-            ((SwitchPreference)mBestResolutionPref).setChecked(isBestResolution());
+            ((SwitchPreference) mBestResolutionPref).setChecked(isBestResolution());
             if (isBestResolution()) {
                 mBestResolutionPref.setSummary(R.string.captions_display_on);
-            }else {
+            } else {
                 mBestResolutionPref.setSummary(R.string.captions_display_off);
             }
 
-            // deep space
-            mDeepColorPref.setVisible(cfFlag);
-            mDeepColorPref.setEnabled(cfFlag);
-            mDeepColorPref.setSummary(mOutputUiManager.getCurrentColorSpaceTitle());
-
-            // color space
-            mColorDepthPref.setVisible(false);
-            mColorDepthPref.setEnabled(cfFlag);
-            mColorDepthPref.setSummary(
-                mOutputUiManager.getCurrentColorDepthAttr().contains("8bit") ? "off":"on");
+            // color space/color format
+            mColorFormat.setVisible(cfFlag);
+            mColorFormat.setEnabled(cfFlag);
+            String currentColorFormat = mDisplayCapabilityManager.getCurrentColorAttribute();
+            mColorFormat.setSummary(mDisplayCapabilityManager.getTitleByColorAttr(currentColorFormat));
 
             // dolby vision
             mDolbyVisionPref.setVisible(platformSupportDv && displayConfig && dvFlag);
             mDolbyVisionPref.setEnabled(displayConfig && dvFlag);
-            if (mOutputUiManager.isDolbyVisionEnable()) {
+            if (mDisplayCapabilityManager.isDolbyVisionEnable()) {
                 if (mDolbyVisionSettingManager.getDolbyVisionType() == 2) {
                     mDolbyVisionPref.setSummary(R.string.dolby_vision_low_latency_yuv);
                 } else if (mDolbyVisionSettingManager.getDolbyVisionType() == 3) {
                     mDolbyVisionPref.setSummary(R.string.dolby_vision_low_latency_rgb);
                 } else {
-                    if (mOutputUiManager.isTvSupportDolbyVision()) {
+                    if (mDisplayCapabilityManager.isTvSupportDolbyVision()) {
                         mDolbyVisionPref.setSummary(R.string.dolby_vision_sink_led);
                     } else {
                         mDolbyVisionPref.setSummary(R.string.dolby_vision_default_enable);
@@ -279,14 +236,16 @@ public class ScreenResolutionFragment extends SettingsPreferenceFragment impleme
 
             // HDR policy
             mHdrPolicyPref.setVisible(isSocSupportDv);
-            if (mOutputUiManager.getHdrStrategy().equals("0")) {
+            if (mDisplayCapabilityManager.getHdrStrategy().equals("0")) {
                 mHdrPolicyPref.setSummary(R.string.hdr_policy_sink);
-            } else if (mOutputUiManager.getHdrStrategy().equals("1")) {
+            } else if (mDisplayCapabilityManager.getHdrStrategy().equals("1")) {
                 mHdrPolicyPref.setSummary(R.string.hdr_policy_source);
             }
 
             //dolby vision graphic
-            mGraphicsPriorityPref.setVisible(isSocSupportDv && mOutputUiManager.isDolbyVisionEnable() && displayConfig);
+            mGraphicsPriorityPref.setVisible(isSocSupportDv
+                    && mDisplayCapabilityManager.isDolbyVisionEnable()
+                    && displayConfig);
             if (mDolbyVisionSettingManager.getGraphicsPriority().equals("1")) {
                 mGraphicsPriorityPref.setSummary(R.string.graphics_priority);
             } else if (mDolbyVisionSettingManager.getGraphicsPriority().equals("0")) {
@@ -305,33 +264,33 @@ public class ScreenResolutionFragment extends SettingsPreferenceFragment impleme
 
             // best dolby vision.
             mBestDolbyVisionPref.setVisible(false);
-            ((SwitchPreference)mBestDolbyVisionPref).setChecked(isBestDolbyVision());
+            ((SwitchPreference) mBestDolbyVisionPref).setChecked(isBestDolbyVision());
             if (isBestDolbyVision()) {
                 mBestDolbyVisionPref.setSummary(R.string.captions_display_on);
-            }else {
+            } else {
                 mBestDolbyVisionPref.setSummary(R.string.captions_display_off);
             }
 
             //for custom design
             if (!debugConfig && customConfig) {
                 mDolbyVisionPref.setVisible(false);
-                if (mOutputUiManager.isDolbyVisionEnable())
-                    mDeepColorPref.setVisible(false);
+                if (mDisplayCapabilityManager.isDolbyVisionEnable()) {
+                    mColorFormat.setVisible(false);
+                }
                 mGraphicsPriorityPref.setEnabled(false);
                 mHdrPolicyPref.setVisible(false);
             }
 
         } else {
             mBestResolutionPref.setVisible(false);
-            mDeepColorPref.setVisible(false);
-            mColorDepthPref.setVisible(false);
+            mColorFormat.setVisible(false);
             mBestDolbyVisionPref.setVisible(false);
             mDolbyVisionPref.setVisible(false);
             mGraphicsPriorityPref.setVisible(false);
             mHdrPolicyPref.setVisible(false);
             mHdrPriorityPref.setVisible(false);
         }
-        if (mOutputUiManager.getSystemPreferredDisplayMode()) {
+        if (mDisplayCapabilityManager.getSystemPreferredDisplayMode()) {
             removeResolutionPreference();
         }
 
@@ -350,31 +309,18 @@ public class ScreenResolutionFragment extends SettingsPreferenceFragment impleme
         }
     }
 
-    /**
-     * recover previous output mode and best resolution state.
-     */
-    private void recoverOutputMode() {
-        if (DEBUG)
-            Log.d(LOG_TAG,"recoverOutputMode"+preMode+"/"+getCurrentDisplayMode());
-
-        mOutputUiManager.change2NewMode(preMode);
-
-        mHandler.sendEmptyMessage(MSG_FRESH_UI);
-    }
-
     @Override
     public boolean onPreferenceChange(Preference preference, Object newValue) {
         if (TextUtils.equals(preference.getKey(), KEY_BEST_RESOLUTION)) {
             preMode = getCurrentDisplayMode();
-            preDeepColor = getCurrentDeepColor();
-            if ((boolean)newValue) {
+            if ((boolean) newValue) {
                 setBestResolution();
                 mHandler.sendEmptyMessage(MSG_FRESH_UI);
                 /*if (isBestResolution()) {
                     showDialog();
                 }*/
             } else {
-                mOutputUiManager.change2NewMode(preMode);
+                mDisplayCapabilityManager.setResolutionAndRefreshRateByMode(preMode);
                 mHandler.sendEmptyMessage(MSG_FRESH_UI);
             }
         } else if (TextUtils.equals(preference.getKey(), KEY_BEST_DOLBYVISION)) {
@@ -402,12 +348,14 @@ public class ScreenResolutionFragment extends SettingsPreferenceFragment impleme
 
     @Override
     public boolean onPreferenceTreeClick(Preference preference) {
-        Log.i(LOG_TAG, "[onPreferenceTreeClick] preference.getKey() = " + preference.getKey());
+        Log.i(TAG, "[onPreferenceTreeClick] preference.getKey() = " + preference.getKey());
         switch (preference.getKey()) {
             case DEVICE_DISPLAY_RESET:
                 Intent displayResetIntent = new Intent();
                 displayResetIntent.setClassName(SETTINGS_PACKAGE, SETTINGS_ACTIVITY_DisplayResetActivity);
                 startActivity(displayResetIntent);
+                break;
+            default:
                 break;
         }
         return super.onPreferenceTreeClick(preference);
@@ -419,10 +367,11 @@ public class ScreenResolutionFragment extends SettingsPreferenceFragment impleme
     }
 
     private boolean isBestResolution() {
-        return mOutputUiManager.isBestOutputmode();
+        return mDisplayCapabilityManager.isBestResolution();
     }
+
     private boolean isBestDolbyVision() {
-        return mOutputUiManager.isBestDolbyVision();
+        return mOutputModeManager.isBestDolbyVsion();
     }
 
     /**
@@ -431,85 +380,18 @@ public class ScreenResolutionFragment extends SettingsPreferenceFragment impleme
      * if current best resolution state is disable, it will enable best resolution after method.
      */
     private void setBestResolution() {
-        mOutputUiManager.change2BestMode();
+        mDisplayCapabilityManager.change2BestMode();
     }
+
     private void setBestDolbyVision(boolean enable) {
-        mOutputUiManager.setBestDolbyVision(enable);
+        mOutputModeManager.setBestDolbyVision(enable);
     }
+
     private String getCurrentDisplayMode() {
-        return mOutputUiManager.getCurrentMode().trim();
+        return mDisplayCapabilityManager.getCurrentMode();
     }
-    private String getCurrentDeepColor() {
-        String value = mOutputUiManager.getCurrentColorAttribute().toString().trim();
-        if (value.equals("default") || value == "" || value.equals(""))
-            return DEFAULT_VALUE;
-        return value;
-    }
+
     private boolean isHdmiMode() {
-        return mOutputUiManager.isHdmiMode();
+        return !mDisplayCapabilityManager.isCvbsMode();
     }
-
-    /**
-     * show Alert Dialog to Users.
-     * Tips: Users can confirm current state, or cancel to recover previous state.
-     */
-    private void showDialog () {
-        if (mAlertDialog == null) {
-            LayoutInflater inflater = (LayoutInflater)getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            view_dialog = inflater.inflate(R.layout.dialog_outputmode, null);
-
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-            mAlertDialog = builder.create();
-            mAlertDialog.getWindow().setType(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY);
-
-            tx_title = (TextView)view_dialog.findViewById(R.id.dialog_title);
-            tx_content = (TextView)view_dialog.findViewById(R.id.dialog_content);
-
-            TextView button_cancel = (TextView)view_dialog.findViewById(R.id.dialog_cancel);
-            button_cancel.setOnClickListener(this);
-
-            TextView button_ok = (TextView)view_dialog.findViewById(R.id.dialog_ok);
-            button_ok.setOnClickListener(this);
-        }
-        mAlertDialog.show();
-        mAlertDialog.getWindow().setContentView(view_dialog);
-        mAlertDialog.setCancelable(false);
-
-        tx_content.setText(getResources().getString(R.string.device_outputmode_change)
-            + " " +mOutputUiManager.getOutputmodeTitleList().get(mOutputUiManager.getCurrentModeIndex()));
-
-        countdown = 15;
-        if (timer == null)
-            timer = new Timer();
-        if (task != null)
-            task.cancel();
-        task = new DialogTimerTask();
-        timer.schedule(task, 0, 1000);
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.dialog_cancel:
-                if (mAlertDialog != null) {
-                    mAlertDialog.dismiss();
-                }
-                recoverOutputMode();
-                break;
-            case R.id.dialog_ok:
-                if (mAlertDialog != null) {
-                    mAlertDialog.dismiss();
-                }
-                break;
-        }
-        task.cancel();
-    }
-    private class DialogTimerTask extends TimerTask {
-        @Override
-        public void run() {
-            if (mHandler != null) {
-                mHandler.sendEmptyMessage(MSG_COUNT_DOWN);
-            }
-        }
-    };
 }

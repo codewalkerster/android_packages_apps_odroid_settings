@@ -16,30 +16,8 @@
 
 package com.droidlogic.tv.settings.display.outputmode;
 
-import android.app.Activity;
-import android.app.AlarmManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-
-import static com.android.tv.twopanelsettings.slices.SlicesConstants.EXTRA_PREFERENCE_KEY;
-
-import com.droidlogic.tv.settings.PreferenceControllerFragment;
-import com.droidlogic.tv.settings.sliceprovider.dialog.AdjustResolutionDialogActivity;
-import com.droidlogic.tv.settings.SettingsPreferenceFragment;
-import androidx.preference.CheckBoxPreference;
-import androidx.preference.Preference;
-import androidx.preference.PreferenceScreen;
-import android.text.TextUtils;
-
-import com.droidlogic.tv.settings.R;
-
-
-import java.util.ArrayList;
-import java.util.List;
-
-import com.droidlogic.tv.settings.dialog.old.Action;
-import com.droidlogic.tv.settings.RadioPreference;
-import com.droidlogic.tv.settings.sliceprovider.ueventobserver.SetModeUEventObserver;
 
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -51,11 +29,26 @@ import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.util.Log;
 
-import android.view.View;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceScreen;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static com.android.tv.twopanelsettings.slices.SlicesConstants.EXTRA_PREFERENCE_KEY;
+import com.droidlogic.tv.settings.PreferenceControllerFragment;
+import com.droidlogic.tv.settings.sliceprovider.dialog.AdjustResolutionDialogActivity;
+import com.droidlogic.tv.settings.SettingsPreferenceFragment;
+import com.droidlogic.tv.settings.R;
+import com.droidlogic.tv.settings.dialog.old.Action;
+import com.droidlogic.tv.settings.RadioPreference;
+import com.droidlogic.app.OutputModeManager;
+import com.droidlogic.tv.settings.sliceprovider.manager.DisplayCapabilityManager;
+import com.droidlogic.tv.settings.sliceprovider.ueventobserver.SetModeUEventObserver;
 
 public class OutputmodeFragment extends SettingsPreferenceFragment {
     private static final String TAG = "OutputmodeFragment";
-    private OutputUiManager mOutputUiManager;
+    private DisplayCapabilityManager mDisplayCapabilityManager;
     private SetModeUEventObserver mSetModeUEventObserver;
     private static String curMode;
     RadioPreference prePreference;
@@ -63,7 +56,6 @@ public class OutputmodeFragment extends SettingsPreferenceFragment {
     private static final int MSG_PLUG_FRESH_UI = 0;
     private IntentFilter mIntentFilter;
 
-    public ArrayList<String> outputmodeTitleList = new ArrayList();
     private BroadcastReceiver mIntentReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -77,30 +69,27 @@ public class OutputmodeFragment extends SettingsPreferenceFragment {
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-        mOutputUiManager = new OutputUiManager(getActivity());
+        mDisplayCapabilityManager = DisplayCapabilityManager.getDisplayCapabilityManager(getActivity());
         mIntentFilter = new IntentFilter("android.intent.action.HDMI_PLUGGED");
         updatePreferenceFragment();
         getActivity().registerReceiver(mIntentReceiver, mIntentFilter);
     }
 
-    private ArrayList<Action> getMainActions() {
-        ArrayList<Action> actions = new ArrayList<Action>();
-        ArrayList<String> outputmodeValueList = mOutputUiManager.getOutputmodeValueList();
-        outputmodeTitleList.clear();
-        ArrayList<String> mList = mOutputUiManager.getOutputmodeTitleList();
-        for (String title : mList) {
-            outputmodeTitleList.add(title);
-        }
-        int currentModeIndex = mOutputUiManager.getCurrentModeIndex();
-        Log.d(TAG, "outputmodeValueList: " + outputmodeValueList + "; currentModeIndex: " + currentModeIndex);
-        for (int i = 0; i < outputmodeTitleList.size(); i++) {
-            if (i == currentModeIndex) {
-                actions.add(new Action.Builder().key(outputmodeValueList.get(i))
-                        .title("        " + outputmodeTitleList.get(i))
+    private List<Action> getMainActions() {
+        List<Action> actions = new ArrayList<Action>();
+        List<String> outputModeValueList = mDisplayCapabilityManager.getHdmiModeLists();
+        List<String> outputModeTitleList = mDisplayCapabilityManager.getHdmiTitleLists();
+        String currentMode = mDisplayCapabilityManager.getCurrentMode();
+        Log.i(TAG, "outputModeValueList: " + outputModeValueList + "; \n" +
+                "outputModeTitleList: " + outputModeTitleList);
+        for (String outputMode : outputModeTitleList) {
+            if (outputMode.equals(currentMode)) {
+                actions.add(new Action.Builder().key(outputMode)
+                        .title("        " + mDisplayCapabilityManager.getTitleByMode(outputMode))
                         .checked(true).build());
             } else {
-                actions.add(new Action.Builder().key(outputmodeValueList.get(i))
-                        .title("        " + outputmodeTitleList.get(i))
+                actions.add(new Action.Builder().key(outputMode)
+                        .title("        " + mDisplayCapabilityManager.getTitleByMode(outputMode))
                         .description("").build());
             }
         }
@@ -134,7 +123,7 @@ public class OutputmodeFragment extends SettingsPreferenceFragment {
             final RadioPreference radioPreference = (RadioPreference) preference;
             radioPreference.clearOtherRadioPreferences(getPreferenceScreen());
             if (radioPreference.isChecked()) {
-                String sysCurrentMode = mOutputUiManager.getCurrentMode().trim();
+                String sysCurrentMode = mDisplayCapabilityManager.getCurrentMode();
                 String UserPreferredDisplayMode = radioPreference.getKey();
                 curMode = UserPreferredDisplayMode; //update currentmode
                 String UserPreferredDisplayModeTitle = (String)radioPreference.getTitle();
@@ -176,7 +165,7 @@ public class OutputmodeFragment extends SettingsPreferenceFragment {
     private void updatePreferenceFragment() {
         Log.d(TAG, "updatePreferenceFragment");
 
-        mOutputUiManager.updateUiMode();
+        mDisplayCapabilityManager.refresh();
         final Context themedContext = getPreferenceManager().getContext();
         final PreferenceScreen screen = getPreferenceManager().createPreferenceScreen(
                 themedContext);
@@ -198,9 +187,5 @@ public class OutputmodeFragment extends SettingsPreferenceFragment {
             }
             screen.addPreference(radioPreference);
         }
-    }
-
-    private boolean isHdmiMode() {
-        return mOutputUiManager.isHdmiMode();
     }
 }

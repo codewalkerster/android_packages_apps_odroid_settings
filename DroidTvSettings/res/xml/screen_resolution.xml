@@ -27,12 +27,8 @@
         android:title="@string/device_displaymode"
         android:fragment="com.droidlogic.tv.settings.display.outputmode.OutputmodeFragment" />
     <Preference
-        android:key="colordepth_setting"
-        android:title="@string/device_outputmode_color_depth"
-        android:fragment="com.droidlogic.tv.settings.display.outputmode.ColorDepthFragment"/>
-    <Preference
-        android:key="colorspace_setting"
-        android:title="@string/device_outputmode_color_space"
+        android:key="color_format_key"
+        android:title="@string/color_format_title"
         android:fragment="com.droidlogic.tv.settings.display.outputmode.ColorAttributeFragment"/>
     <SwitchPreference
         android:key="best_dolbyvision"

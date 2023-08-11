@@ -12,46 +12,36 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.os.RemoteException;
-import android.provider.Settings;
-import androidx.preference.SwitchPreference;
 import com.droidlogic.tv.settings.SettingsPreferenceFragment;
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceScreen;
-import androidx.preference.TwoStatePreference;
-import android.util.ArrayMap;
 import android.util.Log;
 import android.text.TextUtils;
 
-import com.droidlogic.app.DolbyVisionSettingManager;
-import com.droidlogic.app.OutputModeManager;
 import com.droidlogic.tv.settings.R;
 import com.droidlogic.tv.settings.RadioPreference;
 import com.droidlogic.tv.settings.dialog.ProgressingDialogUtil;
 import com.droidlogic.tv.settings.dialog.old.Action;
-import com.droidlogic.tv.settings.display.outputmode.OutputUiManager;
+import com.droidlogic.tv.settings.sliceprovider.manager.DisplayCapabilityManager;
 
 import java.util.List;
-import java.util.Map;
 import java.util.ArrayList;
 
 public class HdrPolicyFragment extends SettingsPreferenceFragment {
     private static final String LOG_TAG = "HdrPolicyFragment";
 
-    private static final String HDR_POLICY_SINK   = "hdr_policy_sink";
+    private static final String HDR_POLICY_SINK = "hdr_policy_sink";
     private static final String HDR_POLICY_SOURCE = "hdr_policy_source";
 
-    private static final String DV_HDR_SOURCE     = "1";
-    private static final String DV_HDR_SINK       = "0";
-    private OutputUiManager mOutputUiManager;
+    private static final String DV_HDR_SOURCE = "1";
+    private static final String DV_HDR_SINK = "0";
+    private DisplayCapabilityManager mDisplayCapabilityManager;
     private String mNewHdrPolicy;
     private String mOldHdrPolicy;
     private ProgressingDialogUtil mProgressingDialogUtil;
     private Context themedContext;
     private Bundle mSavedInstanceState;
-    // Adjust this value to keep things relatively responsive without janking
-    // animations
 
     public static HdrPolicyFragment newInstance() {
         return new HdrPolicyFragment();
@@ -59,7 +49,7 @@ public class HdrPolicyFragment extends SettingsPreferenceFragment {
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-        mOutputUiManager = new OutputUiManager((Context) getActivity());
+        mDisplayCapabilityManager = DisplayCapabilityManager.getDisplayCapabilityManager(getActivity());
         themedContext = getPreferenceManager().getContext();
         mProgressingDialogUtil = new ProgressingDialogUtil();
         mSavedInstanceState = savedInstanceState;
@@ -69,34 +59,26 @@ public class HdrPolicyFragment extends SettingsPreferenceFragment {
     private ArrayList<Action> getActions() {
         ArrayList<Action> actions = new ArrayList<Action>();
         actions.add(new Action.Builder()
-            .key(HDR_POLICY_SINK)
-            .title(getString(R.string.hdr_policy_sink))
-            .checked(mOutputUiManager.getHdrStrategy().equals(DV_HDR_SINK))
-            .build());
+                .key(HDR_POLICY_SINK)
+                .title(getString(R.string.hdr_policy_sink))
+                .checked(DV_HDR_SINK.equals(mDisplayCapabilityManager.getHdrStrategy()))
+                .build());
 
         actions.add(new Action.Builder()
-            .key(HDR_POLICY_SOURCE)
-            .title(getString(R.string.hdr_policy_source))
-            .checked(mOutputUiManager.getHdrStrategy().equals(DV_HDR_SOURCE))
-            .build());
+                .key(HDR_POLICY_SOURCE)
+                .title(getString(R.string.hdr_policy_source))
+                .checked(DV_HDR_SOURCE.equals(mDisplayCapabilityManager.getHdrStrategy()))
+                .build());
 
         return actions;
     }
-    public boolean onClickHandle(String key) {
-        switch (key) {
-            case HDR_POLICY_SINK:
-                Log.i(LOG_TAG,"checked SINK");
-                mOutputUiManager.setHdrStrategy(DV_HDR_SINK);
-                break;
-            case HDR_POLICY_SOURCE:
-                Log.i(LOG_TAG,"checked SOURCE");
-                mOutputUiManager.setHdrStrategy(DV_HDR_SOURCE);
-                break;
-            default:
-                Log.i(LOG_TAG,"checked default");
-                    return false;
+
+    public void onClickHandle(String key) {
+        String hdrPolicyType = HDR_POLICY_SINK;
+        if (key.equals(HDR_POLICY_SOURCE)) {
+            hdrPolicyType = HDR_POLICY_SOURCE;
         }
-        return true;
+        mDisplayCapabilityManager.setHdrStrategyInternal(hdrPolicyType);
     }
 
     @Override
@@ -108,16 +90,13 @@ public class HdrPolicyFragment extends SettingsPreferenceFragment {
             if (radioPreference.isChecked()) {
                 mNewHdrPolicy = radioPreference.getKey();
                 Log.d(LOG_TAG, "mOldHdrPolicy = " + mOldHdrPolicy + ", mNewHdrPolicy = " + mNewHdrPolicy);
-                if (onClickHandle(mNewHdrPolicy) == true) {
-                    radioPreference.setChecked(true);
-                }
+                radioPreference.setChecked(true);
                 String newHdrPolicyTitle = radioPreference.getTitle().toString();
                 mProgressingDialogUtil.showWarningDialogOnResolutionChange(themedContext, newHdrPolicyTitle,
                         new ProgressingDialogUtil.DialogCallBackInterface() {
                             @Override
-                            public void positiveCallBack() {
+                            public void positiveCallBack() {}
 
-                            }
                             @Override
                             public void negativeCallBack() {
                                 onClickHandle(mOldHdrPolicy);
@@ -127,7 +106,7 @@ public class HdrPolicyFragment extends SettingsPreferenceFragment {
 
             } else {
                 radioPreference.setChecked(true);
-                Log.i(LOG_TAG,"not checked");
+                Log.i(LOG_TAG, "not checked");
             }
         }
         return super.onPreferenceTreeClick(preference);
@@ -173,6 +152,8 @@ public class HdrPolicyFragment extends SettingsPreferenceFragment {
             switch (msg.what) {
                 case MSG_PLUG_FRESH_UI:
                     updatePreferenceFragment(mSavedInstanceState);
+                    break;
+                default:
                     break;
             }
         }

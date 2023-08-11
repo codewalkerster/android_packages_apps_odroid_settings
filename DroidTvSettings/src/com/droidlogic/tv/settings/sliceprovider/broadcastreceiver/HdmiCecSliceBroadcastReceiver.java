@@ -24,10 +24,7 @@ public class HdmiCecSliceBroadcastReceiver extends BroadcastReceiver {
     private static final String TAG = HdmiCecSliceBroadcastReceiver.class.getSimpleName();
     private ProgressDialog mProgress;
     private static final int MSG_ENABLE_CEC_SWITCH = 0;
-    private static final int TIME_DELAYED = 5000;//ms
-
-    private static final int ENABLED = 1;
-    private static final int DISABLED = 0;
+    private static final int TIME_DELAYED = 5000;
 
     private Handler mHandler = new Handler() {
         @Override
@@ -51,17 +48,14 @@ public class HdmiCecSliceBroadcastReceiver extends BroadcastReceiver {
         Log.d(TAG, "onReceive " + intent);
         boolean isChecked;
         mProgress = new ProgressDialog(context);
-        mProgress.setMessage("It takes a few seconds to update cec status, please wait...");
+        mProgress.setMessage(context.getString(R.string.cec_status_update));
         mProgress.setIndeterminate(false);
         mProgress.getWindow().setType(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY);
-        String key;
         switch (action) {
             case MediaSliceConstants.ACTION_HDMI_SWITCH_CEC_CHANGED:
-                key = intent.getStringExtra(EXTRA_PREFERENCE_KEY);
                 isChecked = intent.getBooleanExtra(EXTRA_TOGGLE_STATE, true);
                 getHdmiCecContentManager(context).setHdmiCecEnabled(isChecked);
                 if (mProgress != null && !mProgress.isShowing()) {
-                    if (MediaSliceUtil.CanDebug()) Log.d(TAG, "check enable show dialog");
                     mProgress.show();
                 }
                 mHandler.sendEmptyMessageDelayed(MSG_ENABLE_CEC_SWITCH, TIME_DELAYED);
@@ -69,6 +63,8 @@ public class HdmiCecSliceBroadcastReceiver extends BroadcastReceiver {
             case MediaSliceConstants.ACTION_HDMI_VOLUME_CONTROL_CHANGED:
                 isChecked = intent.getBooleanExtra(EXTRA_TOGGLE_STATE, true);
                 getHdmiCecContentManager(context).setVolumeControlStatus(isChecked ? 1 : 0);
+                break;
+            default:
                 break;
         }
     }

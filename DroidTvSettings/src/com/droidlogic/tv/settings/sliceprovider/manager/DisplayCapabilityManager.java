@@ -68,6 +68,7 @@ public class DisplayCapabilityManager {
     private static final int DV_ENABLE = 1;
     private static final int DV_LL_YUV = 2;
 
+
     private static String tvSupportDolbyVisionMode;
     private static String tvSupportDolbyVisionType;
 
@@ -477,23 +478,30 @@ public class DisplayCapabilityManager {
     }
 
     public boolean isHdrPolicySource() {
-        final String adaptiveHdr =
-                mSystemControlManager.getBootenv(UBOOTENV_HDR_POLICY, VAL_HDR_POLICY_SINK);
-        return adaptiveHdr.equals(VAL_HDR_POLICY_SOURCE);
+        return VAL_HDR_POLICY_SOURCE.equals(getHdrStrategy());
+    }
+
+    public String getHdrStrategy() {
+        return mSystemControlManager.getBootenv(UBOOTENV_HDR_POLICY, VAL_HDR_POLICY_SINK);
     }
 
     public void setHdrPolicySource(final boolean isSource) {
-        if (isSource) mSystemControlManager.setHdrStrategy(VAL_HDR_POLICY_SOURCE);
-        else mSystemControlManager.setHdrStrategy(VAL_HDR_POLICY_SINK);
+        setHdrStrategyInternal(isSource ? VAL_HDR_POLICY_SOURCE : VAL_HDR_POLICY_SINK);
+    }
+
+    public void setHdrStrategyInternal(String type){
+        mSystemControlManager.setHdrStrategy(type);
     }
 
     public List<String> getHdmiModeLists() {
+        refresh();
         return mHdmiModeList;
     }
 
     public List<String> getHdmiTitleLists() {
         // Need to use a new list to receive the return value of Arrays.asList,
         // because its return value object does not override the add and remove methods.
+        refresh();
         return new ArrayList(Arrays.asList(getHdmiModes()));
     }
 
@@ -703,9 +711,6 @@ public class DisplayCapabilityManager {
 
     private void setColorAttribute(String str, boolean isBestMode) {
         mOutputModeManager.setDeepColorAttribute(str);
-        /*if (isBestMode) {
-            mOutputModeManager.setBestMode(getCurrentMode());
-        }*/
     }
 
     /**
@@ -769,10 +774,6 @@ public class DisplayCapabilityManager {
         return mOutputModeManager.isModeSupportColor(mode, attr);
     }
 
-    public void restoreDefaultDisplayMode() {
-        //mOutputModeManager.restoreDefaultOutputMode();
-    }
-
     public boolean doesModeSupportDolbyVision(String mode) {
         return mDolbyVisionModeList.contains(mode);
     }
@@ -810,7 +811,8 @@ public class DisplayCapabilityManager {
 
     private boolean isDolbyVisionSupported() {
         if (MediaSliceUtil.CanDebug())
-            Log.d(TAG, "isDolbyVisionSupported isDolbyVisionEnable:" + isDolbyVisionEnable() + " isTvSupportDolbyVision:" + isTvSupportDolbyVision());
+            Log.d(TAG, "isDolbyVisionSupported isDolbyVisionEnable:" + isDolbyVisionEnable()
+                    + " isTvSupportDolbyVision:" + isTvSupportDolbyVision());
         return isDolbyVisionEnable() && isTvSupportDolbyVision();
     }
 
@@ -863,15 +865,6 @@ public class DisplayCapabilityManager {
 
     public void setPreferredFormat(HdrFormat hdrFormat) {
         setHdrPreference(hdrFormat);
-    /*mSetModeUEventObserver.resetObserved();
-    if (hdrFormat == HdrFormat.DOLBY_VISION) {
-        toggleDolbyVision(true);
-    } else if (hdrFormat == HdrFormat.HDR || hdrFormat == HdrFormat.SDR) {
-        toggleDolbyVision(false);
-    }
-    if (!mSetModeUEventObserver.isObserved()) {
-        setResolutionAndRefreshRateByMode(getCurrentMode());
-    }*/
     }
 
     public boolean adjustDolbyVisionByMode(String mode) {
@@ -911,7 +904,6 @@ public class DisplayCapabilityManager {
     public boolean isDolbyVisionModeLLPreferred() {
         return mDolbyVisionSettingManager.getDolbyVisionType() == DV_LL_YUV
                 && doesDolbyVisionSupportLL();
-        //return doesDolbyVisionSupportLL();
     }
 
     public void setDolbyVisionModeLLPreferred(boolean preferred) {
@@ -924,29 +916,10 @@ public class DisplayCapabilityManager {
         } else {
             setDolbyVisionEnable(DV_ENABLE);
         }
-        //mOutputModeManager.setBestDolbyVision(false);
     }
 
     public void setDolbyVisionEnable(final int state) {
-        /*if (!DISPLAY_MODE_FALSE.equals(mSystemControlManager.getBootenv(ENV_IS_BEST_MODE, DISPLAY_MODE_TRUE))) {
-            mSystemControlManager.setBootenv(ENV_IS_BEST_MODE, DISPLAY_MODE_FALSE);
-        }*/
         mSystemControlManager.setDolbyVisionEnable(state);
-        /*
-        String systemPrefHdmiDispMode = mSystemControlManager.getPrefHdmiDispMode();
-        String currentMode = getCurrentMode();
-
-        if (MediaSliceUtil.CanDebug()) {
-            Log.d(TAG, "state: " + state + " systemPrefHdmiDispMode: " + systemPrefHdmiDispMode + " currentMode: " + currentMode);
-        }
-
-        if (currentMode.equals(systemPrefHdmiDispMode)) {
-            mSystemControlManager.setMboxOutputMode(systemPrefHdmiDispMode);
-            Log.d(TAG, "setMboxOutputMode");
-        } else {
-            setUserPreferredDisplayMode(systemPrefHdmiDispMode);
-        }
-        */
     }
 
     public boolean doesDolbyVisionSupportLL() {
@@ -1025,9 +998,6 @@ public class DisplayCapabilityManager {
     private boolean isSetDisplayModeByPrivate(String userSetMode) {
         // The framework filters when the system is at the current resolution, so use SystemControl to set it.
         // Note: Mode filtering is not required when the systemcontrol is used to set resolution
-        boolean isSystemHdmiDispMode = checkSysCurrentMode(
-                mDisplayManager.getDisplay(0).getMode(), getPreferredByMode(userSetMode));
-
         return DroidUtils.hasBdsUiMode();
     }
 

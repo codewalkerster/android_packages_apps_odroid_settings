@@ -94,5 +94,6 @@
     <string name="cec_arc_switch_description">允许电视控制ARC设备</string>
     <string name="playback_settings">"播放设置"</string>
     <string name="cec_wait">正在更新，请稍后</string>
+    <string name="cec_status_update">更新 CEC 状态，这需要几秒钟时间</string>
     <string name="title_tv_vad_switch">语音唤醒</string>
 </resources>
