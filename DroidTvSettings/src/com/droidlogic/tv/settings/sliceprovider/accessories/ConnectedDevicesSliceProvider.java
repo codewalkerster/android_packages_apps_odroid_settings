@@ -582,7 +582,8 @@ public class ConnectedDevicesSliceProvider extends SliceProvider implements
             Context context, BluetoothDevice device) {
         PreferenceSliceBuilder.RowBuilder pref = new PreferenceSliceBuilder.RowBuilder();
         boolean isConnected = AccessoryUtils.isConnected(device)
-                 && AccessoryUtils.getCachedBluetoothDevice(getContext(), device).isConnected();
+                && AccessoryUtils.getCachedBluetoothDevice(getContext(), device) != null
+                && AccessoryUtils.getCachedBluetoothDevice(getContext(), device).isConnected();
         Log.d(TAG, "createBtDeviceSlicePreference isConnected:" + isConnected);
 
         pref.setKey(device.getAddress());

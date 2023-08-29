@@ -15,7 +15,6 @@
   ~ limitations under the License.
   -->
 <resources>
-
     <!-- Flavor of TvSettings. -->
     <string name="config_tvSettingsFlavor" translatable="false">X</string>
     <!-- Determines whether the entire "Quick Settings" section is available or not. -->
@@ -23,4 +22,12 @@
     <string name="additional_system_update" translatable="false"></string>
     <string name="additional_system_update_menu" translatable="false"></string>
 
+    <!-- Whether to check scroll state when creating preview panel fragment -->
+    <bool name="config_check_scroll_state" translatable="false">true</bool>
+
+    <!-- Delay before creating preview panel fragment -->
+    <integer name="config_preview_panel_create_delay" translatable="false">100</integer>
+
+    <!-- Determines whether the device should optimise wifi scanning -->
+    <bool name="wifi_scan_optimisation_enabled" translatable="false">true</bool>
 </resources>
