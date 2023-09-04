@@ -20,6 +20,13 @@ public class HdmiCecContentSliceProvider extends MediaSliceProvider {
     private static final boolean DEBUG = true;
     private HdmiCecContentManager mHdmiCecContentManager;
 
+    // android original solution
+    private static final int PASSTHROUGH_MODE_ORIGINAL = 0;
+    // Abort local adjusting and show warning when it's audio passthrough decoding
+    private static final int PASSTHROUGH_MODE_ADD_WARNING = 1;
+    // Only send cec volume keys when it's audio passthrough decoding
+    private static final int PASSTHROUGH_MODE_ACCORD_WITH_DECODING = 2;
+
     @Override
     public boolean onCreateSliceProvider() {
         return true;
@@ -66,20 +73,25 @@ public class HdmiCecContentSliceProvider extends MediaSliceProvider {
                                         HdmiCecSliceBroadcastReceiver.class),
                                 mHdmiCecContentManager.isHdmiControlEnabled()));
 
-        boolean volumeControl = mHdmiCecContentManager.getVolumeControlStatus();
-        String title = volumeControl ? getContext().getString(R.string.enabled)
-                : getContext().getString(R.string.disabled);
-        psb.addPreference(
-                new RowBuilder()
-                        .setKey(getContext().getString(R.string.hdmi_volume_control_key))
-                        .setTitle(getContext().getString(R.string.hdmi_volume_control_title))
-                        .setSubtitle(title)
-                        .addSwitch(
-                                generatePendingIntent(
-                                        getContext(),
-                                        MediaSliceConstants.ACTION_HDMI_VOLUME_CONTROL_CHANGED,
-                                        HdmiCecSliceBroadcastReceiver.class),
-                                mHdmiCecContentManager.getVolumeControlStatus()));
+        int volumePassthroughMode = getContext().getResources().
+                                        getInteger(R.integer.config_cec_passthroughMode);
+        Log.d(TAG, "createHdmiCecSlice volumePassthroughMode:" + volumePassthroughMode);
+        if (PASSTHROUGH_MODE_ADD_WARNING == volumePassthroughMode) {
+            boolean volumeControl = mHdmiCecContentManager.getVolumeControlStatus();
+            String title = volumeControl ? getContext().getString(R.string.enabled)
+                    : getContext().getString(R.string.disabled);
+            psb.addPreference(
+                    new RowBuilder()
+                            .setKey(getContext().getString(R.string.hdmi_volume_control_key))
+                            .setTitle(getContext().getString(R.string.hdmi_volume_control_title))
+                            .setSubtitle(title)
+                            .addSwitch(
+                                    generatePendingIntent(
+                                            getContext(),
+                                            MediaSliceConstants.ACTION_HDMI_VOLUME_CONTROL_CHANGED,
+                                            HdmiCecSliceBroadcastReceiver.class),
+                                    mHdmiCecContentManager.getVolumeControlStatus()));
+        }
 
         return psb.build();
     }

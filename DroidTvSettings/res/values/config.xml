@@ -138,6 +138,8 @@
     <!-- Hide remote control icon. -->
     <bool translatable="false" name="show_remote_icon_in_dfu">false</bool>
 
+    <!-- The volume control mode is used to send cec volume keyevents -->
+    <integer name="config_cec_passthroughMode">2</integer>
     <!-- DroidLogic end -->
 
 
