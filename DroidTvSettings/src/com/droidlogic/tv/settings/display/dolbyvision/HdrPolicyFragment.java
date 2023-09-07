@@ -74,9 +74,9 @@ public class HdrPolicyFragment extends SettingsPreferenceFragment {
     }
 
     public void onClickHandle(String key) {
-        String hdrPolicyType = HDR_POLICY_SINK;
+        String hdrPolicyType = DV_HDR_SINK;
         if (key.equals(HDR_POLICY_SOURCE)) {
-            hdrPolicyType = HDR_POLICY_SOURCE;
+            hdrPolicyType = DV_HDR_SOURCE;
         }
         mDisplayCapabilityManager.setHdrStrategyInternal(hdrPolicyType);
     }
@@ -90,6 +90,7 @@ public class HdrPolicyFragment extends SettingsPreferenceFragment {
             if (radioPreference.isChecked()) {
                 mNewHdrPolicy = radioPreference.getKey();
                 Log.d(LOG_TAG, "mOldHdrPolicy = " + mOldHdrPolicy + ", mNewHdrPolicy = " + mNewHdrPolicy);
+                onClickHandle(mNewHdrPolicy);
                 radioPreference.setChecked(true);
                 String newHdrPolicyTitle = radioPreference.getTitle().toString();
                 mProgressingDialogUtil.showWarningDialogOnResolutionChange(themedContext, newHdrPolicyTitle,
