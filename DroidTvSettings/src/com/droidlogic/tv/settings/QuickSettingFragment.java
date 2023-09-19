@@ -45,7 +45,6 @@ import android.widget.TextView;
 
 import com.droidlogic.tv.settings.R;
 import com.droidlogic.tv.settings.SettingsPreferenceFragment;
-import com.droidlogic.tv.settings.tvoption.SoundParameterSettingManager;
 import com.droidlogic.tv.settings.util.DroidUtils;
 import com.droidlogic.app.AudioEffectManager;
 

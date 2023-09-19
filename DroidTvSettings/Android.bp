@@ -58,16 +58,13 @@ android_app {
 
     libs: [
         "droidlogic.software.core",
-        "droidlogic.tv.software.core",
     ],
     uses_libs: [
         "droidlogic.software.core",
-        "droidlogic.tv.software.core",
     ],
     required: [
         "com.droidlogic.tv.settings",
         "droidlogic.software.core",
-        "droidlogic.tv.software.core",
     ],
 }
 
@@ -104,16 +101,13 @@ android_app {
 
     libs: [
         "droidlogic.software.core",
-        "droidlogic.tv.software.core",
     ],
     uses_libs: [
         "droidlogic.software.core",
-        "droidlogic.tv.software.core",
     ],
     required: [
         "com.droidlogic.tv.settings",
         "droidlogic.software.core",
-        "droidlogic.tv.software.core",
     ],
 }
 android_app {
@@ -148,16 +142,13 @@ android_app {
 
     libs: [
         "droidlogic.software.core",
-        "droidlogic.tv.software.core",
     ],
     uses_libs: [
         "droidlogic.software.core",
-        "droidlogic.tv.software.core",
     ],
     required: [
         "com.droidlogic.tv.settings",
         "droidlogic.software.core",
-        "droidlogic.tv.software.core",
     ],
 } 
 prebuilt_etc {

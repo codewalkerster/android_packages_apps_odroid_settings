@@ -67,7 +67,6 @@
     <uses-permission android:name="com.google.android.assistant.WRITE_HOTWORD_STATE"/>
     <uses-permission android:name="android.permission.MANAGE_SLICE_PERMISSIONS"/>
 
-    <!-- DroidLogic start -->
     <uses-permission android:name="android.permission.BLUETOOTH_PRIVILEGED"/>
     <uses-permission android:name="android.permission.BROADCAST_STICKY"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
@@ -83,7 +82,6 @@
     <uses-permission android:name="com.netflix.ninja.permission.ESN" />
     <uses-permission android:name="com.netflix.ninja.permission.ESN_RESPONSE"/>
     <uses-permission android:name="android.permission.DEVICE_POWER" />
-    <!-- DroidLogic end -->
 
     <application
         android:allowClearUserData="false"
@@ -97,45 +95,16 @@
         android:theme="@style/Theme.Settings"
         android:usesCleartextTraffic="true">
 
-         <!-- DroidLogic start -->
          <uses-library android:name="droidlogic.software.core" />
-         <uses-library android:name="droidlogic.tv.software.core" />
-         <!-- DroidLogic end -->
 
-        <!-- DroidLogic start -->
         <activity android:name=".more.MorePrefFragmentActivity"
-              android:label="@string/picture_settings_title"
               android:theme="@style/TvSettingsActivityTheme"
               android:configChanges="keyboard|keyboardHidden|navigation"
               android:excludeFromRecents="true"
               android:exported="true">
               <intent-filter>
-                <action android:name="android.settings.DISPLAY_SETTINGS" />
-                <category android:name="android.intent.category.DEFAULT" />
-              </intent-filter>
-        </activity>
-
-        <!--
-          * GTV's system droidTvSettings originally does not display launcher activity,
-          * but since Google launch x removed the input entry, it is a helpless move to use
-          * droidTvSettings' launcher activity as the entry point to input from launch x.
-         -->
-        <activity android:name=".TvSourceActivity"
-              android:launchMode="singleInstance"
-              android:theme="@style/TvSettingsActivityTheme"
-              android:configChanges="keyboard|keyboardHidden|navigation"
-              android:excludeFromRecents="true"
-              android:label="@string/settings_app_name_gtv"
-              android:exported="true">
-            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LEANBACK_LAUNCHER"/>
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="com.android.tv.action.VIEW_INPUTS" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
+              </intent-filter>
         </activity>
         <activity android:configChanges="keyboard|keyboardHidden|navigation"
              android:excludeFromRecents="true"
@@ -211,47 +180,6 @@
             android:exported="true"
             android:name=".tvoption.HdmiCecActivity"
             android:theme="@style/TvSettingsActivityTheme"/>
-        <activity android:configChanges="keyboard|keyboardHidden|navigation"
-            android:name=".pqsettings.PictureModeActivity"
-            android:excludeFromRecents="true"
-            android:theme="@style/Theme.Settings.Transparent"
-            android:exported="true" />
-        <activity
-            android:name=".pqsettings.AdjustValueActivity"
-            android:configChanges="keyboard|keyboardHidden|navigation"
-            android:excludeFromRecents="true"
-            android:theme="@style/TvSettingsActivityTheme"
-            android:exported="false" />
-        <activity
-            android:name=".pqsettings.AdjustBaclLightActivity"
-            android:configChanges="keyboard|keyboardHidden|navigation"
-            android:excludeFromRecents="true"
-            android:theme="@style/TvSettingsActivityTheme"
-            android:exported="false" />
-        <activity
-            android:name=".pqsettings.PQResetAllActivity"
-            android:configChanges="keyboard|keyboardHidden|navigation"
-            android:excludeFromRecents="true"
-            android:theme="@style/TvSettingsActivityTheme"
-            android:exported="false" />
-        <activity
-            android:name=".pqsettings.advanced.PQAdvancedManualGammaResetAllActivity"
-            android:configChanges="keyboard|keyboardHidden|navigation"
-            android:excludeFromRecents="true"
-            android:theme="@style/TvSettingsActivityTheme"
-            android:exported="false" />
-        <activity
-            android:name=".pqsettings.advanced.PQAdvancedColorTemperatureResetAllActivity"
-            android:configChanges="keyboard|keyboardHidden|navigation"
-            android:excludeFromRecents="true"
-            android:theme="@style/TvSettingsActivityTheme"
-            android:exported="false" />
-        <activity
-            android:name=".pqsettings.advanced.PQAdvancedColorCustomizeResetAllActivity"
-            android:configChanges="keyboard|keyboardHidden|navigation"
-            android:excludeFromRecents="true"
-            android:theme="@style/TvSettingsActivityTheme"
-            android:exported="false" />
         <activity
             android:name=".wifi.HotSpotActivity"
             android:configChanges="keyboard|keyboardHidden|navigation"
@@ -395,16 +323,6 @@
             </intent-filter>
         </provider>
 
-        <provider
-            android:authorities="com.google.android.tv.settings.vendor.sliceprovider"
-            android:name="com.droidlogic.tv.settings.sliceprovider.TvInputSliceProvider"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
-                <category android:name="android.app.slice.category.SLICE"/>
-            </intent-filter>
-        </provider>
-
         <activity
              android:theme="@android:style/Theme.NoTitleBar"
              android:name="com.droidlogic.tv.settings.sliceprovider.accessories.BluetoothActionActivity"
@@ -414,9 +332,7 @@
             android:name="com.droidlogic.tv.settings.sliceprovider.accessories.BluetoothDevicesService"
             android:exported="false" />
         <service android:name=".FrameRateService"
-            android:exported="false"/>git d
-        <!-- <service android:name="com.droidlogic.tv.settings.sliceprovider.DisplayDensityManagerService"
-            android:exported="false"/>-->
+            android:exported="false"/>
 
         <provider
             android:authorities="com.google.android.tv.btservices.settings.sliceprovider"
@@ -453,11 +369,6 @@
             android:exported="false">
         </receiver>
 
-        <receiver
-            android:name="com.droidlogic.tv.settings.sliceprovider.broadcastreceiver.TvInputSliceBroadcastReceiver"
-            android:exported="false">
-        </receiver>
-
         <receiver android:name="com.droidlogic.tv.settings.BootReceiver"
             android:enabled="true"
             android:exported="true">
@@ -465,7 +376,6 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
             </intent-filter>
         </receiver>
-        <!-- DroidLogic end -->
     </application>
 
 </manifest>

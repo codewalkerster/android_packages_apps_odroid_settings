@@ -51,7 +51,6 @@ import com.droidlogic.tv.settings.overlay.FlavorUtils;
 import com.droidlogic.tv.settings.util.DroidUtils;
 import com.droidlogic.tv.settings.SettingsConstant;
 import com.droidlogic.tv.settings.SettingsPreferenceFragment;
-import com.droidlogic.tv.settings.tvoption.DroidSettingsModeFragment;
 import com.droidlogic.tv.settings.tvoption.SoundParameterSettingManager;
 
 import static com.droidlogic.tv.settings.overlay.FlavorUtils.FLAVOR_CLASSIC;
@@ -60,13 +59,7 @@ import static com.droidlogic.tv.settings.overlay.FlavorUtils.FLAVOR_VENDOR;
 import static com.droidlogic.tv.settings.overlay.FlavorUtils.FLAVOR_X;
 
 import com.droidlogic.app.DroidLogicUtils;
-import com.droidlogic.app.tv.TvControlManager;
-import com.droidlogic.app.tv.DroidLogicTvUtils;
 import com.droidlogic.app.SystemControlManager;
-
-import java.util.ArrayList;
-import java.util.Set;
-import java.util.List;
 
 import com.droidlogic.tv.settings.R;
 
@@ -79,26 +72,18 @@ public class MorePrefFragment extends SettingsPreferenceFragment {
     private static final String KEY_MBOX_SOUNDS = "mbox_sound";
     private static final String KEY_POWERKEY = "powerkey_action";
     private static final String KEY_POWERONMODE = "poweronmode_action";
-    private static final String MORE_SETTINGS_APP_PACKAGE = "com.droidlogic.tv.settings";
     private static final String KEY_UPGRADE_BLUETOOTH_REMOTE = "upgrade_bluetooth_remote";
     private static final String KEY_PLAYBACK_SETTINGS = "playback_settings";
     private static final String KEY_SOUNDS = "key_sound_effects";
     private static final String KEY_KEYSTONE = "keyStone";
     private static final String KEY_NETFLIX_ESN = "netflix_esn";
     private static final String KEY_VERSION = "hailstorm_ver";
-    private static final String KEY_MORE_SETTINGS = "more";
-    private static final String KEY_PICTURE = "picture_mode";
-    private static final String KEY_TV_OPTION = "tv_option";
-    private static final String KEY_TV_CHANNEL = "channel";
-    private static final String KEY_TV_SETTINGS = "tv_settings";
     private static final String KEY_HDMI_CEC_CONTROL = "hdmicec";
     private static final String KEY_ADVANCE_SOUND = "advanced_sound_settings";
     private static final String KEY_DEVELOP_OPTION = "amlogic_developer_options";
     private static final String KEY_AI_PQ = "ai_pq";
     private static final String KEY_FRAME_RATE = "frame_rate";
-    private static final String KEY_POWER_AND_ENERGY = "power_and_energy_settings";
     private static final String HAILSTORM_VERSION_PROP = "ro.vendor.hailstorm.version";
-    private static final String DEBUG_DISPLAY_PROP = "vendor.display.debug";
     private static final String FRAME_RATE_PROP = "persist.vendor.sys.framerate.feature";
     private static final String DEBUG_GLOBAL_SETTING = "droidsetting_debug";
 
@@ -133,22 +118,14 @@ public class MorePrefFragment extends SettingsPreferenceFragment {
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         setPreferencesFromResource(R.xml.more, null);
-        boolean onlyShowPicture = false;
-        String action = getActivity().getIntent().getAction();
-        if (action != null && action.equals("android.settings.DISPLAY_SETTINGS")) {
-            // by intent called
-            onlyShowPicture = true;
-        }
         boolean is_from_new_live_tv = getActivity().getIntent().getIntExtra("from_new_live_tv", 0) == 1;
         boolean is_from_live_tv = getActivity().getIntent().getIntExtra("from_live_tv", 0) == 1 || is_from_new_live_tv;
-        String inputId = getActivity().getIntent().getStringExtra("current_tvinputinfo_id");
         //tvFlag, is true when TV and T962E as TV, false when Mbox and T962E as Mbox.
         boolean tvFlag = SettingsConstant.needDroidlogicTvFeature(getContext())
                 && (SystemProperties.getBoolean("vendor.tv.soc.as.mbox", false) == false);
         mSystemControlManager = SystemControlManager.getInstance();
 
         boolean isSupportNetflix = isSupportFeature(FEATURE_SOFTWARE_NETFLIX);
-        boolean debugConfig = mSystemControlManager.getPropertyBoolean(DEBUG_DISPLAY_PROP, false);
         boolean isShowFrameRate = mSystemControlManager.getPropertyBoolean(FRAME_RATE_PROP, false);
 
         final Preference morePref = findPreference(KEY_MAIN_MENU);
@@ -167,12 +144,7 @@ public class MorePrefFragment extends SettingsPreferenceFragment {
         final Preference versionPref = findPreference(KEY_VERSION);
         final Preference advanced_sound_settings_pref = findPreference(KEY_ADVANCE_SOUND);
         final Preference aipq = findPreference(KEY_AI_PQ);
-        final Preference picturePref = findPreference(KEY_PICTURE);
-        final Preference mTvOption = findPreference(KEY_TV_OPTION);
-        final Preference channelPref = findPreference(KEY_TV_CHANNEL);
-        final Preference settingsPref = findPreference(KEY_TV_SETTINGS);
         final Preference frameRatePref = findPreference(KEY_FRAME_RATE);
-        final Preference powerAndEnergyPref = findPreference(KEY_POWER_AND_ENERGY);
 
         Log.d(TAG, "isShowFrameRate: " + isShowFrameRate);
         frameRatePref.setVisible(isShowFrameRate);
@@ -213,55 +185,24 @@ public class MorePrefFragment extends SettingsPreferenceFragment {
             developPref.setVisible(false);
         }
 
-        if (onlyShowPicture) {
-            displayPref.setVisible(false);
-            wifiHotspotPref.setVisible(false);
-            mboxSoundsPref.setVisible(false);
-            powerKeyPref.setVisible(false);
-            powerKeyOnModePref.setVisible(false);
-            mTvOption.setVisible(false);
-            keyStone.setVisible(false);
-            mSoundsPref.setVisible(false);
-            picturePref.setVisible(true);
-            channelPref.setVisible(false);
-            settingsPref.setVisible(false);
-            powerAndEnergyPref.setVisible(false);
-            frameRatePref.setVisible(false);
-            netflixesnPref.setVisible(false);
-            versionPref.setVisible(false);
-        } else if (is_from_live_tv) {
+        if (is_from_live_tv) {
             morePref.setTitle(R.string.settings_menu);
             displayPref.setVisible(false);
             wifiHotspotPref.setVisible(false);
             mboxSoundsPref.setVisible(false);
             powerKeyPref.setVisible(false);
             powerKeyOnModePref.setVisible(false);
-            mTvOption.setVisible(false);
-            //moreSettingsPref.setVisible(false);
             keyStone.setVisible(false);
-            channelPref.setVisible(false);
             if (!SettingsConstant.needDroidlogicTvFeature(getContext())) {
                 mSoundsPref.setVisible(false);//mbox doesn't support sound effect
             }
-
-            if (!SettingsConstant.needGTVFeature(getContext())) {
-                powerAndEnergyPref.setVisible(false);
-            }
         } else {
             wifiHotspotPref.setVisible(!isHandheld());  //Tablet devices do not display.
-            picturePref.setVisible(!SettingsConstant.needDroidlogicTvFeature(getContext()));
-            mTvOption.setVisible(false);
             mSoundsPref.setVisible(false);
-            channelPref.setVisible(false);
-            settingsPref.setVisible(false);
             if (!DroidLogicUtils.isTv()) {
                 powerKeyOnModePref.setVisible(false);
             }
             DroidUtils.store(getActivity(), DroidUtils.KEY_HIDE_STARTUP, DroidUtils.VALUE_HIDE_STARTUP);
-            if (!debugConfig && isSupportNetflix) {
-                picturePref.setVisible(false);
-            }
-            powerAndEnergyPref.setVisible(false);
         }
 
         if (DroidUtils.hasGtvsUiMode()) {
@@ -278,14 +219,10 @@ public class MorePrefFragment extends SettingsPreferenceFragment {
     @Override
     public boolean onPreferenceTreeClick(Preference preference) {
         super.onPreferenceTreeClick(preference);
-        if (TextUtils.equals(preference.getKey(), KEY_TV_CHANNEL)) {
-            startUiInLiveTv(KEY_TV_CHANNEL);
-        } else if (TextUtils.equals(preference.getKey(), KEY_KEYSTONE)) {
+        if (TextUtils.equals(preference.getKey(), KEY_KEYSTONE)) {
             startKeyStoneCorrectionActivity(getActivity());
         } else if (TextUtils.equals(preference.getKey(), KEY_ADVANCE_SOUND)) {
             startAdvancedSoundSettingsActivity(getActivity());
-        } else if (TextUtils.equals(preference.getKey(), KEY_POWER_AND_ENERGY)) {
-            startPowerEnergyActivityAsSlices();
         }
         return false;
     }
@@ -390,8 +327,7 @@ public class MorePrefFragment extends SettingsPreferenceFragment {
         return null;
     }
 
-
-    private boolean isHandheld(){
+    private boolean isHandheld() {
         return isSupportFeature(PackageManager.FEATURE_TOUCHSCREEN)
                 && !isSupportFeature(PackageManager.FEATURE_PC)
                 && !isSupportFeature(WATCH_FEATURE)
@@ -401,12 +337,5 @@ public class MorePrefFragment extends SettingsPreferenceFragment {
 
     private boolean isSupportFeature(String featureName) {
         return getActivity().getPackageManager().hasSystemFeature(featureName);
-    }
-
-    private void startPowerEnergyActivityAsSlices() {
-        Intent intent = new Intent("android.settings.SLICE_SETTINGS");
-        String  sliceUri = "content://com.google.android.apps.tv.launcherx.sliceprovider/power_boot_resume";
-        intent.putExtra("slice_uri", sliceUri);
-        startActivity(intent);
     }
 }

@@ -42,8 +42,6 @@ import android.content.DialogInterface.OnDismissListener;
 
 import com.droidlogic.app.DroidLogicUtils;
 import com.droidlogic.app.AudioConfigManager;
-import com.droidlogic.app.AudioEffectManager;
-import com.droidlogic.app.OutputModeManager;
 import com.droidlogic.app.SystemControlManager;
 
 import com.droidlogic.tv.settings.TvSettingsActivity;
@@ -52,23 +50,17 @@ import com.droidlogic.tv.settings.tvoption.SoundParameterSettingManager;
 import com.droidlogic.tv.settings.SoundFragment;
 import com.droidlogic.tv.settings.SettingsConstant;
 import androidx.preference.SeekBarPreference;
-import com.droidlogic.tv.settings.tvoption.TvOptionSettingManager;
-
-import java.util.*;
 
 
 public class AudioLatencyFragment extends SettingsPreferenceFragment implements Preference.OnPreferenceChangeListener, SeekBar.OnSeekBarChangeListener {
 
     private static final String TAG = "AudioLatencyFragment";
 
-    private static final String KEY_TV_SOUND_AUDIO_SOURCE_SELECT            = "key_tv_sound_audio_source_select";
-    private static final String KEY_HDMI_AUDIO_LATENCY = "box_hdmi_audio_latency";
-
     private AudioConfigManager mAudioConfigManager;
-    private AudioEffectManager mAudioEffectManager;
-    private SoundParameterSettingManager mSoundParameterSettingManager;
-    private OutputModeManager mOutputModeManager;
-    private TvOptionSettingManager mTvOptionSettingManager;
+    private SystemControlManager mSystemControlManager;
+    private static final String KEY_TV_SOUND_AUDIO_SOURCE_SELECT    = "key_tv_sound_audio_source_select";
+    private static final String KEY_HDMI_AUDIO_LATENCY              = "box_hdmi_audio_latency";
+    public static final String  AUDIO_LATENCY                       = "vendor.media.dtv.passthrough.latencyms";
 
     private static int mCurrentSettingSourceId = AudioConfigManager.AUDIO_OUTPUT_DELAY_SOURCE_ATV;
     private ListPreference mTvSourceSelectPref;
@@ -93,25 +85,17 @@ public class AudioLatencyFragment extends SettingsPreferenceFragment implements 
         super.onResume();
         mTvSourceSelectPref.setValueIndex(mCurrentSettingSourceId);
         final Preference hdmiAudioLatency = (Preference) findPreference(KEY_HDMI_AUDIO_LATENCY);
-        hdmiAudioLatency.setSummary(mTvOptionSettingManager.getHdmiAudioLatency() + "ms");
+        hdmiAudioLatency.setSummary(getHdmiAudioLatency() + "ms");
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         Log.d(TAG, "onCreate");
-        init();
         super.onCreate(savedInstanceState);
+        mAudioConfigManager = AudioConfigManager.getInstance(getActivity());
+        mSystemControlManager = SystemControlManager.getInstance();
     }
 
-    private void init() {
-        mAudioConfigManager = AudioConfigManager.getInstance(getActivity());
-        mAudioEffectManager = ((TvSettingsActivity)getActivity()).getAudioEffectManager();
-        mSoundParameterSettingManager = ((TvSettingsActivity)getActivity()).getSoundParameterSettingManager();
-        mOutputModeManager = OutputModeManager.getInstance(getActivity());
-        if (mTvOptionSettingManager == null) {
-            mTvOptionSettingManager = new TvOptionSettingManager(getActivity(), false);
-        }
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -146,7 +130,7 @@ public class AudioLatencyFragment extends SettingsPreferenceFragment implements 
         if (tvFlag) {
             hdmiAudioLatency.setTitle(getActivity().getResources().getString(R.string.arc_hdmi_audio_latency));
         }
-        hdmiAudioLatency.setSummary(mTvOptionSettingManager.getHdmiAudioLatency() + "ms");
+        hdmiAudioLatency.setSummary(getHdmiAudioLatency() + "ms");
     }
 
     private boolean initView() {
@@ -231,7 +215,7 @@ public class AudioLatencyFragment extends SettingsPreferenceFragment implements 
         if (!mIsDelayAndPrescaleSeekBarInited) {
             return;
         }
-        ((TvSettingsActivity)getActivity()).startShowActivityTimer();
+
         switch (seekBar.getId()) {
             case R.id.id_seek_bar_audio_delay_speaker:{
                 setShow(R.id.id_seek_bar_audio_delay_speaker, progress);
@@ -300,5 +284,11 @@ public class AudioLatencyFragment extends SettingsPreferenceFragment implements 
 
     private String[] getArrayString(int resid) {
         return getActivity().getResources().getStringArray(resid);
+    }
+
+    public int getHdmiAudioLatency() {
+        int result = mSystemControlManager.getPropertyInt(AUDIO_LATENCY, 0);
+        Log.d(TAG, "getHdmiAudioLatency = " + result);
+        return result;
     }
 }

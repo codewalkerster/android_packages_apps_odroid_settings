@@ -36,8 +36,6 @@ import com.droidlogic.app.DataProviderManager;
 import com.droidlogic.app.DroidLogicUtils;
 import com.droidlogic.app.OutputModeManager;
 import com.droidlogic.app.SystemControlManager;
-import com.droidlogic.app.tv.DroidLogicTvUtils;
-
 
 import java.util.Arrays;
 import java.util.ArrayList;

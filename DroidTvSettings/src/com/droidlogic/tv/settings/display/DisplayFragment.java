@@ -34,7 +34,6 @@ import com.droidlogic.tv.settings.util.DroidUtils;
 import com.droidlogic.tv.settings.SettingsConstant;
 import com.droidlogic.tv.settings.R;
 import com.droidlogic.app.SystemControlManager;
-import com.droidlogic.app.tv.TvControlManager;
 
 public class DisplayFragment extends SettingsPreferenceFragment implements Preference.OnPreferenceChangeListener {
 
@@ -47,11 +46,9 @@ public class DisplayFragment extends SettingsPreferenceFragment implements Prefe
     private static final String KEY_DOLBY_VISION       = "dolby_vision";
     private static final String KEY_ALLM_MODE          = "allm_mode";
     private static final String KEY_GAME_CONTENT_TYPE  = "game_content_type";
-    private static final String KEY_DLG               = "device_dlg";
 
     private ListPreference mAllmPref;
     private SystemControlManager mSystemControlManager;
-    private TvControlManager mTvControlManager;
 
     public static DisplayFragment newInstance() {
         return new DisplayFragment();
@@ -66,7 +63,6 @@ public class DisplayFragment extends SettingsPreferenceFragment implements Prefe
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         android.util.Log.d(TAG, "onCreatePreferences: DisplayFragment created!!!!");
         mSystemControlManager = SystemControlManager.getInstance();
-        mTvControlManager = TvControlManager.getInstance();
 
         setPreferencesFromResource(R.xml.display, null);
         boolean tvFlag = SettingsConstant.needDroidlogicTvFeature(getContext())
@@ -99,17 +95,6 @@ public class DisplayFragment extends SettingsPreferenceFragment implements Prefe
         mAllmPref = (ListPreference) findPreference(KEY_GAME_CONTENT_TYPE);
         mAllmPref.setOnPreferenceChangeListener(this);
         mAllmPref.setVisible(SystemProperties.getBoolean("ro.vendor.debug.allm", false));
-
-        if (SettingsConstant.isTvFeature()) {
-            final TwoStatePreference deviceDlgPref = (TwoStatePreference) findPreference(KEY_DLG);
-            deviceDlgPref.setOnPreferenceChangeListener(this);
-            deviceDlgPref.setVisible(mTvControlManager.IsSupportDLG());
-            int dlgState = mTvControlManager.GetDLGEnable();
-            if (DroidUtils.CanDebug()) {
-                Log.d(TAG, "GetDLGEnable: " + dlgState);
-            }
-            deviceDlgPref.setChecked(dlgState == 1 ? true : false);
-        }
     }
 
     @Override
@@ -126,12 +111,6 @@ public class DisplayFragment extends SettingsPreferenceFragment implements Prefe
                 allmmode = -1;
             }
             mSystemControlManager.setALLMMode(allmmode);
-        }
-
-        // SetDLGEnable param:1 enable; 0 disable.
-        if (TextUtils.equals(preference.getKey(), KEY_DLG)) {
-            mTvControlManager.SetDLGEnable((boolean) newValue ? 1 : 0);
-            return true;
         }
         if (TextUtils.equals(preference.getKey(), KEY_GAME_CONTENT_TYPE)) {
             mSystemControlManager.sendHDMIContentType(Integer.parseInt((String)newValue));

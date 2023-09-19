@@ -22,7 +22,7 @@
           android:versionName="1.0"
           android:sharedUserId="android.uid.system">
 
-    <uses-sdk android:minSdkVersion="29" />
+    <uses-sdk android:minSdkVersion="29"/>
 
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
@@ -73,76 +73,59 @@
     <uses-permission android:name="android.permission.HDMI_CEC"/>
     <uses-permission android:name="android.permission.INTERACT_ACROSS_USERS"/>
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
-    <uses-permission android:name="com.android.setupwizard.permission.SETUP" />
-    <uses-permission android:name="droidlogic.permission.SYSTEM_CONTROL" />
-    <uses-permission android:name="android.Manifest.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.DELETE_PACKAGES" />
-    <uses-permission android:name="android.permission.INTERACT_ACROSS_USERS_FULL" />
-    <uses-permission android:name="com.google.android.permission.GLOBAL_BUTTON" />
-    <uses-permission android:name="com.netflix.ninja.permission.ESN" />
+    <uses-permission android:name="com.android.setupwizard.permission.SETUP"/>
+    <uses-permission android:name="droidlogic.permission.SYSTEM_CONTROL"/>
+    <uses-permission android:name="android.Manifest.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.DELETE_PACKAGES"/>
+    <uses-permission android:name="android.permission.INTERACT_ACROSS_USERS_FULL"/>
+    <uses-permission android:name="com.google.android.permission.GLOBAL_BUTTON"/>
+    <uses-permission android:name="com.netflix.ninja.permission.ESN"/>
     <uses-permission android:name="com.netflix.ninja.permission.ESN_RESPONSE"/>
-    <uses-permission android:name="android.permission.DEVICE_POWER" />
+    <uses-permission android:name="android.permission.DEVICE_POWER"/>
     <!-- DroidLogic end -->
 
     <application
-        android:allowClearUserData="false"
-        android:banner="@drawable/ic_launcher_banner_settings"
-        android:defaultToDeviceProtectedStorage="true"
-        android:directBootAware="true"
-        android:forceQueryable="true"
-        android:icon="@drawable/logo_settings_color_48dp"
-        android:label="@string/settings_app_name"
-        android:supportsRtl="true"
-        android:theme="@style/Theme.Settings"
-        android:usesCleartextTraffic="true">
+            android:allowClearUserData="false"
+            android:banner="@drawable/ic_launcher_banner_settings"
+            android:defaultToDeviceProtectedStorage="true"
+            android:directBootAware="true"
+            android:forceQueryable="true"
+            android:icon="@drawable/logo_settings_color_48dp"
+            android:label="@string/settings_app_name"
+            android:supportsRtl="true"
+            android:theme="@style/Theme.Settings"
+            android:usesCleartextTraffic="true">
 
-         <!-- DroidLogic start -->
-         <uses-library android:name="droidlogic.software.core" />
-         <uses-library android:name="droidlogic.tv.software.core" />
-         <!-- DroidLogic end -->
+        <uses-library android:name="droidlogic.software.core"/>
 
-        <!-- DroidLogic start -->
         <activity android:name=".more.MorePrefFragmentActivity"
-              android:theme="@style/TvSettingsActivityTheme"
-              android:configChanges="keyboard|keyboardHidden|navigation"
-              android:excludeFromRecents="true"
-              android:exported="true">
+                  android:theme="@style/TvSettingsActivityTheme"
+                  android:configChanges="keyboard|keyboardHidden|navigation"
+                  android:excludeFromRecents="true"
+                  android:exported="true">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
-                <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LEANBACK_LAUNCHER"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".AiPqFragmentActivity"
-            android:theme="@style/Theme.Settings.Transparent"
-            android:configChanges="keyboard|keyboardHidden|navigation"
-            android:excludeFromRecents="true"
-            android:exported="true">
-        </activity>
-        <activity android:name=".TvSourceActivity"
-              android:launchMode="singleInstance"
-              android:theme="@style/TvSettingsActivityTheme"
-              android:configChanges="keyboard|keyboardHidden|navigation"
-              android:excludeFromRecents="true"
-              android:exported="true">
-        </activity>
-	<activity
-            android:name=".sliceprovider.dialog.DisplayResetActivity"
-            android:configChanges="keyboard|keyboardHidden|navigation"
-            android:excludeFromRecents="true"
-            android:exported="true"
-            android:launchMode="singleTask"
-            android:turnScreenOn="true">
+        <activity
+                android:name=".sliceprovider.dialog.DisplayResetActivity"
+                android:configChanges="keyboard|keyboardHidden|navigation"
+                android:excludeFromRecents="true"
+                android:exported="true"
+                android:launchMode="singleTask"
+                android:turnScreenOn="true">
             <intent-filter>
                 <action android:name="android.setting.intent.action.DISPLAY_RESET"/>
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
         <activity android:configChanges="keyboard|keyboardHidden|navigation"
-             android:excludeFromRecents="true"
-             android:exported="true"
-             android:name=".SoundActivity"
-             android:theme="@style/TvSettingsActivityTheme">
+                  android:excludeFromRecents="true"
+                  android:exported="true"
+                  android:name=".SoundActivity"
+                  android:theme="@style/TvSettingsActivityTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <action android:name="com.android.settings.SOUND_SETTINGS"/>
@@ -154,195 +137,153 @@
             </intent-filter>
         </activity>
         <activity android:configChanges="keyboard|keyboardHidden|navigation"
-             android:excludeFromRecents="true"
-             android:exported="true"
-             android:name=".QuickSettingActivity"
-             android:theme="@style/TvSettingsActivityTheme">
+                  android:excludeFromRecents="true"
+                  android:exported="true"
+                  android:name=".QuickSettingActivity"
+                  android:theme="@style/TvSettingsActivityTheme">
         </activity>
         <activity android:configChanges="keyboard|keyboardHidden|navigation"
-             android:excludeFromRecents="true"
-             android:exported="true"
-             android:name=".soundeffect.AdvancedVolumeActivity"
-             android:theme="@style/TvSettingsActivityTheme">
+                  android:excludeFromRecents="true"
+                  android:exported="true"
+                  android:name=".soundeffect.AdvancedVolumeActivity"
+                  android:theme="@style/TvSettingsActivityTheme">
         </activity>
         <activity android:configChanges="keyboard|keyboardHidden|navigation"
-             android:excludeFromRecents="true"
-             android:exported="true"
-             android:name=".soundeffect.DtsVirualXSettingActivity"
-             android:theme="@style/TvSettingsActivityTheme">
+                  android:excludeFromRecents="true"
+                  android:exported="true"
+                  android:name=".soundeffect.DtsVirualXSettingActivity"
+                  android:theme="@style/TvSettingsActivityTheme">
         </activity>
         <activity android:configChanges="keyboard|keyboardHidden|navigation"
-             android:excludeFromRecents="true"
-             android:exported="true"
-             android:name=".soundeffect.BalanceSeekBarActivity"
-             android:theme="@style/TvSettingsActivityTheme">
+                  android:excludeFromRecents="true"
+                  android:exported="true"
+                  android:name=".soundeffect.BalanceSeekBarActivity"
+                  android:theme="@style/TvSettingsActivityTheme">
         </activity>
         <activity android:configChanges="keyboard|keyboardHidden|navigation"
-             android:excludeFromRecents="true"
-             android:exported="true"
-            android:name=".soundeffect.SoundModeActivity"
-            android:theme="@style/TvSettingsActivityTheme">
-            </activity>
-        <activity android:configChanges="keyboard|keyboardHidden|navigation"
-            android:excludeFromRecents="true"
-            android:exported="true"
-            android:name=".soundeffect.DolbyAudioEffectActivity"
-            android:theme="@style/TvSettingsActivityTheme">
+                  android:excludeFromRecents="true"
+                  android:exported="true"
+                  android:name=".soundeffect.SoundModeActivity"
+                  android:theme="@style/TvSettingsActivityTheme">
         </activity>
         <activity android:configChanges="keyboard|keyboardHidden|navigation"
-            android:excludeFromRecents="true"
-            android:exported="true"
-            android:name=".soundeffect.Dap_2_4_Activity"
-            android:theme="@style/TvSettingsActivityTheme">
+                  android:excludeFromRecents="true"
+                  android:exported="true"
+                  android:name=".soundeffect.DolbyAudioEffectActivity"
+                  android:theme="@style/TvSettingsActivityTheme">
         </activity>
         <activity android:configChanges="keyboard|keyboardHidden|navigation"
-             android:excludeFromRecents="true"
-             android:exported="true"
-             android:name=".soundeffect.DebugAudioUIActivity"
-             android:theme="@style/TvSettingsActivityTheme">
+                  android:excludeFromRecents="true"
+                  android:exported="true"
+                  android:name=".soundeffect.Dap_2_4_Activity"
+                  android:theme="@style/TvSettingsActivityTheme">
         </activity>
         <activity android:configChanges="keyboard|keyboardHidden|navigation"
-             android:excludeFromRecents="true"
-             android:exported="true"
-             android:name=".soundeffect.TrebleBassSeekBarActivity"
-             android:theme="@style/TvSettingsActivityTheme">
+                  android:excludeFromRecents="true"
+                  android:exported="true"
+                  android:name=".soundeffect.DebugAudioUIActivity"
+                  android:theme="@style/TvSettingsActivityTheme">
         </activity>
         <activity android:configChanges="keyboard|keyboardHidden|navigation"
-            android:excludeFromRecents="true"
-            android:exported="true"
-            android:name=".soundeffect.DpeModeActivity"
-            android:theme="@style/TvSettingsActivityTheme">
+                  android:excludeFromRecents="true"
+                  android:exported="true"
+                  android:name=".soundeffect.TrebleBassSeekBarActivity"
+                  android:theme="@style/TvSettingsActivityTheme">
         </activity>
         <activity android:configChanges="keyboard|keyboardHidden|navigation"
-             android:excludeFromRecents="true"
-             android:exported="true"
-             android:name=".tvoption.HdmiCecActivity"
-             android:theme="@style/TvSettingsActivityTheme"/>
+                  android:excludeFromRecents="true"
+                  android:exported="true"
+                  android:name=".soundeffect.DpeModeActivity"
+                  android:theme="@style/TvSettingsActivityTheme">
+        </activity>
         <activity android:configChanges="keyboard|keyboardHidden|navigation"
-             android:name=".pqsettings.PictureModeActivity"
-             android:theme="@style/Theme.Settings.Transparent"
-             android:excludeFromRecents="true"
-             android:exported="true" />
+                  android:excludeFromRecents="true"
+                  android:exported="true"
+                  android:name=".tvoption.HdmiCecActivity"
+                  android:theme="@style/TvSettingsActivityTheme"/>
         <activity
-            android:name=".pqsettings.AdjustValueActivity"
-            android:configChanges="keyboard|keyboardHidden|navigation"
-            android:excludeFromRecents="true"
-            android:theme="@style/TvSettingsActivityTheme"
-            android:exported="false" />
-        <activity
-            android:name=".pqsettings.AdjustBaclLightActivity"
-            android:configChanges="keyboard|keyboardHidden|navigation"
-            android:excludeFromRecents="true"
-            android:theme="@style/TvSettingsActivityTheme"
-            android:exported="false" />
-        <activity
-            android:name=".pqsettings.PQResetAllActivity"
-            android:configChanges="keyboard|keyboardHidden|navigation"
-            android:excludeFromRecents="true"
-            android:theme="@style/TvSettingsActivityTheme"
-            android:exported="false" />
-        <activity
-            android:name=".pqsettings.advanced.PQAdvancedManualGammaResetAllActivity"
-            android:configChanges="keyboard|keyboardHidden|navigation"
-            android:excludeFromRecents="true"
-            android:theme="@style/TvSettingsActivityTheme"
-            android:exported="false" />
-        <activity
-            android:name=".pqsettings.advanced.PQAdvancedColorTemperatureResetAllActivity"
-            android:configChanges="keyboard|keyboardHidden|navigation"
-            android:excludeFromRecents="true"
-            android:theme="@style/TvSettingsActivityTheme"
-            android:exported="false" />
-        <activity
-            android:name=".pqsettings.advanced.PQAdvancedColorCustomizeResetAllActivity"
-            android:configChanges="keyboard|keyboardHidden|navigation"
-            android:excludeFromRecents="true"
-            android:theme="@style/TvSettingsActivityTheme"
-            android:exported="false" />
-        <activity
-            android:name=".wifi.HotSpotActivity"
-            android:configChanges="keyboard|keyboardHidden|navigation"
-            android:theme="@style/TvSettingsActivityTheme"
-            android:exported="true" />
+                android:name=".wifi.HotSpotActivity"
+                android:configChanges="keyboard|keyboardHidden|navigation"
+                android:theme="@style/TvSettingsActivityTheme"
+                android:exported="true"/>
 
-        <!-- SliceProvider -->
         <activity
-            android:name=".sliceprovider.dialog.AdjustResolutionDialogActivity"
-            android:configChanges="keyboard|keyboardHidden|navigation|screenSize|density|smallestScreenSize|screenLayout"
-            android:label="Adjust Resolution Dialog Activity"
-            android:launchMode="singleInstance"
-            android:exported="true"
-            android:theme="@style/DialogActivityTranslucentTheme">
+                android:name=".sliceprovider.dialog.AdjustResolutionDialogActivity"
+                android:configChanges="keyboard|keyboardHidden|navigation|screenSize|density|smallestScreenSize|screenLayout"
+                android:label="Adjust Resolution Dialog Activity"
+                android:launchMode="singleInstance"
+                android:exported="true"
+                android:theme="@style/DialogActivityTranslucentTheme">
             <intent-filter>
-                <action android:name="com.droidlogic.tv.settings.sliceprovider.SHOW_RESOLUTION_CHNAGE_WARNING" />
-                <category android:name="android.intent.category.DEFAULT" />
+                <action android:name="com.droidlogic.tv.settings.sliceprovider.SHOW_RESOLUTION_CHNAGE_WARNING"/>
+                <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
 
         <activity
-            android:name=".sliceprovider.dialog.EnableUnsupportedSoundDialogActivity"
-            android:label="Enable Unsupported Sound Dialog Activity"
-            android:launchMode="singleInstance"
-            android:exported="false"
-            android:theme="@style/DialogActivityTranslucentTheme">
+                android:name=".sliceprovider.dialog.EnableUnsupportedSoundDialogActivity"
+                android:label="Enable Unsupported Sound Dialog Activity"
+                android:launchMode="singleInstance"
+                android:exported="false"
+                android:theme="@style/DialogActivityTranslucentTheme">
             <intent-filter>
-                <action android:name="com.droidlogic.googletv.settings.sliceprovider.SHOW_UNSUPPORTED_FORMAT_CHNAGE_WARNING" />
-                <category android:name="android.intent.category.DEFAULT" />
+                <action android:name="com.droidlogic.googletv.settings.sliceprovider.SHOW_UNSUPPORTED_FORMAT_CHNAGE_WARNING"/>
+                <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
 
         <activity
-            android:name=".sliceprovider.dialog.AdjustColorFormatDialogActivity"
-            android:label="Adjust Color Format Dialog Activity"
-            android:launchMode="singleInstance"
-            android:exported="false"
-            android:theme="@style/DialogActivityTranslucentTheme">
+                android:name=".sliceprovider.dialog.AdjustColorFormatDialogActivity"
+                android:label="Adjust Color Format Dialog Activity"
+                android:launchMode="singleInstance"
+                android:exported="false"
+                android:theme="@style/DialogActivityTranslucentTheme">
             <intent-filter>
-                <action android:name="com.google.android.settings.usage.ACTION_SET_COLOR_ATTRIBUTE" />
-                <category android:name="android.intent.category.DEFAULT" />
+                <action android:name="com.google.android.settings.usage.ACTION_SET_COLOR_ATTRIBUTE"/>
+                <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
 
         <activity
-            android:name=".sliceprovider.dialog.MatchContentChangeDialogActivity"
-            android:label="Match Content Change Dialog Activity"
-            android:launchMode="singleInstance"
-            android:exported="false"
-            android:theme="@style/DialogActivityTranslucentTheme">
+                android:name=".sliceprovider.dialog.MatchContentChangeDialogActivity"
+                android:label="Match Content Change Dialog Activity"
+                android:launchMode="singleInstance"
+                android:exported="false"
+                android:theme="@style/DialogActivityTranslucentTheme">
             <intent-filter>
-                <action android:name="com.google.android.settings.usage.ACTION_MATCH_CONTENT_POLICY_CHANGED" />
-                <category android:name="android.intent.category.DEFAULT" />
+                <action android:name="com.google.android.settings.usage.ACTION_MATCH_CONTENT_POLICY_CHANGED"/>
+                <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
 
         <activity
-            android:name=".sliceprovider.dialog.DolbyVisionModeChangeActivity"
-            android:label="DolbyVision Mode Change Dialog Activity"
-            android:launchMode="singleInstance"
-            android:exported="false"
-            android:theme="@style/DialogActivityTranslucentTheme">
+                android:name=".sliceprovider.dialog.DolbyVisionModeChangeActivity"
+                android:label="DolbyVision Mode Change Dialog Activity"
+                android:launchMode="singleInstance"
+                android:exported="false"
+                android:theme="@style/DialogActivityTranslucentTheme">
             <intent-filter>
-                <action android:name="com.google.android.settings.usage.ACTION_SET_DOLBY_VISION_MODE" />
-                <category android:name="android.intent.category.DEFAULT" />
+                <action android:name="com.google.android.settings.usage.ACTION_SET_DOLBY_VISION_MODE"/>
+                <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
 
         <activity
-            android:name=".sliceprovider.dialog.PreferredModeChangeDialogActivity"
-            android:label="Prefer Dolby Vision Dialog Activity"
-            android:launchMode="singleInstance"
-            android:exported="false"
-            android:theme="@style/DialogActivityTranslucentTheme">
+                android:name=".sliceprovider.dialog.PreferredModeChangeDialogActivity"
+                android:label="Prefer Dolby Vision Dialog Activity"
+                android:launchMode="singleInstance"
+                android:exported="false"
+                android:theme="@style/DialogActivityTranslucentTheme">
             <intent-filter>
-                <action android:name="com.google.android.settings.usage.ACTION_SET_HDR_FORMAT" />
-                <category android:name="android.intent.category.DEFAULT" />
+                <action android:name="com.google.android.settings.usage.ACTION_SET_HDR_FORMAT"/>
+                <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
 
         <provider
-            android:authorities="com.google.android.tv.settings.hdr.sliceprovider"
-            android:name="com.droidlogic.tv.settings.sliceprovider.HdrSliceProvider"
-            android:exported="true">
+                android:authorities="com.google.android.tv.settings.hdr.sliceprovider"
+                android:name="com.droidlogic.tv.settings.sliceprovider.HdrSliceProvider"
+                android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.app.slice.category.SLICE"/>
@@ -350,9 +291,9 @@
         </provider>
 
         <provider
-            android:authorities="com.google.android.tv.settings.powerbehavior.sliceprovider"
-            android:name="com.droidlogic.tv.settings.sliceprovider.PowerBehaviorSliceProvider"
-            android:exported="true">
+                android:authorities="com.google.android.tv.settings.powerbehavior.sliceprovider"
+                android:name="com.droidlogic.tv.settings.sliceprovider.PowerBehaviorSliceProvider"
+                android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.app.slice.category.SLICE"/>
@@ -360,9 +301,9 @@
         </provider>
 
         <provider
-            android:authorities="com.google.android.tv.settings.advancedsound.sliceprovider"
-            android:name="com.droidlogic.tv.settings.sliceprovider.AdvancedSoundSliceProvider"
-            android:exported="true">
+                android:authorities="com.google.android.tv.settings.advancedsound.sliceprovider"
+                android:name="com.droidlogic.tv.settings.sliceprovider.AdvancedSoundSliceProvider"
+                android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.app.slice.category.SLICE"/>
@@ -370,9 +311,9 @@
         </provider>
 
         <provider
-            android:authorities="com.google.android.tv.settings.general.sliceprovider"
-            android:name="com.droidlogic.tv.settings.sliceprovider.GeneralContentSliceProvider"
-            android:exported="true">
+                android:authorities="com.google.android.tv.settings.general.sliceprovider"
+                android:name="com.droidlogic.tv.settings.sliceprovider.GeneralContentSliceProvider"
+                android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.app.slice.category.SLICE"/>
@@ -380,9 +321,9 @@
         </provider>
 
         <provider
-            android:authorities="com.google.android.tv.settings.displaysound.hdmi.sliceprovider"
-            android:name="com.droidlogic.tv.settings.sliceprovider.HdmiCecContentSliceProvider"
-            android:exported="true">
+                android:authorities="com.google.android.tv.settings.displaysound.hdmi.sliceprovider"
+                android:name="com.droidlogic.tv.settings.sliceprovider.HdmiCecContentSliceProvider"
+                android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.app.slice.category.SLICE"/>
@@ -390,23 +331,17 @@
         </provider>
 
         <activity
-             android:theme="@android:style/Theme.NoTitleBar"
-             android:name="com.droidlogic.tv.settings.sliceprovider.accessories.BluetoothActionActivity"
-             android:exported="false" />
+                android:theme="@android:style/Theme.NoTitleBar"
+                android:name="com.droidlogic.tv.settings.sliceprovider.accessories.BluetoothActionActivity"
+                android:exported="false"/>
 
-        <!--<service
-             android:name="com.droidlogic.tv.settings.sliceprovider.accessories.BluetoothDevicesService"
-            android:exported="false" />-->
-
-        <!-- <service android:name="com.droidlogic.tv.settings.sliceprovider.DisplayDensityManagerService"
-            android:exported="false"/>-->
         <service android:name=".FrameRateService"
-            android:exported="false"/>
+                 android:exported="false"/>
 
         <provider
-            android:authorities="com.google.android.tv.btservices.settings.sliceprovider"
-            android:name="com.droidlogic.tv.settings.sliceprovider.accessories.ConnectedDevicesSliceProvider"
-            android:exported="true">
+                android:authorities="com.google.android.tv.btservices.settings.sliceprovider"
+                android:name="com.droidlogic.tv.settings.sliceprovider.accessories.ConnectedDevicesSliceProvider"
+                android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.app.slice.category.SLICE"/>
@@ -414,38 +349,37 @@
         </provider>
 
         <receiver
-            android:name="com.droidlogic.tv.settings.sliceprovider.broadcastreceiver.HdrSliceBroadcastReceiver"
-            android:exported="false">
+                android:name="com.droidlogic.tv.settings.sliceprovider.broadcastreceiver.HdrSliceBroadcastReceiver"
+                android:exported="false">
         </receiver>
 
         <receiver
-            android:name="com.droidlogic.tv.settings.sliceprovider.accessories.ConnectedDevicesSliceBroadcastReceiver"
-            android:exported="false">
+                android:name="com.droidlogic.tv.settings.sliceprovider.accessories.ConnectedDevicesSliceBroadcastReceiver"
+                android:exported="false">
         </receiver>
 
         <receiver
-            android:name="com.droidlogic.tv.settings.sliceprovider.broadcastreceiver.AdvancedSoundSliceBroadcastReceiver"
-            android:exported="false">
+                android:name="com.droidlogic.tv.settings.sliceprovider.broadcastreceiver.AdvancedSoundSliceBroadcastReceiver"
+                android:exported="false">
         </receiver>
 
         <receiver
-            android:name="com.droidlogic.tv.settings.sliceprovider.broadcastreceiver.PowerBehaviorSliceBroadcastReceiver"
-            android:exported="false">
+                android:name="com.droidlogic.tv.settings.sliceprovider.broadcastreceiver.PowerBehaviorSliceBroadcastReceiver"
+                android:exported="false">
         </receiver>
 
         <receiver
-            android:name="com.droidlogic.tv.settings.sliceprovider.broadcastreceiver.HdmiCecSliceBroadcastReceiver"
-            android:exported="false">
+                android:name="com.droidlogic.tv.settings.sliceprovider.broadcastreceiver.HdmiCecSliceBroadcastReceiver"
+                android:exported="false">
         </receiver>
 
         <receiver android:name="com.droidlogic.tv.settings.BootReceiver"
-            android:enabled="true"
-            android:exported="true">
+                  android:enabled="true"
+                  android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
             </intent-filter>
         </receiver>
-        <!-- DroidLogic end -->
     </application>
 
 </manifest>

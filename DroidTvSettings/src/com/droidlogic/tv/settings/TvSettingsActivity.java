@@ -34,20 +34,16 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 
-// DroidLogic start
 import android.view.KeyEvent;
 import android.content.BroadcastReceiver;
-import android.os.Handler;
 import android.content.Context;
 import android.content.IntentFilter;
 import android.os.Message;
-import com.droidlogic.tv.settings.tvoption.TvOptionSettingManager;
 import com.droidlogic.tv.settings.tvoption.SoundParameterSettingManager;
 import com.droidlogic.tv.settings.soundeffect.OptionParameterManager;
 import com.droidlogic.app.DataProviderManager;
 import com.droidlogic.app.AudioEffectManager;
 import com.droidlogic.app.AudioSystemCmdManager;
-// DroidLogic end
 
 import com.android.settingslib.core.instrumentation.MetricsFeatureProvider;
 import com.android.settingslib.core.instrumentation.SharedPreferencesLogger;
@@ -61,14 +57,12 @@ public abstract class TvSettingsActivity extends FragmentActivity {
 
     private static final int REQUEST_CODE_STARTUP_VERIFICATION = 1;
 
-    // DroidLogic start
     public static final String INTENT_ACTION_FINISH_FRAGMENT = "action.finish.droidsettingsmodefragment";
     public static final int MODE_LAUNCHER = 0;
     public static final int MODE_LIVE_TV = 1;
     private int mStartMode = MODE_LAUNCHER;
     private SoundParameterSettingManager mSoundParameterSettingManager = null;
     private OptionParameterManager mOptionParameterManager = null;
-    // DroidLogic end
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -126,26 +120,14 @@ public abstract class TvSettingsActivity extends FragmentActivity {
                     });
         }
 
-        // DroidLogic start
-        mStartMode = getIntent().getIntExtra("from_live_tv", MODE_LAUNCHER);
-        Log.d(TAG, "mStartMode : " + mStartMode);
-        if (SettingsConstant.needDroidlogicCustomization(this)) {
-            init(this);
-            if (mStartMode == MODE_LIVE_TV) {
-                startShowActivityTimer();
-            }
-        }
-        // DroidLogic end
     }
 
-    // DroidLogic start
     public BroadcastReceiver mReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             Log.d(TAG, "intent = " + intent);
             switch (intent.getAction()) {
                 case INTENT_ACTION_FINISH_FRAGMENT:
-                    startShowActivityTimer();
                     break;
                 case Intent.ACTION_CLOSE_SYSTEM_DIALOGS:
                     finish();
@@ -163,44 +145,10 @@ public abstract class TvSettingsActivity extends FragmentActivity {
     public void unregisterSomeReceivers() {
         unregisterReceiver(mReceiver);
     }
-    public void startShowActivityTimer () {
-        handler.removeMessages(0);
-
-        int seconds = DataProviderManager.getIntValue(this, TvOptionSettingManager.KEY_MENU_TIME,
-                TvOptionSettingManager.DEFAULT_MENU_TIME);
-        if (seconds == 1) {
-            seconds = 15;
-        } else if (seconds == 2) {
-            seconds = 30;
-        } else if (seconds == 3) {
-            seconds = 60;
-        } else if (seconds == 4) {
-            seconds = 120;
-        } else if (seconds == 5) {
-            seconds = 240;
-        } else {
-            seconds = 0;
-        }
-        if (seconds > 0) {
-            handler.sendEmptyMessageDelayed(0, seconds * 1000);
-        } else {
-            handler.removeMessages(0);
-        }
-    }
-    Handler handler = new Handler() {
-        public void handleMessage(Message msg) {
-            finish();
-        }
-    };
 
     @Override
     public void onResume() {
         registerSomeReceivers();
-        if (SettingsConstant.needDroidlogicCustomization(this)) {
-            if (mStartMode == MODE_LIVE_TV) {
-                startShowActivityTimer();
-            }
-        }
         super.onResume();
     }
 
@@ -209,29 +157,6 @@ public abstract class TvSettingsActivity extends FragmentActivity {
         super.onDestroy();
         unregisterSomeReceivers();
         Log.d(TAG, "onDestroy");
-    }
-
-    @Override
-    public boolean dispatchKeyEvent (KeyEvent event) {
-        if (event.getAction() == KeyEvent.ACTION_DOWN) {
-            switch (event.getKeyCode()) {
-                case KeyEvent.KEYCODE_DPAD_UP:
-                case KeyEvent.KEYCODE_DPAD_DOWN:
-                case KeyEvent.KEYCODE_DPAD_LEFT:
-                case KeyEvent.KEYCODE_DPAD_RIGHT:
-                case KeyEvent.KEYCODE_DPAD_CENTER:
-                case KeyEvent.KEYCODE_BACK:
-                    if (mStartMode == MODE_LIVE_TV) {
-                        Log.d(TAG, "dispatchKeyEvent");
-                        startShowActivityTimer();
-                    }
-                    break;
-                default:
-                    break;
-            }
-        }
-
-        return super.dispatchKeyEvent(event);
     }
     // DroidLogic end
 

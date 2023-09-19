@@ -27,7 +27,6 @@ import android.util.Log;
 
 import com.droidlogic.tv.settings.R;
 import com.droidlogic.tv.settings.SettingsPreferenceFragment;
-import com.droidlogic.tv.settings.tvoption.SoundParameterSettingManager;
 import com.droidlogic.app.AudioEffectManager;
 
 public class DolbyAudioEffectFragment extends SettingsPreferenceFragment implements Preference.OnPreferenceChangeListener {

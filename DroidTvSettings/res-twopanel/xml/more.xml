@@ -94,11 +94,6 @@
         android:key="channel"
         android:title="@string/tv_channel" />
     <Preference
-        android:icon="@drawable/ic_settings_more"
-        android:key="tv_settings"
-        android:title="@string/system_setting"
-        android:fragment="com.droidlogic.tv.settings.tvoption.DroidSettingsModeFragment" />
-    <Preference
         android:key="advanced_sound_settings"
         android:icon="@drawable/ic_volume_up"
         android:title="@string/advanced_sound_settings_title" />
@@ -117,14 +112,4 @@
         android:key="frame_rate"
         android:title="@string/frame_rate"
         android:fragment="com.droidlogic.tv.settings.FrameRateFragment"/>
-    <Preference
-         android:key="power_and_energy_settings"
-         android:title="@string/power_on_behavior"
-         android:icon="@drawable/ic_settings_power"/>
-
-	<Preference
-        android:icon="@drawable/ic_settings_more"
-        android:key="wake_on_lan"
-        android:title="@string/wake_on_lan_enable"
-        android:fragment="com.droidlogic.tv.settings.WolFragment"/>
 </PreferenceScreen>

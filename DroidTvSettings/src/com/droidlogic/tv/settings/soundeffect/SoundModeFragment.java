@@ -54,7 +54,6 @@ import com.droidlogic.app.DroidLogicUtils;
 import com.droidlogic.app.AudioConfigManager;
 import com.droidlogic.app.AudioEffectManager;
 import com.droidlogic.app.AudioSystemCmdManager;
-import com.droidlogic.app.tv.TvControlManager;
 import com.droidlogic.app.OutputModeManager;
 import com.droidlogic.app.SystemControlManager;
 
@@ -184,7 +183,6 @@ public class SoundModeFragment extends SettingsPreferenceFragment implements Pre
     private void init() {
         mAudioConfigManager = AudioConfigManager.getInstance(getActivity());
         mAudioEffectManager = ((TvSettingsActivity)getActivity()).getAudioEffectManager();
-        //mTvControlManager = TvControlManager.getInstance();
         mAudioSystemCmdManager = ((TvSettingsActivity)getActivity()).getAudioSystemCmdManager();
         mSoundParameterSettingManager = ((TvSettingsActivity)getActivity()).getSoundParameterSettingManager();
         mOutputModeManager = OutputModeManager.getInstance(getActivity());
@@ -349,7 +347,6 @@ public class SoundModeFragment extends SettingsPreferenceFragment implements Pre
             @Override
             public void onClick(View view) {
                 if (AUDIO_ONLY_INT == type) {
-                    //mTvControlManager.setLcdEnable(false);
                     SystemProperties.set("persist.audio.only.state", "true");
                 }
                 mAlertDialog.dismiss();
@@ -466,7 +463,7 @@ public class SoundModeFragment extends SettingsPreferenceFragment implements Pre
         if (!mIsAudioEqSeekBarInited) {
             return;
         }
-        ((TvSettingsActivity)getActivity()).startShowActivityTimer();
+
         int hpeq_band_num = mAudioEffectManager.getHpeqBandNum(AudioEffectManager.DEBUG_HPEQ_BAND_NUM_UI);
         switch (seekBar.getId()) {
             case R.id.seekbar_tv_audio_effect_band1:{

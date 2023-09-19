@@ -42,14 +42,13 @@ import com.droidlogic.app.SystemControlManager;
 public class AdjustHdmiAudioLatencyFragment extends SettingsPreferenceFragment implements SeekBar.OnSeekBarChangeListener {
 
     private static final String TAG = "AdjustHdmiAudioLatencyFragment";
+    public static final String  AUDIO_LATENCY = "vendor.media.dtv.passthrough.latencyms";
 
     private SeekBar seekbar_hdmi_audio;
     private TextView text_hdmi_audio;
     private TextView title_hdmi_audio;
-    private SystemControlManager mSystemControlManager = SystemControlManager.getInstance();
     private boolean isSeekBarInited = false;
-    private TvOptionSettingManager mTvOptionSettingManager;
-
+    private SystemControlManager mSystemControlManager;
     private static final int MSG_SET_AUDIO_LATENCY = 1;
 
     private Handler mHandler = new Handler() {
@@ -57,7 +56,7 @@ public class AdjustHdmiAudioLatencyFragment extends SettingsPreferenceFragment i
             switch (msg.what) {
                 case MSG_SET_AUDIO_LATENCY:
                     Log.d(TAG, "handleMessage MSG_SET_AUDIO_LATENCY " + msg.arg1 + "ms");
-                    mTvOptionSettingManager.setHdmiAudioLatency(String.valueOf(msg.arg1));
+                    setHdmiAudioLatency(String.valueOf(msg.arg1));
                     break;
                 default:
                     Log.d(TAG, "handleMessage default");
@@ -73,13 +72,11 @@ public class AdjustHdmiAudioLatencyFragment extends SettingsPreferenceFragment i
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mSystemControlManager = SystemControlManager.getInstance();
     }
 
     @Override
     public View onCreateView (LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        if (mTvOptionSettingManager == null) {
-            mTvOptionSettingManager = new TvOptionSettingManager(getActivity(), false);
-        }
         View view = inflater.inflate(R.xml.hdmi_audio_latency_seekbar, container, false);
         return view;
     }
@@ -97,7 +94,7 @@ public class AdjustHdmiAudioLatencyFragment extends SettingsPreferenceFragment i
     private void initSeekBar(View view) {
         boolean hasfocused = false;
         boolean isTv = SettingsConstant.needDroidlogicTvFeature(getActivity());
-        int audioLatency = mTvOptionSettingManager.getHdmiAudioLatency();
+        int audioLatency = getHdmiAudioLatency();
         int progress = convertAudioLatencyToProgress(audioLatency);
         title_hdmi_audio = (TextView) view.findViewById(R.id.title_hdmi_audio_latency);
         seekbar_hdmi_audio = (SeekBar) view.findViewById(R.id.seekbar_audio_latency);
@@ -189,5 +186,16 @@ public class AdjustHdmiAudioLatencyFragment extends SettingsPreferenceFragment i
         } else {
             Log.e(TAG, "sendSetAudioLatencyMessage NULL handle");
         }
+    }
+
+    public int getHdmiAudioLatency() {
+        int result = mSystemControlManager.getPropertyInt(AUDIO_LATENCY, 0);
+        Log.d(TAG, "getHdmiAudioLatency = " + result);
+        return result;
+    }
+
+    public void setHdmiAudioLatency(String value) {
+        Log.d(TAG, "setHdmiAudioLatency = " + value);
+        mSystemControlManager.setProperty(AUDIO_LATENCY, value);
     }
 }

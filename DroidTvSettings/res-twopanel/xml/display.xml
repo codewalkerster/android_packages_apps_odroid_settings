@@ -51,8 +51,4 @@
             android:entryValues="@array/game_content_type_entry_values"
             android:title="@string/device_game_content_type"
             android:summary="%s" />
-        <SwitchPreference
-            android:key="device_dlg"
-            android:persistent="false"
-            android:title="@string/device_dlg"/>
 </PreferenceScreen>
