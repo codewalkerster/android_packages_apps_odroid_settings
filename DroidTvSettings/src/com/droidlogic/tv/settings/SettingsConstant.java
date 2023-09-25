@@ -34,6 +34,17 @@ public class SettingsConstant {
     public static String PACKAGENAME_MBOX_LAUNCHER2 = "com.droidlogic.mboxlauncher";
     private static final String AMATI_FEATURE = "com.google.android.feature.AMATI_EXPERIENCE";
 
+    public static String PACKAGE_NAME_KEYSTONE = "com.android.keystone";
+    public static String ACTIVITY_NAME_KEYSTONE =  "com.android.keystone.keyStoneCorrectionActivity";
+
+    public static String PACKAGE_NAME_SOUNDEFFECT = "com.droidlogic.tv.settings";
+    public static String ACTIVITY_NAME_SOUNDEFFECT = "com.droidlogic.tv.settings.soundeffect.AdvancedVolumeActivity";
+
+    public static String PACKAGE_NAME_TV_EXTRAS = "com.droidlogic.tv.extras";
+    public static String ACTIVITY_NAME_TV_EXTRAS = "com.droidlogic.tv.extras.MainActivity";
+    public static String ACTIVITY_NAME_PICTURE = "com.droidlogic.tv.extras.pqsettings.PictureModeActivity";
+    public static String ACTIVITY_NAME_TV_OPTION = "com.droidlogic.tv.extras.tvoption.DroidSettingsModeActivity";
+
     public static boolean needDroidlogicMboxFeature(Context context){
         SystemControlManager sm = SystemControlManager.getInstance();
         return sm.getPropertyBoolean("ro.vendor.platform.has.mbxuimode", false);
@@ -50,8 +61,8 @@ public class SettingsConstant {
         return false;
     }
 
-    public static boolean amatiFeature(Context context) {
-        return context.getPackageManager().hasSystemFeature(AMATI_FEATURE);
+    public static boolean isSupportFeature(String featureName, Context context) {
+        return context.getPackageManager().hasSystemFeature(featureName);
     }
 
     public static boolean needAospFeature(Context context) {

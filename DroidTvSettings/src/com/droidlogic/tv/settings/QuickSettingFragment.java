@@ -28,6 +28,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.ActivityNotFoundException;
 import android.media.tv.TvInputManager;
 import android.os.Handler;
 import android.os.PowerManager;
@@ -47,16 +48,17 @@ import com.droidlogic.tv.settings.R;
 import com.droidlogic.tv.settings.SettingsPreferenceFragment;
 import com.droidlogic.tv.settings.util.DroidUtils;
 import com.droidlogic.app.AudioEffectManager;
-
+import com.droidlogic.app.SystemControlManager;
 
 public class QuickSettingFragment extends SettingsPreferenceFragment implements Preference.OnPreferenceChangeListener {
 
     private static final String TAG = "QuickSettingFragment";
 
+    private static final String KEY_TV_PICTURE = "key_quick_setting_picture_mode";
     private static final String KEY_MORE_SETTINGS = "key_quick_setting_more_settings";
+    private static final String KEY_AI_PQ = "key_quick_setting_ai_pq";
 
-    private Preference mMoreSettings;
-
+    private SystemControlManager mSystemControlManager;
     private AudioEffectManager mAudioEffectManager;
 
     public static QuickSettingFragment newInstance() {
@@ -68,26 +70,23 @@ public class QuickSettingFragment extends SettingsPreferenceFragment implements 
         if (mAudioEffectManager == null) {
             mAudioEffectManager = AudioEffectManager.getInstance(getActivity());
         }
+        mSystemControlManager = SystemControlManager.getInstance();
         super.onCreate(savedInstanceState);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        mMoreSettings = (Preference) findPreference(KEY_MORE_SETTINGS);
-        boolean isTv = SettingsConstant.needDroidlogicTvFeature(getActivity());
-        if (!isTv) {
-            mMoreSettings.setVisible(false);
-        }
     }
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         setPreferencesFromResource(R.xml.quick_setting, null);
-        mMoreSettings = (Preference) findPreference(KEY_MORE_SETTINGS);
+        final Preference tvPicturePref = findPreference(KEY_TV_PICTURE);
+        final Preference aipqPref = findPreference(KEY_AI_PQ);
+        final Preference moreSettingsPref = (Preference) findPreference(KEY_MORE_SETTINGS);
+
         boolean isTv = SettingsConstant.needDroidlogicTvFeature(getActivity());
+
+        aipqPref.setVisible(mSystemControlManager.hasAipqFunc());
         if (!isTv) {
-            mMoreSettings.setVisible(false);
+            tvPicturePref.setVisible(false);
+            moreSettingsPref.setVisible(false);
         }
     }
 
@@ -97,9 +96,15 @@ public class QuickSettingFragment extends SettingsPreferenceFragment implements 
 
     @Override
     public boolean onPreferenceTreeClick(Preference preference) {
+        if (TextUtils.equals(preference.getKey(), KEY_TV_PICTURE)) {
+            startExportedActivity(SettingsConstant.PACKAGE_NAME_TV_EXTRAS,
+                    SettingsConstant.ACTIVITY_NAME_PICTURE);
+        } else if (TextUtils.equals(preference.getKey(), KEY_MORE_SETTINGS)) {
+            startExportedActivity(SettingsConstant.PACKAGE_NAME_TV_EXTRAS,
+                    SettingsConstant.ACTIVITY_NAME_TV_OPTION);
+        }
         return super.onPreferenceTreeClick(preference);
     }
-
     @Override
     public boolean onPreferenceChange(Preference preference, Object newValue) {
         return true;
@@ -108,6 +113,17 @@ public class QuickSettingFragment extends SettingsPreferenceFragment implements 
     @Override
     public int getMetricsCategory() {
         return 0;
+    }
+
+    private void startExportedActivity(String packageName, String activityName) {
+        try {
+            Intent intent = new Intent();
+            intent.setClassName(packageName, activityName);
+            getActivity().startActivity(intent);
+        } catch (ActivityNotFoundException e) {
+            Log.d(TAG, "start Activity Error not found: " + activityName);
+            return;
+        }
     }
 
 }

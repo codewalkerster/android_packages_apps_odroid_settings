@@ -47,16 +47,10 @@ import android.util.ArraySet;
 import android.util.Log;
 import android.content.ActivityNotFoundException;
 
-import com.droidlogic.tv.settings.overlay.FlavorUtils;
 import com.droidlogic.tv.settings.util.DroidUtils;
 import com.droidlogic.tv.settings.SettingsConstant;
 import com.droidlogic.tv.settings.SettingsPreferenceFragment;
 import com.droidlogic.tv.settings.tvoption.SoundParameterSettingManager;
-
-import static com.droidlogic.tv.settings.overlay.FlavorUtils.FLAVOR_CLASSIC;
-import static com.droidlogic.tv.settings.overlay.FlavorUtils.FLAVOR_TWO_PANEL;
-import static com.droidlogic.tv.settings.overlay.FlavorUtils.FLAVOR_VENDOR;
-import static com.droidlogic.tv.settings.overlay.FlavorUtils.FLAVOR_X;
 
 import com.droidlogic.app.DroidLogicUtils;
 import com.droidlogic.app.SystemControlManager;
@@ -83,6 +77,9 @@ public class MorePrefFragment extends SettingsPreferenceFragment {
     private static final String KEY_DEVELOP_OPTION = "amlogic_developer_options";
     private static final String KEY_AI_PQ = "ai_pq";
     private static final String KEY_FRAME_RATE = "frame_rate";
+    private static final String KEY_TV_EXTRAS = "tv_extras";
+
+
     private static final String HAILSTORM_VERSION_PROP = "ro.vendor.hailstorm.version";
     private static final String FRAME_RATE_PROP = "persist.vendor.sys.framerate.feature";
     private static final String DEBUG_GLOBAL_SETTING = "droidsetting_debug";
@@ -145,6 +142,7 @@ public class MorePrefFragment extends SettingsPreferenceFragment {
         final Preference advanced_sound_settings_pref = findPreference(KEY_ADVANCE_SOUND);
         final Preference aipq = findPreference(KEY_AI_PQ);
         final Preference frameRatePref = findPreference(KEY_FRAME_RATE);
+        final Preference tvExtrasPref = findPreference(KEY_TV_EXTRAS);
 
         Log.d(TAG, "isShowFrameRate: " + isShowFrameRate);
         frameRatePref.setVisible(isShowFrameRate);
@@ -210,6 +208,10 @@ public class MorePrefFragment extends SettingsPreferenceFragment {
             powerKeyPref.setVisible(false);
         }
 
+        if (!SettingsConstant.isTvFeature()) {
+            tvExtrasPref.setVisible(false);
+        }
+
         if (0 == Settings.Global.getInt(getContext().getContentResolver(), DEBUG_GLOBAL_SETTING, 0)) {
             advanced_sound_settings_pref.setVisible(false);
             mboxSoundsPref.setVisible(false);
@@ -220,9 +222,11 @@ public class MorePrefFragment extends SettingsPreferenceFragment {
     public boolean onPreferenceTreeClick(Preference preference) {
         super.onPreferenceTreeClick(preference);
         if (TextUtils.equals(preference.getKey(), KEY_KEYSTONE)) {
-            startKeyStoneCorrectionActivity(getActivity());
+            startExportedActivity(SettingsConstant.PACKAGE_NAME_KEYSTONE, SettingsConstant.ACTIVITY_NAME_KEYSTONE);
         } else if (TextUtils.equals(preference.getKey(), KEY_ADVANCE_SOUND)) {
-            startAdvancedSoundSettingsActivity(getActivity());
+            startExportedActivity(SettingsConstant.PACKAGE_NAME_SOUNDEFFECT, SettingsConstant.ACTIVITY_NAME_SOUNDEFFECT);
+        } else if (TextUtils.equals(preference.getKey(), KEY_TV_EXTRAS)) {
+            startExportedActivity(SettingsConstant.PACKAGE_NAME_TV_EXTRAS, SettingsConstant.ACTIVITY_NAME_TV_EXTRAS);
         }
         return false;
     }
@@ -232,39 +236,15 @@ public class MorePrefFragment extends SettingsPreferenceFragment {
         return 0;
     }
 
-    private void startUiInLiveTv(String value) {
-        Intent intent = new Intent();
-        intent.setAction("action.startlivetv.settingui");
-        intent.putExtra(value, true);
-        getActivity().sendBroadcast(intent);
-        getActivity().finish();
-    }
-
-    public void startKeyStoneCorrectionActivity(Context context) {
+    private void startExportedActivity(String packageName, String activityName) {
         try {
             Intent intent = new Intent();
-            intent.setClassName("com.android.keystone", "com.android.keystone.keyStoneCorrectionActivity");
-            context.startActivity(intent);
+            intent.setClassName(packageName, activityName);
+            getActivity().startActivity(intent);
         } catch (ActivityNotFoundException e) {
-            Log.d(TAG, "startKeyStoneCorrectionActivity not found!");
+            Log.d(TAG, "start Activity Error not found: " + activityName);
             return;
         }
-    }
-
-    public void startAdvancedSoundSettingsActivity(Context context) {
-        try {
-            Intent intent = new Intent();
-            intent.setClassName("com.droidlogic.tv.settings", "com.droidlogic.tv.settings.soundeffect.AdvancedVolumeActivity");
-            context.startActivity(intent);
-        } catch (ActivityNotFoundException e) {
-            Log.d(TAG, "start advanced_sound_settings Activity not found!");
-            return;
-        }
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
     }
 
     @Override
@@ -296,37 +276,6 @@ public class MorePrefFragment extends SettingsPreferenceFragment {
                 ? R.drawable.ic_volume_up : R.drawable.ic_volume_off);
     }
 
-    private void hideIfIntentUnhandled(Preference preference) {
-        if (preference == null) {
-            return;
-        }
-        preference.setVisible(systemIntentIsHandled(preference.getIntent()) != null);
-    }
-
-    private static boolean isPackageInstalled(Context context, String packageName) {
-        try {
-            return context.getPackageManager().getPackageInfo(packageName, 0) != null;
-        } catch (PackageManager.NameNotFoundException e) {
-            return false;
-        }
-    }
-
-    private ResolveInfo systemIntentIsHandled(Intent intent) {
-        if (intent == null) {
-            return null;
-        }
-
-        final PackageManager pm = getContext().getPackageManager();
-
-        for (ResolveInfo info : pm.queryIntentActivities(intent, 0)) {
-            if (info.activityInfo != null && info.activityInfo.enabled && (info.activityInfo.applicationInfo.flags
-                    & ApplicationInfo.FLAG_SYSTEM) == ApplicationInfo.FLAG_SYSTEM) {
-                return info;
-            }
-        }
-        return null;
-    }
-
     private boolean isHandheld() {
         return isSupportFeature(PackageManager.FEATURE_TOUCHSCREEN)
                 && !isSupportFeature(PackageManager.FEATURE_PC)
@@ -336,6 +285,6 @@ public class MorePrefFragment extends SettingsPreferenceFragment {
     }
 
     private boolean isSupportFeature(String featureName) {
-        return getActivity().getPackageManager().hasSystemFeature(featureName);
+        return SettingsConstant.isSupportFeature(featureName, getActivity());
     }
 }

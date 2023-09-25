@@ -2856,6 +2856,7 @@
     <string name="frame_rate" translatable="false">FrameRate</string>
     <string name="frame_rate_enable" translatable="false">Enable FrameRate</string>
     <string name="frame_rate_prepare">invalid value...</string>
+    <string name="tv_extras" translatable="true">Panel TV</string>
 
     <!-- Processing Dialog -->
     <string name="resolution_selection_dialog_desc">Select OK to use %1$s from now on.</string>
