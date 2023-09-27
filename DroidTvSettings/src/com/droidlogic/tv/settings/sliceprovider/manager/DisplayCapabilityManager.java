@@ -734,7 +734,9 @@ public class DisplayCapabilityManager {
 
     public HdrFormat getHdrPriority() {
         int type = mOutputModeManager.getHdrPriority();
-        if (MediaSliceUtil.CanDebug()) Log.d(TAG, "getHdrPriority type:" + type);
+        if (MediaSliceUtil.CanDebug()) {
+            Log.d(TAG, "getHdrPriority type:" + type);
+        }
         if (type == HdrFormat.DOLBY_VISION.getOrder()) {
             return HdrFormat.DOLBY_VISION;
         } else if (type == HdrFormat.HDR.getOrder()) {
@@ -788,13 +790,6 @@ public class DisplayCapabilityManager {
         }
     }
 
-    private HdrFormat getHdrPreference() {
-        HdrFormat hdrPreference =
-                HdrFormat.fromSysProp(mSystemControlManager.getProperty(SYSTEM_PROPERTY_HDR_PREFERENCE));
-        // Use Dolby Vision as default
-        return hdrPreference != null ? hdrPreference : getHdrPriority();
-    }
-
     private void setHdrPreference(HdrFormat hdrPreference) {
         mSystemControlManager.setProperty(SYSTEM_PROPERTY_HDR_PREFERENCE, hdrPreference.getSysProp());
     }
@@ -842,12 +837,20 @@ public class DisplayCapabilityManager {
         return new HdrFormatConfig(mIsHdr10Supported, isDolbyVisionSupported());
     }
 
+    public boolean isDolbyVisionPreference() {
+        return mOutputModeManager.isDolbyVisionPreference();
+    }
+
     public HdrFormat getPreferredFormat() {
-        HdrFormat hdrPreference = getHdrPreference();
-        if (MediaSliceUtil.CanDebug()) Log.d(TAG, "getPreferredFormat hdrPreference:" + hdrPreference);
-        if (hdrPreference.supports(HdrFormat.DOLBY_VISION) && isDolbyVisionSupported() && hdrPreference == HdrFormat.DOLBY_VISION) {
+        HdrFormat hdrPreference = getHdrPriority();
+        if (MediaSliceUtil.CanDebug()) {
+            Log.d(TAG, "getPreferredFormat hdrPreference:" + hdrPreference);
+        }
+        if (isDolbyVisionPreference()) {
             return HdrFormat.DOLBY_VISION;
-        } else if (((hdrPreference.supports(HdrFormat.HDR) && hdrPreference == HdrFormat.HDR) || hdrPreference == HdrFormat.DOLBY_VISION) && mIsHdr10Supported) {
+        } else if (((hdrPreference.supports(HdrFormat.HDR) && hdrPreference == HdrFormat.HDR)
+                     || hdrPreference == HdrFormat.DOLBY_VISION)
+                   && mIsHdr10Supported) {
             return HdrFormat.HDR;
         }
         return HdrFormat.SDR;
