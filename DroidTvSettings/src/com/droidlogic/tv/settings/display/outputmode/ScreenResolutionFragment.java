@@ -175,7 +175,8 @@ public class ScreenResolutionFragment extends SettingsPreferenceFragment impleme
 
         // output mode.
         mDisplayCapabilityManager.refresh();
-        mDisplayModePref.setSummary(mDisplayCapabilityManager.getCurrentMode());
+        String currentMode = mDisplayCapabilityManager.getTitleByMode(mDisplayCapabilityManager.getCurrentMode());
+        mDisplayModePref.setSummary(currentMode);
 
         boolean dvFlag = mDisplayCapabilityManager.isTvSupportDolbyVision()
                 && (mOutputModeManager.getHdrPriority() == DV_PRIORITY);

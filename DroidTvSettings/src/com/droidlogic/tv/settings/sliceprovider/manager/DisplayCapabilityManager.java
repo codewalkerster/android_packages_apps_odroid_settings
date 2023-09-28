@@ -298,8 +298,11 @@ public class DisplayCapabilityManager {
 
         Lock lock = mRWLock.writeLock();
         lock.lock();
-        mHdmiModeList = filterNoSupportMode(mHdmiModeList);
-        lock.unlock();
+        try {
+            mHdmiModeList = filterNoSupportMode(mHdmiModeList);
+        } finally {
+            lock.unlock();
+        }
 
         return preModeList == null || !preModeList.equals(mHdmiModeList);
     }
@@ -352,7 +355,6 @@ public class DisplayCapabilityManager {
     private String filterHdmiModes(String filterHdmiMode) {
         if (!mOutputModeManager.getFrameRateOffset().contains("1")
                 || filterHdmiMode == null) {
-
             return filterHdmiMode;
         }
 
@@ -363,17 +365,8 @@ public class DisplayCapabilityManager {
             filterHdmiModeStr = filterHdmiMode.replace("30Hz", "29.97Hz");
         } else if (filterHdmiMode.contains("24Hz")) {
             filterHdmiModeStr = filterHdmiMode.replace("24Hz", "23.976Hz");
-        } else if (filterHdmiMode.contains("60hz")) {
-            filterHdmiModeStr = filterHdmiMode.replace("60hz", "59.94hz");
-        } else if (filterHdmiMode.contains("30hz")) {
-            filterHdmiModeStr = filterHdmiMode.replace("30hz", "29.97hz");
-        } else if (filterHdmiMode.contains("24hz")) {
-            filterHdmiModeStr = filterHdmiMode.replace("24hz", "23.976hz");
         }
 
-        if (MediaSliceUtil.CanDebug()) {
-            Log.d(TAG, "filterHdmiMode: " + filterHdmiMode + "; filterHdmiModeStr: " + filterHdmiModeStr);
-        }
         return filterHdmiModeStr;
     }
 
@@ -498,18 +491,15 @@ public class DisplayCapabilityManager {
         return mHdmiModeList;
     }
 
-    public List<String> getHdmiTitleLists() {
-        // Need to use a new list to receive the return value of Arrays.asList,
-        // because its return value object does not override the add and remove methods.
-        refresh();
-        return new ArrayList(Arrays.asList(getHdmiModes()));
-    }
-
     public String[] getHdmiModes() {
+        String[] modeList;
         Lock lock = mRWLock.readLock();
         lock.lock();
-        String[] modeList = mHdmiModeList.toArray(new String[0]);
-        lock.unlock();
+        try {
+            modeList = mHdmiModeList.toArray(new String[0]);
+        } finally {
+            lock.unlock();
+        }
         return modeList;
     }
 

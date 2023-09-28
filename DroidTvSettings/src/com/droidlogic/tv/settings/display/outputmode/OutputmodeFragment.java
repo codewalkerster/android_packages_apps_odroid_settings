@@ -78,11 +78,9 @@ public class OutputmodeFragment extends SettingsPreferenceFragment {
     private List<Action> getMainActions() {
         List<Action> actions = new ArrayList<Action>();
         List<String> outputModeValueList = mDisplayCapabilityManager.getHdmiModeLists();
-        List<String> outputModeTitleList = mDisplayCapabilityManager.getHdmiTitleLists();
         String currentMode = mDisplayCapabilityManager.getCurrentMode();
-        Log.i(TAG, "outputModeValueList: " + outputModeValueList + "; \n" +
-                "outputModeTitleList: " + outputModeTitleList);
-        for (String outputMode : outputModeTitleList) {
+        Log.i(TAG, "outputModeValueList: " + outputModeValueList);
+        for (String outputMode : outputModeValueList) {
             if (outputMode.equals(currentMode)) {
                 actions.add(new Action.Builder().key(outputMode)
                         .title("        " + mDisplayCapabilityManager.getTitleByMode(outputMode))
