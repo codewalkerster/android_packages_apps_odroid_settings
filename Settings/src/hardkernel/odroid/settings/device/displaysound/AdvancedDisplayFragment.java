@@ -46,16 +46,13 @@ public class AdvancedDisplayFragment extends SettingsPreferenceFragment {
     private static final String TAG = "AdvancedDisplayFragment";
 
     private static final String KEY_GAME_MODE = "game_mode";
-    private static final String KEY_KIOSK_MODE = "kiosk_mode";
     private static final String KEY_SYSTEMBAR_VOLUME = "sysbar_volume";
     private static final String KEY_NATIVE_UI = "native_ui";
 
-    private static final String PERSIST_KIOSK_MODE = "persist.kiosk_mode";
     private static final String PERSIST_SYSTEMBAR_VOLUME_HIDE = "persist.systembar.volume.hide";
     private static final String PERSIST_NATIVE_UI = "persist.framebuffer.support4kUI";
     private static final String PERSIST_CHANGED_RESOLUTION = "persist.changed.resolution";
 
-    private static Boolean kiosk_mode = false;
     private static Boolean sysbar_volume = false;
     private static Boolean native_ui = false;
     private static Boolean changed_resolution = false;
@@ -70,10 +67,6 @@ public class AdvancedDisplayFragment extends SettingsPreferenceFragment {
         setPreferencesFromResource(R.xml.advanced_display, null);
         SwitchPreference gameModePreference = findPreference(KEY_GAME_MODE);
         gameModePreference.setChecked(getGameModeStatus() == 1);
-
-        kiosk_mode = EnvProperty.getBoolean(PERSIST_KIOSK_MODE, false);
-        SwitchPreference kioskModePreference = findPreference(KEY_KIOSK_MODE);
-        kioskModePreference.setChecked(kiosk_mode);
 
         sysbar_volume = EnvProperty.getBoolean(PERSIST_SYSTEMBAR_VOLUME_HIDE, false);
         SwitchPreference sysbarVolumePreference = findPreference(KEY_SYSTEMBAR_VOLUME);
@@ -95,12 +88,6 @@ public class AdvancedDisplayFragment extends SettingsPreferenceFragment {
     public boolean onPreferenceTreeClick(Preference preference) {
         if (TextUtils.equals(preference.getKey(), KEY_GAME_MODE)) {
             setGameModeStatus(((SwitchPreference) preference).isChecked() ? 1 : 0);
-        } else if (TextUtils.equals(preference.getKey(), KEY_KIOSK_MODE)) {
-            kiosk_mode = ((SwitchPreference) preference).isChecked();
-            EnvProperty.set(PERSIST_KIOSK_MODE, kiosk_mode);
-            Toast.makeText(getContext(),
-                    R.string.kiosk_mode_message,
-                    Toast.LENGTH_LONG).show();
         } else if (TextUtils.equals(preference.getKey(), KEY_SYSTEMBAR_VOLUME)) {
             sysbar_volume = ((SwitchPreference) preference).isChecked();
             EnvProperty.set(PERSIST_SYSTEMBAR_VOLUME_HIDE, sysbar_volume);

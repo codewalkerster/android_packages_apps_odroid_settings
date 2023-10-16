@@ -68,6 +68,11 @@
         android:key="mouse"
         android:title="@string/mouse" />
     <Preference
+        android:fragment="hardkernel.odroid.settings.kiosk.KioskFragment"
+        android:icon="@drawable/ic_kiosk"
+        android:key="kiosk"
+        android:title="@string/kiosk" />
+    <Preference
         android:fragment="hardkernel.odroid.settings.shortcut.ShortcutFragment"
         android:icon="@drawable/ic_app_shortcut"
         android:key="shortcut"

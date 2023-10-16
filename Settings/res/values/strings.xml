@@ -241,10 +241,20 @@
     <string name="advanced_sound_settings_title">Advanced sound settings</string>
     <!-- Title for preference to allow game mode for display. [CHAR LIMIT=50] -->
     <string name="game_mode_title">Allow game mode</string>
+    <!-- Title for preference to kiosk for kiosk menu. [CHAR LIMIT=50] -->
+    <string name="kiosk">Kiosk</string>
+    <!-- Title for preference to kiosk select menu. [CHAR LIMIT=50] -->
+    <string name="kiosk_select">Select Application</string>
+    <!-- Title for preference to kiosk target title. [CHAR LIMIT=50] -->
+    <string name="kiosk_target_title">Start Application</string>
     <!-- Title for preference to allow kiosk mode for display. [CHAR LIMIT=50] -->
     <string name="kiosk_mode_title">Kiosk mode</string>
+    <!-- Title for preference to allow kiosk locking for Kiosk Target. [CHAR LIMIT=50] -->
+    <string name="kiosk_lock_title">Kiosk Locking</string>
     <!-- message for announce to apply kiosk mode after reboot -->
     <string name="kiosk_mode_message">Kiosk mode will be applied after reboot</string>
+    <!-- message for announce to apply kiosk mode after reboot -->
+    <string name="kiosk_lock_message">Kiosk locking will be applied after reboot</string>
     <!-- Title for preference to hide volume icon for display. [CHAR LIMIT=50] -->
     <string name="sysbar_volume_title">SystemBar Voluem Icon Hide</string>
     <!-- message for announce to apply sysbar volume statue change  after reboot -->

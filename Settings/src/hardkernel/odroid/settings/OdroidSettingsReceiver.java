@@ -8,6 +8,7 @@ import hardkernel.odroid.settings.camera.CameraReceiver;
 import hardkernel.odroid.settings.cpu.CpuReceiver;
 import hardkernel.odroid.settings.gpu.GpuReceiver;
 import hardkernel.odroid.settings.shortcut.ShortcutManager;
+import hardkernel.odroid.settings.kiosk.KioskManager;
 
 public class OdroidSettingsReceiver extends BroadcastReceiver {
 
@@ -18,6 +19,7 @@ public class OdroidSettingsReceiver extends BroadcastReceiver {
             GpuReceiver.onReceive();
             ShortcutManager.onReceive(context);
             CameraReceiver.onReceive();
+            KioskManager.onReceive(context);
         }
     }
 }
