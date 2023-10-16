@@ -401,8 +401,16 @@
         \n\nThere seemed to be no horses nor animals of any kind; the men carried things around in little green carts, which they pushed before them.
         Everyone seeemed happy and contented and prosperous.
     </string>
+    <!-- Title for preference to kiosk for kiosk menu. [CHAR LIMIT=50] -->
+    <string name="kiosk">Kiosk</string>
+    <!-- Title for preference to kiosk select menu. [CHAR LIMIT=50] -->
+    <string name="kiosk_select">Select Application</string>
+    <!-- Title for preference to kiosk target title. [CHAR LIMIT=50] -->
+    <string name="kiosk_target_title">Start Application</string>
     <!-- Title for preference to allow kiosk mode for display. [CHAR LIMIT=50] -->
     <string name="kiosk_mode_title">Kiosk mode</string>
+    <!-- Title for preference to allow kiosk locking for Kiosk Target. [CHAR LIMIT=50] -->
+    <string name="kiosk_lock_title">Kiosk Locking</string>
     <!-- message for announce to apply kiosk mode after reboot -->
     <string name="kiosk_mode_message">Kiosk mode will be applied after reboot</string>
 
@@ -473,6 +481,8 @@
     <string name="resolution_selection_dialog_ok">OK</string>
     <!-- Unit of refresh rate Hz. [CHAR LIMIT=15]-->
     <string name="resolution_selection_hz">Hz</string>
+    <!-- message for announce to apply kiosk mode after reboot -->
+    <string name="kiosk_lock_message">Kiosk locking will be applied after reboot</string>
 
     <!-- Title of dialog asking user to confirm before clearing all caches. [CHAR LIMIT=48] -->
     <string name="device_storage_clear_cache_title">Clear cached data?</string>

@@ -7,6 +7,7 @@ import android.content.Intent;
 import hardkernel.odroid.settings.cpu.CpuReceiver;
 import hardkernel.odroid.settings.gpu.GpuReceiver;
 import hardkernel.odroid.settings.shortcut.ShortcutManager;
+import hardkernel.odroid.settings.kiosk.KioskManager;
 
 public class OdroidSettingsReceiver extends BroadcastReceiver {
 
@@ -16,6 +17,7 @@ public class OdroidSettingsReceiver extends BroadcastReceiver {
             CpuReceiver.onReceive();
             GpuReceiver.onReceive();
             ShortcutManager.onReceive(context);
+            KioskManager.onReceive(context);
         }
     }
 }
