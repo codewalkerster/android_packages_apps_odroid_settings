@@ -201,15 +201,15 @@ public class MorePrefFragment extends SettingsPreferenceFragment {
                 powerKeyOnModePref.setVisible(false);
             }
             DroidUtils.store(getActivity(), DroidUtils.KEY_HIDE_STARTUP, DroidUtils.VALUE_HIDE_STARTUP);
+
+            if (!SettingsConstant.isTvFeature()) {
+                tvExtrasPref.setVisible(false);
+            }
         }
 
         if (DroidUtils.hasGtvsUiMode()) {
             Log.i(TAG, "hide powerkey_action");
             powerKeyPref.setVisible(false);
-        }
-
-        if (!SettingsConstant.isTvFeature()) {
-            tvExtrasPref.setVisible(false);
         }
 
         if (0 == Settings.Global.getInt(getContext().getContentResolver(), DEBUG_GLOBAL_SETTING, 0)) {
@@ -239,6 +239,9 @@ public class MorePrefFragment extends SettingsPreferenceFragment {
     private void startExportedActivity(String packageName, String activityName) {
         try {
             Intent intent = new Intent();
+            if (TextUtils.equals(activityName, SettingsConstant.ACTIVITY_NAME_TV_EXTRAS)) {
+                intent= getActivity().getIntent();
+            }
             intent.setClassName(packageName, activityName);
             getActivity().startActivity(intent);
         } catch (ActivityNotFoundException e) {
