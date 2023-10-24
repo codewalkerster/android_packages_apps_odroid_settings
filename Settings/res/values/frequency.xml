@@ -11,4 +11,14 @@
         <item>1800000</item>
         <item>1992000</item>
     </string-array>
+    <!-- Odroid-M1S -->
+    <string-array name="m1s">
+        <item>408000</item>
+        <item>600000</item>
+        <item>816000</item>
+        <item>1104000</item>
+        <item>1416000</item>
+        <item>1608000</item>
+        <item>1800000</item>
+    </string-array>
 </resources>

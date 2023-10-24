@@ -3,6 +3,7 @@ package hardkernel.odroid.settings.cpu;
 import android.content.Context;
 import android.util.Log;
 import hardkernel.odroid.settings.R;
+import hardkernel.odroid.settings.util.OdroidUtils;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
@@ -149,7 +150,11 @@ public class Frequency {
 
     private List<String> getScalingAvailables(Context context) {
         int id = 0;
-        id = R.array.m1;
+        if(OdroidUtils.isOdroidM1()) {
+            id = R.array.m1;
+        } else {
+            id = R.array.m1s;
+        }
 
         return Arrays.asList(context.getResources().getStringArray(id));
     }
