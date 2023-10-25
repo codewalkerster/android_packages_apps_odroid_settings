@@ -393,7 +393,7 @@ public class OutputUiManager {
                 return;
             }
         }
-        if (hdmiMode.startsWith("2160p")) {
+        if (hdmiMode.startsWith("2160p60") || hdmiMode.startsWith("2160p50")) {
             ConfigEnv.setColorAttribute("420,8bit");
         } else {
         // default value

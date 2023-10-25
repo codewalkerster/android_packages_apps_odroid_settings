@@ -235,7 +235,7 @@ public class OutputmodeFragment extends LeanbackAddBackPreferenceFragment
                     mAlertDialog.dismiss();
 
                     mOutputUiManager.setValidColorAttribute(curMode);
-                    if (curMode.startsWith("2160p")) {
+                    if (curMode.startsWith("2160p60") || curMode.startsWith("2160p50")) {
                         curMode = curMode + "420";
                     }
                     // save current resolution mode.
