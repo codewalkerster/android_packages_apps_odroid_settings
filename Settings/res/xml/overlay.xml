@@ -3,5 +3,6 @@
     android:title="@string/overlay_title">
     <Preference
         android:key="overlays"
-        android:title="@string/overlays" />
+        android:title="@string/overlays"
+        android:fragment="hardkernel.odroid.settings.dtbo.DTBOSelectFragment"/>
 </PreferenceScreen>
