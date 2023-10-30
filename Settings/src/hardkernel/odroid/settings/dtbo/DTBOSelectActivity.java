@@ -5,7 +5,7 @@ import androidx.fragment.app.Fragment;
 import hardkernel.odroid.settings.BaseSettingsFragment;
 import hardkernel.odroid.settings.TvSettingsActivity;
 
-public class DTBOverlayActivity extends TvSettingsActivity {
+public class DTBOSelectActivity extends TvSettingsActivity {
     @Override
     protected Fragment createSettingsFragment() { return SettingsFragment.newInstance(); }
 
@@ -20,7 +20,7 @@ public class DTBOverlayActivity extends TvSettingsActivity {
 
         @Override
         public void onPreferenceStartInitialScreen() {
-            final DTBOverlayFragment fragment = DTBOverlayFragment.newInstance();
+            final DTBOSelectFragment fragment = DTBOSelectFragment.newInstance();
             startPreferenceFragment(fragment);
         }
     }
