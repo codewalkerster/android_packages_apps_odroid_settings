@@ -283,9 +283,8 @@ public class ConnectedDevicesSliceProvider extends SliceProvider implements
         // Update "connect/disconnect preference"
         if (cachedDevice != null && !cachedDevice.isBusy()) {
             // Whether the device is actually connected from CachedBluetoothDevice's perceptive.
-            boolean isConnected = AccessoryUtils.isConnected(device) && cachedDevice.isConnected();
-            Log.d(TAG, "AccessoryUtils.isConnected:" + AccessoryUtils.isConnected(device)
-                    + " cachedDevice.isConnected:" + cachedDevice.isConnected());
+            boolean isConnected = AccessoryUtils.isConnected(device);
+            Log.d(TAG, " createBluetoothDeviceSlice isConnected:" + isConnected);
 
             RowBuilder connectionActionPref = new RowBuilder()
                     .setKey(isConnected ? KEY_DISCONNECT : KEY_CONNECT)
@@ -581,9 +580,7 @@ public class ConnectedDevicesSliceProvider extends SliceProvider implements
     private PreferenceSliceBuilder.RowBuilder createBtDeviceSlicePreference(
             Context context, BluetoothDevice device) {
         PreferenceSliceBuilder.RowBuilder pref = new PreferenceSliceBuilder.RowBuilder();
-        boolean isConnected = AccessoryUtils.isConnected(device)
-                && AccessoryUtils.getCachedBluetoothDevice(getContext(), device) != null
-                && AccessoryUtils.getCachedBluetoothDevice(getContext(), device).isConnected();
+        boolean isConnected = AccessoryUtils.isConnected(device);
         Log.d(TAG, "createBtDeviceSlicePreference isConnected:" + isConnected);
 
         pref.setKey(device.getAddress());
