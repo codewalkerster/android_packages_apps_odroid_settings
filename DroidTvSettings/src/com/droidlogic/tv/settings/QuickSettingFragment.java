@@ -96,6 +96,7 @@ public class QuickSettingFragment extends SettingsPreferenceFragment implements 
 
     @Override
     public boolean onPreferenceTreeClick(Preference preference) {
+        super.onPreferenceTreeClick(preference);
         if (TextUtils.equals(preference.getKey(), KEY_TV_PICTURE)) {
             startExportedActivity(SettingsConstant.PACKAGE_NAME_TV_EXTRAS,
                     SettingsConstant.ACTIVITY_NAME_PICTURE);
@@ -103,7 +104,7 @@ public class QuickSettingFragment extends SettingsPreferenceFragment implements 
             startExportedActivity(SettingsConstant.PACKAGE_NAME_TV_EXTRAS,
                     SettingsConstant.ACTIVITY_NAME_TV_OPTION);
         }
-        return super.onPreferenceTreeClick(preference);
+        return false;
     }
     @Override
     public boolean onPreferenceChange(Preference preference, Object newValue) {

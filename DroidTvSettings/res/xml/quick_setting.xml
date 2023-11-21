@@ -23,9 +23,9 @@
         android:title="@string/title_key_quick_setting_audio"
         android:fragment="com.droidlogic.tv.settings.soundeffect.SoundModeFragment"/>
     <Preference
-        android:fragment="com.droidlogic.tv.settings.pqsettings.PictureModeFragment"
         android:icon="@drawable/ic_settings_display"
-        android:key="key_quick_setting_picture_mode" />
+        android:key="key_quick_setting_picture_mode"
+        android:title="@string/title_key_quick_setting_picture_mode" />
     <Preference
         android:icon="@drawable/ic_settings_more"
         android:key="key_quick_setting_ai_pq"
