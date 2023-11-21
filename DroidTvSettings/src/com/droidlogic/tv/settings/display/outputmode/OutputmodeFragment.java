@@ -35,6 +35,15 @@ import androidx.preference.PreferenceScreen;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.view.WindowManager;
+import androidx.appcompat.app.AlertDialog;
+import android.os.Bundle;
+import android.os.Looper;
+import java.util.concurrent.TimeUnit;
+import android.content.DialogInterface;
+import android.os.CountDownTimer;
+import android.widget.Button;
+
 import static com.android.tv.twopanelsettings.slices.SlicesConstants.EXTRA_PREFERENCE_KEY;
 import com.droidlogic.tv.settings.PreferenceControllerFragment;
 import com.droidlogic.tv.settings.sliceprovider.dialog.AdjustResolutionDialogActivity;
@@ -53,13 +62,17 @@ public class OutputmodeFragment extends SettingsPreferenceFragment {
     private static String curMode;
     RadioPreference prePreference;
     RadioPreference curPreference;
-    private static final int MSG_PLUG_FRESH_UI = 0;
     private IntentFilter mIntentFilter;
+    private static final int DEFAULT_COUNTDOWN_MILLISECONDS = 15000;
+    private boolean mWasDolbyVisionChanged;
+    private Handler mHandler = new Handler(Looper.getMainLooper());
+    private Runnable mRestoreCallback = () -> {
+    };
 
     private BroadcastReceiver mIntentReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            mHandler.sendEmptyMessage(MSG_PLUG_FRESH_UI);
+            mHandler.post(() -> updatePreferenceFragment());
         }
     };
 
@@ -97,7 +110,7 @@ public class OutputmodeFragment extends SettingsPreferenceFragment {
     @Override
     public void onResume() {
         mSetModeUEventObserver = SetModeUEventObserver.getInstance();
-        mSetModeUEventObserver.setOnUEventRunnable(() -> mHandler.sendEmptyMessage(MSG_PLUG_FRESH_UI));
+        mSetModeUEventObserver.setOnUEventRunnable(() -> mHandler.post(() -> updatePreferenceFragment()));
         mSetModeUEventObserver.startObserving();
         super.onResume();
     }
@@ -111,7 +124,7 @@ public class OutputmodeFragment extends SettingsPreferenceFragment {
     public void onDestroy() {
         getActivity().unregisterReceiver(mIntentReceiver);
         mSetModeUEventObserver.stopObserving();
-        mHandler.removeMessages(MSG_PLUG_FRESH_UI);
+        mHandler.removeCallbacksAndMessages(null);
         super.onDestroy();
     }
 
@@ -129,11 +142,18 @@ public class OutputmodeFragment extends SettingsPreferenceFragment {
 
                 Log.d(TAG, "currentMode:" + sysCurrentMode + "; NewMode:"
                         + UserPreferredDisplayMode + "modeTitle:" + UserPreferredDisplayModeTitle);
-                Intent intent = new Intent();
-                intent.setClass(getActivity(), AdjustResolutionDialogActivity.class);
-                intent.putExtra(EXTRA_PREFERENCE_KEY, UserPreferredDisplayMode);
-                getActivity().startActivity(intent);
-                curPreference.setChecked(true);
+
+                mDisplayCapabilityManager.setResolutionAndRefreshRateByMode(UserPreferredDisplayMode);
+                mWasDolbyVisionChanged = mDisplayCapabilityManager.adjustDolbyVisionByMode(UserPreferredDisplayMode);
+                mRestoreCallback =
+                        () -> {
+                            mDisplayCapabilityManager.setResolutionAndRefreshRateByMode(sysCurrentMode);
+                            if (mWasDolbyVisionChanged) {
+                                mDisplayCapabilityManager.setPreferredFormat(
+                                        DisplayCapabilityManager.HdrFormat.DOLBY_VISION);
+                            }
+                        };
+                new Handler().postDelayed(() -> showWarningDialogOnResolutionChange(UserPreferredDisplayMode), 1000);
             } else {
                 radioPreference.setChecked(true);
             }
@@ -146,16 +166,63 @@ public class OutputmodeFragment extends SettingsPreferenceFragment {
         return 0;
     }
 
-    private Handler mHandler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case MSG_PLUG_FRESH_UI:
-                    updatePreferenceFragment();
-                    break;
+    private void showWarningDialogOnResolutionChange(String UserPreferredDisplayMode) {
+        final CountDownTimer[] timerTask = {null};
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.CustomAlertDialogBackground);
+        builder.setCancelable(false);
+        builder.setPositiveButton(
+                R.string.adjust_resolution_dialog_ok_msg,
+                (dialog, which) -> {
+                    timerTask[0].cancel();
+                });
+        builder.setNegativeButton(
+                R.string.adjust_resolution_dialog_cancel_msg,
+                (dialog, which) -> {
+                    timerTask[0].cancel();
+                    mRestoreCallback.run();
+                });
+
+        builder.setTitle(getString(R.string.adjust_resolution_dialog_title));
+        builder.setMessage(createWarningMessage(UserPreferredDisplayMode));
+        AlertDialog dialog = builder.create();
+        dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY);
+
+        dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialogInterface) {
+                final Button cancelButton = dialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+                timerTask[0] = new CountDownTimer(DEFAULT_COUNTDOWN_MILLISECONDS, 1000) {
+                            @Override
+                            public void onTick(long millisUntilFinished) {
+                                cancelButton.setText(getString(R.string.adjust_resolution_dialog_cancel_msg)
+                                        .replace("COUNTDOWN_PLACEHOLDER",
+                                                String.valueOf(TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) + 1)
+                                        )
+                                );
+                            }
+                            @Override
+                            public void onFinish() {
+                                mRestoreCallback.run();
+                                dialog.dismiss();
+                            }
+                        };
+                timerTask[0].start();
             }
+        });
+        dialog.show();
+        dialog.getButton(AlertDialog.BUTTON_NEGATIVE).requestFocus();
+    }
+
+    private String createWarningMessage(String nextMode) {
+        String msg;
+        if (!mWasDolbyVisionChanged) {
+            msg = getString(R.string.adjust_resolution_dialog_desc);
+        } else {
+            msg = getString(R.string.adjust_resolution_and_disable_dv_dialog_desc);
         }
-    };
+
+        return msg.replace("RESOLUTION_PLACEHOLDER", mDisplayCapabilityManager.getTitleByMode(nextMode));
+    }
 
     /**
      * Display Outputmode list based on RadioPreference style.
