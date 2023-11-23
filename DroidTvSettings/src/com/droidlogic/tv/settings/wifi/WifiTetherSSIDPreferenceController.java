@@ -51,7 +51,11 @@ public class WifiTetherSSIDPreferenceController extends WifiTetherBasePreference
         if (null != preference) {
         String ssid = preference.getText();
             Log.d(TAG, "updateSsidDisplay: ssid:" + ssid);
-            if (!ssid.equals(mSSID)) {
+            if (!isTextValid(mSSID)) {
+                mSSID = DEFAULT_SSID;
+                mListener.onTetherConfigUpdated();
+            }
+            else if (!ssid.equals(mSSID)) {
                 mSSID = ssid;
                 mListener.onTetherConfigUpdated();
             }
@@ -83,6 +87,9 @@ public class WifiTetherSSIDPreferenceController extends WifiTetherBasePreference
 
     @Override
     public boolean isTextValid(String value) {
+        if (value == null || value.isEmpty() || value.length() >= 32) {
+               return false;
+        }
         return mWifiDeviceNameTextValidator.isTextValid(value);
     }
 
@@ -91,6 +98,10 @@ public class WifiTetherSSIDPreferenceController extends WifiTetherBasePreference
     }
 
     private void updateSsidDisplay(EditTextPreference preference) {
+        if (mSSID == null || mSSID.isEmpty() || mSSID.length() >= 32) {
+            preference.setText(DEFAULT_SSID);
+            preference.setSummary(DEFAULT_SSID);
+        }
         preference.setText(mSSID);
         preference.setSummary(mSSID);
     }
