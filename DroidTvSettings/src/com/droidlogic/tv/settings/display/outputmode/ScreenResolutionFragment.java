@@ -295,6 +295,12 @@ public class ScreenResolutionFragment extends SettingsPreferenceFragment impleme
             removeResolutionPreference();
         }
 
+        // The Preference hides the HDR priority and HDR policy when the
+        // framework has access to the supported HDR output types.
+        if (mDisplayCapabilityManager.getSupportedHdrOutputTypes() == 0) {
+            getPreferenceScreen().removePreference(mHdrPriorityPref);
+            getPreferenceScreen().removePreference(mHdrPolicyPref);
+        }
     }
 
     /**
