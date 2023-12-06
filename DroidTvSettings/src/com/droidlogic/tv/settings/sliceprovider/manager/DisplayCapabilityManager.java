@@ -316,9 +316,6 @@ public class DisplayCapabilityManager {
         }
         Display.Mode[] frameworkSupportedModes = mDisplayManager.getDisplay(0).getSupportedModes();
         Map<String, Display.Mode> modeMapTmp = USER_PREFERRED_MODE_BY_MODE;
-        if (MediaSliceUtil.CanDebug()) {
-            Log.d(TAG, "framework support mode: " + Arrays.toString(frameworkSupportedModes));
-        }
 
         boolean matched = false;
         for (Display.Mode mode2 : frameworkSupportedModes) {
@@ -552,7 +549,7 @@ public class DisplayCapabilityManager {
     }
 
     public String getCurrentMode() {
-        return mOutputModeManager.getCurrentOutputMode().trim();
+        return filterHdmiModes(mOutputModeManager.getCurrentOutputMode().trim());
     }
 
     public boolean getSystemPreferredDisplayMode() {

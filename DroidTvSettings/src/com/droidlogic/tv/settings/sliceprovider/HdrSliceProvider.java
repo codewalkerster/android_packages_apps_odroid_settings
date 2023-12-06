@@ -420,23 +420,21 @@ public class HdrSliceProvider extends MediaSliceProvider {
 
         String currentMode = mDisplayCapabilityManager.getCurrentMode();
         for (String colorAttr : colorAttrs) {
-            if (mDisplayCapabilityManager.doesModeSupportColor(currentMode, colorAttr)) {
-                if (MediaSliceUtil.CanDebug()) {
-                    Log.d(TAG, "currentMode:" + currentMode + " colorAttr:" + colorAttr);
-                }
-                psb.addPreference(
-                        new RowBuilder()
-                                .setKey(colorAttr)
-                                .setTitle(mDisplayCapabilityManager.getTitleByColorAttr(colorAttr))
-                                .setInfoSummary(getContext().getString(R.string.color_format_info_summary))
-                                .addRadioButton(
-                                        generatePendingIntent(
-                                                getContext(),
-                                                MediaSliceConstants.ACTION_SET_COLOR_ATTRIBUTE,
-                                                AdjustColorFormatDialogActivity.class),
-                                        currentColorAttr.equals(colorAttr),
-                                        getContext().getString(R.string.color_attribute_select_type_radio_group_name)));
+            if (MediaSliceUtil.CanDebug()) {
+                Log.d(TAG, "currentMode:" + currentMode + " colorAttr:" + colorAttr);
             }
+            psb.addPreference(
+                    new RowBuilder()
+                            .setKey(colorAttr)
+                            .setTitle(mDisplayCapabilityManager.getTitleByColorAttr(colorAttr))
+                            .setInfoSummary(getContext().getString(R.string.color_format_info_summary))
+                            .addRadioButton(
+                                    generatePendingIntent(
+                                            getContext(),
+                                            MediaSliceConstants.ACTION_SET_COLOR_ATTRIBUTE,
+                                            AdjustColorFormatDialogActivity.class),
+                                    currentColorAttr.equals(colorAttr),
+                                    getContext().getString(R.string.color_attribute_select_type_radio_group_name)));
         }
         return psb.build();
     }

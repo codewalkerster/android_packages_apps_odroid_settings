@@ -59,7 +59,6 @@ public class ColorAttributeFragment extends SettingsPreferenceFragment {
     private String mNewColorSpace;
     private SetModeUEventObserver mSetModeUEventObserver;
 
-    private ArrayList<String> colorTitleList = new ArrayList();
     private BroadcastReceiver mIntentReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -90,7 +89,6 @@ public class ColorAttributeFragment extends SettingsPreferenceFragment {
         screen.setTitle(R.string.device_outputmode_color_space);
         setPreferenceScreen(screen);
         if (!isHdmiMode()) {
-            colorTitleList.clear();
             return;
         }
         final List<Action> InfoList = getMainActions();
@@ -109,10 +107,6 @@ public class ColorAttributeFragment extends SettingsPreferenceFragment {
         }
     }
 
-    private boolean isModeSupportColor(final String curMode, final String curValue){
-        return mDisplayCapabilityManager.doesModeSupportColor(curMode, curValue);
-    }
-
     private List<String> getTitleListByColorAttr(List<String> colorAttrList) {
         List<String> colorListTitle = new ArrayList<>();
         for (String colorAttr : colorAttrList) {
@@ -123,31 +117,18 @@ public class ColorAttributeFragment extends SettingsPreferenceFragment {
 
     private List<Action> getMainActions() {
         List<Action> actions = new ArrayList<Action>();
-        colorTitleList.clear();
         List<String> colorValueList = mDisplayCapabilityManager.getColorAttributes();
-        List<String> colorTitleList = getTitleListByColorAttr(colorValueList);
-        String value = null;
-        String filterValue = null;
         String  curColorSpaceValue = mDisplayCapabilityManager.getCurrentColorAttribute();
-        Log.i(LOG_TAG, "curColorSpaceValue: " + curColorSpaceValue);
+        Log.i(LOG_TAG, "curColorSpaceValue: " + curColorSpaceValue + "colorValueList: " + colorValueList);
         if ("default".equals(curColorSpaceValue)) {
             curColorSpaceValue = DEFAULT_VALUE;
         }
 
-        for (int i = 0; i < colorTitleList.size(); i++) {
-            value = colorValueList.get(i).trim();
-            curMode = mDisplayCapabilityManager.getCurrentMode();
-            if (!isModeSupportColor(curMode, value)) {
-                continue;
-            }
-            filterValue += value;
-        }
-
         for (int i = 0; i < OutputModeManager.HDMI_COLOR_LIST.length; i++) {
-            if (filterValue ==null) {
+            if (colorValueList ==null) {
                 break;
             }
-            if (filterValue.contains(OutputModeManager.HDMI_COLOR_LIST[i])) {
+            if (colorValueList.contains(OutputModeManager.HDMI_COLOR_LIST[i])) {
                 if (curColorSpaceValue.contains(OutputModeManager.HDMI_COLOR_LIST[i])) {
                     actions.add(new Action.Builder().key(OutputModeManager.HDMI_COLOR_LIST[i])
                         .title(OutputModeManager.HDMI_COLOR_TITLE_LIST[i])
@@ -234,9 +215,6 @@ public class ColorAttributeFragment extends SettingsPreferenceFragment {
         curMode = mDisplayCapabilityManager.getCurrentMode();
         Log.i(LOG_TAG,"Set Color Space Value: "+curValue + "CurValue: "+saveValue);
         if (!curValue.equals(saveValue)) {
-            if (!isModeSupportColor(curMode, curValue)) {
-                curValue = DEFAULT_VALUE;
-            }
             mDisplayCapabilityManager.setColorAttribute(curValue);
             return true;
         }
