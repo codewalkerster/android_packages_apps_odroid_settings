@@ -174,13 +174,16 @@ public class HdmiCecFragment extends SettingsPreferenceFragment implements Prefe
         }
         digitalSoundPref.setOnPreferenceChangeListener(this);
 
-        mCecOneKeyPlayPref.setVisible(!tvFlag);
+        boolean hideOptions = Settings.Global.getInt(getContext().getContentResolver(),
+                                HdmiCecManager.SETTINGS_DROIDLOGIC_CEC_SUPPORT, 0) == 0;
+
+        mCecOneKeyPlayPref.setVisible(!tvFlag && !hideOptions);
         mCecAutoWakeupPref.setVisible(tvFlag);
         mCecSwitchPref.setVisible(true);
         mArcSwitchPref.setVisible(false);
         mEarcSwitchPref.setVisible(false);
         mCecDeviceAutoPowerOffPref.setVisible(true);
-        mCecAutoChangeLanguagePref.setVisible(!tvFlag);
+        mCecAutoChangeLanguagePref.setVisible(!tvFlag && !hideOptions);
         hdmiDeviceSelectPref.setVisible(tvFlag);
         digitalSoundPref.setVisible(false);
         boolean isChecked = mHdmiCecManager.isArcEnabled();
