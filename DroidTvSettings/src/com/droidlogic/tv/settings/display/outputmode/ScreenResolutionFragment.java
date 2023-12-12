@@ -198,7 +198,6 @@ public class ScreenResolutionFragment extends SettingsPreferenceFragment impleme
         Log.i(TAG, "displayConfig " + displayConfig);
         Log.i(TAG, "customConfig " + customConfig);
         Log.i(TAG, "debugConfig " + debugConfig);
-
         if (isHdmiMode()) {
 
             mBestResolutionPref.setVisible(true);
@@ -297,7 +296,7 @@ public class ScreenResolutionFragment extends SettingsPreferenceFragment impleme
 
         // The Preference hides the HDR priority and HDR policy when the
         // framework has access to the supported HDR output types.
-        if (mDisplayCapabilityManager.getSupportedHdrOutputTypes() == 0) {
+        if (mDisplayCapabilityManager.getSupportedHdrOutputTypes() != 0) {
             getPreferenceScreen().removePreference(mHdrPriorityPref);
             getPreferenceScreen().removePreference(mHdrPolicyPref);
         }
