@@ -18,7 +18,11 @@
 
     <string-array name="energy_mode_low_baseExemptPackages" translatable="false" >
         <item>com.netflix.ninja</item>
+        <item>com.droidlogic.android.tv</item>
     </string-array>
+
+    <integer name="energy_mode_low_baseAllowedReasons">2</integer>
+
     <string-array name="energy_mode_low_baseAllowedFeatures" translatable="false">
         <item>com.google.android.tv.NON_NETWORKED_STANDBY_FEATURES</item>
     </string-array>
