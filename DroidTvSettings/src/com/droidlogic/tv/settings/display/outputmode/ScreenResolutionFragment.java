@@ -192,12 +192,15 @@ public class ScreenResolutionFragment extends SettingsPreferenceFragment impleme
         boolean customConfig = mOutputModeManager.isSupportNetflix();
         boolean debugConfig = mOutputModeManager.isSupportDisplayDebug();
 
+        boolean isSupportDolbyVision = mDisplayCapabilityManager.isDolbyVisionPreference();
         Log.i(TAG, "isSocSupportDv " + isSocSupportDv);
         Log.i(TAG, "platformSupportDv " + platformSupportDv);
         Log.i(TAG, "socSupportDv " + socSupportDv);
         Log.i(TAG, "displayConfig " + displayConfig);
         Log.i(TAG, "customConfig " + customConfig);
         Log.i(TAG, "debugConfig " + debugConfig);
+        Log.i(TAG, "isSupportDolbyVision  " + isSupportDolbyVision);
+
         if (isHdmiMode()) {
 
             mBestResolutionPref.setVisible(true);
@@ -216,8 +219,7 @@ public class ScreenResolutionFragment extends SettingsPreferenceFragment impleme
             mColorFormat.setSummary(mDisplayCapabilityManager.getTitleByColorAttr(currentColorFormat));
 
             // dolby vision
-            mDolbyVisionPref.setVisible(platformSupportDv && displayConfig && dvFlag);
-            mDolbyVisionPref.setEnabled(displayConfig && dvFlag);
+            mDolbyVisionPref.setVisible(isSupportDolbyVision);
             if (mDisplayCapabilityManager.isDolbyVisionEnable()) {
                 if (mDolbyVisionSettingManager.getDolbyVisionType() == 2) {
                     mDolbyVisionPref.setSummary(R.string.dolby_vision_low_latency_yuv);
