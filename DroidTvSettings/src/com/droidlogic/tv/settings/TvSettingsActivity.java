@@ -20,7 +20,9 @@ import static com.droidlogic.tv.settings.overlay.FlavorUtils.ALL_FLAVORS_MASK;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Handler;
 import android.os.Bundle;
+import android.os.Message;
 import android.transition.Scene;
 import android.transition.Slide;
 import android.transition.Transition;
@@ -29,6 +31,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.provider.Settings;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -38,16 +41,15 @@ import android.view.KeyEvent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.IntentFilter;
-import android.os.Message;
+
+import com.droidlogic.tv.settings.overlay.FlavorUtils;
 import com.droidlogic.tv.settings.tvoption.SoundParameterSettingManager;
 import com.droidlogic.tv.settings.soundeffect.OptionParameterManager;
-import com.droidlogic.app.DataProviderManager;
 import com.droidlogic.app.AudioEffectManager;
 import com.droidlogic.app.AudioSystemCmdManager;
 
 import com.android.settingslib.core.instrumentation.MetricsFeatureProvider;
 import com.android.settingslib.core.instrumentation.SharedPreferencesLogger;
-import com.droidlogic.tv.settings.overlay.FlavorUtils;
 
 public abstract class TvSettingsActivity extends FragmentActivity {
     private static final String TAG = "TvSettingsActivity";
@@ -60,6 +62,7 @@ public abstract class TvSettingsActivity extends FragmentActivity {
     public static final String INTENT_ACTION_FINISH_FRAGMENT = "action.finish.droidsettingsmodefragment";
     public static final int MODE_LAUNCHER = 0;
     public static final int MODE_LIVE_TV = 1;
+    private static final String KEY_MENU_TIME = "menu_time";
     private int mStartMode = MODE_LAUNCHER;
     private SoundParameterSettingManager mSoundParameterSettingManager = null;
     private OptionParameterManager mOptionParameterManager = null;
@@ -120,6 +123,14 @@ public abstract class TvSettingsActivity extends FragmentActivity {
                     });
         }
 
+        mStartMode = getIntent().getIntExtra("from_live_tv", MODE_LAUNCHER);
+        Log.d(TAG, "mStartMode : " + mStartMode);
+        if (SettingsConstant.needDroidlogicCustomization(this)) {
+            if (mStartMode == MODE_LIVE_TV) {
+                startShowActivityTimer();
+            }
+        }
+
     }
 
     public BroadcastReceiver mReceiver = new BroadcastReceiver() {
@@ -128,7 +139,6 @@ public abstract class TvSettingsActivity extends FragmentActivity {
             Log.d(TAG, "intent = " + intent);
             switch (intent.getAction()) {
                 case INTENT_ACTION_FINISH_FRAGMENT:
-                    break;
                 case Intent.ACTION_CLOSE_SYSTEM_DIALOGS:
                     finish();
                     break;
@@ -149,7 +159,19 @@ public abstract class TvSettingsActivity extends FragmentActivity {
     @Override
     public void onResume() {
         registerSomeReceivers();
+        if (SettingsConstant.needDroidlogicCustomization(this)) {
+            if (mStartMode == MODE_LIVE_TV) {
+                startShowActivityTimer();
+            }
+        }
         super.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        handler.removeMessages(0);
+        Log.d(TAG, "onPause");
     }
 
     @Override
@@ -297,4 +319,59 @@ public abstract class TvSettingsActivity extends FragmentActivity {
         }
         return super.getSharedPreferences(name, mode);
     }
+
+    @Override
+    public boolean dispatchKeyEvent (KeyEvent event) {
+        if (event.getAction() == KeyEvent.ACTION_DOWN) {
+            switch (event.getKeyCode()) {
+                case KeyEvent.KEYCODE_DPAD_UP:
+                case KeyEvent.KEYCODE_DPAD_DOWN:
+                case KeyEvent.KEYCODE_DPAD_LEFT:
+                case KeyEvent.KEYCODE_DPAD_RIGHT:
+                case KeyEvent.KEYCODE_DPAD_CENTER:
+                case KeyEvent.KEYCODE_BACK:
+                    if (mStartMode == MODE_LIVE_TV) {
+                        Log.d(TAG, "dispatchKeyEvent");
+                        startShowActivityTimer();
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        return super.dispatchKeyEvent(event);
+    }
+
+    public void startShowActivityTimer() {
+        handler.removeMessages(0);
+
+        int seconds = Settings.Global.getInt(getContentResolver(), KEY_MENU_TIME, -1);
+        if (seconds == 1) {
+            seconds = 15;
+        } else if (seconds == 2) {
+            seconds = 30;
+        } else if (seconds == 3) {
+            seconds = 60;
+        } else if (seconds == 4) {
+            seconds = 120;
+        } else if (seconds == 5) {
+            seconds = 240;
+        } else {
+            seconds = 0;
+        }
+        if (seconds > 0) {
+            handler.sendEmptyMessageDelayed(0, seconds * 1000);
+        } else {
+            handler.removeMessages(0);
+        }
+    }
+
+    Handler handler = new Handler() {
+        public void handleMessage(Message msg) {
+            Intent intent = new Intent();
+            intent.setAction(INTENT_ACTION_FINISH_FRAGMENT);
+            sendBroadcast(intent);
+        }
+    };
 }
