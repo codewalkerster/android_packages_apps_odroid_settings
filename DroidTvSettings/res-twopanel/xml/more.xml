@@ -90,11 +90,6 @@
         android:title="@string/amlogic_developer_options_title" />
     <Preference
         android:icon="@drawable/ic_settings_more"
-        android:key="ai_pq"
-        android:title="@string/ai_pq"
-        android:fragment="com.droidlogic.tv.settings.AiPqFragment"/>
-    <Preference
-        android:icon="@drawable/ic_settings_more"
         android:key="frame_rate"
         android:title="@string/frame_rate"
         android:fragment="com.droidlogic.tv.settings.FrameRateFragment"/>

@@ -75,7 +75,6 @@ public class MorePrefFragment extends SettingsPreferenceFragment {
     private static final String KEY_HDMI_CEC_CONTROL = "hdmicec";
     private static final String KEY_ADVANCE_SOUND = "advanced_sound_settings";
     private static final String KEY_DEVELOP_OPTION = "amlogic_developer_options";
-    private static final String KEY_AI_PQ = "ai_pq";
     private static final String KEY_FRAME_RATE = "frame_rate";
     private static final String KEY_TV_EXTRAS = "tv_extras";
 
@@ -140,7 +139,6 @@ public class MorePrefFragment extends SettingsPreferenceFragment {
         final Preference netflixesnPref = findPreference(KEY_NETFLIX_ESN);
         final Preference versionPref = findPreference(KEY_VERSION);
         final Preference advanced_sound_settings_pref = findPreference(KEY_ADVANCE_SOUND);
-        final Preference aipq = findPreference(KEY_AI_PQ);
         final Preference frameRatePref = findPreference(KEY_FRAME_RATE);
         final Preference tvExtrasPref = findPreference(KEY_TV_EXTRAS);
 
@@ -149,7 +147,6 @@ public class MorePrefFragment extends SettingsPreferenceFragment {
         advanced_sound_settings_pref.setVisible(false);
         //hide it forcedly as new bluetooth remote upgrade application is not available now
         mUpgradeBluetoothRemote.setVisible(false/*is_from_live_tv ? false : (SettingsConstant.needDroidlogicBluetoothRemoteFeature(getContext()) && !tvFlag)*/);
-        aipq.setVisible(mSystemControlManager.hasAipqFunc());
         if (SettingsConstant.needGTVFeature(getContext())) {
             hdmicecPref.setVisible(false);
         } else {
