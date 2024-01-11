@@ -18,6 +18,7 @@ include $(CLEAR_VARS)
 LOCAL_PROGUARD_ENABLED := disabled
 LOCAL_PACKAGE_NAME := DroidSoundEffectSettings
 
+LOCAL_PRIVATE_PLATFORM_APIS := true
 LOCAL_CERTIFICATE := platform
 LOCAL_MODULE_TAGS := optional
 LOCAL_PROGUARD_FLAG_FILES := proguard.cfg
@@ -41,13 +42,6 @@ LOCAL_RESOURCE_DIR := \
 LOCAL_SRC_FILES := \
     $(call all-java-files-under, src) \
     $(call all-Iaidl-files-under, src)
-
-ifeq ($(shell test $(PLATFORM_SDK_VERSION) -ge 28 && echo OK),OK)
-LOCAL_PRIVATE_PLATFORM_APIS := true
-LOCAL_PRODUCT_MODULE := true
-else
-LOCAL_SDK_VERSION := current
-endif
 
 include $(BUILD_PACKAGE)
 

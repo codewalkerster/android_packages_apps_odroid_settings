@@ -17,16 +17,11 @@ LOCAL_PATH := $(call my-dir)
 include $(CLEAR_VARS)
 
 LOCAL_PACKAGE_NAME := OdroidSettings
+LOCAL_PRIVATE_PLATFORM_APIS := true
 LOCAL_CERTIFICATE := platform
 LOCAL_MODULE_TAGS := optional
 LOCAL_PROGUARD_FLAG_FILES := proguard.cfg
 LOCAL_USE_AAPT2 := true
-
-ifeq ($(shell test $(PLATFORM_SDK_VERSION) -ge 26 && echo OK),OK)
-LOCAL_PROPRIETARY_MODULE := true
-else
-LOCAL_PRIVILEGED_MODULE := true
-endif
 
 #include frameworks/base/packages/SettingsLib/common.mk
 LOCAL_JAVA_LIBRARIES := droidlogic droidlogic-tv
@@ -55,10 +50,6 @@ LOCAL_SRC_FILES := \
     $(call all-Iaidl-files-under, java)
 #include frameworks/opt/setupwizard/library/common-gingerbread.mk
 #include frameworks/base/packages/SettingsLib/common.mk
-
-ifndef PRODUCT_SHIPPING_API_LEVEL
-LOCAL_PRIVATE_PLATFORM_APIS := true
-endif
 
 FILE := device/hardkernel/$(TARGET_PRODUCT)/files/OdroidSettings/AndroidManifest-common.xml
 
