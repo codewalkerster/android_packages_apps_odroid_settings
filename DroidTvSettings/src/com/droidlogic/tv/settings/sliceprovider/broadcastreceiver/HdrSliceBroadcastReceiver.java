@@ -7,11 +7,11 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
-import android.util.Log;
 import com.droidlogic.tv.settings.R;
 import com.droidlogic.tv.settings.sliceprovider.MediaSliceConstants;
 import com.droidlogic.tv.settings.sliceprovider.manager.DisplayCapabilityManager;
 import com.droidlogic.tv.settings.sliceprovider.utils.MediaSliceUtil;
+import static com.droidlogic.tv.settings.util.DroidUtils.logDebug;
 
 public class HdrSliceBroadcastReceiver extends BroadcastReceiver {
     private static final String TAG = HdrSliceBroadcastReceiver.class.getSimpleName();
@@ -35,7 +35,7 @@ public class HdrSliceBroadcastReceiver extends BroadcastReceiver {
                 boolean isModeLL =
                         context.getString(R.string.dolby_vision_mode_low_latency_key).equals(key);
 
-                Log.d(TAG, "isModeLL: " + isModeLL);
+                logDebug(TAG,false, "isModeLL: " + isModeLL);
                 getDisplayCapabilityManager(context).setDolbyVisionModeLLPreferred(isModeLL);
                 context.getContentResolver().notifyChange(MediaSliceConstants.HDR_AND_COLOR_FORMAT_URI, null);
                 // There may be some problems with refreshing immediately after set mode, here the refresh is delayed.
@@ -45,9 +45,7 @@ public class HdrSliceBroadcastReceiver extends BroadcastReceiver {
                         }, 500);
                 break;
             case ACTION_HDMI_PLUGGED:
-                if (MediaSliceUtil.CanDebug()) {
-                    Log.d(TAG, "ACTION_HDMI_PLUGGED");
-                }
+                logDebug(TAG, false, "ACTION_HDMI_PLUGGED");
                 context.getContentResolver().notifyChange(MediaSliceConstants.RESOLUTION_URI, null);
                 context.getContentResolver().notifyChange(MediaSliceConstants.HDR_AND_COLOR_FORMAT_URI, null);
                 context.getContentResolver().notifyChange(MediaSliceConstants.MATCH_CONTENT_URI, null);
@@ -55,7 +53,7 @@ public class HdrSliceBroadcastReceiver extends BroadcastReceiver {
                 break;
             case MediaSliceConstants.ACTION_AUTO_BEST_RESOLUTIONS_ENABLED:
                 isChecked = intent.getBooleanExtra(EXTRA_TOGGLE_STATE, true);
-                Log.d(TAG, "ACTION_AUTO_BEST_RESOLUTIONS_ENABLED isChecked: " + isChecked);
+                logDebug(TAG, false, "ACTION_AUTO_BEST_RESOLUTIONS_ENABLED isChecked: " + isChecked);
                 String currentMode = getDisplayCapabilityManager(context).getCurrentMode();
                 if (!isChecked) {
                     getDisplayCapabilityManager(context).setResolutionAndRefreshRateByMode(currentMode);

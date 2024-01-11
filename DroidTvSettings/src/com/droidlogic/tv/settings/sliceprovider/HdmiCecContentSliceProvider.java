@@ -1,19 +1,19 @@
 package com.droidlogic.tv.settings.sliceprovider;
 
-import android.net.Uri;
-import android.util.Log;
 import androidx.slice.Slice;
 import androidx.slice.SliceProvider;
+import android.net.Uri;
+import android.content.ContentResolver;
+import android.provider.Settings;
+
 import com.android.tv.twopanelsettings.slices.builders.PreferenceSliceBuilder;
 import com.android.tv.twopanelsettings.slices.builders.PreferenceSliceBuilder.RowBuilder;
+
 import com.droidlogic.tv.settings.R;
 import com.droidlogic.tv.settings.sliceprovider.manager.HdmiCecContentManager;
 import com.droidlogic.tv.settings.sliceprovider.utils.MediaSliceUtil;
 import com.droidlogic.tv.settings.sliceprovider.broadcastreceiver.HdmiCecSliceBroadcastReceiver;
-
-import android.content.ContentResolver;
-import android.provider.Settings;
-
+import static com.droidlogic.tv.settings.util.DroidUtils.logDebug;
 
 public class HdmiCecContentSliceProvider extends MediaSliceProvider {
     private static final String TAG = HdmiCecContentSliceProvider.class.getSimpleName();
@@ -34,9 +34,7 @@ public class HdmiCecContentSliceProvider extends MediaSliceProvider {
 
     @Override
     public Slice onBindSlice(final Uri sliceUri) {
-        if (MediaSliceUtil.CanDebug()) {
-            Log.d(TAG, "onBindSlice: " + sliceUri);
-        }
+        logDebug(TAG, false, "onBindSlice: " + sliceUri);
         switch (MediaSliceUtil.getFirstSegment(sliceUri)) {
             case MediaSliceConstants.HDMI_CEC_PATH:
                 // fill in Netfilx Esn into general info purposely
@@ -75,7 +73,7 @@ public class HdmiCecContentSliceProvider extends MediaSliceProvider {
 
         int volumePassthroughMode = getContext().getResources().
                                         getInteger(R.integer.config_cec_passthroughMode);
-        Log.d(TAG, "createHdmiCecSlice volumePassthroughMode:" + volumePassthroughMode);
+        logDebug(TAG, true, "createHdmiCecSlice volumePassthroughMode:" + volumePassthroughMode);
         if (PASSTHROUGH_MODE_ADD_WARNING == volumePassthroughMode) {
             boolean volumeControl = mHdmiCecContentManager.getVolumeControlStatus();
             String title = volumeControl ? getContext().getString(R.string.enabled)

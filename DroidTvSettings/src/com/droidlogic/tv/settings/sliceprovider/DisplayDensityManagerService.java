@@ -6,7 +6,6 @@ import android.hardware.display.DisplayManager;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.os.UserHandle;
-import android.util.Log;
 import android.view.Display;
 import android.view.IWindowManager;
 import android.view.WindowManagerGlobal;
@@ -18,6 +17,7 @@ import com.google.common.collect.ImmutableSet;
 
 import com.droidlogic.tv.settings.sliceprovider.utils.MediaSliceUtil;
 import com.droidlogic.tv.settings.sliceprovider.MediaSliceConstants;
+import static com.droidlogic.tv.settings.util.DroidUtils.logDebug;
 
 public class DisplayDensityManagerService extends Service {
     private static final ImmutableSet<Integer> MANAGED_DISPLAY_TYPES = ImmutableSet.of(0, 1, 2);
@@ -41,10 +41,8 @@ public class DisplayDensityManagerService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        if (MediaSliceUtil.CanDebug()) {
-            Log.d(TAG, "onCreate");
-            Log.d(TAG, "PREFERRED_DPI_BY_DISPLAY_WIDTH: " + PREFERRED_DPI_BY_DISPLAY_WIDTH);
-        }
+        logDebug(TAG, false, "PREFERRED_DPI_BY_DISPLAY_WIDTH: " + PREFERRED_DPI_BY_DISPLAY_WIDTH);
+
         mDisplayManager = (DisplayManager) getSystemService(DisplayManager.class);
         mWindowManagerService = WindowManagerGlobal.getWindowManagerService();
         Display[] displays = mDisplayManager.getDisplays();
@@ -63,7 +61,7 @@ public class DisplayDensityManagerService extends Service {
 
             public void onDisplayChanged(int displayId) {
                 if (MANAGED_DISPLAY_TYPES.contains(Integer.valueOf(mDisplayManager.getDisplay(displayId).getType()))) {
-                    Log.i(TAG, "onDisplayChanged displayId: " + displayId);
+                    logDebug(TAG, false, "onDisplayChanged displayId: " + displayId);
                     adjustDisplayDensityByMode(displayId);
                 }
             }
@@ -74,18 +72,12 @@ public class DisplayDensityManagerService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        if (MediaSliceUtil.CanDebug()) {
-            Log.d(TAG, "onStartCommand");
-        }
         return super.onStartCommand(intent, flags, startId);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (MediaSliceUtil.CanDebug()) {
-            Log.d(TAG, "onDestroy");
-        }
         mDisplayManager.unregisterDisplayListener(mDisplayListener);
     }
 
@@ -93,7 +85,7 @@ public class DisplayDensityManagerService extends Service {
         try {
             mWindowManagerService.clearForcedDisplaySize(displayId);
         } catch (RemoteException e) {
-            Log.e(TAG, "Cannot reset the display size.", e);
+            logDebug(TAG, true, "Cannot reset the display size.");
         }
     }
 
@@ -101,7 +93,8 @@ public class DisplayDensityManagerService extends Service {
     /* access modifiers changed from: public */
     private void adjustDisplayDensityByMode(int displayId) {
         Display.Mode mode = mDisplayManager.getDisplay(displayId).getMode();
-        Log.i(TAG, "adjust display density on display " + displayId + " according to the new display mode " + mode);
+        logDebug(TAG, false, "adjust display density on display "
+                + displayId + " according to the new display mode " + mode);
         try {
             int density = MediaSliceConstants.MEDIA_DISPLAY_DENSITY_HIGH;  // The maximum resolution density is used by default
             if (mode.getPhysicalHeight() <= MAX_HEIGHT_OF_UI.intValue()) {
@@ -112,17 +105,17 @@ public class DisplayDensityManagerService extends Service {
                     density =
                             (mode.getPhysicalWidth() * MediaSliceConstants.MEDIA_DISPLAY_DENSITY_HIGH)
                                     / MediaSliceConstants.MEDIA_DISPLAY_RESOLUTION_1920;
-                    Log.e(TAG, "Unexpected display width = " + mode.getPhysicalWidth() + ", change the DPI to " + density);
+                    logDebug(TAG, true, "Unexpected display width = "
+                            + mode.getPhysicalWidth() + ", change the DPI to " + density);
                 }
             }
-            if (MediaSliceUtil.CanDebug()) {
-                Log.e(TAG, "density: " + density);
-            }
+
+            logDebug(TAG, false, "density: " + density);
             // A user id constant to indicate the "owner" user of the device.
             mWindowManagerService.setForcedDisplayDensityForUser(displayId, density, UserHandle.USER_OWNER);
         } catch (RemoteException e) {
-            Log.e(TAG, "Cannot change the display density.The content may be displayed incorrectly. "
-                    + "Skip the error since it won't affect the main functionalities.", e);
+            logDebug(TAG, true, "Cannot change the display density.The content may be displayed incorrectly. "
+                    + "Skip the error since it won't affect the main functionalities.");
         }
     }
 }

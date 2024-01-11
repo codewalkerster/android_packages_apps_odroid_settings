@@ -39,8 +39,4 @@ public class MediaSliceUtil {
                 key.replace(context.getString(R.string.surround_sound_format_key_prefix), ""));
     }
 
-    public static boolean CanDebug() {
-        return SystemProperties.getBoolean("sys.setting.debug", false);
-    }
-
 }

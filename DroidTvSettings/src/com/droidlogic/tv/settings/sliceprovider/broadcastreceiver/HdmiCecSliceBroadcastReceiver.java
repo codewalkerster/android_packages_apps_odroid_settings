@@ -9,16 +9,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.provider.Settings;
 import android.view.WindowManager;
-
 
 import com.droidlogic.tv.settings.R;
 import com.droidlogic.tv.settings.sliceprovider.MediaSliceConstants;
 import com.droidlogic.tv.settings.sliceprovider.utils.MediaSliceUtil;
 import com.droidlogic.tv.settings.sliceprovider.manager.HdmiCecContentManager;
-
+import static com.droidlogic.tv.settings.util.DroidUtils.logDebug;
 
 public class HdmiCecSliceBroadcastReceiver extends BroadcastReceiver {
     private static final String TAG = HdmiCecSliceBroadcastReceiver.class.getSimpleName();
@@ -31,7 +29,6 @@ public class HdmiCecSliceBroadcastReceiver extends BroadcastReceiver {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case MSG_ENABLE_CEC_SWITCH:
-                    if (MediaSliceUtil.CanDebug()) Log.d(TAG, "enable cec switch");
                     if (mProgress != null && mProgress.isShowing()) {
                         mProgress.dismiss();
                     }
@@ -45,7 +42,7 @@ public class HdmiCecSliceBroadcastReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         final String action = intent.getAction();
-        Log.d(TAG, "onReceive " + intent);
+        logDebug(TAG, true, "onReceive " + intent);
         boolean isChecked;
         mProgress = new ProgressDialog(context);
         mProgress.setMessage(context.getString(R.string.cec_status_update));

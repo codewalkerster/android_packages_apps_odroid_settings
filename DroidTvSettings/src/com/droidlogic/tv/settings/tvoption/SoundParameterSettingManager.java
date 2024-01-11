@@ -20,7 +20,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.text.TextUtils;
-import android.util.Log;
 import android.os.SystemProperties;
 import android.media.AudioManager;
 import android.app.ActivityManager;
@@ -36,6 +35,7 @@ import com.droidlogic.app.DataProviderManager;
 import com.droidlogic.app.DroidLogicUtils;
 import com.droidlogic.app.OutputModeManager;
 import com.droidlogic.app.SystemControlManager;
+import static com.droidlogic.tv.settings.util.DroidUtils.logDebug;
 
 import java.util.Arrays;
 import java.util.ArrayList;
@@ -81,12 +81,8 @@ public class SoundParameterSettingManager {
         mSystemControlManager = SystemControlManager.getInstance();
     }
 
-    static public boolean CanDebug() {
-        return mSystemControlManager.getPropertyBoolean("vendor.soundparameter.debug", false);
-    }
-
     public void setDebugAudioOn (int id, boolean dbSwitch) {
-        if (DroidLogicUtils.getAudioDebugEnable()) Log.d(TAG, "setDebugAudioOn id:" + id + ", dbSwitch:" + dbSwitch);
+        logDebug(TAG, false, "setDebugAudioOn id:" + id + ", dbSwitch:" + dbSwitch);
 
         switch (id) {
             case DEBUG_DOLBY_DRC_UI:
@@ -100,6 +96,8 @@ public class SoundParameterSettingManager {
                 break;
             case DEBUG_AUDIO_LATENCY_UI:
                 Settings.Global.putInt(mContext.getContentResolver(), DB_ID_AUDIO_LATENCY_DEBUG, dbSwitch ? 1 : 0);
+                break;
+            default:
                 break;
         }
     }
@@ -119,8 +117,10 @@ public class SoundParameterSettingManager {
             case DEBUG_AUDIO_LATENCY_UI:
                 value = Settings.Global.getInt(mContext.getContentResolver(), DB_ID_AUDIO_LATENCY_DEBUG, DEBUG_AUDIO_UI_OFF);
                 break;
+            default:
+                break;
         }
-        if (DroidLogicUtils.getAudioDebugEnable()) Log.d(TAG, "isDebugAudioOn id:" + id + ", value:" + value);
+        logDebug(TAG, false, "isDebugAudioOn id:" + id + ", value:" + value);
 
         return value == DEBUG_AUDIO_UI_ON;
     }
@@ -129,18 +129,18 @@ public class SoundParameterSettingManager {
     public int getVirtualSurroundStatus() {
         final int itemPosition =  Settings.Global.getInt(mContext.getContentResolver(),
                 OutputModeManager.VIRTUAL_SURROUND, OutputModeManager.VIRTUAL_SURROUND_OFF);
-        if (CanDebug()) Log.d(TAG, "getVirtualSurroundStatus = " + itemPosition);
+        logDebug(TAG, false, "getVirtualSurroundStatus = " + itemPosition);
         return itemPosition;
     }
 
     public void setVirtualSurround (int mode) {
-        if (CanDebug()) Log.d(TAG, "setVirtualSurround = " + mode);
+        logDebug(TAG, false, "setVirtualSurround = " + mode);
         mOutputModeManager.setVirtualSurround(mode);
         Settings.Global.putInt(mContext.getContentResolver(), OutputModeManager.VIRTUAL_SURROUND, mode);
     }
 
     public void setDigitalAudioFormat (String mode) {
-        if (CanDebug()) Log.d(TAG, "setDigitalAudioFormat = " + mode);
+        logDebug(TAG, false, "setDigitalAudioFormat = " + mode);
         switch (mode) {
             case DIGITAL_SOUND_PCM:
                 mOutputModeManager.setDigitalAudioFormatOut(OutputModeManager.DIGITAL_AUDIO_FORMAT_PCM);
@@ -161,7 +161,7 @@ public class SoundParameterSettingManager {
 
     public String getDigitalAudioFormat() {
         int surround = mOutputModeManager.getDigitalAudioFormatOut();
-        if (CanDebug()) Log.d(TAG, "getDigitalAudioFormat surround: " +
+        logDebug(TAG, false, "getDigitalAudioFormat surround: " +
                 DroidLogicUtils.audioFormatOutputToString(surround));
         String format = "";
         switch (surround) {
@@ -195,7 +195,7 @@ public class SoundParameterSettingManager {
                 Arrays.stream(enable.split(",")).mapToInt(Integer::parseInt)
                     .forEach(fmts::add);
             } catch (NumberFormatException e) {
-                Log.w(TAG, "DIGITAL_AUDIO_SUBFORMAT misformatted.", e);
+                logDebug(TAG, true, "DIGITAL_AUDIO_SUBFORMAT misformatted.");
             }
         }
         if (enabled) {
@@ -264,19 +264,18 @@ public class SoundParameterSettingManager {
     }
 
     public void resetParameter() {
-        Log.d(TAG, "resetParameter");
         mOutputModeManager.resetSoundParameters();
     }
 
     public boolean isVadOn() {
         String vadUbootEnable = mSystemControlManager.getBootenv(AudioSettingManager.AUDIO_VAD_UBOOTENV_FFV_WAKE, AudioSettingManager.AUDIO_VAD_STRING_VAD_OFF);
         String property = mSystemControlManager.getPropertyString(AudioSettingManager.AUDIO_VAD_PROPERTY_VADWAKE, AudioSettingManager.AUDIO_VAD_STRING_VAD_OFF);
-        if (CanDebug()) Log.d(TAG, "isVadOn:" + vadUbootEnable);
+        logDebug(TAG, false, "isVadOn:" + vadUbootEnable);
         return vadUbootEnable.equals(AudioSettingManager.AUDIO_VAD_STRING_VAD_ON);
     }
 
     public void setVadOn(boolean enable) {
-        if (CanDebug()) Log.d(TAG, "setVadOn:" + enable);
+        logDebug(TAG, false, "setVadOn:" + enable);
         String mode = AudioSettingManager.AUDIO_VAD_STRING_VAD_OFF;
         if (enable) {
             mode = AudioSettingManager.AUDIO_VAD_STRING_VAD_ON;

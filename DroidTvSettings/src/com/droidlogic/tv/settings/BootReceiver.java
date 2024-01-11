@@ -36,12 +36,7 @@ public class BootReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        if (DEBUG) {
-            Log.d(TAG, "onReceive");
-        }
-
         try {
-            Log.i(TAG, "start FrameRateService");
             context.startService(new Intent(context,FrameRateService.class));
         } catch (Exception e) {
             Log.e(TAG, "startFrameRateService error !!", e);

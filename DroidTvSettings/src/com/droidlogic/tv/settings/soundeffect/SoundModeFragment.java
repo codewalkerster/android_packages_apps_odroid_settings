@@ -25,7 +25,6 @@ import androidx.preference.ListPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceCategory;
 import androidx.preference.TwoStatePreference;
-import android.util.Log;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -60,6 +59,7 @@ import com.droidlogic.app.SystemControlManager;
 import com.droidlogic.tv.settings.TvSettingsActivity;
 import com.droidlogic.tv.settings.R;
 import com.droidlogic.tv.settings.tvoption.SoundParameterSettingManager;
+import static com.droidlogic.tv.settings.util.DroidUtils.logDebug;
 
 public class SoundModeFragment extends SettingsPreferenceFragment implements Preference.OnPreferenceChangeListener, SeekBar.OnSeekBarChangeListener {
 
@@ -129,14 +129,9 @@ public class SoundModeFragment extends SettingsPreferenceFragment implements Pre
         return new SoundModeFragment();
     }
 
-    private boolean CanDebug() {
-        return OptionParameterManager.CanDebug();
-    }
-
     @Override
     public void onResume() {
         super.onResume();
-        Log.d(TAG, "onResume");
         if (mAudioEffectManager != null) {
             final ListPreference eqmode = (ListPreference) findPreference(TV_EQ_MODE);
             eqmode.setVisible(mAudioEffectManager.isAudioEffectOn(AudioEffectManager.DEBUG_HPEQ_UI));
@@ -168,7 +163,6 @@ public class SoundModeFragment extends SettingsPreferenceFragment implements Pre
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        Log.d(TAG, "onCreate");
         init();
         mAudioManager = (AudioManager) getActivity().getSystemService(Context.AUDIO_SERVICE);
         super.onCreate(savedInstanceState);
@@ -191,7 +185,6 @@ public class SoundModeFragment extends SettingsPreferenceFragment implements Pre
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        Log.d(TAG, "onCreateView");
         final View innerView = super.onCreateView(inflater, container, savedInstanceState);
         if (getActivity().getIntent().getIntExtra("from_live_tv", 0) == 1) {
             //MainFragment.changeToLiveTvStyle(innerView, getActivity());
@@ -201,7 +194,6 @@ public class SoundModeFragment extends SettingsPreferenceFragment implements Pre
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-        Log.d(TAG, "onCreatePreferences");
         setPreferencesFromResource(R.xml.tv_sound_mode, null);
         myHandler.sendEmptyMessage(LOAD_UI);
 
@@ -209,7 +201,7 @@ public class SoundModeFragment extends SettingsPreferenceFragment implements Pre
         mAudioOutputDevPref.setOnPreferenceChangeListener(this);
         mAudioDeviceOutputStrategy = mSystemControl.getPropertyInt(AudioSystemCmdManager.PROP_AUDIO_OUTPUT_STRATEGY, AudioSystemCmdManager.OUTPUT_STRATEGY_AUTO);
         if (mAudioDeviceOutputStrategy < AudioSystemCmdManager.OUTPUT_STRATEGY_AUTO || mAudioDeviceOutputStrategy > AudioSystemCmdManager.OUTPUT_STRATEGY_MANUAL) {
-            Log.w(TAG, "refreshPref strategy invalid:" + mAudioDeviceOutputStrategy);
+            logDebug(TAG, false, "refreshPref strategy invalid:" + mAudioDeviceOutputStrategy);
             mAudioDeviceOutputStrategy = AudioSystemCmdManager.OUTPUT_STRATEGY_AUTO;
         }
 
@@ -221,7 +213,6 @@ public class SoundModeFragment extends SettingsPreferenceFragment implements Pre
     }
 
     private boolean initView() {
-        Log.d(TAG, "initView");
         final ListPreference eqmode = (ListPreference) findPreference(TV_EQ_MODE);
         eqmode.setVisible(mAudioEffectManager.isAudioEffectOn(AudioEffectManager.DEBUG_HPEQ_UI));
         eqmode.setValueIndex(mAudioEffectManager.getSoundModeStatus());
@@ -262,7 +253,7 @@ public class SoundModeFragment extends SettingsPreferenceFragment implements Pre
 
     @Override
     public boolean onPreferenceTreeClick(Preference preference) {
-        if (CanDebug()) Log.d(TAG, "[onPreferenceTreeClick] preference.getKey() = " + preference.getKey());
+        logDebug(TAG, false, "[onPreferenceTreeClick] preference.getKey() = " + preference.getKey());
            String key = preference.getKey();
         if (TextUtils.equals(key, AUDIO_ONLY)) {
             createUiDialog(AUDIO_ONLY_INT);
@@ -278,7 +269,8 @@ public class SoundModeFragment extends SettingsPreferenceFragment implements Pre
 
     @Override
     public boolean onPreferenceChange(Preference preference, Object newValue) {
-        if (CanDebug()) Log.d(TAG, "[onPreferenceChange] preference.getKey() = " + preference.getKey() + ", newValue = " + newValue);
+        logDebug(TAG, false, "[onPreferenceChange] preference.getKey() = " + preference.getKey()
+                + ", newValue = " + newValue);
         final int selection = Integer.parseInt((String)newValue);
         if (TextUtils.equals(preference.getKey(), TV_EQ_MODE)) {
             mAudioEffectManager.setSoundMode(selection);
@@ -337,8 +329,9 @@ public class SoundModeFragment extends SettingsPreferenceFragment implements Pre
         button_cancel.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (mAlertDialog != null)
+                if (mAlertDialog != null) {
                     mAlertDialog.dismiss();
+                }
             }
         });
         button_cancel.requestFocus();
@@ -514,7 +507,7 @@ public class SoundModeFragment extends SettingsPreferenceFragment implements Pre
             }
 
             default:
-                Log.w(TAG, "onProgressChanged unsupported seekbar id:" + seekBar.getId());
+                logDebug(TAG, false, "onProgressChanged unsupported seekbar id:" + seekBar.getId());
                 break;
         }
     }
@@ -597,7 +590,6 @@ public class SoundModeFragment extends SettingsPreferenceFragment implements Pre
 
     @Override
     public void onAttach(Context context) {
-        Log.i(TAG, "onAttach");
         mContext = getActivity();
         mSystemControl = SystemControlManager.getInstance();
         mAudioSystemCmdManager = AudioSystemCmdManager.getInstance(mContext);
@@ -634,20 +626,20 @@ public class SoundModeFragment extends SettingsPreferenceFragment implements Pre
 
     private int convertDevicesToUiDisplay(byte[] devices) {
         if (devices == null || devices.length == 0) {
-            Log.w(TAG, "convertDevicesToUiDisplay devices is null");
+            logDebug(TAG, false, "convertDevicesToUiDisplay devices is null");
             return UI_INDEX_DEVICE_OUT_SPEAKER;
         }
         if (devices.length == 1) {
             return audioDevToIndex(devices[0]);
         } else if (devices.length == 2) {
-            Log.w(TAG, "convertDevicesToUiDisplay not supported dev0:" + devices[0] + ", dev1:" + devices[1]);
+            logDebug(TAG, false, "convertDevicesToUiDisplay not supported dev0:" + devices[0] + ", dev1:" + devices[1]);
             if (devices[0] == AudioDeviceInfo.TYPE_LINE_DIGITAL) {
                 return audioDevToIndex(devices[1]);
             } else {
                 return audioDevToIndex(devices[0]);
             }
         }
-        Log.w(TAG, "convertDevicesToUiDisplay not supported device length:" + devices.length);
+        logDebug(TAG, false, "convertDevicesToUiDisplay not supported device length:" + devices.length);
         return UI_INDEX_DEVICE_OUT_SPEAKER;
     }
 
@@ -670,7 +662,7 @@ public class SoundModeFragment extends SettingsPreferenceFragment implements Pre
             case UI_INDEX_DEVICE_OUT_BLUETOOTH:
                 return R.string.title_tv_sound_output_device_bluetooth;
             default:
-                Log.w(TAG, "audioDevToIndex not supported device:" + index);
+                logDebug(TAG, false, "audioDevToIndex not supported device:" + index);
                 return 0;
         }
     }
@@ -696,7 +688,7 @@ public class SoundModeFragment extends SettingsPreferenceFragment implements Pre
             case AudioDeviceInfo.TYPE_BLUETOOTH_SCO:
                 return UI_INDEX_DEVICE_OUT_BLUETOOTH;
             default:
-                Log.w(TAG, "audioDevToIndex not supported AudioDeviceInfo device:" + device);
+                logDebug(TAG, false, "audioDevToIndex not supported AudioDeviceInfo device:" + device);
                 return UI_INDEX_DEVICE_OUT_SPEAKER;
         }
     }
@@ -720,7 +712,7 @@ public class SoundModeFragment extends SettingsPreferenceFragment implements Pre
             case UI_INDEX_DEVICE_OUT_BLUETOOTH:
                 return AudioDeviceInfo.TYPE_BLUETOOTH_A2DP;
             default:
-                Log.w(TAG, "indexToAudioDev not supported ui index:" + index);
+                logDebug(TAG, false, "indexToAudioDev not supported ui index:" + index);
                 return 0;
         }
     }

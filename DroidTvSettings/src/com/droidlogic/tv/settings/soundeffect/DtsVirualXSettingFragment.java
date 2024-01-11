@@ -18,12 +18,12 @@ package com.droidlogic.tv.settings.soundeffect;
 
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import com.droidlogic.tv.settings.SettingsPreferenceFragment;
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
 import androidx.preference.TwoStatePreference;
 import com.droidlogic.app.AudioEffectManager;
+import static com.droidlogic.tv.settings.util.DroidUtils.logDebug;
 
 import com.droidlogic.tv.settings.TvSettingsActivity;
 import com.droidlogic.tv.settings.R;
@@ -41,9 +41,7 @@ public class DtsVirualXSettingFragment extends SettingsPreferenceFragment implem
     public static DtsVirualXSettingFragment newInstance() {
         return new DtsVirualXSettingFragment();
     }
-    private boolean CanDebug() {
-        return OptionParameterManager.CanDebug();
-    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,7 +53,8 @@ public class DtsVirualXSettingFragment extends SettingsPreferenceFragment implem
         if (mAudioEffectManager == null) {
             mAudioEffectManager = AudioEffectManager.getInstance(getActivity().getApplicationContext());
         }
-        if (CanDebug()) Log.d(TAG,"isSupportVirtualX:"+mAudioEffectManager.isSupportVirtualX()+" getDtsVirtualXMode:"+mAudioEffectManager.getDtsVirtualXMode());
+        logDebug(TAG, false, "isSupportVirtualX:" + mAudioEffectManager.isSupportVirtualX()
+                + " getDtsVirtualXMode:" + mAudioEffectManager.getDtsVirtualXMode());
         mVirtualXEffectPref = (ListPreference) findPreference(KEY_TV_DTS_VIRTUALX_EFFECT);
         mVirtualXEffectPref.setValueIndex(mAudioEffectManager.getDtsVirtualXMode());
         mVirtualXEffectPref.setOnPreferenceChangeListener(this);
@@ -68,7 +67,8 @@ public class DtsVirualXSettingFragment extends SettingsPreferenceFragment implem
 
     @Override
     public boolean onPreferenceChange(Preference preference, Object newValue) {
-        if (CanDebug()) Log.d(TAG, "[onPreferenceChange] preference.getKey() = " + preference.getKey() + ", newValue = " + newValue);
+        logDebug(TAG, false, "[onPreferenceChange] preference.getKey() = " + preference.getKey()
+                + ", newValue = " + newValue);
         final int selection = Integer.parseInt((String)newValue);
         if (TextUtils.equals(preference.getKey(), KEY_TV_DTS_VIRTUALX_EFFECT)) {
             mAudioEffectManager.setDtsVirtualXMode(selection);

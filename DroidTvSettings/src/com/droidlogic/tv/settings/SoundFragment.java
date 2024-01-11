@@ -32,9 +32,13 @@ import androidx.preference.PreferenceViewHolder;
 import androidx.preference.SeekBarPreference;
 import androidx.preference.TwoStatePreference;
 import android.text.TextUtils;
-import android.util.Log;
 
-import java.util.*;
+import java.util.Map;
+import java.util.HashSet;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import java.lang.reflect.Method;
 
 import com.droidlogic.app.OutputModeManager;
@@ -45,6 +49,7 @@ import com.droidlogic.tv.settings.SettingsConstant;
 import com.droidlogic.tv.settings.SettingsPreferenceFragment;
 import com.droidlogic.tv.settings.R;
 import com.droidlogic.tv.settings.tvoption.SoundParameterSettingManager;
+import static com.droidlogic.tv.settings.util.DroidUtils.logDebug;
 
 public class SoundFragment extends SettingsPreferenceFragment implements Preference.OnPreferenceChangeListener {
     public static final String TAG = "SoundFragment";
@@ -77,10 +82,6 @@ public class SoundFragment extends SettingsPreferenceFragment implements Prefere
     private Map<Integer, Boolean> mFormats;
     public static SoundFragment newInstance() {
         return new SoundFragment();
-    }
-
-    private boolean CanDebug() {
-        return SystemProperties.getBoolean("sys.sound.debug", false);
     }
 
     @Override
@@ -186,12 +187,12 @@ public class SoundFragment extends SettingsPreferenceFragment implements Prefere
         boolean tvFlag = SettingsConstant.needDroidlogicTvFeature(getContext());
         if (!mSystemControlManager.getPropertyBoolean("ro.vendor.platform.support.dolby", false)) {
             dolbyDrcModePref.setVisible(false);
-            Log.d(TAG, "platform doesn't support dolby");
+            logDebug(TAG, false, "platform doesn't support dolby");
         }
         if (!mSystemControlManager.getPropertyBoolean("ro.vendor.platform.support.dts", false)) {
             dtsDrcModePref.setVisible(false);
             dtsDrcCustomModePref.setVisible(false);
-            Log.d(TAG, "platform doesn't support dts");
+            logDebug(TAG, false, "platform doesn't support dts");
         } else if (mSystemControlManager.getPropertyBoolean("persist.vendor.sys.dtsdrccustom", false)) {
             dtsDrcModePref.setVisible(false);
         } else {
@@ -306,7 +307,7 @@ public class SoundFragment extends SettingsPreferenceFragment implements Prefere
                     Arrays.stream(enable.split(",")).mapToInt(Integer::parseInt)
                         .forEach(fmts::add);
                 } catch (NumberFormatException e) {
-                    Log.w(TAG, "DIGITAL_AUDIO_SUBFORMAT misformatted.", e);
+                    logDebug(TAG, false, "DIGITAL_AUDIO_SUBFORMAT misformatted. error: " + e.getMessage());
                 }
             }
         }

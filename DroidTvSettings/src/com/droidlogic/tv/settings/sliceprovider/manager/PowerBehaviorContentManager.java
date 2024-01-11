@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.droidlogic.app.DataProviderManager;
-import com.droidlogic.tv.settings.sliceprovider.MediaSliceConstants;
+import static com.droidlogic.tv.settings.util.DroidUtils.logDebug;
 
 public class PowerBehaviorContentManager {
     private Context mContext;
@@ -91,15 +91,15 @@ public class PowerBehaviorContentManager {
             try {
                 mPowerHandlerObject.wait();
             } catch (Exception e) {
-                Log.i(TAG,"mPowerHandlerObject error " + e.getMessage());
+                logDebug(TAG, true,"mPowerHandlerObject error " + e.getMessage());
             }
         }
-        Log.d(TAG, "PowerKeyDefinition: " + PowerKeyDefinition);
+        logDebug(TAG, true, "PowerKeyDefinition: " + PowerKeyDefinition);
         return PowerKeyDefinition;
     }
 
     private void setPowerKeyActionDefinition(String powerKeyAction) {
-        Log.d(TAG, "powerKeyAction: " + powerKeyAction + " powerKey: " + POWER_BEHAVIOR_LIST.get(powerKeyAction));
+        logDebug(TAG, true, "powerKeyAction: " + powerKeyAction + " powerKey: " + POWER_BEHAVIOR_LIST.get(powerKeyAction));
 
         DataProviderManager.putIntValue(mContext, POWER_KEY_DEFINITION, POWER_BEHAVIOR_LIST.get(powerKeyAction));
         SystemProperties.set(PERSISTENT_PROPERTY_POWER_KEY_ACTION, String.valueOf(POWER_BEHAVIOR_LIST.get(powerKeyAction)));
@@ -127,7 +127,7 @@ public class PowerBehaviorContentManager {
                     break;
                 case MSG_BEHAVIOR_SET:
                     String powerKeyAction = (String) msg.obj;
-                    Log.d(TAG, "powerKeyAction is : " + powerKeyAction);
+                    logDebug(TAG, false, "powerKeyAction is : " + powerKeyAction);
                     setPowerKeyActionDefinition(powerKeyAction);
                     break;
                 default:

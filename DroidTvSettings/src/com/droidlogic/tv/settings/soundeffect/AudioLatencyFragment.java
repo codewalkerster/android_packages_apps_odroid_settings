@@ -16,15 +16,15 @@
 
 package com.droidlogic.tv.settings.soundeffect;
 
+import androidx.preference.ListPreference;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceCategory;
+import androidx.preference.SeekBarPreference;
+
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.SystemProperties;
-import com.droidlogic.tv.settings.SettingsPreferenceFragment;
-import androidx.preference.ListPreference;
-import androidx.preference.Preference;
-import androidx.preference.PreferenceCategory;
-import android.util.Log;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -44,15 +44,16 @@ import com.droidlogic.app.DroidLogicUtils;
 import com.droidlogic.app.AudioConfigManager;
 import com.droidlogic.app.SystemControlManager;
 
+import com.droidlogic.tv.settings.SettingsPreferenceFragment;
 import com.droidlogic.tv.settings.TvSettingsActivity;
 import com.droidlogic.tv.settings.R;
 import com.droidlogic.tv.settings.tvoption.SoundParameterSettingManager;
 import com.droidlogic.tv.settings.SoundFragment;
 import com.droidlogic.tv.settings.SettingsConstant;
-import androidx.preference.SeekBarPreference;
+import static com.droidlogic.tv.settings.util.DroidUtils.logDebug;
 
-
-public class AudioLatencyFragment extends SettingsPreferenceFragment implements Preference.OnPreferenceChangeListener, SeekBar.OnSeekBarChangeListener {
+public class AudioLatencyFragment extends SettingsPreferenceFragment
+        implements Preference.OnPreferenceChangeListener, SeekBar.OnSeekBarChangeListener {
 
     private static final String TAG = "AudioLatencyFragment";
 
@@ -76,10 +77,6 @@ public class AudioLatencyFragment extends SettingsPreferenceFragment implements 
         return new AudioLatencyFragment();
     }
 
-    private boolean CanDebug() {
-        return OptionParameterManager.CanDebug();
-    }
-
     @Override
     public void onResume() {
         super.onResume();
@@ -90,17 +87,14 @@ public class AudioLatencyFragment extends SettingsPreferenceFragment implements 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        Log.d(TAG, "onCreate");
         super.onCreate(savedInstanceState);
         mAudioConfigManager = AudioConfigManager.getInstance(getActivity());
         mSystemControlManager = SystemControlManager.getInstance();
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        Log.d(TAG, "onCreateView");
         final View innerView = super.onCreateView(inflater, container, savedInstanceState);
         return innerView;
     }
@@ -143,13 +137,14 @@ public class AudioLatencyFragment extends SettingsPreferenceFragment implements 
 
     @Override
     public boolean onPreferenceTreeClick(Preference preference) {
-        if (CanDebug()) Log.d(TAG, "[onPreferenceTreeClick] preference.getKey() = " + preference.getKey());
+        logDebug(TAG,false, "[onPreferenceTreeClick] preference.getKey() = " + preference.getKey());
         return super.onPreferenceTreeClick(preference);
     }
 
     @Override
     public boolean onPreferenceChange(Preference preference, Object newValue) {
-        if (CanDebug()) Log.d(TAG, "[onPreferenceChange] preference.getKey() = " + preference.getKey() + ", newValue = " + newValue);
+        logDebug(TAG, false, "[onPreferenceChange] preference.getKey() = " + preference.getKey()
+                + ", newValue = " + newValue);
         if (TextUtils.equals(preference.getKey(), KEY_TV_SOUND_AUDIO_SOURCE_SELECT)) {
             final int selection = Integer.parseInt((String)newValue);
             mCurrentSettingSourceId = selection;
@@ -236,7 +231,7 @@ public class AudioLatencyFragment extends SettingsPreferenceFragment implements 
                 break;
             }
             default:
-                Log.w(TAG, "onProgressChanged unsupported seekbar id:" + seekBar.getId());
+                logDebug(TAG, false, "onProgressChanged unsupported seekbar id:" + seekBar.getId());
                 break;
         }
     }
@@ -288,7 +283,7 @@ public class AudioLatencyFragment extends SettingsPreferenceFragment implements 
 
     public int getHdmiAudioLatency() {
         int result = mSystemControlManager.getPropertyInt(AUDIO_LATENCY, 0);
-        Log.d(TAG, "getHdmiAudioLatency = " + result);
+        logDebug(TAG, false, "getHdmiAudioLatency = " + result);
         return result;
     }
 }

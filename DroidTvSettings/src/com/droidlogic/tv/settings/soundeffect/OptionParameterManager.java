@@ -31,7 +31,6 @@ import java.lang.Boolean;
 public class OptionParameterManager {
 
     public static final String TAG = "OptionParameterManager";
-    public static final boolean DEBUG = true;
     public static final String KEY_MENU_TIME = "menu_time";//DroidLogicTvUtils.KEY_MENU_TIME;
     public static final int DEFAULT_MENU_TIME = 1;//DroidLogicTvUtils.DEFAULT_MENU_TIME;
 
@@ -41,10 +40,6 @@ public class OptionParameterManager {
     public OptionParameterManager (Context context) {
         mContext = context;
         mResources = mContext.getResources();
-    }
-
-    public static boolean CanDebug() {
-        return DEBUG;
     }
 
     public static boolean getBoolean(String key, boolean defaultValue) {

@@ -5,17 +5,16 @@ import android.hardware.display.DisplayManager;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.os.UserHandle;
-import android.util.Log;
 import android.view.Display;
 import android.view.IWindowManager;
 import android.view.WindowManagerGlobal;
 
 import androidx.appcompat.R;
-
-import com.droidlogic.tv.settings.sliceprovider.MediaSliceConstants;
-import com.droidlogic.tv.settings.sliceprovider.utils.MediaSliceUtil;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
+
+import com.droidlogic.tv.settings.sliceprovider.MediaSliceConstants;
+import static com.droidlogic.tv.settings.util.DroidUtils.logDebug;
 
 public class DisplayDensityManager {
 
@@ -41,7 +40,7 @@ public class DisplayDensityManager {
     public void adjustDisplayDensityByMode(Display.Mode mode) {
         //Display.Mode mode = mDisplayManager.getDisplay(displayId).getMode();
         final int displayId = mode.getModeId();
-        Log.i(TAG, "according to the new display mode: " + mode);
+        logDebug(TAG, false, "according to the new display mode: " + mode);
         try {
             int density = MediaSliceConstants.MEDIA_DISPLAY_DENSITY_HIGH;  // The maximum resolution density is used by default
             if (mode.getPhysicalHeight() <= MAX_HEIGHT_OF_UI.intValue()) {
@@ -52,17 +51,16 @@ public class DisplayDensityManager {
                     density =
                             (mode.getPhysicalWidth() * MediaSliceConstants.MEDIA_DISPLAY_DENSITY_HIGH)
                                     / MediaSliceConstants.MEDIA_DISPLAY_RESOLUTION_1920;
-                    Log.e(TAG, "Unexpected display width = " + mode.getPhysicalWidth() + ", change the DPI to " + density);
+                    logDebug(TAG, true, "Unexpected display width = " + mode.getPhysicalWidth()
+                            + ", change the DPI to " + density);
                 }
             }
-            if (MediaSliceUtil.CanDebug()) {
-                Log.e(TAG, "density: " + density);
-            }
+            logDebug(TAG, true, "density: " + density);
             // A user id constant to indicate the "owner" user of the device.
             mWindowManagerService.setForcedDisplayDensityForUser(Display.DEFAULT_DISPLAY, density, UserHandle.USER_CURRENT);
         } catch (RemoteException e) {
-            Log.e(TAG, "Cannot change the display density.The content may be displayed incorrectly. "
-                    + "Skip the error since it won't affect the main functionalities.", e);
+            logDebug(TAG, true, "Cannot change the display density.The content may be displayed incorrectly. "
+                    + "Skip the error since it won't affect the main functionalities.");
         }
     }
 }

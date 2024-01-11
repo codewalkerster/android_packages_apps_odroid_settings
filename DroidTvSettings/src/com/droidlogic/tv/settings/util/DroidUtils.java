@@ -73,16 +73,22 @@ public final class DroidUtils {
         Editor editor = DealData.edit();
         editor.putString(keyword, content);
         editor.commit();
-        Log.d(TAG, "store keyword: " + keyword + ",content: " + content);
+        logDebug(TAG, false, "store keyword: " + keyword + ",content: " + content);
     }
 
     public static String read(Context context, String keyword) {
         SharedPreferences DealData = context.getSharedPreferences("record_value", 0);
-        Log.d(TAG, "read keyword: " + keyword + ",value: " + DealData.getString(keyword, null));
+        logDebug(TAG, false, "read keyword: " + keyword + ",value: " + DealData.getString(keyword, null));
         return DealData.getString(keyword, null);
     }
 
-    static public boolean CanDebug() {
-        return SystemProperties.getBoolean("sys.droidTvsetting.debug", false);
+    static public boolean canDebug() {
+        return SystemProperties.getBoolean("sys.setting.debug", false);
+    }
+
+    static public void logDebug(String tag, boolean shouldPrint, String message) {
+        if (canDebug() || shouldPrint) {
+            Log.d(tag, message);
+        }
     }
 }

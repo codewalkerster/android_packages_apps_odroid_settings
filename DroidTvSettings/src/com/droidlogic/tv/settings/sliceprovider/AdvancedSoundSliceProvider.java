@@ -5,16 +5,18 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Handler;
-import android.util.Log;
 import androidx.slice.Slice;
+import java.util.Map;
+
 import com.android.tv.twopanelsettings.slices.builders.PreferenceSliceBuilder;
 import com.android.tv.twopanelsettings.slices.builders.PreferenceSliceBuilder.RowBuilder;
 import com.droidlogic.tv.settings.R;
+import static com.droidlogic.tv.settings.util.DroidUtils.logDebug;
+
 import com.droidlogic.tv.settings.sliceprovider.broadcastreceiver.AdvancedSoundSliceBroadcastReceiver;
 import com.droidlogic.tv.settings.sliceprovider.dialog.EnableUnsupportedSoundDialogActivity;
 import com.droidlogic.tv.settings.sliceprovider.manager.AdvancedSoundManager;
 import com.droidlogic.tv.settings.sliceprovider.utils.MediaSliceUtil;
-import java.util.Map;
 
 public class AdvancedSoundSliceProvider extends MediaSliceProvider {
   private static final String TAG = AdvancedSoundSliceProvider.class.getSimpleName();
@@ -30,9 +32,7 @@ public class AdvancedSoundSliceProvider extends MediaSliceProvider {
 
   @Override
   public Slice onBindSlice(final Uri sliceUri) {
-    if (MediaSliceUtil.CanDebug()) {
-      Log.d(TAG, "onBindSlice: " + sliceUri);
-    }
+    logDebug(TAG, false, "onBindSlice: " + sliceUri);
     switch (MediaSliceUtil.getFirstSegment(sliceUri)) {
       case MediaSliceConstants.SURROUND_SOUND_TOGGLE_PATH:
         return createSurroundSoundToggleSlice(sliceUri);
@@ -197,7 +197,7 @@ public class AdvancedSoundSliceProvider extends MediaSliceProvider {
             .getSurroundPassthroughSetting()
             .equals(AdvancedSoundManager.VAL_SURROUND_SOUND_MANUAL);
 
-    if (MediaSliceUtil.CanDebug()) Log.d(TAG,"allReportedSoundFormats.isEmpty():"+allReportedSoundFormats.isEmpty());
+    logDebug(TAG, false,"allReportedSoundFormats.isEmpty():"+allReportedSoundFormats.isEmpty());
     if (!allReportedSoundFormats.isEmpty()) {
       psb.addPreferenceCategory(
           new RowBuilder()

@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.UserHandle;
-import android.util.Log;
 import android.provider.Settings;
 import android.hardware.hdmi.HdmiControlManager;
 import android.content.ContentResolver;
@@ -14,6 +13,7 @@ import android.content.ContentResolver;
 import com.droidlogic.tv.settings.R;
 import com.droidlogic.tv.settings.sliceprovider.utils.MediaSliceUtil;
 import com.droidlogic.tv.settings.sliceprovider.MediaSliceConstants;
+import static com.droidlogic.tv.settings.util.DroidUtils.logDebug;
 
 public class HdmiCecContentManager {
     private static final String TAG = HdmiCecContentManager.class.getSimpleName();
@@ -56,16 +56,12 @@ public class HdmiCecContentManager {
     public boolean isHdmiControlEnabled() {
         boolean hdmiCecEnable = (mHdmiControlManager.getHdmiCecEnabled()
                 == HdmiControlManager.HDMI_CEC_CONTROL_ENABLED);
-        if (MediaSliceUtil.CanDebug()) {
-            Log.d(TAG, "isHdmiControlEnabled: " + hdmiCecEnable);
-        }
+        logDebug(TAG, false, "isHdmiControlEnabled: " + hdmiCecEnable);
         return hdmiCecEnable;
     }
 
     public void setHdmiCecEnabled(boolean enable) {
-        if (MediaSliceUtil.CanDebug()) {
-            Log.d(TAG, "setHdmiCecEnabled cec switch: " + enable);
-        }
+        logDebug(TAG, false, "setHdmiCecEnabled cec switch: " + enable);
 
         mHdmiControlManager.setHdmiCecEnabled(enable
                 ? HdmiControlManager.HDMI_CEC_CONTROL_ENABLED
@@ -87,7 +83,7 @@ public class HdmiCecContentManager {
             mHdmiControlManager.setHdmiCecVolumeControlEnabled(state);
         }
         resolver.notifyChange(MediaSliceConstants.DISPLAYSOUND_HDMI_CEC_URI, null);
-        Log.d(TAG, "setVolumeControlStatus volume control:" + state);
+        logDebug(TAG, false, "setVolumeControlStatus volume control:" + state);
     }
 
     public String isHdmiControlEnabledName() {

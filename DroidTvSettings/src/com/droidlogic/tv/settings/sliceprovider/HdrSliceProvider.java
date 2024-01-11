@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Handler;
-import android.util.Log;
 import android.app.tvsettings.TvSettingsEnums;
 import androidx.slice.Slice;
 import com.android.tv.twopanelsettings.slices.builders.PreferenceSliceBuilder;
@@ -17,6 +16,7 @@ import com.droidlogic.tv.settings.sliceprovider.manager.DisplayCapabilityManager
 import com.droidlogic.tv.settings.sliceprovider.manager.DisplayCapabilityManager.HdrFormat;
 import com.droidlogic.tv.settings.sliceprovider.manager.DisplayCapabilityManager.HdrFormatConfig;
 import com.droidlogic.tv.settings.sliceprovider.utils.MediaSliceUtil;
+import static com.droidlogic.tv.settings.util.DroidUtils.logDebug;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -39,7 +39,7 @@ public class HdrSliceProvider extends MediaSliceProvider {
         mIntentFilter = new IntentFilter(ACTION_HDMI_PLUGGED);
         mIntentFilter.addAction(Intent.ACTION_TIME_TICK);
         getContext().registerReceiver(new HdrSliceBroadcastReceiver(), mIntentFilter);
-        if (MediaSliceUtil.CanDebug()) Log.d(TAG, "onCreateSliceProvider");
+        logDebug(TAG, false, "onCreateSliceProvider");
         return true;
     }
 
@@ -52,7 +52,7 @@ public class HdrSliceProvider extends MediaSliceProvider {
 
     @Override
     public Slice onBindSlice(final Uri sliceUri) {
-        Log.d(TAG, "onBindSlice: " + sliceUri);
+        logDebug(TAG, false, "onBindSlice: " + sliceUri);
         switch (MediaSliceUtil.getFirstSegment(sliceUri)) {
             case MediaSliceConstants.MATCH_CONTENT_PATH:
                 return createHdrMatchContentSlice(sliceUri);
@@ -163,7 +163,7 @@ public class HdrSliceProvider extends MediaSliceProvider {
         // If it is the system preferred display mode,
         // This slice is implemented by TvSetting using Preference on AndroidT.
         if (mDisplayCapabilityManager.getSystemPreferredDisplayMode()) {
-            Log.d(TAG, "TvSettings show!!");
+            logDebug(TAG, true, "TvSettings show!!");
             return null;
         }
 
@@ -216,12 +216,12 @@ public class HdrSliceProvider extends MediaSliceProvider {
         String[] hdmiModes = mDisplayCapabilityManager.getHdmiModes();
         String currentMode = mDisplayCapabilityManager.getCurrentMode();
         if (hdmiModes == null) {
-            Log.e(TAG, "hdmiModes is null !!");
+            logDebug(TAG, true, "hdmiModes is null !!");
             return;
         }
 
-        Log.d(TAG, "hdmiModes:" + Arrays.toString(hdmiModes));
-        Log.d(TAG, "currentMode:" + currentMode);
+        logDebug(TAG, true, "hdmiModes:" + Arrays.toString(hdmiModes));
+        logDebug(TAG, true, "currentMode:" + currentMode);
 
         for (int i = 0; i < hdmiModes.length; i++) {
             String[] titlesByMode = mDisplayCapabilityManager.getTitlesByMode(hdmiModes[i]);
@@ -255,10 +255,8 @@ public class HdrSliceProvider extends MediaSliceProvider {
         }
 
         if (mDisplayCapabilityManager.isCvbsMode()) {
-            Log.d(TAG, "this is cvbsmode ~~");
             return null;
         }
-
 
         psb.addScreenTitle(
                 new RowBuilder()
@@ -299,7 +297,7 @@ public class HdrSliceProvider extends MediaSliceProvider {
                     mDisplayCapabilityManager.isDolbyVisionModeLLPreferred()
                             ? getContext().getString(R.string.dolby_vision_mode_low_latency_title)
                             : getContext().getString(R.string.dolby_vision_mode_standard_title);
-            Log.d(TAG, "DOLBY_VISION subtitle:" + subtitle);
+            logDebug(TAG, true, "DOLBY_VISION subtitle:" + subtitle);
 
             psb.setEmbeddedPreference(
                     new RowBuilder()
@@ -320,8 +318,8 @@ public class HdrSliceProvider extends MediaSliceProvider {
             String currentColorAttr = mDisplayCapabilityManager.getCurrentColorAttribute();
             currentColorAttr = currentColorAttr.trim();
 
-            Log.d(TAG, "createHdrAndColorFormatSlice; colorAttrsList: " + colorAttrs);
-            Log.d(TAG, "createHdrAndColorFormatSlice; currentColorAttr: " + currentColorAttr);
+            logDebug(TAG, true, "createHdrAndColorFormatSlice; colorAttrsList: " + colorAttrs);
+            logDebug(TAG, true, "createHdrAndColorFormatSlice; currentColorAttr: " + currentColorAttr);
 
             psb.setEmbeddedPreference(
                     new RowBuilder()
@@ -355,7 +353,7 @@ public class HdrSliceProvider extends MediaSliceProvider {
 
         HdrFormatConfig hdrFormatConfig = mDisplayCapabilityManager.getHdrFormatConfig();
         HdrFormat preferredFormat = mDisplayCapabilityManager.getPreferredFormat();
-        if (MediaSliceUtil.CanDebug()) Log.d(TAG, "createHdrFormatPreferenceSlice preferredFormat:" + preferredFormat);
+        logDebug(TAG, false, "createHdrFormatPreferenceSlice preferredFormat:" + preferredFormat);
 
         if (hdrFormatConfig.getSupportedFormats().size() > 0) {
             psb.addPreferenceCategory(
@@ -415,14 +413,12 @@ public class HdrSliceProvider extends MediaSliceProvider {
         String currentColorAttr = mDisplayCapabilityManager.getCurrentColorAttribute();
         currentColorAttr = currentColorAttr.trim();
 
-        Log.d(TAG, "createColorAttributeSlice; colorAttrsList: " + colorAttrs);
-        Log.d(TAG, "createColorAttributeSlice; currentColorAttr: " + currentColorAttr);
+        logDebug(TAG, true, "createColorAttributeSlice; colorAttrsList: " + colorAttrs);
+        logDebug(TAG, true, "createColorAttributeSlice; currentColorAttr: " + currentColorAttr);
 
         String currentMode = mDisplayCapabilityManager.getCurrentMode();
         for (String colorAttr : colorAttrs) {
-            if (MediaSliceUtil.CanDebug()) {
-                Log.d(TAG, "currentMode:" + currentMode + " colorAttr:" + colorAttr);
-            }
+            logDebug(TAG, false, "currentMode:" + currentMode + " colorAttr:" + colorAttr);
             psb.addPreference(
                     new RowBuilder()
                             .setKey(colorAttr)
@@ -456,7 +452,7 @@ public class HdrSliceProvider extends MediaSliceProvider {
             return psb.build();
         }
         boolean isDolbyVisionModeLL = mDisplayCapabilityManager.isDolbyVisionModeLLPreferred();
-        Log.d(TAG, "isDolbyVisionModeLL: " + isDolbyVisionModeLL
+        logDebug(TAG, true, "isDolbyVisionModeLL: " + isDolbyVisionModeLL
                 + " doesDolbyVisionSupportLL: " + mDisplayCapabilityManager.doesDolbyVisionSupportLL()
                 + " doesDolbyVisionSupportStandard: " + mDisplayCapabilityManager.doesDolbyVisionSupportStandard());
 

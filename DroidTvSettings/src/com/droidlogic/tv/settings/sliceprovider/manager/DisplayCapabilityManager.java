@@ -2,15 +2,15 @@ package com.droidlogic.tv.settings.sliceprovider.manager;
 
 import android.content.ContentResolver;
 import android.content.Context;
-import android.util.Log;
 import com.droidlogic.app.DolbyVisionSettingManager;
 import com.droidlogic.app.OutputModeManager;
 import com.droidlogic.app.SystemControlManager;
 import com.droidlogic.tv.settings.sliceprovider.MediaSliceConstants;
 import com.droidlogic.tv.settings.sliceprovider.ueventobserver.SetModeUEventObserver;
 import com.droidlogic.tv.settings.sliceprovider.utils.MediaSliceUtil;
-
 import com.droidlogic.tv.settings.util.DroidUtils;
+import static com.droidlogic.tv.settings.util.DroidUtils.logDebug;
+
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.ImmutableMap;
@@ -280,9 +280,7 @@ public class DisplayCapabilityManager {
         }
 
         final String strEdid = mOutputModeManager.getHdmiSupportList();
-        if (MediaSliceUtil.CanDebug()) {
-            Log.d(TAG, "getHdmiSupportList:" + strEdid);
-        }
+        logDebug(TAG, true, "getHdmiSupportList:" + strEdid);
 
         if (strEdid != null && strEdid.length() != 0 && !strEdid.contains("null")) {
             final List<String> edidKeyList = new ArrayList<>();
@@ -342,7 +340,7 @@ public class DisplayCapabilityManager {
             String hdmiModeTmp = filterHdmiModes(sysHdmiModeIterator.next());
             if (!hdmiModeTmp.isEmpty() && !isContainsInFW(hdmiModeTmp)) {
                 sysHdmiModeIterator.remove();
-                Log.d(TAG, hdmiModeTmp + " is removed");
+                logDebug(TAG, true, hdmiModeTmp + " is removed");
             }
         }
 
@@ -460,7 +458,7 @@ public class DisplayCapabilityManager {
         // TODO: check. Does mSystemControlManager.readSysFs returns the same value under DV/HDR/SDR
         // preferred?
         // TODO: do we have to read HLG?
-        if (MediaSliceUtil.CanDebug()) Log.d(TAG, "updateSupportForHdr10 hdrCap2:" + hdrCap2);
+        logDebug(TAG, false, "updateSupportForHdr10 hdrCap2:" + hdrCap2);
         boolean hdr10SupportedInCap = hdrCap2.contains(SUPPORT_HDR1) || hdrCap2.contains(SUPPORT_HDR2) || hdrCap2.contains(SUPPORT_HDR3) || hdrCap2.contains(SUPPORT_HDR4);
         boolean isChanged = mIsHdr10Supported != hdr10SupportedInCap;
         mIsHdr10Supported = hdr10SupportedInCap;
@@ -502,7 +500,7 @@ public class DisplayCapabilityManager {
 
     public boolean isCvbsMode() {
         String outputMode = mOutputModeManager.getCurrentOutputMode();
-        Log.d(TAG, "isCvbsMode currentMode = " + outputMode);
+        logDebug(TAG, false, "isCvbsMode currentMode = " + outputMode);
         if (outputMode.contains(CVBS_MODE)
                 || outputMode.contains(PAL_MODE)
                 || outputMode.contains(NTSC_MODE)) {
@@ -518,12 +516,12 @@ public class DisplayCapabilityManager {
 
     public boolean isBestResolution() {
         boolean isBestMode = mOutputModeManager.isBestOutputmode();
-        Log.d(TAG, "isBestMode: " + isBestMode);
+        logDebug(TAG, true, "isBestMode: " + isBestMode);
         return isBestMode;
     }
 
     public void change2BestMode() {
-        Log.d(TAG, "set user BestMode.");
+        logDebug(TAG, false, "set user BestMode.");
 
         if (!DISPLAY_MODE_TRUE.equals(mSystemControlManager.getBootenv(ENV_IS_BEST_COLORSPACE, DISPLAY_MODE_FALSE))) {
             mSystemControlManager.setBootenv(ENV_IS_BEST_COLORSPACE, DISPLAY_MODE_TRUE);
@@ -576,7 +574,7 @@ public class DisplayCapabilityManager {
 
     private void setUserPreferredDisplayModeByPrivate(String userSetMode) {
         mSystemControlManager.setMboxOutputMode(userSetMode);
-        Log.d(TAG, "Switching mode using private methods");
+        logDebug(TAG, false, "Switching mode using private methods");
     }
 
     /**
@@ -588,7 +586,7 @@ public class DisplayCapabilityManager {
      * @param beastMode Whether to boot the best resolution
      */
     private void setUserPreferredDisplayMode(String userSetMode) {
-        Log.i(TAG, "userSetMode: " + userSetMode);
+        logDebug(TAG, true, "userSetMode: " + userSetMode);
         String mode = filterHdmiModes(userSetMode);
         if (isSetSpecialMode(userSetMode,  getCurrentMode())) {
             SetSpecialModeExtraNotice(userSetMode);
@@ -596,10 +594,8 @@ public class DisplayCapabilityManager {
         String envIsBestMode = mSystemControlManager.getBootenv(ENV_IS_BEST_MODE, DISPLAY_MODE_TRUE);
         Display.Mode[] supportedModes = mDisplayManager.getDisplay(0).getSupportedModes();
 
-        if (MediaSliceUtil.CanDebug()) {
-            Log.d(TAG, " envIsBestMode: " + envIsBestMode);
-            Log.d(TAG, "supportedModes: " + Arrays.toString(supportedModes));
-        }
+        logDebug(TAG, false, " envIsBestMode: " + envIsBestMode);
+        logDebug(TAG, false, "supportedModes: " + Arrays.toString(supportedModes));
 
         Display.Mode matcherMode = checkUserPreferredMode(supportedModes, USER_PREFERRED_MODE_BY_MODE.get(mode), userSetMode);
         if (matcherMode == null) {
@@ -608,19 +604,18 @@ public class DisplayCapabilityManager {
 
         Display.Mode userPreferredDisplayMode = mDisplayManager.getGlobalUserPreferredDisplayMode();
         if (userPreferredDisplayMode != null) {
-            Log.w(TAG, "userPreferredDisplayMode: " + userPreferredDisplayMode);
+            logDebug(TAG, false, "userPreferredDisplayMode: " + userPreferredDisplayMode);
             if (checkSysCurrentMode(userPreferredDisplayMode, matcherMode)) {
                 mDisplayManager.clearGlobalUserPreferredDisplayMode();
             }
         }
-        Log.d(TAG, "matcherMode: " + matcherMode);
+        logDebug(TAG, true, "matcherMode: " + matcherMode);
 
         // set resolution
         mDisplayManager.setGlobalUserPreferredDisplayMode(matcherMode);
         boolean bootConfig = mSystemControlManager.getPropertyBoolean(VENDOR_PROPERTY_BOOT_CONFIG, false);
-        if (MediaSliceUtil.CanDebug()) {
-            Log.d(TAG, "bootConfig: " + bootConfig);
-        }
+
+        logDebug(TAG, false, "bootConfig: " + bootConfig);
         if (!bootConfig) {
             saveUserSetMode(userSetMode);
         }
@@ -665,7 +660,7 @@ public class DisplayCapabilityManager {
             }
         }
 
-        Log.e(TAG, "matcherMode failed, framework supportedModes: " + Arrays.toString(modeArr));
+        logDebug(TAG, true, "matcherMode failed, framework supportedModes: " + Arrays.toString(modeArr));
         showToast(userSetMode);
         return null;
     }
@@ -719,7 +714,7 @@ public class DisplayCapabilityManager {
 
     //hdr10:1 sdr:2 dolby_vision:0
     public void setHdrPriority(HdrFormat hdrFormat) {
-        if (MediaSliceUtil.CanDebug()) Log.d(TAG, "setHdrPriority hdrFormat:" + hdrFormat);
+        logDebug(TAG, false, "setHdrPriority hdrFormat:" + hdrFormat);
         if (hdrFormat == HdrFormat.DOLBY_VISION) {
             mOutputModeManager.setHdrPriority(HdrFormat.DOLBY_VISION.getOrder());
         } else if (hdrFormat == HdrFormat.HDR) {
@@ -731,9 +726,7 @@ public class DisplayCapabilityManager {
 
     public HdrFormat getHdrPriority() {
         int type = mOutputModeManager.getHdrPriority();
-        if (MediaSliceUtil.CanDebug()) {
-            Log.d(TAG, "getHdrPriority type:" + type);
-        }
+        logDebug(TAG, false, "getHdrPriority type:" + type);
         if (type == HdrFormat.DOLBY_VISION.getOrder()) {
             return HdrFormat.DOLBY_VISION;
         } else if (type == HdrFormat.HDR.getOrder()) {
@@ -792,8 +785,7 @@ public class DisplayCapabilityManager {
     }
 
     private boolean isDolbyVisionSupported() {
-        if (MediaSliceUtil.CanDebug())
-            Log.d(TAG, "isDolbyVisionSupported isDolbyVisionEnable:" + isDolbyVisionEnable()
+        logDebug(TAG, false, "isDolbyVisionSupported isDolbyVisionEnable:" + isDolbyVisionEnable()
                     + " isTvSupportDolbyVision:" + isTvSupportDolbyVision());
         return isDolbyVisionEnable() && isTvSupportDolbyVision();
     }
@@ -840,9 +832,7 @@ public class DisplayCapabilityManager {
 
     public HdrFormat getPreferredFormat() {
         HdrFormat hdrPreference = getHdrPriority();
-        if (MediaSliceUtil.CanDebug()) {
-            Log.d(TAG, "getPreferredFormat hdrPreference:" + hdrPreference);
-        }
+        logDebug(TAG, false, "getPreferredFormat hdrPreference:" + hdrPreference);
         if (isDolbyVisionPreference()) {
             return HdrFormat.DOLBY_VISION;
         } else if (((hdrPreference.supports(HdrFormat.HDR) && hdrPreference == HdrFormat.HDR)
@@ -961,7 +951,7 @@ public class DisplayCapabilityManager {
 
     // For some special mode switching process you need to notify HWC additionally to do the processing.
     private void SetSpecialModeExtraNotice(final String mode) {
-        Log.i(TAG, "[SetSpecialModeExtraNotice] mode: " + mode);
+        logDebug(TAG, false, "[SetSpecialModeExtraNotice] mode: " + mode);
         mSystemControlManager.setPerferredMode(mode);
     }
 
