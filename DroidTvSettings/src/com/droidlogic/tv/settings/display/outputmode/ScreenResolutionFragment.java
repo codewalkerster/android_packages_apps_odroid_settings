@@ -178,10 +178,6 @@ public class ScreenResolutionFragment extends SettingsPreferenceFragment impleme
         String currentMode = mDisplayCapabilityManager.getTitleByMode(mDisplayCapabilityManager.getCurrentMode());
         mDisplayModePref.setSummary(currentMode);
 
-        boolean dvFlag = mDisplayCapabilityManager.isTvSupportDolbyVision()
-                && (mOutputModeManager.getHdrPriority() == DV_PRIORITY);
-        boolean cfFlag = !(mDisplayCapabilityManager.isDolbyVisionEnable() && mDisplayCapabilityManager.isTvSupportDolbyVision()
-                && (mOutputModeManager.getHdrPriority() == DV_PRIORITY));
         //socSupportDv: if the chip is G12A/G12B/SM1 and T962E/E2 etc, it will be true
         //platformSupportDv: if the chip support dv and the code contains dovi.ko, it will be true
         boolean isSocSupportDv = mDolbyVisionSettingManager.isSocSupportDolbyVision();
@@ -192,14 +188,14 @@ public class ScreenResolutionFragment extends SettingsPreferenceFragment impleme
         boolean customConfig = mOutputModeManager.isSupportNetflix();
         boolean debugConfig = mOutputModeManager.isSupportDisplayDebug();
 
-        boolean isSupportDolbyVision = mDisplayCapabilityManager.isDolbyVisionPreference();
+        boolean isOnDolbyVisionMode = mDisplayCapabilityManager.isDolbyVisionPreference();
         Log.i(TAG, "isSocSupportDv " + isSocSupportDv);
         Log.i(TAG, "platformSupportDv " + platformSupportDv);
         Log.i(TAG, "socSupportDv " + socSupportDv);
         Log.i(TAG, "displayConfig " + displayConfig);
         Log.i(TAG, "customConfig " + customConfig);
         Log.i(TAG, "debugConfig " + debugConfig);
-        Log.i(TAG, "isSupportDolbyVision  " + isSupportDolbyVision);
+        Log.i(TAG, "isOnDolbyVisionMode  " + isOnDolbyVisionMode);
 
         if (isHdmiMode()) {
 
@@ -213,13 +209,13 @@ public class ScreenResolutionFragment extends SettingsPreferenceFragment impleme
             }
 
             // color space/color format
-            mColorFormat.setVisible(cfFlag);
-            mColorFormat.setEnabled(cfFlag);
+            mColorFormat.setVisible(!isOnDolbyVisionMode);
+            mColorFormat.setEnabled(!isOnDolbyVisionMode);
             String currentColorFormat = mDisplayCapabilityManager.getCurrentColorAttribute();
             mColorFormat.setSummary(mDisplayCapabilityManager.getTitleByColorAttr(currentColorFormat));
 
             // dolby vision
-            mDolbyVisionPref.setVisible(isSupportDolbyVision);
+            mDolbyVisionPref.setVisible(isOnDolbyVisionMode);
             if (mDisplayCapabilityManager.isDolbyVisionEnable()) {
                 if (mDolbyVisionSettingManager.getDolbyVisionType() == 2) {
                     mDolbyVisionPref.setSummary(R.string.dolby_vision_low_latency_yuv);
