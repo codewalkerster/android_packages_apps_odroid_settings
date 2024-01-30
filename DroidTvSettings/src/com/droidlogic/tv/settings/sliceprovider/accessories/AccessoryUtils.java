@@ -29,6 +29,7 @@ import androidx.annotation.NonNull;
 
 import com.android.settingslib.bluetooth.CachedBluetoothDevice;
 import com.android.settingslib.bluetooth.LocalBluetoothManager;
+import com.android.settingslib.bluetooth.LocalBluetoothProfile;
 import com.droidlogic.tv.settings.R;
 
 import java.util.Arrays;
@@ -206,6 +207,21 @@ final class AccessoryUtils {
 
         // Default for now
         return willBeProcessed ? R.drawable.ic_bluetooth_raw : R.drawable.ic_bluetooth;
+    }
+
+    /**
+     * Returns true if the CachedBluetoothDevice supports an audio profile (A2DP for now),
+     * false otherwise.
+     */
+    public static boolean hasAudioProfile(CachedBluetoothDevice cachedDevice) {
+        if (cachedDevice != null) {
+            for (LocalBluetoothProfile profile : cachedDevice.getProfiles()) {
+                if (profile.getProfileId() == BluetoothProfile.A2DP) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     private AccessoryUtils() {
