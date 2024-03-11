@@ -247,7 +247,7 @@ public class ConnectedDevicesSliceProvider extends SliceProvider implements
         String deviceName = "";
         if (device != null) {
             deviceName = AccessoryUtils.getLocalName(device);
-
+            Log.d(TAG, "device.isConnected: " + (device.isConnected()));
             if (device.isConnected()) {
                 Log.d(TAG, deviceAddr + " connecting " + " device.getType: " + device.getType());
 
@@ -322,8 +322,9 @@ public class ConnectedDevicesSliceProvider extends SliceProvider implements
             if (!remote_type.contains(deviceName)) {
                 Log.d(TAG, "add connectionActionPref");
                 psb.addPreference(connectionActionPref);
-            } else
+            } else {
                 Log.d(TAG, "Do not add connectionActionPref");
+            }
         }
 
         // Update "rename preference".
@@ -395,7 +396,8 @@ public class ConnectedDevicesSliceProvider extends SliceProvider implements
 
         RowBuilder infoPref = new RowBuilder()
                 .setIcon(IconCompat.createWithResource(context, R.drawable.ic_baseline_info_24dp));
-
+        Log.d(TAG, "deviceBatteryLevel: + " + deviceBatteryLevel);
+        Log.d(TAG, "deviceFirmwareVersion: + " + deviceFirmwareVersion);
         if (isBtConnectioned && !"-1".equals(deviceBatteryLevel)) {
             infoPref.addInfoItem(getString(R.string.bluetooth_battery_label), deviceBatteryLevel);
         }
@@ -678,6 +680,9 @@ public class ConnectedDevicesSliceProvider extends SliceProvider implements
                 }
                 return;
             }
+            if (DEBUG) {
+                Log.d(TAG, "read Gatt Characteristic");
+            }
             gatt.readCharacteristic(battLevel);
 
             final BluetoothGattService infoService = gatt.getService(GATT_DEVICE_INFORMATION_UUID);
@@ -693,6 +698,12 @@ public class ConnectedDevicesSliceProvider extends SliceProvider implements
                 if (DEBUG) {
                     Log.d(TAG, "No ble version");
                 }
+
+                deviceBatteryLevel = "-1";
+                deviceFirmwareVersion = "";
+                //For some BLE-type devices, onReadCharacteristic is not called back,
+                // so we don't have to wait, we just notify TvSettings to refresh the interface.
+                notifyGeneralDeviceSlice();
                 return;
             }
             //gatt.readCharacteristic(bleVersion);
