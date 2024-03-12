@@ -33,6 +33,9 @@ import com.droidlogic.app.SystemControlManager;
 
 import java.util.List;
 
+import android.hardware.display.DisplayManager;
+import android.hardware.display.HdrConversionMode;
+
 public class DisplayResetFragment extends GuidedStepFragment {
 
     private static final String TAG = "DisplayResetFragment";
@@ -69,6 +72,13 @@ public class DisplayResetFragment extends GuidedStepFragment {
     public void onGuidedActionClicked(GuidedAction action) {
         if (action.getId() == GuidedAction.ACTION_ID_OK) {
             mSystemControlManager.clearUserDisplayConfig();
+            DisplayManager mDisplayManager = (DisplayManager)getContext().getSystemService(DisplayManager.class);
+            mDisplayManager.setAreUserDisabledHdrTypesAllowed(true);
+            int userDisabledHdrTypes[] = {};
+            mDisplayManager.setUserDisabledHdrTypes(userDisabledHdrTypes);
+            HdrConversionMode systemHdrConversionMode = new HdrConversionMode(
+                    HdrConversionMode.HDR_CONVERSION_SYSTEM);
+            mDisplayManager.setHdrConversionMode(systemHdrConversionMode);
             getActivity().finish();
         }  else {
             getActivity().finish();

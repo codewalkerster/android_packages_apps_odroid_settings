@@ -2083,7 +2083,7 @@
     <!-- Title of display reset page [CHAR LIMIT=60] -->
     <string name="device_display_reset">Reset</string>
     <string name="device_display_reset_Title">Display setting reset</string>
-    <string name="device_display_reset_description">Clear user\'s display settings for color format, dolby vision</string>
+    <string name="device_display_reset_description">Clear user\'s display settings for color format, dolby vision, hdr strategy</string>
 
     <!-- Preference which manages play back settings. -->
     <string name="playback_settings">Playback settings</string>
