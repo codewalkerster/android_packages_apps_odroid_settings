@@ -271,12 +271,7 @@ public class ScreenResolutionFragment extends SettingsPreferenceFragment impleme
 
             //for custom design
             if (!debugConfig && customConfig) {
-                mDolbyVisionPref.setVisible(false);
-                if (mDisplayCapabilityManager.isDolbyVisionEnable()) {
-                    mColorFormat.setVisible(false);
-                }
                 mGraphicsPriorityPref.setEnabled(false);
-                mHdrPolicyPref.setVisible(false);
             }
 
         } else {
