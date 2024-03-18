@@ -30,6 +30,9 @@ public class MediaSliceConstants {
   public static final String ACTION_DISPLAY_RESET =
           "android.setting.intent.action.DISPLAY_RESET";
 
+  public static final String ACTION_COLOR_FORMAT_CONVERT =
+          "android.setting.intent.action.COLOR_FORMAT_CONVERT";
+
   public static final String SHOW_RESOLUTION_CHNAGE_WARNING =
       "com.google.android.chromecast.chromecastservice.sliceprovider.SHOW_RESOLUTION_CHNAGE_WARNING";
   public static final String SHOW_UNSUPPORTED_FORMAT_CHNAGE_WARNING =

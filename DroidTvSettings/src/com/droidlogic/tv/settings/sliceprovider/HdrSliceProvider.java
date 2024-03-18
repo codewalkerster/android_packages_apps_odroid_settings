@@ -29,6 +29,7 @@ public class HdrSliceProvider extends MediaSliceProvider {
 
     private static final boolean DEBUG = true;
     private static final String KEY_RESET = "DISPLAY_RESET";
+    private static final String KEY_COLOR_FORMAT_CONVERT  = "COLOR_FORMAT_CONVERT";
 
     private Handler mHandler = new Handler();
     private DisplayCapabilityManager mDisplayCapabilityManager;
@@ -334,6 +335,10 @@ public class HdrSliceProvider extends MediaSliceProvider {
                             .setTargetSliceUri(
                                     MediaSliceUtil.generateTargetSliceUri(MediaSliceConstants.COLOR_ATTRIBUTE_PATH)));
         }
+
+        if (mDisplayCapabilityManager.isShowColorFormatConverter()) {
+            updateColorFormatConvert(psb);
+        }
         updateDisplayResetButton(psb);
         return psb.build();
     }
@@ -485,6 +490,23 @@ public class HdrSliceProvider extends MediaSliceProvider {
         }
 
         return psb.build();
+    }
+
+    private void updateColorFormatConvert(PreferenceSliceBuilder psb) {
+        psb.addPreference(
+                new RowBuilder()
+                        .setKey(KEY_COLOR_FORMAT_CONVERT)
+                        .setTitle(getContext().getString(R.string.device_allow_color_format_convert_Title))
+                        .setInfoSummary(getContext().getString(R.string.device_allow_color_format_convert_description))
+                        .addSwitch(
+                                generatePendingIntent(
+                                        getContext(),
+                                        MediaSliceConstants.ACTION_COLOR_FORMAT_CONVERT,
+                                        HdrSliceBroadcastReceiver.class
+                                ),
+                                mDisplayCapabilityManager.getColorFormatConverter()
+                        )
+        );
     }
 
     private void updateDisplayResetButton(PreferenceSliceBuilder psb) {

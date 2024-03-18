@@ -62,6 +62,13 @@ public class HdrSliceBroadcastReceiver extends BroadcastReceiver {
                 }
                 context.getContentResolver().notifyChange(MediaSliceConstants.RESOLUTION_URI, null);
                 break;
+            case MediaSliceConstants.ACTION_COLOR_FORMAT_CONVERT:
+                isChecked = intent.getBooleanExtra(EXTRA_TOGGLE_STATE, true);
+                logDebug(TAG, false, "ACTION_COLOR_FORMAT_CONVERT isChecked: " + isChecked);
+                getDisplayCapabilityManager(context).setColorFormatConverter(isChecked);
+                context.getContentResolver().notifyChange(MediaSliceConstants.RESOLUTION_URI, null);
+                context.getContentResolver().notifyChange(MediaSliceConstants.HDR_AND_COLOR_FORMAT_URI, null);
+                break;
             default:
                 break;
         }

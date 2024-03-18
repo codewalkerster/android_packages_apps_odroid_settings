@@ -2079,6 +2079,10 @@
 
     <string name="hdr_policy_sink">Always Hdr</string>
     <string name="hdr_policy_source">Adaptive Hdr</string>
+
+    <string name="device_allow_color_format_convert_Title">Allow color format convert</string>
+    <string name="device_allow_color_format_convert_description">Automatically switch color format according to playback video signal type when match content dynamic range is enable</string>
+
     <!-- Title of display reset page [CHAR LIMIT=60] -->
     <string name="device_display_reset">Reset</string>
     <string name="device_display_reset_Title">Display setting reset</string>

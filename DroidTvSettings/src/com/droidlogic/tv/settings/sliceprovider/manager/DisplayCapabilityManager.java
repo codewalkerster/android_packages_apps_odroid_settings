@@ -34,6 +34,7 @@ import android.view.Window;
 import android.view.Display;
 import android.view.Display.Mode;
 import android.hardware.display.DisplayManager;
+import android.hardware.display.HdrConversionMode;
 import android.view.IWindowManager;
 import android.view.WindowManagerGlobal;
 import android.os.ServiceManager;
@@ -48,12 +49,17 @@ public class DisplayCapabilityManager {
     private static final String UBOOTENV_HDR_POLICY = "ubootenv.var.hdr_policy";
     private static final String ENV_IS_BEST_MODE = "ubootenv.var.is.bestmode";
     private static final String ENV_IS_BEST_COLORSPACE = "ubootenv.var.bestcolorspace";
+    private static final String ENV_IS_BEST_COLOR_FORMAT_CSC = "ubootenv.var.config_csc_en";
     private static final String ENV_SAVE_USER_MODE = "ubootenv.var.hdmimode";
     private static final String SYSTEM_PROPERTY_HDR_PREFERENCE = "persist.vendor.sys.hdr_preference";
     private static final String VENDOR_PROPERTY_BOOT_CONFIG = "ro.vendor.default.config";
 
     private static final String HDR_CAP_PATH = "/sys/class/amhdmitx/amhdmitx0/hdr_cap";
     private static final String HDR_CAP2_PATH = "/sys/class/amhdmitx/amhdmitx0/hdr_cap2";
+
+    private static final String HDMI_TX_CSC_PATH = "/sys/class/amhdmitx/amhdmitx0/config_csc_en";
+    private static final String HDMI_TX_CSC_ENABLE = "1";
+    private static final String HDMI_TX_CSC_DISABLE = "0";
 
     private static final String SUPPORT_HDR1 = "HDR10Plus Supported: 1";
     private static final String SUPPORT_HDR2 = "Traditional SDR: 1";
@@ -938,6 +944,29 @@ public class DisplayCapabilityManager {
 
     public boolean isDolbyVisionEnable() {
         return mDolbyVisionSettingManager.isDolbyVisionEnable();
+    }
+
+
+    public boolean isShowColorFormatConverter() {
+
+        boolean isShowColorFormatConverted =
+                (mDolbyVisionSettingManager.getDolbyVisionType() == DV_ENABLE)
+                && (mDisplayManager.getHdrConversionMode().getConversionMode()
+                        == HdrConversionMode.HDR_CONVERSION_PASSTHROUGH);
+
+        return isShowColorFormatConverted;
+    }
+
+    public boolean getColorFormatConverter() {
+        final String colorFormatConverter = mSystemControlManager.readSysFs(HDMI_TX_CSC_PATH).trim();
+        return "1".equals(colorFormatConverter) ? true : false;
+    }
+
+    public void setColorFormatConverter(boolean colorFormatConverter) {
+        mSystemControlManager.writeSysFs(HDMI_TX_CSC_PATH,
+                colorFormatConverter ? HDMI_TX_CSC_ENABLE : HDMI_TX_CSC_DISABLE);
+        mSystemControlManager.setBootenv(ENV_IS_BEST_COLOR_FORMAT_CSC,
+                colorFormatConverter ? "1" : "0");
     }
 
     /**
