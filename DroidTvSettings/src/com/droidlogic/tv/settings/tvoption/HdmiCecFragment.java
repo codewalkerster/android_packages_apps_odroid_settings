@@ -11,6 +11,7 @@
 package com.droidlogic.tv.settings.tvoption;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.ContentResolver;
 import android.content.ComponentName;
@@ -28,6 +29,8 @@ import androidx.preference.SeekBarPreference;
 import androidx.preference.TwoStatePreference;
 import android.text.TextUtils;
 import android.widget.Toast;
+import android.util.Log;
+import android.view.WindowManager;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -43,8 +46,6 @@ import com.droidlogic.tv.settings.R;
 import com.droidlogic.tv.settings.RadioPreference;
 import com.droidlogic.tv.settings.SettingsConstant;
 import com.droidlogic.tv.settings.SoundFragment;
-
-import static com.droidlogic.tv.settings.util.DroidUtils.logDebug;
 
 /**
  * Fragment to control HDMI Cec settings.
@@ -92,6 +93,7 @@ public class HdmiCecFragment extends SettingsPreferenceFragment implements Prefe
     private RadioPreference mArcEarcModeARCPref;
 
     private SoundParameterSettingManager mSoundParameterSettingManager;
+    private ProgressDialog mProgress;
     private AudioConfigManager mAudioConfigManager = null;
     private HdmiCecManager mHdmiCecManager;
     private static long mLastObserveredCECTime = 0;
@@ -113,6 +115,11 @@ public class HdmiCecFragment extends SettingsPreferenceFragment implements Prefe
         if (mSoundParameterSettingManager == null) {
             mSoundParameterSettingManager = new SoundParameterSettingManager(getActivity());
         }
+        mProgress = new ProgressDialog(getContext());
+        mProgress.setMessage(getActivity().getResources().getString(R.string.cec_wait));
+        mProgress.setIndeterminate(false);
+        mProgress.getWindow().setType(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY);
+        mProgress.setCancelable(false);
         super.onCreate(savedInstanceState);
     }
 
@@ -129,6 +136,26 @@ public class HdmiCecFragment extends SettingsPreferenceFragment implements Prefe
     @Override
     public void onPause() {
         super.onPause();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (mProgress != null && mProgress.isShowing()) {
+            mProgress.dismiss();
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        if (mHandler.hasMessages(MSG_ENABLE_CEC_SWITCH)) {
+            mHandler.removeMessages(MSG_ENABLE_CEC_SWITCH);
+            mHandler.handleMessage(mHandler.obtainMessage(MSG_ENABLE_CEC_SWITCH, 0, 0));
+        } else if (mHandler.hasMessages(MSG_ENABLE_ARC_EARC_SWITCH)) {
+            mHandler.removeMessages(MSG_ENABLE_ARC_EARC_SWITCH);
+            mHandler.handleMessage(mHandler.obtainMessage(MSG_ENABLE_ARC_EARC_SWITCH, 0, 0));
+        }
+        super.onDestroy();
         mHandler.removeCallbacksAndMessages(null);
     }
 
@@ -244,7 +271,7 @@ public class HdmiCecFragment extends SettingsPreferenceFragment implements Prefe
                 mEarcSwitchPref.setEnabled(false);
                 break;
             case KEY_ARC_AND_EARC_SWITCH:
-                logDebug(TAG, false, "arc/earc_switch: " + mArcNEarcSwitchPref.isChecked());
+                Log.d(TAG, "arc/earc_switch: " + mArcNEarcSwitchPref.isChecked());
                 //mHdmiCecManager.enableArc(mArcNEarcSwitchPref.isChecked());
                 if (!mCecSwitchPref.isChecked() && mArcNEarcSwitchPref.isChecked()) {
                     showTipsDialog(TIPS_TYPE_ARC, getContext().getString(
@@ -257,13 +284,13 @@ public class HdmiCecFragment extends SettingsPreferenceFragment implements Prefe
                 }
                 break;
             case KEY_ARC_EARC_MODE_AUTO:
-                logDebug(TAG, false, "arc/earc_switch mode [AUTO]");
+                Log.d(TAG, "arc/earc_switch mode [AUTO]");
                 mArcEarcModeAutoPref.setChecked(true);
                 mArcEarcModeARCPref.setChecked(false);
                 mHdmiCecManager.enableEarc(true);
                 break;
             case KEY_ARC_EARC_MODE_ARC:
-                logDebug(TAG, false, "arc/earc_switch mode [ARC]");
+                Log.d(TAG, "arc/earc_switch mode [ARC]");
                 mArcEarcModeARCPref.setChecked(true);
                 mArcEarcModeAutoPref.setChecked(false);
                 mHdmiCecManager.enableEarc(false);
@@ -286,6 +313,10 @@ public class HdmiCecFragment extends SettingsPreferenceFragment implements Prefe
         long timeDiff = curtime - mLastObserveredCECTime;
         Message cecEnabled = mHandler.obtainMessage(MSG_ENABLE_CEC_SWITCH, enableEarc ? 1 : 0, 0);
         mHandler.removeMessages(MSG_ENABLE_CEC_SWITCH);
+        if (mProgress != null && !mProgress.isShowing() && (timeDiff <= TIME_DELAYED)) {
+            Log.d(TAG, "check enable/disable cec switch");
+            mProgress.show();
+        }
         mHandler.sendMessageDelayed(cecEnabled, ((timeDiff > TIME_DELAYED) ? 0 : TIME_DELAYED));
     }
 
@@ -295,6 +326,10 @@ public class HdmiCecFragment extends SettingsPreferenceFragment implements Prefe
         long timeDiff = curtime - mLastObserveredArcEarcTime;
         Message arcEarcEnabled = mHandler.obtainMessage(MSG_ENABLE_ARC_EARC_SWITCH, 0, 0);
         mHandler.removeMessages(MSG_ENABLE_ARC_EARC_SWITCH);
+        if (mProgress != null && !mProgress.isShowing() && (timeDiff <= TIME_DELAYED)) {
+            Log.d(TAG, "check enable show arc/earc switch");
+            mProgress.show();
+        }
         mHandler.sendMessageDelayed(arcEarcEnabled, ((timeDiff > TIME_DELAYED) ? 0 : TIME_DELAYED));
     }
 
@@ -309,7 +344,7 @@ public class HdmiCecFragment extends SettingsPreferenceFragment implements Prefe
 
     @Override
     public boolean onPreferenceChange(Preference preference, Object newValue) {
-        logDebug(TAG, false, "[onPreferenceChange] preference.getKey() = " + preference.getKey()
+        Log.d(TAG, "[onPreferenceChange] preference.getKey() = " + preference.getKey()
                 + ", newValue = " + newValue);
         if (TextUtils.equals(preference.getKey(), SoundFragment.KEY_DIGITALSOUND_FORMAT)) {
             mSoundParameterSettingManager.setDigitalAudioFormat((String) newValue);
@@ -343,7 +378,7 @@ public class HdmiCecFragment extends SettingsPreferenceFragment implements Prefe
         boolean earcEnabled = mHdmiCecManager.isEarcEnabled();
 
         if (arcEnabled) {
-            logDebug(TAG, false, "arcEnabled:" + arcEnabled + ",earcEnabled:" + earcEnabled);
+            Log.d(TAG, "arcEnabled:" + arcEnabled + ",earcEnabled:" + earcEnabled);
             mArcEarcModeAutoPref.setChecked(earcEnabled);
             mArcEarcModeARCPref.setChecked(!earcEnabled);
         } else {
@@ -364,9 +399,12 @@ public class HdmiCecFragment extends SettingsPreferenceFragment implements Prefe
                         mHdmiCecManager.enableArc(mArcNEarcSwitchPref.isChecked());
                     }
                     boolean hdmiControlEnabled = mHdmiCecManager.isHdmiControlEnabled();
-                    logDebug(TAG, false, "hdmiControlEnabled :" + hdmiControlEnabled);
+                    Log.d(TAG, "hdmiControlEnabled :" + hdmiControlEnabled);
                     enablePreferences(hdmiControlEnabled);
                     mLastObserveredCECTime = System.currentTimeMillis();
+                    if (mProgress != null && mProgress.isShowing()) {
+                        mProgress.dismiss();
+                    }
                     break;
                 case MSG_ENABLE_ARC_EARC_SWITCH:
                     mArcNEarcSwitchPref.setEnabled(true);
@@ -379,6 +417,9 @@ public class HdmiCecFragment extends SettingsPreferenceFragment implements Prefe
                         mHdmiCecManager.enableEarc(mArcEarcModeAutoPref.isChecked());
                     }
                     mLastObserveredArcEarcTime = System.currentTimeMillis();
+                    if (mProgress != null && mProgress.isShowing()) {
+                        mProgress.dismiss();
+                    }
                     break;
                 default:
                     break;
@@ -395,7 +436,7 @@ public class HdmiCecFragment extends SettingsPreferenceFragment implements Prefe
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         if (tipsType == TIPS_TYPE_CEC) {
-                            logDebug(TAG, false, "onClick yes, Type CEC, turn off CEC and arc/eARC");
+                            Log.d(TAG, "onClick yes, Type CEC, turn off CEC and arc/eARC");
                             //TODO:turn off CEC
                             mCecSwitchPref.setChecked(false);
                             mHdmiCecManager.enableArc(false);
@@ -407,7 +448,7 @@ public class HdmiCecFragment extends SettingsPreferenceFragment implements Prefe
                             mArcEarcModeARCPref.setVisible(SUPPORT_EARC && mArcNEarcSwitchPref.isChecked());
                         } else if (tipsType == TIPS_TYPE_ARC) {
                             //TODO:turn on cec ui ref
-                            logDebug(TAG, false, "onClick yes, Type ARC/eARC, turn on arc and cec");
+                            Log.d(TAG, "onClick yes, Type ARC/eARC, turn on arc and cec");
                             mCecSwitchPref.setChecked(true);
                             sendMsgEnableCECSwitch(true);
                             enablePreferences(false);
@@ -435,7 +476,7 @@ public class HdmiCecFragment extends SettingsPreferenceFragment implements Prefe
                             mHdmiCecManager.enableArc(mArcNEarcSwitchPref.isChecked());
                             mArcEarcModeAutoPref.setVisible(SUPPORT_EARC && mArcNEarcSwitchPref.isChecked());
                             mArcEarcModeARCPref.setVisible(SUPPORT_EARC && mArcNEarcSwitchPref.isChecked());
-                            logDebug(TAG, false, "[current value] enableARC: " + mHdmiCecManager.isArcEnabled()
+                            Log.d(TAG, "[current value] enableARC: " + mHdmiCecManager.isArcEnabled()
                                     + ", enableEARC: " + mHdmiCecManager.isEarcEnabled());
                         }
                     }
