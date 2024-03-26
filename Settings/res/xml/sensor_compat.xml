@@ -21,13 +21,13 @@
 
     <PreferenceCategory android:title="@string/privacy_device_settings_category" />
 
-    <com.android.tv.settings.compat.TsSwitchPreference
+    <hardkernel.odroid.settings.compat.TsSwitchPreference
         android:key="sensor_toggle" />
-    <com.android.tv.settings.compat.TsCollapsibleCategory
+    <hardkernel.odroid.settings.compat.TsCollapsibleCategory
         android:key="recent_requests" />
-    <com.android.tv.settings.compat.TsPreference
+    <hardkernel.odroid.settings.compat.TsPreference
         android:key="collapse"
         android:title="@string/recently_accessed_show_all" />
-    <com.android.tv.settings.compat.TsPreference
+    <hardkernel.odroid.settings.compat.TsPreference
         android:key="open_permission_controller" />
 </PreferenceScreen>

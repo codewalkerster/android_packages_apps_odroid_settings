@@ -18,11 +18,11 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     android:title="@string/system_location">
 
-    <com.android.tv.settings.compat.TsListPreference
+    <hardkernel.odroid.settings.compat.TsListPreference
         android:key="locationMode"/>
-    <com.android.tv.settings.compat.TsSwitchPreference
+    <hardkernel.odroid.settings.compat.TsSwitchPreference
         android:key="wifi_always_scan" />
-    <com.android.tv.settings.compat.TsPreferenceCategory
+    <hardkernel.odroid.settings.compat.TsPreferenceCategory
         android:key="recent_location_requests">
-    </com.android.tv.settings.compat.TsPreferenceCategory>
+    </hardkernel.odroid.settings.compat.TsPreferenceCategory>
 </PreferenceScreen>

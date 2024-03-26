@@ -19,12 +19,12 @@
     android:sharedUserId="android.uid.system"
     android:versionCode="1"
     android:versionName="1.0"
-    package="com.android.tv.settings"
+    package="hardkernel.odroid.settings"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-sdk android:minSdkVersion="31"
-        tools:overrideLibrary="com.android.tv.settings.library"/>
+        tools:overrideLibrary="hardkernel.odroid.settings.library"/>
 
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
@@ -75,7 +75,7 @@
     <uses-permission android:name="android.permission.SET_UNRESTRICTED_KEEP_CLEAR_AREAS"/>
 
     <application
-         android:name=".TvSettingsApplication"
+         android:name=".OdroidSettingsApplication"
          android:allowClearUserData="false"
          android:banner="@drawable/ic_launcher_banner_settings"
          android:defaultToDeviceProtectedStorage="true"
@@ -93,7 +93,7 @@
             android:excludeFromRecents="true"
             android:exported="true"
             android:label="@string/settings_app_name"
-            android:theme="@style/TvSettingsActivityTheme">
+            android:theme="@style/OdroidSettingsActivityTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <action android:name="android.settings.SETTINGS"/>
@@ -216,7 +216,7 @@
             android:name=".accounts.AccountSliceActivity"
             android:configChanges="keyboard|keyboardHidden|navigation"
             android:excludeFromRecents="true"
-            android:theme="@style/TvSettingsActivityTheme"
+            android:theme="@style/OdroidSettingsActivityTheme"
             android:exported="false" />
 
         <activity
@@ -224,18 +224,18 @@
             android:configChanges="keyboard|keyboardHidden|navigation"
             android:excludeFromRecents="true"
             android:exported="false"
-            android:theme="@style/TvSettingsActivityTheme" />
+            android:theme="@style/OdroidSettingsActivityTheme" />
 
         <activity
             android:name=".accounts.AccountsTrampolineActivity"
             android:excludeFromRecents="true"
             android:enabled="true"
             android:launchMode="singleInstance"
-            android:theme="@style/TvSettingsActivityTheme"
+            android:theme="@style/OdroidSettingsActivityTheme"
             android:exported="false" />
 
         <activity-alias
-            android:name="com.google.android.tv.settings.AccountActivity"
+            android:name="com.google.android.odroid.settings.AccountActivity"
             android:targetActivity=".accounts.AccountsTrampolineActivity"
             android:exported="true">
             <intent-filter android:priority="1">
@@ -255,7 +255,7 @@
             android:configChanges="keyboard|keyboardHidden|navigation"
             android:excludeFromRecents="true"
             android:exported="true"
-            android:theme="@style/TvSettingsActivityTheme">
+            android:theme="@style/OdroidSettingsActivityTheme">
         </activity>
 
         <!-- ManageUserServicesSliceActivity is just here to facilitate the activity-alias below to
@@ -264,11 +264,11 @@
             android:name=".accounts.ManageUserServicesSliceActivity"
             android:configChanges="keyboard|keyboardHidden|navigation"
             android:excludeFromRecents="true"
-            android:theme="@style/TvSettingsActivityTheme"
+            android:theme="@style/OdroidSettingsActivityTheme"
             android:exported="false" />
 
         <activity-alias
-            android:name="com.google.android.tv.settings.ManageUserServicesActivity"
+            android:name="com.google.android.odroid.settings.ManageUserServicesActivity"
             android:targetActivity=".accounts.ManageUserServicesSliceActivity"
             android:exported="true" >
             <intent-filter android:priority="1">
@@ -298,7 +298,7 @@
             android:configChanges="keyboard|keyboardHidden|navigation"
             android:excludeFromRecents="true"
             android:exported="true"
-            android:theme="@style/TvSettingsActivityTheme">
+            android:theme="@style/OdroidSettingsActivityTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <action android:name="android.settings.APPLICATION_SETTINGS"/>
@@ -314,7 +314,7 @@
             android:configChanges="keyboard|keyboardHidden|navigation"
             android:excludeFromRecents="true"
             android:exported="true"
-            android:theme="@style/TvSettingsActivityTheme">
+            android:theme="@style/OdroidSettingsActivityTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <action android:name="android.settings.APPLICATION_SETTINGS"/>
@@ -330,7 +330,7 @@
             android:excludeFromRecents="true"
             android:exported="true"
             android:taskAffinity=""
-            android:theme="@style/TvSettingsActivityTheme">
+            android:theme="@style/OdroidSettingsActivityTheme">
             <intent-filter android:priority="1">
                 <category android:name="android.intent.category.DEFAULT"/>
                 <action android:name="android.settings.MANAGE_APP_ALL_FILES_ACCESS_PERMISSION"/>
@@ -343,7 +343,7 @@
             android:excludeFromRecents="true"
             android:exported="true"
             android:taskAffinity=""
-            android:theme="@style/TvSettingsActivityTheme">
+            android:theme="@style/OdroidSettingsActivityTheme">
             <intent-filter android:priority="1">
                 <category android:name="android.intent.category.DEFAULT"/>
                 <action android:name="android.settings.USAGE_ACCESS_SETTINGS"/>
@@ -355,7 +355,7 @@
             android:excludeFromRecents="true"
             android:exported="true"
             android:taskAffinity=""
-            android:theme="@style/TvSettingsActivityTheme">
+            android:theme="@style/OdroidSettingsActivityTheme">
             <intent-filter android:priority="1">
                 <category android:name="android.intent.category.DEFAULT"/>
                 <action android:name="android.settings.PICTURE_IN_PICTURE_SETTINGS"/>
@@ -364,7 +364,7 @@
 
         <activity
             android:name=".device.apps.specialaccess.SystemAlertActivity"
-            android:theme="@style/TvSettingsActivityTheme"
+            android:theme="@style/OdroidSettingsActivityTheme"
             android:taskAffinity=""
             android:excludeFromRecents="true"
             android:exported="true">
@@ -381,7 +381,7 @@
 
         <activity
             android:name=".device.apps.specialaccess.AlarmsAndRemindersActivity"
-            android:theme="@style/TvSettingsActivityTheme"
+            android:theme="@style/OdroidSettingsActivityTheme"
             android:taskAffinity=""
             android:excludeFromRecents="true"
             android:exported="true">
@@ -401,7 +401,7 @@
             android:configChanges="keyboard|keyboardHidden|navigation"
             android:excludeFromRecents="true"
             android:exported="true"
-            android:theme="@style/TvSettingsActivityTheme">
+            android:theme="@style/OdroidSettingsActivityTheme">
             <intent-filter android:priority="1">
                 <action android:name="android.intent.action.AUTO_REVOKE_PERMISSIONS" />
                 <action android:name="android.settings.APPLICATION_DETAILS_SETTINGS"/>
@@ -415,7 +415,7 @@
             android:configChanges="keyboard|keyboardHidden|navigation"
             android:excludeFromRecents="true"
             android:exported="true"
-            android:theme="@style/TvSettingsActivityTheme">
+            android:theme="@style/OdroidSettingsActivityTheme">
             <intent-filter android:priority="1">
                 <action android:name="android.settings.INTERNAL_STORAGE_SETTINGS"/>
                 <action android:name="android.settings.MEMORY_CARD_SETTINGS"/>
@@ -438,7 +438,7 @@
             android:configChanges="keyboard|keyboardHidden|navigation"
             android:excludeFromRecents="true"
             android:exported="true"
-            android:theme="@style/TvSettingsActivityTheme">
+            android:theme="@style/OdroidSettingsActivityTheme">
             <!-- Intent filter used to display this activity as a settings entry point in the
                  LeanbackLauncher -->
             <intent-filter android:icon="@drawable/ic_settings_wifi_active_0_launcher"
@@ -481,7 +481,7 @@
             android:configChanges="keyboard|keyboardHidden|navigation"
             android:excludeFromRecents="true"
             android:exported="true"
-            android:theme="@style/TvSettingsActivityTheme">
+            android:theme="@style/OdroidSettingsActivityTheme">
             <intent-filter>
                 <action android:name="android.settings.SECURITY_SETTINGS"/>
                 <category android:name="android.intent.category.DEFAULT"/>
@@ -509,7 +509,7 @@
             android:configChanges="keyboard|keyboardHidden|navigation"
             android:excludeFromRecents="true"
             android:exported="true"
-            android:theme="@style/TvSettingsActivityTheme">
+            android:theme="@style/OdroidSettingsActivityTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <action android:name="com.android.settings.SOUND_SETTINGS"/>
@@ -527,7 +527,7 @@
             android:name=".device.display.ambient.AmbientSliceActivity"
             android:configChanges="keyboard|keyboardHidden|navigation"
             android:excludeFromRecents="true"
-            android:theme="@style/TvSettingsActivityTheme"
+            android:theme="@style/OdroidSettingsActivityTheme"
             android:exported="false" />
 
         <activity-alias
@@ -545,7 +545,7 @@
             android:configChanges="keyboard|keyboardHidden|navigation"
             android:excludeFromRecents="true"
             android:exported="true"
-            android:theme="@style/TvSettingsActivityTheme" />
+            android:theme="@style/OdroidSettingsActivityTheme" />
 
         <activity
             android:name=".device.display.daydream.DaydreamVoiceAction"
@@ -564,7 +564,7 @@
             android:configChanges="keyboard|keyboardHidden|navigation"
             android:excludeFromRecents="true"
             android:exported="true"
-            android:theme="@style/TvSettingsActivityTheme">
+            android:theme="@style/OdroidSettingsActivityTheme">
             <intent-filter>
                 <action android:name="android.settings.CAPTIONING_SETTINGS"/>
                 <category android:name="android.intent.category.DEFAULT"/>
@@ -576,7 +576,7 @@
             android:configChanges="keyboard|keyboardHidden|navigation"
             android:excludeFromRecents="true"
             android:exported="true"
-            android:theme="@style/TvSettingsActivityTheme">
+            android:theme="@style/OdroidSettingsActivityTheme">
             <intent-filter>
                 <action android:name="android.settings.DATE_SETTINGS"/>
                 <category android:name="android.intent.category.DEFAULT"/>
@@ -588,7 +588,7 @@
             android:configChanges="keyboard|keyboardHidden|navigation"
             android:excludeFromRecents="true"
             android:exported="true"
-            android:theme="@style/TvSettingsActivityTheme">
+            android:theme="@style/OdroidSettingsActivityTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <action android:name="android.settings.LOCATION_SOURCE_SETTINGS"/>
@@ -603,7 +603,7 @@
             android:configChanges="keyboard|keyboardHidden|navigation"
             android:excludeFromRecents="true"
             android:exported="true"
-            android:theme="@style/TvSettingsActivityTheme">
+            android:theme="@style/OdroidSettingsActivityTheme">
             <intent-filter>
                 <action android:name="android.settings.TTS_SETTINGS"/>
                 <category android:name="android.intent.category.DEFAULT"/>
@@ -615,7 +615,7 @@
             android:configChanges="keyboard|keyboardHidden|navigation"
             android:excludeFromRecents="true"
             android:exported="true"
-            android:theme="@style/TvSettingsActivityTheme">
+            android:theme="@style/OdroidSettingsActivityTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <action android:name="android.settings.APPLICATION_DEVELOPMENT_SETTINGS"/>
@@ -635,7 +635,7 @@
             android:configChanges="keyboard|keyboardHidden|navigation"
             android:excludeFromRecents="true"
             android:exported="true"
-            android:theme="@style/TvSettingsActivityTheme">
+            android:theme="@style/OdroidSettingsActivityTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <action android:name="android.settings.INPUT_METHOD_SETTINGS"/>
@@ -650,7 +650,7 @@
             android:excludeFromRecents="true"
             android:exported="false"
             android:launchMode="singleInstance"
-            android:theme="@style/TvSettingsActivityTheme" />
+            android:theme="@style/OdroidSettingsActivityTheme" />
 
         <activity
             android:name=".autofill.AutofillPickerTrampolineActivity"
@@ -671,7 +671,7 @@
             android:configChanges="keyboard|keyboardHidden|navigation|locale"
             android:excludeFromRecents="true"
             android:exported="true"
-            android:theme="@style/TvSettingsActivityTheme">
+            android:theme="@style/OdroidSettingsActivityTheme">
             <intent-filter>
                 <action android:name="android.settings.APP_LOCALE_SETTINGS"/>
                 <category android:name="android.intent.category.DEFAULT"/>
@@ -684,7 +684,7 @@
             android:configChanges="keyboard|keyboardHidden|navigation|locale"
             android:excludeFromRecents="true"
             android:exported="true"
-            android:theme="@style/TvSettingsActivityTheme">
+            android:theme="@style/OdroidSettingsActivityTheme">
             <intent-filter>
                 <action android:name="android.settings.LOCALE_SETTINGS"/>
                 <category android:name="android.intent.category.DEFAULT"/>
@@ -703,7 +703,7 @@
             android:excludeFromRecents="true"
             android:exported="true"
             android:permission="android.permission.BLUETOOTH_CONNECT"
-            android:theme="@style/TvSettingsActivityTheme" />
+            android:theme="@style/OdroidSettingsActivityTheme" />
 
         <activity
             android:name=".accessories.AddAccessoryActivity"
@@ -758,7 +758,7 @@
             android:name=".about.AboutActivity"
             android:excludeFromRecents="true"
             android:exported="true"
-            android:theme="@style/TvSettingsActivityTheme">
+            android:theme="@style/OdroidSettingsActivityTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <action android:name="android.settings.DEVICE_INFO_SETTINGS"/>
@@ -773,7 +773,7 @@
             android:excludeFromRecents="true"
             android:exported="true"
             android:process="com.android.phone"
-            android:theme="@style/TvSettingsActivityTheme">
+            android:theme="@style/OdroidSettingsActivityTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.DEFAULT"/>
@@ -875,7 +875,7 @@
             android:exported="false"
             android:taskAffinity="">
             <intent-filter>
-                <action android:name="com.android.tv.settings.action.NEW_STORAGE"/>
+                <action android:name="hardkernel.odroid.settings.action.NEW_STORAGE"/>
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
@@ -885,7 +885,7 @@
             android:excludeFromRecents="true"
             android:exported="false">
             <intent-filter>
-                <action android:name="com.android.tv.settings.action.UNMOUNT_STORAGE"/>
+                <action android:name="hardkernel.odroid.settings.action.UNMOUNT_STORAGE"/>
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
@@ -895,8 +895,8 @@
             android:excludeFromRecents="true"
             android:exported="false" >
             <intent-filter>
-                <action android:name="com.android.tv.settings.device.storage.FormatActivity.formatAsPublic"/>
-                <action android:name="com.android.tv.settings.device.storage.FormatActivity.formatAsPrivate"/>
+                <action android:name="hardkernel.odroid.settings.device.storage.FormatActivity.formatAsPublic"/>
+                <action android:name="hardkernel.odroid.settings.device.storage.FormatActivity.formatAsPrivate"/>
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
@@ -906,7 +906,7 @@
             android:excludeFromRecents="true"
             android:exported="false">
             <intent-filter>
-                <action android:name="com.android.tv.settings.action.MIGRATE_STORAGE"/>
+                <action android:name="hardkernel.odroid.settings.action.MIGRATE_STORAGE"/>
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
@@ -916,7 +916,7 @@
             android:excludeFromRecents="true"
             android:exported="false">
             <intent-filter>
-                <action android:name="com.android.tv.settings.action.MOVE_APP"/>
+                <action android:name="hardkernel.odroid.settings.action.MOVE_APP"/>
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
@@ -954,7 +954,7 @@
             android:clearTaskOnLaunch="true"
             android:exported="true"
             android:label=""
-            android:theme="@style/TvSettingsActivityTheme">
+            android:theme="@style/OdroidSettingsActivityTheme">
             <intent-filter android:priority="1">
                 <action android:name="android.settings.INPUT_METHOD_SUBTYPE_SETTINGS"/>
                 <category android:name="android.intent.category.DEFAULT"/>
@@ -971,7 +971,7 @@
             android:exported="true"
             android:label="@string/install_other_apps"
             android:taskAffinity=""
-            android:theme="@style/TvSettingsActivityTheme">
+            android:theme="@style/OdroidSettingsActivityTheme">
             <intent-filter android:priority="1">
                 <action android:name="android.settings.MANAGE_UNKNOWN_APP_SOURCES"/>
                 <category android:name="android.intent.category.DEFAULT"/>
@@ -988,7 +988,7 @@
             android:configChanges="keyboard|keyboardHidden|navigation"
             android:excludeFromRecents="true"
             android:exported="true"
-            android:theme="@style/TvSettingsActivityTheme">
+            android:theme="@style/OdroidSettingsActivityTheme">
             <intent-filter android:priority="1">
                 <action android:name="android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS"/>
                 <category android:name="android.intent.category.DEFAULT"/>
@@ -1000,7 +1000,7 @@
             android:configChanges="keyboard|keyboardHidden|navigation"
             android:excludeFromRecents="true"
             android:exported="true"
-            android:theme="@style/TvSettingsActivityTheme">
+            android:theme="@style/OdroidSettingsActivityTheme">
             <intent-filter android:priority="1">
                 <action android:name="android.settings.MANAGE_MICROPHONE_PRIVACY"/>
                 <category android:name="android.intent.category.DEFAULT"/>
@@ -1058,7 +1058,7 @@
 
         <provider
             android:name=".name.SuggestionContentProvider"
-            android:authorities="com.android.tv.settings.name"
+            android:authorities="hardkernel.odroid.settings.name"
             android:exported="true">
             <intent-filter>
                 <action android:name="com.android.settings.action.SUGGESTION_STATE_PROVIDER"/>
@@ -1070,7 +1070,7 @@
             android:clearTaskOnLaunch="true"
             android:excludeFromRecents="true"
             android:exported="true"
-            android:theme="@style/TvSettingsActivityTheme">
+            android:theme="@style/OdroidSettingsActivityTheme">
             <intent-filter android:priority="1000">
                 <action android:name="android.app.action.SET_PROFILE_OWNER"/>
                 <category android:name="android.intent.category.DEFAULT"/>
@@ -1082,7 +1082,7 @@
             android:excludeFromRecents="true"
             android:exported="true"
             android:launchMode="singleTop"
-            android:taskAffinity="com.android.tv.settings"
+            android:taskAffinity="hardkernel.odroid.settings"
             android:theme="@style/ActionDisabledDialogTheme">
             <intent-filter android:priority="1">
                 <action android:name="android.settings.SHOW_ADMIN_SUPPORT_DETAILS"/>
@@ -1106,7 +1106,7 @@
             android:configChanges="keyboard|keyboardHidden|navigation"
             android:excludeFromRecents="true"
             android:exported="true"
-            android:theme="@style/TvSettingsActivityTheme">
+            android:theme="@style/OdroidSettingsActivityTheme">
             <intent-filter android:priority="3">
                 <action android:name="android.settings.SLICE_SETTINGS" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -1123,7 +1123,7 @@
             android:excludeFromRecents="true"
             android:exported="true"
             android:noHistory="true"
-            android:theme="@style/TvSettingsActivityTheme">
+            android:theme="@style/OdroidSettingsActivityTheme">
             <intent-filter android:priority="1" >
                 <action android:name="android.settings.ACCESSIBILITY_CAPTION_TV_OEM_LINK" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -1135,7 +1135,7 @@
             android:configChanges="keyboard|keyboardHidden|navigation"
             android:excludeFromRecents="true"
             android:exported="true"
-            android:theme="@style/TvSettingsActivityTheme">
+            android:theme="@style/OdroidSettingsActivityTheme">
             <intent-filter android:priority="1" >
                 <action android:name="android.settings.ACCESSIBILITY_TV_OEM_LINK" />
                 <action android:name="android.settings.ACCESSIBILITY_SETTINGS" />
@@ -1148,7 +1148,7 @@
             android:configChanges="keyboard|keyboardHidden|navigation"
             android:excludeFromRecents="true"
             android:exported="true"
-            android:theme="@style/TvSettingsActivityTheme">
+            android:theme="@style/OdroidSettingsActivityTheme">
             <intent-filter android:priority="1" >
                 <action android:name="android.settings.ACCESSIBILITY_SHORTCUT_SERVICES_TV_OEM_LINK" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -1161,7 +1161,7 @@
             android:configChanges="keyboard|keyboardHidden|navigation"
             android:excludeFromRecents="true"
             android:exported="true"
-            android:theme="@style/TvSettingsActivityTheme">
+            android:theme="@style/OdroidSettingsActivityTheme">
             <intent-filter android:priority="1" >
                 <action android:name="android.settings.NETWORK_SETTINGS_TV_OEM_LINK" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -1185,11 +1185,11 @@
         </activity>
 
         <activity
-            android:name="com.android.tv.settings.vendor.VendorActivity"
+            android:name="hardkernel.odroid.settings.vendor.VendorActivity"
             android:configChanges="keyboard|keyboardHidden|navigation"
             android:excludeFromRecents="true"
             android:exported="true"
-            android:theme="@style/TvSettingsActivityTheme">
+            android:theme="@style/OdroidSettingsActivityTheme">
             <intent-filter android:priority="1" >
                 <action android:name="com.google.android.tv.settings.vendor"/>
                 <category android:name="android.intent.category.DEFAULT"/>
@@ -1201,8 +1201,8 @@
             android:exported="true"
             android:permission="android.permission.READ_PRIVILEGED_PHONE_STATE">
             <intent-filter>
-                <action android:name="com.android.tv.settings.REBOOT_DEVICE"/>
-                <action android:name="com.android.tv.settings.REMOVE_WIFI"/>
+                <action android:name="hardkernel.odroid.settings.REBOOT_DEVICE"/>
+                <action android:name="hardkernel.odroid.settings.REMOVE_WIFI"/>
             </intent-filter>
         </receiver>
 
@@ -1215,7 +1215,7 @@
             android:exported="false" />
         <provider
             android:name=".accessories.ConnectedDevicesSliceProvider"
-            android:authorities="com.android.tv.settings.accessories.sliceprovider"
+            android:authorities="hardkernel.odroid.settings.accessories.sliceprovider"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
@@ -1241,7 +1241,7 @@
             android:excludeFromRecents="true"
             android:exported="true"
             android:permission="android.permission.DUMP"
-            android:theme="@style/TvSettingsActivityTheme">
+            android:theme="@style/OdroidSettingsActivityTheme">
             <intent-filter>
                 <action android:name="android.settings.SHOW_REMOTE_BUGREPORT_DIALOG" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -1253,7 +1253,7 @@
             android:excludeFromRecents="true"
             android:exported="true"
             android:label="@string/enterprise_privacy_settings"
-            android:theme="@style/TvSettingsActivityTheme">
+            android:theme="@style/OdroidSettingsActivityTheme">
             <intent-filter>
                 <action android:name="android.settings.ENTERPRISE_PRIVACY_SETTINGS" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -1278,25 +1278,25 @@
 
         <activity
             android:theme="@style/Transparent"
-            android:name="com.android.tv.settings.display.DisplayActivity"
+            android:name="hardkernel.odroid.settings.display.DisplayActivity"
             android:exported="true" />
         <activity
-            android:theme="@style/TvSettingsActivityTheme"
-            android:name="com.android.tv.settings.display.ScreenScaleActivity"
+            android:theme="@style/OdroidSettingsActivityTheme"
+            android:name="hardkernel.odroid.settings.display.ScreenScaleActivity"
             android:exported="false" />
         <activity
-            android:theme="@style/TvSettingsActivityTheme"
-            android:name="com.android.tv.settings.display.AdvancedDisplaySettingsActivity"
+            android:theme="@style/OdroidSettingsActivityTheme"
+            android:name="hardkernel.odroid.settings.display.AdvancedDisplaySettingsActivity"
             android:exported="false" />
         <activity
-            android:theme="@style/TvSettingsActivityTheme"
-            android:name="com.android.tv.settings.display.AIDisplayActivity"
+            android:theme="@style/OdroidSettingsActivityTheme"
+            android:name="hardkernel.odroid.settings.display.AIDisplayActivity"
             android:launchMode="singleTop"
             android:excludeFromRecents="true"
             android:exported="true" />
         <activity
             android:name=".advance_settings.AdvanceSettingsActivity"
-            android:theme="@style/TvSettingsActivityTheme"
+            android:theme="@style/OdroidSettingsActivityTheme"
             android:excludeFromRecents="true"
             android:exported="true" >
             <intent-filter>
@@ -1309,7 +1309,7 @@
         <service android:name=".advance_settings.performance.PerformanceService" android:exported="true"/>
 
         <activity
-            android:name="com.android.tv.settings.vpn.VpnCreateActivity"
+            android:name="hardkernel.odroid.settings.vpn.VpnCreateActivity"
             android:configChanges="keyboard"
             android:windowSoftInputMode="adjustPan"
             android:exported="false" >
@@ -1337,8 +1337,8 @@
             <intent-filter>
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
-            <meta-data android:name="com.android.tv.settings.FRAGMENT_CLASS"
-                android:value="com.android.tv.settings.inputmethod.KeyboardLayoutPickerFragment" />
+            <meta-data android:name="hardkernel.odroid.settings.FRAGMENT_CLASS"
+                android:value="hardkernel.odroid.settings.inputmethod.KeyboardLayoutPickerFragment" />
         </activity>
 
         <service

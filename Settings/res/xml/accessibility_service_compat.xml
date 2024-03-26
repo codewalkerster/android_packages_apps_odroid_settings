@@ -15,6 +15,6 @@
   -->
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
-    <com.android.tv.settings.compat.TsPreferenceCategory
+    <hardkernel.odroid.settings.compat.TsPreferenceCategory
         android:key="screen"/>
 </PreferenceScreen>

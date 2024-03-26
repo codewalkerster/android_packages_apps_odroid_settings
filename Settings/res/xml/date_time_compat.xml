@@ -18,31 +18,31 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:title="@string/system_date_time">
-    <com.android.tv.settings.compat.TsListPreference android:key="auto_date_time"
+    <hardkernel.odroid.settings.compat.TsListPreference android:key="auto_date_time"
         android:persistent="true"
         android:title="@string/system_auto_date_time"
         android:summary="%s"
         android:entries="@array/auto_date_time_entries"
         android:entryValues="@array/auto_date_time_entry_values" />
 
-    <com.android.tv.settings.compat.TsLeanbackPickerDialogPreference
+    <hardkernel.odroid.settings.compat.TsLeanbackPickerDialogPreference
         android:key="set_date"
         android:persistent="true"
         android:title="@string/system_set_date"
         app:pickerType="date" />
 
-    <com.android.tv.settings.compat.TsLeanbackPickerDialogPreference
+    <hardkernel.odroid.settings.compat.TsLeanbackPickerDialogPreference
         android:key="set_time"
         android:persistent="true"
         android:title="@string/system_set_time"
         app:pickerType="time" />
 
-    <com.android.tv.settings.compat.TsPreference android:key="set_time_zone"
+    <hardkernel.odroid.settings.compat.TsPreference android:key="set_time_zone"
         android:persistent="true"
         android:title="@string/system_set_time_zone"
-        android:fragment="com.android.tv.settings.system.TimeZoneFragment" />
+        android:fragment="hardkernel.odroid.settings.system.TimeZoneFragment" />
 
-    <com.android.tv.settings.compat.TsSwitchWithSoundPreference
+    <hardkernel.odroid.settings.compat.TsSwitchWithSoundPreference
         android:key="use_24_hour"
         android:persistent="true"
         android:title="@string/system_set_time_format" />

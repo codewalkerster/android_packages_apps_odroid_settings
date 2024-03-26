@@ -26,7 +26,7 @@
         android:summary="%s"
         android:dialogTitle="@string/device_daydreams_select" />
 
-    <com.android.tv.settings.device.display.daydream.DreamTimePreference
+    <hardkernel.odroid.settings.device.display.daydream.DreamTimePreference
         android:key="dreamTime"
         android:persistent="true"
         android:title="@string/device_daydreams_sleep"

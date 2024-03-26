@@ -20,17 +20,17 @@
                   android:title="@string/surround_sound_select_formats">
     <PreferenceCategory
         android:key="advanced_sound_settings_option">
-        <com.android.tv.settings.RadioPreference
+        <hardkernel.odroid.settings.RadioPreference
             android:key="surround_sound_auto"
             android:persistent="true"
             app:radioGroup="advanced_sound_settings_option"
             android:title="@string/surround_sound_auto_title"/>
-        <com.android.tv.settings.RadioPreference
+        <hardkernel.odroid.settings.RadioPreference
             android:key="surround_sound_none"
             android:persistent="true"
             app:radioGroup="advanced_sound_settings_option"
             android:title="@string/surround_sound_none_title"/>
-        <com.android.tv.settings.RadioPreference
+        <hardkernel.odroid.settings.RadioPreference
             android:key="surround_sound_manual"
             android:persistent="true"
             app:radioGroup="advanced_sound_settings_option"

@@ -23,11 +23,11 @@
     <!-- ADB wireless disable/enable option -->
     <PreferenceCategory
         android:key="adb_wireless_selection_option">
-        <com.android.tv.settings.RadioPreference
+        <hardkernel.odroid.settings.RadioPreference
             android:key="adb_wireless_selection_disable"
             android:title="@string/disabled"
             app:radioGroup="adb_wireless_selection_option" />
-        <com.android.tv.settings.RadioPreference
+        <hardkernel.odroid.settings.RadioPreference
             android:key="adb_wireless_selection_enable"
             android:title="@string/enabled"
             app:radioGroup="adb_wireless_selection_option" />
@@ -37,7 +37,7 @@
     <Preference
         android:key="adb_pair_method_code_pref"
         android:title="@string/adb_pair_method_code_title"
-        android:fragment="com.android.tv.settings.system.development.WirelessDebuggingFragment$PairingCodeFragment" />
+        android:fragment="hardkernel.odroid.settings.system.development.WirelessDebuggingFragment$PairingCodeFragment" />
 
     <!-- ADB device name -->
     <Preference

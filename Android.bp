@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// Classic TvSettings
+// Classic OdroidSettings
 package {
     default_applicable_licenses: ["Android-Apache-2.0"],
 }
 
 android_app {
-    name: "TvSettings",
+    name: "OdroidSettings",
     manifest: "Settings/AndroidManifest.xml",
     srcs: [
         "Settings/src/**/*.java",
@@ -32,7 +32,7 @@ android_app {
     platform_apis: true,
     certificate: "platform",
     system_ext_specific: true,
-    required: ["privapp_whitelist_com.android.tv.settings"],
+    required: ["privapp_whitelist_hardkernel.odroid.settings"],
     optimize: {
         proguard_flags_files: ["Settings/proguard.flags"],
     },
@@ -49,16 +49,16 @@ android_app {
         "androidx.lifecycle_lifecycle-common-java8",
         "androidx.annotation_annotation",
         "statslog-tvsettings",
-        "tvsettings-logtags",
+        "odroidsettings-logtags",
         "TwoPanelSettingsLib",
         "zxing-core-1.7",
         "TvSettingsAPI",
     ],
 }
 
-// Two-panel TvSettings
+// Two-panel OdroidSettings
 android_app {
-    name: "TvSettingsTwoPanel",
+    name: "OdroidSettingsTwoPanel",
     manifest: "Settings/AndroidManifest.xml",
     srcs: [
         "Settings/src/**/*.java",
@@ -72,12 +72,12 @@ android_app {
         "Settings/res",
         "Settings/res-twopanel",
     ],
-    overrides: ["TvSettings"],
+    overrides: ["OdroidSettings"],
     defaults: ["SettingsLibDefaults"],
     platform_apis: true,
     certificate: "platform",
     system_ext_specific: true,
-    required: ["privapp_whitelist_com.android.tv.settings"],
+    required: ["privapp_whitelist_hardkernel.odroid.settings"],
     optimize: {
         proguard_flags_files: ["Settings/proguard.flags"],
     },
@@ -94,14 +94,14 @@ android_app {
         "androidx.lifecycle_lifecycle-common-java8",
         "androidx.annotation_annotation",
         "statslog-tvsettings",
-        "tvsettings-logtags",
+        "odroidsettings-logtags",
         "TwoPanelSettingsLib",
         "zxing-core-1.7",
         "TvSettingsAPI",
     ],
     jacoco: {
         include_filter: [
-            "com.android.tv.settings.*",
+            "hardkernel.odroid.settings.*",
             "com.android.settingslib.*",
             "com.android.tv.twopanelsettingsoverlay.*",
         ],

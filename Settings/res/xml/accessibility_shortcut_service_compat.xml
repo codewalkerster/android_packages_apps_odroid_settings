@@ -16,6 +16,6 @@
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     android:title="@string/accessibility_shortcut_service" >
-    <com.android.tv.settings.compat.TsPreferenceCategory
+    <hardkernel.odroid.settings.compat.TsPreferenceCategory
         android:key="screen"/>
 </PreferenceScreen>

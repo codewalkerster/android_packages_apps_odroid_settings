@@ -21,17 +21,17 @@
     <!-- TODO(b/172050661): add the sidebar help text. -->
     <PreferenceCategory
         android:key="match_content_frame_rate_option">
-        <com.android.tv.settings.RadioPreference
+        <hardkernel.odroid.settings.RadioPreference
             android:key="match_content_frame_rate_seamless"
             android:persistent="true"
             app:radioGroup="match_content_frame_rate_option"
             android:title="@string/match_content_frame_rate_seamless"/>
-        <com.android.tv.settings.RadioPreference
+        <hardkernel.odroid.settings.RadioPreference
             android:key="match_content_frame_rate_non_seamless"
             android:persistent="true"
             app:radioGroup="match_content_frame_rate_option"
             android:title="@string/match_content_frame_rate_non_seamless"/>
-        <com.android.tv.settings.RadioPreference
+        <hardkernel.odroid.settings.RadioPreference
             android:key="match_content_frame_rate_never"
             android:persistent="true"
             app:radioGroup="match_content_frame_rate_option"

@@ -20,7 +20,7 @@
     android:title="@string/resolution_selection_title"
     android:key="resolution_selection_screen" >
 
-    <com.android.tv.settings.compat.TsPreferenceCategory
+    <hardkernel.odroid.settings.compat.TsPreferenceCategory
         android:key="resolution_selection_option">
-    </com.android.tv.settings.compat.TsPreferenceCategory>
+    </hardkernel.odroid.settings.compat.TsPreferenceCategory>
 </PreferenceScreen>

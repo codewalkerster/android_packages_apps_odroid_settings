@@ -18,13 +18,13 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:title="@string/surround_sound_select_formats">
-    <com.android.tv.settings.compat.TsPreferenceCategory
+    <hardkernel.odroid.settings.compat.TsPreferenceCategory
         android:key="advanced_sound_settings_option">
-    </com.android.tv.settings.compat.TsPreferenceCategory>
-    <com.android.tv.settings.compat.TsPreferenceCategory
+    </hardkernel.odroid.settings.compat.TsPreferenceCategory>
+    <hardkernel.odroid.settings.compat.TsPreferenceCategory
         android:key="surround_sound_format_info">
-    </com.android.tv.settings.compat.TsPreferenceCategory>
-    <com.android.tv.settings.compat.TsPreferenceCategory
+    </hardkernel.odroid.settings.compat.TsPreferenceCategory>
+    <hardkernel.odroid.settings.compat.TsPreferenceCategory
         android:key="surround_sound_format_info_on_manual">
-    </com.android.tv.settings.compat.TsPreferenceCategory>
+    </hardkernel.odroid.settings.compat.TsPreferenceCategory>
 </PreferenceScreen>

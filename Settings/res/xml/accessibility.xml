@@ -23,11 +23,11 @@
             android:title="@string/accessibility_captions">
         <intent
                 android:action="android.intent.action.MAIN"
-                android:targetClass="com.android.tv.settings.system.CaptionSetupActivity"
-                android:targetPackage="com.android.tv.settings"/>
+                android:targetClass="hardkernel.odroid.settings.system.CaptionSetupActivity"
+                android:targetPackage="hardkernel.odroid.settings"/>
     </Preference>
 
-    <com.android.tv.settings.widget.SwitchWithSoundPreference
+    <hardkernel.odroid.settings.widget.SwitchWithSoundPreference
             android:key="toggle_high_text_contrast"
             android:persistent="true"
             android:title="@string/accessibility_toggle_high_text_contrast_preference_title"
@@ -36,14 +36,14 @@
     <Preference
             android:key="text_to_speech"
             android:title="@string/system_accessibility_tts_output"
-            android:fragment="com.android.tv.settings.system.TextToSpeechFragment"/>
+            android:fragment="hardkernel.odroid.settings.system.TextToSpeechFragment"/>
 
     <Preference
             android:key="accessibility_shortcut"
             android:title="@string/accessibility_shortcut"
-            android:fragment="com.android.tv.settings.accessibility.AccessibilityShortcutFragment"/>
+            android:fragment="hardkernel.odroid.settings.accessibility.AccessibilityShortcutFragment"/>
 
-    <com.android.tv.settings.widget.SwitchWithSoundPreference
+    <hardkernel.odroid.settings.widget.SwitchWithSoundPreference
         android:key="toggle_audio_description"
         android:persistent="true"
         android:title="@string/accessibility_toggle_audio_description_preference_title"

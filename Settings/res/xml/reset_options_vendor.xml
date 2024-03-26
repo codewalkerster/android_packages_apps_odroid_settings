@@ -23,8 +23,8 @@
         android:key="reset"
         android:title="@string/device_reset">
         <intent
-            android:targetClass="com.android.tv.settings.device.storage.ResetActivity"
-            android:targetPackage="com.android.tv.settings"/>
+            android:targetClass="hardkernel.odroid.settings.device.storage.ResetActivity"
+            android:targetPackage="hardkernel.odroid.settings"/>
     </Preference>
 
 </PreferenceScreen>

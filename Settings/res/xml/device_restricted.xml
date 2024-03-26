@@ -18,22 +18,22 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
                   android:title="@string/device_pref_category_title">
     <Preference
-        android:fragment="com.android.tv.settings.about.AboutFragment"
+        android:fragment="hardkernel.odroid.settings.about.AboutFragment"
         android:icon="@drawable/ic_info_outline"
         android:key="about_device"
         android:title="@string/about_preference"/>
     <Preference
-        android:fragment="com.android.tv.settings.system.LanguageFragment"
+        android:fragment="hardkernel.odroid.settings.system.LanguageFragment"
         android:icon="@drawable/ic_language"
         android:key="language"
         android:title="@string/system_language"/>
     <Preference
-        android:fragment="com.android.tv.settings.system.DateTimeFragment"
+        android:fragment="hardkernel.odroid.settings.system.DateTimeFragment"
         android:icon="@drawable/ic_access_time"
         android:key="date_time"
         android:title="@string/system_date_time"/>
     <Preference
-        android:fragment="com.android.tv.settings.inputmethod.KeyboardFragment"
+        android:fragment="hardkernel.odroid.settings.inputmethod.KeyboardFragment"
         android:icon="@drawable/ic_keyboard"
         android:key="keyboard"
         android:title="@string/system_keyboard"/>
@@ -50,12 +50,12 @@
             android:action="com.google.assistant.GOOGLE_SETTINGS"/>
     </Preference>
     <Preference
-        android:fragment="com.android.tv.settings.accessibility.AccessibilityFragment"
+        android:fragment="hardkernel.odroid.settings.accessibility.AccessibilityFragment"
         android:icon="@drawable/ic_accessibility_new"
         android:key="accessibility"
         android:title="@string/system_accessibility"/>
     <Preference
-        android:fragment="com.android.tv.settings.system.LocationFragment"
+        android:fragment="hardkernel.odroid.settings.system.LocationFragment"
         android:icon="@drawable/ic_location_on"
         android:key="location"
         android:title="@string/system_location"/>

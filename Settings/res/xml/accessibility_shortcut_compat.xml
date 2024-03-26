@@ -17,16 +17,16 @@
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     android:title="@string/accessibility_shortcut">
-    <com.android.tv.settings.compat.TsSwitchWithSoundPreference
+    <hardkernel.odroid.settings.compat.TsSwitchWithSoundPreference
         android:key="enable"
         android:persistent="true"
         android:title="@string/accessibility_shortcut_enable" />
-    <com.android.tv.settings.compat.TsPreference
+    <hardkernel.odroid.settings.compat.TsPreference
         android:key="service"
         android:persistent="true"
         android:title="@string/accessibility_shortcut_service"
-        android:fragment="com.android.tv.settings.accessibility.AccessibilityShortcutServiceFragmentCompat"/>
-    <com.android.tv.settings.compat.TsPreference
+        android:fragment="hardkernel.odroid.settings.accessibility.AccessibilityShortcutServiceFragmentCompat"/>
+    <hardkernel.odroid.settings.compat.TsPreference
         android:enabled="false"
         android:selectable="false"
         android:title="@string/accessibility_shortcut_description"

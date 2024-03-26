@@ -21,16 +21,16 @@
 
     <PreferenceCategory android:title="@string/privacy_device_settings_category" />
 
-    <com.android.tv.settings.compat.TsPreference
+    <hardkernel.odroid.settings.compat.TsPreference
         android:key="location"
         android:title="@string/system_location"
-        android:fragment="com.android.tv.settings.system.LocationFragmentCompat" />
-    <com.android.tv.settings.compat.TsPreference
+        android:fragment="hardkernel.odroid.settings.system.LocationFragmentCompat" />
+    <hardkernel.odroid.settings.compat.TsPreference
         android:key="microphone"
         android:title="@string/microphone"
-        android:fragment="com.android.tv.settings.privacy.SensorFragmentCompat" />
-    <com.android.tv.settings.compat.TsPreference
+        android:fragment="hardkernel.odroid.settings.privacy.SensorFragmentCompat" />
+    <hardkernel.odroid.settings.compat.TsPreference
         android:key="camera"
         android:title="@string/camera"
-        android:fragment="com.android.tv.settings.privacy.SensorFragmentCompat" />
+        android:fragment="hardkernel.odroid.settings.privacy.SensorFragmentCompat" />
 </PreferenceScreen>

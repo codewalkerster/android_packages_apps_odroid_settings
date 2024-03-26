@@ -17,7 +17,7 @@
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     android:title="@string/permit_draw_overlay">
-    <com.android.tv.settings.compat.TsPreference
+    <hardkernel.odroid.settings.compat.TsPreference
         android:key="header"
         android:title="@string/allow_overlay_description"
         android:singleLineTitle="false"

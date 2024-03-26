@@ -19,36 +19,36 @@
     xmlns:custom="http://schemas.android.com/apk/res-auto"
     android:title="@string/device_display_sound">
 
-    <com.android.tv.settings.compat.TsSlicePreference
+    <hardkernel.odroid.settings.compat.TsSlicePreference
         android:key="cec"
         android:title="@string/hdmi_cec_settings_title"
         android:fragment="com.android.tv.twopanelsettings.slices.SliceFragment"
         custom:uri="@string/cec_settings_slice_uri"
         custom:isPreferenceVisible="false" />
-    <com.android.tv.settings.compat.TsPreferenceCategory
+    <hardkernel.odroid.settings.compat.TsPreferenceCategory
         android:key="display_category"
         android:title="@string/display_category_title" />
-    <com.android.tv.settings.compat.TsPreference
+    <hardkernel.odroid.settings.compat.TsPreference
         android:key="font_scale"
         android:title="@string/font_scale_settings_title"
-        android:fragment="com.android.tv.settings.device.displaysound.FontScalePreferenceFragmentCompat" />
-    <com.android.tv.settings.compat.TsPreference
-        android:fragment="com.android.tv.settings.device.displaysound.MatchContentRateFragmentCompat"
+        android:fragment="hardkernel.odroid.settings.device.displaysound.FontScalePreferenceFragmentCompat" />
+    <hardkernel.odroid.settings.compat.TsPreference
+        android:fragment="hardkernel.odroid.settings.device.displaysound.MatchContentRateFragmentCompat"
         android:key="match_content_frame_rate"
         android:title="@string/match_content_frame_rate_title"/>
-    <com.android.tv.settings.compat.TsPreference
+    <hardkernel.odroid.settings.compat.TsPreference
         android:key="advanced_display_settings"
         android:title="@string/advanced_display_settings_title"
-        android:fragment="com.android.tv.settings.device.displaysound.AdvancedDisplayFragmentCompat" />
-    <com.android.tv.settings.compat.TsPreferenceCategory
+        android:fragment="hardkernel.odroid.settings.device.displaysound.AdvancedDisplayFragmentCompat" />
+    <hardkernel.odroid.settings.compat.TsPreferenceCategory
         android:key="sound_category"
         android:title="@string/device_sound" />
-    <com.android.tv.settings.compat.TsSwitchPreference
+    <hardkernel.odroid.settings.compat.TsSwitchPreference
         android:key="sound_effects"
         android:persistent="true"
         android:title="@string/device_sound_effects"/>
-    <com.android.tv.settings.compat.TsPreference
+    <hardkernel.odroid.settings.compat.TsPreference
         android:key="advanced_sound_settings"
         android:title="@string/advanced_sound_settings_title"
-        android:fragment="com.android.tv.settings.device.displaysound.AdvancedVolumeFragmentCompat" />
+        android:fragment="hardkernel.odroid.settings.device.displaysound.AdvancedVolumeFragmentCompat" />
 </PreferenceScreen>

@@ -30,7 +30,7 @@
     <com.android.tv.twopanelsettings.slices.CustomContentDescriptionRestrictedPreference
         android:key="system_update_settings"
         android:title="@string/about_system_update"
-        android:fragment="com.android.tv.settings.about.SystemUpdateInfoFragment" />
+        android:fragment="hardkernel.odroid.settings.about.SystemUpdateInfoFragment" />
 
     <Preference android:key="additional_system_update_settings"
         android:title="@string/additional_system_update_settings_list_item_title">
@@ -47,14 +47,14 @@
     <com.android.tv.twopanelsettings.slices.CustomContentDescriptionRestrictedPreference
         android:key="reset"
         android:title="@string/device_reset"
-        android:fragment="com.android.tv.settings.about.FactoryResetInfoFragment"
+        android:fragment="hardkernel.odroid.settings.about.FactoryResetInfoFragment"
         settings:userRestriction="no_factory_reset" />
 
     <!-- Device status - launches as activity, must run in separate process -->
     <Preference android:key="status_info"
         android:title="@string/device_status"
         android:summary="@string/device_status_summary"
-        android:fragment="com.android.tv.settings.about.StatusFragment" />
+        android:fragment="hardkernel.odroid.settings.about.StatusFragment" />
 
     <!-- Manual -->
     <Preference
@@ -67,7 +67,7 @@
     <Preference
         android:key="container"
         android:title="@string/about_legal_info"
-        android:fragment="com.android.tv.settings.about.LegalFragment" />
+        android:fragment="hardkernel.odroid.settings.about.LegalFragment" />
 
     <Preference
         android:key="regulatory_info"

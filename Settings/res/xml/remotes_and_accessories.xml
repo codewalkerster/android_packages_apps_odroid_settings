@@ -24,7 +24,7 @@
         android:title="@string/accessories_add"
         settings:userRestriction="no_config_bluetooth">
         <intent
-            android:targetClass="com.android.tv.settings.accessories.AddAccessoryActivity"
-            android:targetPackage="com.android.tv.settings"/>
+            android:targetClass="hardkernel.odroid.settings.accessories.AddAccessoryActivity"
+            android:targetPackage="hardkernel.odroid.settings"/>
     </com.android.settingslib.RestrictedPreference>
 </PreferenceScreen>

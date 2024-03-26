@@ -16,10 +16,10 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 
     <!-- Main app title [CHAR LIMIT=40] -->
-    <string name="settings_app_name">Settings</string>
+    <string name="settings_app_name">Odroid Settings</string>
 
     <!-- Leanback Launcher App Title for main Settings app [CHAR LIMIT=40] -->
-    <string name="launcher_settings_app_name">Settings</string>
+    <string name="launcher_settings_app_name">Odroid Settings</string>
 
     <!-- Leanback Launcher App Title for Network settings app [CHAR LIMIT=40] -->
     <string name="launcher_network_app_name">Network</string>

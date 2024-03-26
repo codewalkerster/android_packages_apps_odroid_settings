@@ -27,7 +27,7 @@
         custom:uri="@string/power_boot_resume_slice_uri"/>
 
     <Preference
-        android:fragment="com.android.tv.settings.device.display.daydream.EnergySaverFragment"
+        android:fragment="hardkernel.odroid.settings.device.display.daydream.EnergySaverFragment"
         android:icon="@drawable/ic_settings_energy_saver"
         android:key="energysaver"
         android:title="@string/device_energy_saver"/>

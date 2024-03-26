@@ -17,7 +17,7 @@
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     android:title="@string/picture_in_picture_app_detail_switch">
-    <com.android.tv.settings.compat.TsPreference
+    <hardkernel.odroid.settings.compat.TsPreference
         android:key="header"
         android:title="@string/picture_in_picture_app_detail_summary"
         android:singleLineTitle="false"

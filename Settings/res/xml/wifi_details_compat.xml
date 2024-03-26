@@ -16,17 +16,17 @@
   -->
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <com.android.tv.settings.compat.TsPreference
+    <hardkernel.odroid.settings.compat.TsPreference
         android:key="connection_status"
         android:title="@string/title_internet_connection"
         android:summary="@string/connected" />
-    <com.android.tv.settings.compat.TsPreference
+    <hardkernel.odroid.settings.compat.TsPreference
         android:key="ip_address"
         android:title="@string/title_ip_address" />
-    <com.android.tv.settings.compat.TsPreference
+    <hardkernel.odroid.settings.compat.TsPreference
         android:key="mac_address"
         android:title="@string/title_mac_address" />
-    <com.android.tv.settings.compat.TsPreference
+    <hardkernel.odroid.settings.compat.TsPreference
         android:key="signal_strength"
         android:title="@string/title_signal_strength" />
     <!-- The android:persistent is set to false for random MAC as it is on per-network basis -->
@@ -37,13 +37,13 @@
           android:persistent="false"
           android:entries="@array/random_mac_settings_entries"
           android:entryValues="@array/random_mac_settings_entry_values" />
-    <com.android.tv.settings.compat.TsRestrictedPreference
+    <hardkernel.odroid.settings.compat.TsRestrictedPreference
         android:key="proxy_settings"
         android:title="@string/title_wifi_proxy_settings" />
-    <com.android.tv.settings.compat.TsRestrictedPreference
+    <hardkernel.odroid.settings.compat.TsRestrictedPreference
         android:key="ip_settings"
         android:title="@string/title_wifi_ip_settings" />
-    <com.android.tv.settings.compat.TsRestrictedPreference
+    <hardkernel.odroid.settings.compat.TsRestrictedPreference
         android:key="forget_network"
         android:title="@string/wifi_forget_network" />
 </PreferenceScreen>

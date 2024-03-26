@@ -27,7 +27,7 @@
         android:alpha="0"
         android:background="@color/selector_color" />
 
-    <com.android.tv.settings.widget.ScrollAdapterView
+    <hardkernel.odroid.settings.widget.ScrollAdapterView
         android:id="@+id/list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

@@ -17,7 +17,7 @@
 <PreferenceScreen
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <com.android.tv.settings.bluetooth.BluetoothProgressCategory
+    <hardkernel.odroid.settings.bluetooth.BluetoothProgressCategory
         android:key="bt_device_list"
         android:orderingFromXml="false" />
 

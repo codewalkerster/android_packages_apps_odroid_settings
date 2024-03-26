@@ -17,7 +17,7 @@
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
         android:title="@string/accessibility_shortcut">
-    <com.android.tv.settings.widget.SwitchWithSoundPreference
+    <hardkernel.odroid.settings.widget.SwitchWithSoundPreference
             android:key="enable"
             android:persistent="true"
             android:title="@string/accessibility_shortcut_enable" />
@@ -25,7 +25,7 @@
             android:key="service"
             android:persistent="true"
             android:title="@string/accessibility_shortcut_service"
-            android:fragment="com.android.tv.settings.accessibility.AccessibilityShortcutServiceFragment"/>
+            android:fragment="hardkernel.odroid.settings.accessibility.AccessibilityShortcutServiceFragment"/>
     <Preference
             android:enabled="false"
             android:selectable="false"

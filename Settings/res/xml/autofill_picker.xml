@@ -19,7 +19,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:title="@string/title_select_autofill_service">
 
-    <com.android.tv.settings.RadioPreference
+    <hardkernel.odroid.settings.RadioPreference
         android:key="_none_"
         android:title="@string/autofill_none"
         android:layout="@layout/preference_reversed_widget"

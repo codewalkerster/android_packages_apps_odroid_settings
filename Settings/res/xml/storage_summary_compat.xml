@@ -17,11 +17,11 @@
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     android:title="@string/device_storage">
-    <com.android.tv.settings.compat.TsPreferenceCategory
+    <hardkernel.odroid.settings.compat.TsPreferenceCategory
         android:key="device_storage"
         android:title="@string/storage_device_storage_section"/>
 
-    <com.android.tv.settings.compat.TsPreferenceCategory
+    <hardkernel.odroid.settings.compat.TsPreferenceCategory
         android:key="removable_storage"
         android:title="@string/storage_removable_storage_section"/>
 </PreferenceScreen>

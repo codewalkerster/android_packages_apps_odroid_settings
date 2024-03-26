@@ -17,11 +17,11 @@
 <android:PreferenceScreen
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:title="@string/storage_free_up">
-    <com.android.tv.settings.device.storage.ClearCachedDataPreference
+    <hardkernel.odroid.settings.device.storage.ClearCachedDataPreference
         android:key="ClearCachedData"
         android:title="@string/storage_free_up_clear_cached_data" />
     <Preference
         android:key="StorageUninstallApps"
         android:title="@string/storage_free_up_uninstall_apps"
-        android:fragment="com.android.tv.settings.device.storage.StorageUninstallAppsFragment" />
+        android:fragment="hardkernel.odroid.settings.device.storage.StorageUninstallAppsFragment" />
 </android:PreferenceScreen>

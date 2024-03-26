@@ -18,28 +18,28 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     android:title="@string/applications_category_title">
 
-    <com.android.tv.settings.compat.TsPreference
+    <hardkernel.odroid.settings.compat.TsPreference
         android:key="version" />
-    <com.android.tv.settings.compat.TsPreference
+    <hardkernel.odroid.settings.compat.TsPreference
         android:key="open" />
-    <com.android.tv.settings.compat.TsRestrictedPreference
+    <hardkernel.odroid.settings.compat.TsRestrictedPreference
         android:key="forceStop" />
-    <com.android.tv.settings.compat.TsRestrictedPreference
+    <hardkernel.odroid.settings.compat.TsRestrictedPreference
         android:key="uninstall" />
-    <com.android.tv.settings.compat.TsRestrictedPreference
+    <hardkernel.odroid.settings.compat.TsRestrictedPreference
         android:key="enableDisable" />
-    <com.android.tv.settings.compat.TsRestrictedPreference
+    <hardkernel.odroid.settings.compat.TsRestrictedPreference
         android:key="appStorage" />
-    <com.android.tv.settings.compat.TsRestrictedPreference
+    <hardkernel.odroid.settings.compat.TsRestrictedPreference
         android:key="clearData" />
-    <com.android.tv.settings.compat.TsRestrictedPreference
+    <hardkernel.odroid.settings.compat.TsRestrictedPreference
         android:key="clearCache" />
-    <com.android.tv.settings.compat.TsRestrictedPreference
+    <hardkernel.odroid.settings.compat.TsRestrictedPreference
         android:key="clearDefaults" />
-    <com.android.tv.settings.compat.TsSwitchPreference
+    <hardkernel.odroid.settings.compat.TsSwitchPreference
         android:key="notifications" />
-    <com.android.tv.settings.compat.TsPreference
+    <hardkernel.odroid.settings.compat.TsPreference
         android:key="permissions" />
-    <com.android.tv.settings.compat.TsPreference
+    <hardkernel.odroid.settings.compat.TsPreference
         android:key="licenses" />
 </PreferenceScreen>

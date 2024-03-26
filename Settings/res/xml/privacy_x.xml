@@ -24,15 +24,15 @@
     <Preference
         android:key="location"
         android:title="@string/system_location"
-        android:fragment="com.android.tv.settings.system.LocationFragment" />
+        android:fragment="hardkernel.odroid.settings.system.LocationFragment" />
     <Preference
         android:key="microphone"
         android:title="@string/microphone"
-        android:fragment="com.android.tv.settings.privacy.SensorFragment" />
+        android:fragment="hardkernel.odroid.settings.privacy.SensorFragment" />
     <Preference
         android:key="camera"
         android:title="@string/camera"
-        android:fragment="com.android.tv.settings.privacy.SensorFragment" />
+        android:fragment="hardkernel.odroid.settings.privacy.SensorFragment" />
 
     <com.android.tv.twopanelsettings.slices.SlicePreference
         android:key="usageAndDiag"
@@ -44,7 +44,7 @@
     <com.android.tv.twopanelsettings.slices.CustomContentDescriptionPreference
         android:key="ads"
         android:title="@string/about_ads"
-        android:fragment="com.android.tv.settings.privacy.AdsInfoFragment"/>
+        android:fragment="hardkernel.odroid.settings.privacy.AdsInfoFragment"/>
 
     <PreferenceCategory
         android:key="accountSettings"
@@ -82,10 +82,10 @@
     <Preference
         android:key="specialAccess"
         android:title="@string/special_access"
-        android:fragment="com.android.tv.settings.device.apps.specialaccess.SpecialAppAccess" />
+        android:fragment="hardkernel.odroid.settings.device.apps.specialaccess.SpecialAppAccess" />
 
     <Preference
-        android:fragment="com.android.tv.settings.system.SecurityFragment"
+        android:fragment="hardkernel.odroid.settings.system.SecurityFragment"
         android:key="security"
         android:title="@string/system_security"/>
 

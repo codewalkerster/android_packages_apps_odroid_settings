@@ -18,13 +18,13 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     android:title="@string/system_keyboard_autofill">
 
-    <com.android.tv.settings.compat.TsPreferenceCategory
+    <hardkernel.odroid.settings.compat.TsPreferenceCategory
         android:key="keyboardCategory"
         android:order="0"
         android:title="@string/system_keyboard">
-    </com.android.tv.settings.compat.TsPreferenceCategory>
+    </hardkernel.odroid.settings.compat.TsPreferenceCategory>
 
-    <com.android.tv.settings.compat.TsListPreference
+    <hardkernel.odroid.settings.compat.TsListPreference
         android:key="currentKeyboard"
         android:order="1"
         android:dialogTitle="@string/title_current_keyboard"
@@ -33,22 +33,22 @@
 
     <!-- List of input methods are inserted here with order=2 -->
 
-    <com.android.tv.settings.compat.TsPreference
+    <hardkernel.odroid.settings.compat.TsPreference
         android:key="manageKeyboards"
-        android:fragment="com.android.tv.settings.inputmethod.AvailableVirtualKeyboardFragmentCompat"
+        android:fragment="hardkernel.odroid.settings.inputmethod.AvailableVirtualKeyboardFragmentCompat"
         android:order="3"
         android:title="@string/manage_keyboards"/>
 
-    <com.android.tv.settings.compat.TsPreferenceCategory
+    <hardkernel.odroid.settings.compat.TsPreferenceCategory
         android:order="4"
         android:key="autofillCategory"
         android:title="@string/system_autofill">
 
-        <com.android.tv.settings.compat.TsPreference
+        <hardkernel.odroid.settings.compat.TsPreference
             android:key="currentAutofill"
             android:title="@string/title_current_autofill_service"
             android:summary="%s" />
 
-    </com.android.tv.settings.compat.TsPreferenceCategory>
+    </hardkernel.odroid.settings.compat.TsPreferenceCategory>
 
 </PreferenceScreen>

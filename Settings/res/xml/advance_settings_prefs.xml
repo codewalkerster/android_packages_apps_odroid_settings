@@ -26,7 +26,7 @@
         android:key="default_launcher"
         android:title="@string/default_launcher"
         android:summary="%s"
-        android:fragment="com.android.tv.settings.advance_settings.DefaultLauncherFragment"/>
+        android:fragment="hardkernel.odroid.settings.advance_settings.DefaultLauncherFragment"/>
     </PreferenceCategory>
 
     <PreferenceCategory

@@ -19,12 +19,12 @@
     xmlns:settings="http://schemas.android.com/apk/res-auto"
     android:title="@string/device_energy_saver">
 
-    <com.android.tv.settings.compat.TsListPreference
+    <hardkernel.odroid.settings.compat.TsListPreference
         android:key="sleepTime"
         android:persistent="true"
         android:title="@string/device_energy_saver_screen_off"/>
 
-    <com.android.tv.settings.compat.TsRestrictedSwitchPreference
+    <hardkernel.odroid.settings.compat.TsRestrictedSwitchPreference
         android:key="allowTurnScreenOff"
         android:persistent="true"
         android:title="@string/device_energy_saver_allow_turning_screen_off"

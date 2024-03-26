@@ -32,27 +32,27 @@
     <PreferenceCategory
         android:key="cec"
         android:title="@string/inputs_header_cec">
-        <com.android.tv.settings.widget.SwitchWithSoundPreference
+        <hardkernel.odroid.settings.widget.SwitchWithSoundPreference
             android:key="hdmi_control"
             android:persistent="true"
             android:title="@string/inputs_hdmi_control"
             android:summary="@string/inputs_hdmi_control_desc" />
-        <com.android.tv.settings.widget.SwitchWithSoundPreference
+        <hardkernel.odroid.settings.widget.SwitchWithSoundPreference
             android:key="device_auto_off"
             android:persistent="true"
             android:title="@string/inputs_device_auto_off"
             android:summary="@string/inputs_device_auto_off_desc" />
-        <com.android.tv.settings.widget.SwitchWithSoundPreference
+        <hardkernel.odroid.settings.widget.SwitchWithSoundPreference
             android:key="tv_auto_on"
             android:persistent="true"
             android:title="@string/inputs_tv_auto_on"
             android:summary="@string/inputs_tv_auto_on_desc" />
-        <com.android.tv.settings.widget.SwitchWithSoundPreference
+        <hardkernel.odroid.settings.widget.SwitchWithSoundPreference
             android:key="cec_audio_control"
             android:persistent="true"
             android:title="@string/inputs_cec_audio_control"
             android:summary="@string/inputs_cec_audio_control_desc" />
-        <com.android.tv.settings.widget.SwitchWithSoundPreference
+        <hardkernel.odroid.settings.widget.SwitchWithSoundPreference
             android:key="cec_audio_amplifier_control"
             android:persistent="true"
             android:title="@string/inputs_cec_audio_amplifier_control"

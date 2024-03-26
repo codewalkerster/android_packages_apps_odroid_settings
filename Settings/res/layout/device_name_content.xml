@@ -13,7 +13,7 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-<com.android.tv.settings.connectivity.setup.GuidanceRelativeLayout
+<hardkernel.odroid.settings.connectivity.setup.GuidanceRelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -39,4 +39,4 @@
       android:layout_marginTop="@dimen/setup_description_margin_top"
       style ="?attr/guidanceDescriptionStyle"/>
 
-</com.android.tv.settings.connectivity.setup.GuidanceRelativeLayout>
+</hardkernel.odroid.settings.connectivity.setup.GuidanceRelativeLayout>

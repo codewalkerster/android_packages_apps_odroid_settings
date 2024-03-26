@@ -19,7 +19,7 @@
     android:title="@string/display_and_sound_category_title">
 
     <Preference
-        android:fragment="com.android.tv.settings.device.sound.SoundFragment"
+        android:fragment="hardkernel.odroid.settings.device.sound.SoundFragment"
         android:icon="@drawable/ic_volume_up"
         android:key="sound_effects"
         android:title="@string/display_and_sound_category_title"/>

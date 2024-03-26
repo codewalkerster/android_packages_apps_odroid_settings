@@ -23,7 +23,7 @@
     <PreferenceCategory android:key="tts_engine_preference_section"
                         android:title="@string/tts_engine_preference_section_title"/>
 
-    <Preference android:fragment="com.android.tv.settings.system.TtsEngineSettingsFragment"
+    <Preference android:fragment="hardkernel.odroid.settings.system.TtsEngineSettingsFragment"
                 android:key="tts_engine_settings"
                 android:title="@string/system_accessibility_tts_engine_config"/>
 

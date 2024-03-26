@@ -19,13 +19,13 @@
     android:title="@string/hdr_format_selection_title"
     android:key="hdr_format_selection_screen" >
 
-    <com.android.tv.settings.compat.TsPreferenceCategory
+    <hardkernel.odroid.settings.compat.TsPreferenceCategory
         android:key="hdr_format_selection_option">
-    </com.android.tv.settings.compat.TsPreferenceCategory>
-    <com.android.tv.settings.compat.TsPreferenceCategory
+    </hardkernel.odroid.settings.compat.TsPreferenceCategory>
+    <hardkernel.odroid.settings.compat.TsPreferenceCategory
         android:key="hdr_format_info">
-    </com.android.tv.settings.compat.TsPreferenceCategory>
-    <com.android.tv.settings.compat.TsPreferenceCategory
+    </hardkernel.odroid.settings.compat.TsPreferenceCategory>
+    <hardkernel.odroid.settings.compat.TsPreferenceCategory
         android:key="hdr_format_info_on_manual">
-    </com.android.tv.settings.compat.TsPreferenceCategory>
+    </hardkernel.odroid.settings.compat.TsPreferenceCategory>
 </PreferenceScreen>

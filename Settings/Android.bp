@@ -13,13 +13,13 @@
 // limitations under the License.
 
 package {
-    default_applicable_licenses: ["packages_apps_TvSettings_Settings_license"],
+    default_applicable_licenses: ["packages_apps_Odroid_Settings_license"],
 }
 
 // Added automatically by a large-scale-change
 // http://go/android-license-faq
 license {
-    name: "packages_apps_TvSettings_Settings_license",
+    name: "packages_apps_Odroid_Settings_license",
     visibility: [":__subpackages__"],
     license_kinds: [
         "SPDX-license-identifier-Apache-2.0",
@@ -30,14 +30,14 @@ license {
 }
 
 prebuilt_etc {
-    name: "privapp_whitelist_com.android.tv.settings",
+    name: "privapp_whitelist_hardkernel.odroid.settings",
     system_ext_specific: true,
     sub_dir: "permissions",
-    src: "com.android.tv.settings.xml",
+    src: "hardkernel.odroid.settings.xml",
     filename_from_src: true,
 }
 
 java_library {
-    name: "tvsettings-logtags",
+    name: "odroidsettings-logtags",
     srcs: ["src/**/*.logtags"],
 }

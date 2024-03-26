@@ -19,14 +19,14 @@
     android:title="@string/device_daydream">
 
     <!-- TODO: use a custom fragment here to add icon and other chrome -->
-    <com.android.tv.settings.compat.TsListPreference
+    <hardkernel.odroid.settings.compat.TsListPreference
         android:key="activeDream"
         android:persistent="true"
         android:title="@string/device_daydreams_select"
         android:summary="%s"
         android:dialogTitle="@string/device_daydreams_select" />
 
-    <com.android.tv.settings.compat.TsListPreference
+    <hardkernel.odroid.settings.compat.TsListPreference
         android:key="dreamTime"
         android:persistent="true"
         android:title="@string/device_daydreams_sleep"
@@ -34,7 +34,7 @@
         android:entries="@array/sleep_timeout_entries"
         android:entryValues="@array/sleep_timeout_values" />
 
-    <com.android.tv.settings.compat.TsPreference
+    <hardkernel.odroid.settings.compat.TsPreference
         android:key="dreamNow"
         android:persistent="true"
         android:title="@string/device_daydreams_test" />

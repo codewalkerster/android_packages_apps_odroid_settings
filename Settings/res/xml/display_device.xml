@@ -55,7 +55,7 @@
 
     <Preference
         android:title="HDR"
-        android:fragment="com.android.tv.settings.display.HdrVividFragment" />
+        android:fragment="hardkernel.odroid.settings.display.HdrVividFragment" />
 
     <Preference
         android:key="ai_display_settings"

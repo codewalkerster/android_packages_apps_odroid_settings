@@ -19,37 +19,37 @@
                   xmlns:custom="http://schemas.android.com/apk/res-auto"
                   android:title="@string/device_pref_category_title">
     <Preference
-        android:fragment="com.android.tv.settings.display.DisplayFragment"
+        android:fragment="hardkernel.odroid.settings.display.DisplayFragment"
         android:icon="@drawable/icon_display"
         android:key="displaies"
         android:title="@string/display_category_title"/>
     <Preference
-        android:fragment="com.android.tv.settings.accessibility.AccessibilityFragment"
+        android:fragment="hardkernel.odroid.settings.accessibility.AccessibilityFragment"
         android:icon="@drawable/ic_accessibility_new"
         android:key="accessibility"
         android:title="@string/system_accessibility"/>
     <Preference
-        android:fragment="com.android.tv.settings.about.AboutFragment"
+        android:fragment="hardkernel.odroid.settings.about.AboutFragment"
         android:icon="@drawable/ic_info_outline"
         android:key="about_device"
         android:title="@string/about_preference"/>
     <Preference
-        android:fragment="com.android.tv.settings.system.DateTimeFragment"
+        android:fragment="hardkernel.odroid.settings.system.DateTimeFragment"
         android:icon="@drawable/ic_access_time"
         android:key="date_time"
         android:title="@string/system_date_time"/>
     <Preference
-        android:fragment="com.android.tv.settings.system.LanguageFragment"
+        android:fragment="hardkernel.odroid.settings.system.LanguageFragment"
         android:icon="@drawable/ic_language"
         android:key="language"
         android:title="@string/system_language"/>
     <Preference
-        android:fragment="com.android.tv.settings.inputmethod.KeyboardFragment"
+        android:fragment="hardkernel.odroid.settings.inputmethod.KeyboardFragment"
         android:icon="@drawable/ic_keyboard"
         android:key="keyboard"
         android:title="@string/system_keyboard"/>
     <Preference
-        android:fragment="com.android.tv.settings.device.StorageSummaryFragmentX"
+        android:fragment="hardkernel.odroid.settings.device.StorageSummaryFragmentX"
         android:icon="@drawable/ic_storage"
         android:key="storage"
         android:title="@string/device_storage"/>
@@ -60,17 +60,17 @@
         <intent android:action="com.google.android.tvlauncher.SETTINGS"/>
     </Preference>
     <Preference
-        android:fragment="com.android.tv.settings.device.display.daydream.DaydreamFragment"
+        android:fragment="hardkernel.odroid.settings.device.display.daydream.DaydreamFragment"
         android:icon="@drawable/ic_settings_system_daydream"
         android:key="daydream"
         android:title="@string/device_daydream"/>
     <Preference
-        android:fragment="com.android.tv.settings.device.display.daydream.EnergySaverFragment"
+        android:fragment="hardkernel.odroid.settings.device.display.daydream.EnergySaverFragment"
         android:icon="@drawable/ic_settings_energy_saver"
         android:key="energysaver"
         android:title="@string/device_energy_saver"/>
     <Preference
-        android:fragment="com.android.tv.settings.system.development.DevelopmentFragment"
+        android:fragment="hardkernel.odroid.settings.system.development.DevelopmentFragment"
         android:icon="@drawable/ic_developer_mode"
         android:key="developer"
         android:title="@string/system_developer_options"/>
@@ -101,13 +101,13 @@
         android:fragment="com.android.tv.twopanelsettings.slices.SliceFragment"
         custom:isPreferenceVisible="false"
         custom:uri="@string/fastpair_slice_uri"/>
-    <com.android.tv.settings.LongClickPreference
-        android:fragment="com.android.tv.settings.about.RebootConfirmFragment"
+    <hardkernel.odroid.settings.LongClickPreference
+        android:fragment="hardkernel.odroid.settings.about.RebootConfirmFragment"
         android:icon="@drawable/ic_restart_alt"
         android:key="reboot"
         android:title="@string/restart_button_label"/>
     <Preference
-        android:fragment="com.android.tv.settings.advance_settings.AdvanceSettingsFragment"
+        android:fragment="hardkernel.odroid.settings.advance_settings.AdvanceSettingsFragment"
         android:icon="@drawable/logo_settings_color_48dp"
         android:key="advance_settings"
         android:title="@string/advance_settings"/>

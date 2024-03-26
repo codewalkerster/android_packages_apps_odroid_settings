@@ -26,5 +26,5 @@
     <Preference
         android:key="free_up_storage"
         android:title="@string/storage_free_up"
-        android:fragment="com.android.tv.settings.device.storage.FreeUpStorageFragment" />
+        android:fragment="hardkernel.odroid.settings.device.storage.FreeUpStorageFragment" />
 </PreferenceScreen>

@@ -18,38 +18,38 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     android:title="@string/system_accessibility">
 
-    <com.android.tv.settings.compat.TsPreference
+    <hardkernel.odroid.settings.compat.TsPreference
         android:key="captions"
         android:title="@string/accessibility_captions">
         <intent
             android:action="android.intent.action.MAIN"
-            android:targetClass="com.android.tv.settings.system.CaptionSetupActivity"
-            android:targetPackage="com.android.tv.settings"/>
-    </com.android.tv.settings.compat.TsPreference>
+            android:targetClass="hardkernel.odroid.settings.system.CaptionSetupActivity"
+            android:targetPackage="hardkernel.odroid.settings"/>
+    </hardkernel.odroid.settings.compat.TsPreference>
 
-    <com.android.tv.settings.compat.TsSwitchWithSoundPreference
+    <hardkernel.odroid.settings.compat.TsSwitchWithSoundPreference
         android:key="toggle_high_text_contrast"
         android:persistent="true"
         android:title="@string/accessibility_toggle_high_text_contrast_preference_title"
         android:summary="@string/experimental_preference"/>
 
-    <com.android.tv.settings.compat.TsPreference
+    <hardkernel.odroid.settings.compat.TsPreference
         android:key="text_to_speech"
         android:title="@string/system_accessibility_tts_output"
-        android:fragment="com.android.tv.settings.system.TextToSpeechFragment"/>
+        android:fragment="hardkernel.odroid.settings.system.TextToSpeechFragment"/>
 
-    <com.android.tv.settings.compat.TsPreference
+    <hardkernel.odroid.settings.compat.TsPreference
         android:key="accessibility_shortcut"
         android:title="@string/accessibility_shortcut"
-        android:fragment="com.android.tv.settings.accessibility.AccessibilityShortcutFragmentCompat"/>
+        android:fragment="hardkernel.odroid.settings.accessibility.AccessibilityShortcutFragmentCompat"/>
 
-    <com.android.tv.settings.compat.TsSwitchWithSoundPreference
+    <hardkernel.odroid.settings.compat.TsSwitchWithSoundPreference
         android:key="toggle_audio_description"
         android:persistent="true"
         android:title="@string/accessibility_toggle_audio_description_preference_title"
         android:summary="@string/accessibility_audio_description_summary"/>
 
-    <com.android.tv.settings.compat.TsPreferenceCategory
+    <hardkernel.odroid.settings.compat.TsPreferenceCategory
         android:key="system_accessibility_services"
         android:title="@string/system_services"/>
 
