@@ -56,6 +56,17 @@ public class ConfigEnv {
         return getValue("gpu_governor");
     }
 
+    public static String getNpuFreq() {
+        String value = getValue("npu_max_freq");
+        if (value.length() > 4)
+            return value;
+        return value + "000000";
+    }
+
+    public static String getNpuGovernor() {
+        return getValue("npu_governor");
+    }
+
     public static String getHeartBeat() {
         return getValue("heartbeat");
     }
@@ -139,6 +150,14 @@ public class ConfigEnv {
 
     public static void setGpuGovernor(String governor) {
         setValue("gpu_governor", governor);
+    }
+
+    public static void setNpuFreq(String freq) {
+        setValue("npu_max_freq", freq.substring(0, freq.length() - 6));
+    }
+
+    public static void setNpuGovernor(String governor) {
+        setValue("npu_governor", governor);
     }
 
     public static void setHeartBeat(String mode) {

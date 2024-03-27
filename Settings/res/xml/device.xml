@@ -38,6 +38,11 @@
         android:key="gpu"
         android:title="@string/gpu"
         android:fragment="hardkernel.odroid.settings.gpu.GpuFragment" />
+    <!-- android:icon="@drawable/ic_npu" -->
+    <Preference
+        android:key="npu"
+        android:title="@string/npu"
+        android:fragment="hardkernel.odroid.settings.npu.NpuFragment" />
     <Preference
         android:icon="@drawable/heartbeat_icon"
         android:key="led"

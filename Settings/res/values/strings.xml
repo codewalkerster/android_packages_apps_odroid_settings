@@ -2987,6 +2987,11 @@
     <string name="gpu_clock">GPU Max Clock</string>
     <string name="gpu_governor">GPU Governor</string>
 
+    <!-- npu -->
+    <string name="npu">NPU</string>
+    <string name="npu_clock">NPU Max Clock</string>
+    <string name="npu_governor">NPU Governor</string>
+
     <!-- mouse -->
     <string name="mouse">Mouse</string>
     <string name="mouse_accel">Mouse Acceleration</string>

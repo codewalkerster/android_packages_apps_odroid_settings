@@ -52,6 +52,7 @@ import hardkernel.odroid.settings.LongClickPreference;
 import hardkernel.odroid.settings.MainFragment;
 import hardkernel.odroid.settings.R;
 import hardkernel.odroid.settings.SettingsPreferenceFragment;
+import hardkernel.odroid.settings.util.OdroidUtils;
 import hardkernel.odroid.settings.about.RebootConfirmFragment;
 import com.android.tv.settings.library.overlay.FlavorUtils;
 import com.android.tv.settings.library.settingslib.AutofillHelper;
@@ -88,6 +89,7 @@ public class DevicePrefFragment extends SettingsPreferenceFragment implements
     private static final String KEY_HOME_SETTINGS = "home";
     private static final String KEY_REBOOT = "reboot";
     private static final String KEY_MIC = "microphone";
+    private static final String KEY_NPU = "npu";
     private static final String KEY_CAMERA = "camera";
     private static final String KEY_FASTPAIR_SETTINGS_SLICE = "fastpair_slice";
     private static final String KEY_OVERLAY_INTERNAL_SETTINGS_SLICE = "overlay_internal";
@@ -95,6 +97,7 @@ public class DevicePrefFragment extends SettingsPreferenceFragment implements
     private static final String RES_TOP_LEVEL_ASSISTANT_SLICE_URI = "top_level_assistant_slice_uri";
 
     private Preference mSoundsPref;
+    private Preference mNpuPref;
     private TwoStatePreference mSoundsSwitchPref;
     private boolean mInputSettingNeeded;
     private PackageManager mPm;
@@ -147,6 +150,10 @@ public class DevicePrefFragment extends SettingsPreferenceFragment implements
                 ((SlicePreference) assistantBroadcastPreference).getUri(),
                 RES_TOP_LEVEL_ASSISTANT_SLICE_URI)) {
             assistantBroadcastPreference.setVisible(true);
+        }
+        mNpuPref = findPreference(KEY_NPU);
+        if (!OdroidUtils.isOdroidM2()) {
+            mNpuPref.setVisible(false);
         }
     }
 

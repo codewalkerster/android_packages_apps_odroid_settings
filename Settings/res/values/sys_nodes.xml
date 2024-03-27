@@ -3,4 +3,5 @@
     <!-- GPU -->
     <string name="m1_gpu">/sys/class/devfreq/fde60000.gpu</string>
     <string name="m2_gpu">/sys/class/devfreq/fb000000.gpu</string>
+    <string name="m2_npu">/sys/class/devfreq/fdab0000.npu</string>
 </resources>
