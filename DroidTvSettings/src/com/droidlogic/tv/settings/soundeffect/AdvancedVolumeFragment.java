@@ -48,7 +48,7 @@ import java.util.Map;
 // DroidLogic start modify, add passthrough feature and remove manual feature.
 import java.util.Arrays;
 import androidx.preference.PreferenceScreen;
-import com.droidlogic.app.OutputModeManager;
+import com.droidlogic.app.DroidAudioManager;
 import com.droidlogic.tv.settings.tvoption.SoundParameterSettingManager;
 import android.util.Log;
 // DroidLogic end
@@ -101,8 +101,7 @@ public class AdvancedVolumeFragment extends PreferenceControllerFragment impleme
     // DroidLogic start
     private boolean isFromMainSettings = true;
     private String MainSettings = "MainSettings";
-    private OutputModeManager mOutputModeManager;
-    private SoundParameterSettingManager mSoundParameterSettingManager;
+    private DroidAudioManager mDroidAudioManager;
     private SwitchPreference mSpdifSwitchPref;
     private ListPreference mAc4DialogEnhancerPref;
     // DroidLogic end
@@ -117,7 +116,7 @@ public class AdvancedVolumeFragment extends PreferenceControllerFragment impleme
         mFormats = audioManager.getSurroundFormats();
         mReportedFormats = audioManager.getReportedSurroundFormats();
         // DroidLogic start
-        mOutputModeManager = OutputModeManager.getInstance(context);
+        mDroidAudioManager = DroidAudioManager.getInstance(context);
         // DroidLogic end
         super.onAttach(context);
     }
@@ -129,13 +128,6 @@ public class AdvancedVolumeFragment extends PreferenceControllerFragment impleme
     // DroidLogic start
     private String[] getArrayString(int resid) {
         return getActivity().getResources().getStringArray(resid);
-    }
-
-    private SoundParameterSettingManager getSoundParameterSettingManager() {
-        if (mSoundParameterSettingManager == null) {
-            mSoundParameterSettingManager = new SoundParameterSettingManager(getActivity());
-        }
-        return mSoundParameterSettingManager;
     }
     // DroidLogic end
 
@@ -169,7 +161,7 @@ public class AdvancedVolumeFragment extends PreferenceControllerFragment impleme
 
         // DroidLogic start
         /* not support passthrough when ms12 so are not included.*/
-        if (!mOutputModeManager.isAudioSupportMs12System()) {
+        if (!mDroidAudioManager.isAudioSupportMs12System()) {
             String[] entry = getArrayString(R.array.surround_sound_entries);
             String[] entryValue = getArrayString(R.array.surround_sound_entry_values);
             List<String> entryList = new ArrayList<String>(Arrays.asList(entry));
@@ -182,7 +174,7 @@ public class AdvancedVolumeFragment extends PreferenceControllerFragment impleme
         }
 
         mSpdifSwitchPref = (SwitchPreference) findPreference(KEY_SPDIF_OUTPUT_SWITCH);
-        mSpdifSwitchPref.setChecked(mOutputModeManager.getSoundSpdifEnable());
+        mSpdifSwitchPref.setChecked(mDroidAudioManager.getSoundSpdifEnable());
 
         // add this for the ac4 enhancer ui
         mAc4DialogEnhancerPref = findPreference(KEY_AC4_OUTPUT_SWITCH);
@@ -191,7 +183,7 @@ public class AdvancedVolumeFragment extends PreferenceControllerFragment impleme
 
         //Dolby Audio Effect 2.4 already have Dialogue Enhance function, so disable it
         boolean isTv = SettingsConstant.needDroidlogicTvFeature(getActivity());
-        if (!mOutputModeManager.isAudioSupportMs12System() || isTv) {// when not the ms12 version hide the mAc4DialogEnhancerPref
+        if (!mDroidAudioManager.isAudioSupportMs12System() || isTv) {// when not the ms12 version hide the mAc4DialogEnhancerPref
             advancedSoundScreenPref.removePreference(mAc4DialogEnhancerPref);
         }
         if (isTv) {
@@ -204,8 +196,8 @@ public class AdvancedVolumeFragment extends PreferenceControllerFragment impleme
     @Override
     protected List<AbstractPreferenceController> onCreatePreferenceControllers(Context context) {
         // DroidLogic start, add passthrough feature and remove manual feature.
-        Log.d(TAG,"mOutputModeManager onCreatePreferenceControllers");
-        mOutputModeManager = OutputModeManager.getInstance(context);
+        Log.d(TAG,"mDroidAudioManager onCreatePreferenceControllers");
+        mDroidAudioManager = DroidAudioManager.getInstance(context);
         // DroidLogic end, add passthrough feature and remove manual feature.
         mPreferenceControllers = new ArrayList<>(mFormats.size());
         for (Map.Entry<Integer, Boolean> format : mFormats.entrySet()) {
@@ -332,7 +324,7 @@ public class AdvancedVolumeFragment extends PreferenceControllerFragment impleme
                     logEntrySelected(
                             TvSettingsEnums.DISPLAY_SOUND_ADVANCED_SOUNDS_SELECT_FORMATS_AUTO);
                     // DroidLogic start
-                    mOutputModeManager.saveDigitalAudioFormatToHal(OutputModeManager.DIGITAL_AUDIO_FORMAT_AUTO, "");
+                    mDroidAudioManager.saveDigitalAudioFormatToHal(DroidAudioManager.DIGITAL_AUDIO_FORMAT_AUTO, "");
                     // DroidLogic end
                     setSurroundPassthroughSetting(Settings.Global.ENCODED_SURROUND_OUTPUT_AUTO);
                     // DroidLogic start
@@ -343,7 +335,7 @@ public class AdvancedVolumeFragment extends PreferenceControllerFragment impleme
                     logEntrySelected(
                             TvSettingsEnums.DISPLAY_SOUND_ADVANCED_SOUNDS_SELECT_FORMATS_NONE);
                     // DroidLogic start
-                    mOutputModeManager.saveDigitalAudioFormatToHal(OutputModeManager.DIGITAL_AUDIO_FORMAT_PCM, "");
+                    mDroidAudioManager.saveDigitalAudioFormatToHal(DroidAudioManager.DIGITAL_AUDIO_FORMAT_PCM, "");
                     // DroidLogic end
                     setSurroundPassthroughSetting(Settings.Global.ENCODED_SURROUND_OUTPUT_NEVER);
                     // DroidLogic start
@@ -360,12 +352,12 @@ public class AdvancedVolumeFragment extends PreferenceControllerFragment impleme
                 // DroidLogic start
                 case VAL_SURROUND_SOUND_PASSTHROUGH:
                     Log.d(TAG,"VAL_SURROUND_SOUND_PASSTHROUGH"); //// DroidLogic start, add passthrough feature and remove manual feature.
-                    mOutputModeManager.saveDigitalAudioFormatToHal(OutputModeManager.DIGITAL_AUDIO_FORMAT_PASSTHROUGH, "");
+                    mDroidAudioManager.saveDigitalAudioFormatToHal(DroidAudioManager.DIGITAL_AUDIO_FORMAT_PASSTHROUGH, "");
                     setSurroundPassthroughSetting(Settings.Global.ENCODED_SURROUND_OUTPUT_AUTO);
                     break;
                 case VAL_SURROUND_SOUND_ALWAYS:
                     // On Android P ALWAYS is replaced by MANUAL.
-                    mOutputModeManager.setDigitalAudioFormatOut(OutputModeManager.DIGITAL_AUDIO_FORMAT_PASSTHROUGH);
+                    mDroidAudioManager.setDigitalAudioFormatOut(DroidAudioManager.DIGITAL_AUDIO_FORMAT_PASSTHROUGH);
                     setSurroundPassthroughSetting(Settings.Global.ENCODED_SURROUND_OUTPUT_ALWAYS);
                     break;
                 // DroidLogic end
@@ -395,24 +387,24 @@ public class AdvancedVolumeFragment extends PreferenceControllerFragment impleme
             final int selection1 = Integer.parseInt(newValue.toString());
             Log.d(TAG,"KEY_AC4_OUTPUT_SWITCH:" + selection1);
             switch (selection1) {
-                case OutputModeManager.DIALOGUE_ENHANCEMENT_OFF:
-                    if (mOutputModeManager.isAudioSupportMs12System()) {
-                        mOutputModeManager.setAc4DialogEnhancer(0);
+                case DroidAudioManager.DIALOGUE_ENHANCEMENT_OFF:
+                    if (mDroidAudioManager.isAudioSupportMs12System()) {
+                        mDroidAudioManager.setAc4DialogEnhancer(0);
                     }
                     break;
-                case OutputModeManager.DIALOGUE_ENHANCEMENT_LOW:
-                    if (mOutputModeManager.isAudioSupportMs12System()) {
-                        mOutputModeManager.setAc4DialogEnhancer(4);
+                case DroidAudioManager.DIALOGUE_ENHANCEMENT_LOW:
+                    if (mDroidAudioManager.isAudioSupportMs12System()) {
+                        mDroidAudioManager.setAc4DialogEnhancer(4);
                     }
                     break;
-                case OutputModeManager.DIALOGUE_ENHANCEMENT_MEDIUM:
-                    if (mOutputModeManager.isAudioSupportMs12System()) {
-                        mOutputModeManager.setAc4DialogEnhancer(8);
+                case DroidAudioManager.DIALOGUE_ENHANCEMENT_MEDIUM:
+                    if (mDroidAudioManager.isAudioSupportMs12System()) {
+                        mDroidAudioManager.setAc4DialogEnhancer(8);
                     }
                     break;
-                case OutputModeManager.DIALOGUE_ENHANCEMENT_HIGH:
-                    if (mOutputModeManager.isAudioSupportMs12System()) {
-                        mOutputModeManager.setAc4DialogEnhancer(12);
+                case DroidAudioManager.DIALOGUE_ENHANCEMENT_HIGH:
+                    if (mDroidAudioManager.isAudioSupportMs12System()) {
+                        mDroidAudioManager.setAc4DialogEnhancer(12);
                     }
                     break;
                 default:
@@ -431,7 +423,7 @@ public class AdvancedVolumeFragment extends PreferenceControllerFragment impleme
     public boolean onPreferenceTreeClick(Preference preference) {
         String key = preference.getKey();
         if (key.equals(KEY_SPDIF_OUTPUT_SWITCH)) {
-            mOutputModeManager.setSoundSpdifEnable(mSpdifSwitchPref.isChecked());
+            mDroidAudioManager.setSoundSpdifEnable(mSpdifSwitchPref.isChecked());
             return true;
         }
         return super.onPreferenceTreeClick(preference);
@@ -478,20 +470,20 @@ public class AdvancedVolumeFragment extends PreferenceControllerFragment impleme
             return VAL_SURROUND_SOUND_NEVER;
         }
         final int value = Settings.Global.getInt(context.getContentResolver(),
-                OutputModeManager.DIGITAL_AUDIO_FORMAT, OutputModeManager.DIGITAL_AUDIO_FORMAT_AUTO);
+                DroidAudioManager.DIGITAL_AUDIO_FORMAT, DroidAudioManager.DIGITAL_AUDIO_FORMAT_AUTO);
         Log.d(TAG, "getDigitalAudioFormat value = " + value);
         String format = "";
         switch (value) {
-        case OutputModeManager.DIGITAL_AUDIO_FORMAT_PCM:
+        case DroidAudioManager.DIGITAL_AUDIO_FORMAT_PCM:
             format = VAL_SURROUND_SOUND_PCM;
             break;
-        case OutputModeManager.DIGITAL_AUDIO_FORMAT_MANUAL:
+        case DroidAudioManager.DIGITAL_AUDIO_FORMAT_MANUAL:
             format = VAL_SURROUND_SOUND_MANUAL;
             break;
-        case OutputModeManager.DIGITAL_AUDIO_FORMAT_AUTO:
+        case DroidAudioManager.DIGITAL_AUDIO_FORMAT_AUTO:
             format = VAL_SURROUND_SOUND_AUTO;
             break;
-        case OutputModeManager.DIGITAL_AUDIO_FORMAT_PASSTHROUGH:
+        case DroidAudioManager.DIGITAL_AUDIO_FORMAT_PASSTHROUGH:
             format = VAL_SURROUND_SOUND_PASSTHROUGH;
             break;
         default:
@@ -502,18 +494,18 @@ public class AdvancedVolumeFragment extends PreferenceControllerFragment impleme
 
     static int getAc4EnhancerValueSetting(Context context) {
         final int value = Settings.Global.getInt(context.getContentResolver(),
-                OutputModeManager.DIALOGUE_ENHANCEMENT_SWITCH,
-                OutputModeManager.DIALOGUE_ENHANCEMENT_OFF);
+                DroidAudioManager.DIALOGUE_ENHANCEMENT_SWITCH,
+                DroidAudioManager.DIALOGUE_ENHANCEMENT_OFF);
         Log.d(TAG,"[getAc4EnhancerValueSetting]:" + value);
         switch (value) {
-            case OutputModeManager.DIALOGUE_ENHANCEMENT_OFF:
+            case DroidAudioManager.DIALOGUE_ENHANCEMENT_OFF:
             default:
                  return 0;
-            case OutputModeManager.DIALOGUE_ENHANCEMENT_LOW:
+            case DroidAudioManager.DIALOGUE_ENHANCEMENT_LOW:
                  return 4;
-            case OutputModeManager.DIALOGUE_ENHANCEMENT_MEDIUM:
+            case DroidAudioManager.DIALOGUE_ENHANCEMENT_MEDIUM:
                  return 8;
-            case OutputModeManager.DIALOGUE_ENHANCEMENT_HIGH:
+            case DroidAudioManager.DIALOGUE_ENHANCEMENT_HIGH:
                  return 12;
         }
     }

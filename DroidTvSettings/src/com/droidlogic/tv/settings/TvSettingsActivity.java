@@ -46,7 +46,7 @@ import com.droidlogic.tv.settings.overlay.FlavorUtils;
 import com.droidlogic.tv.settings.tvoption.SoundParameterSettingManager;
 import com.droidlogic.tv.settings.soundeffect.OptionParameterManager;
 import com.droidlogic.app.AudioEffectManager;
-import com.droidlogic.app.AudioSystemCmdManager;
+import com.droidlogic.app.DroidAudioManager;
 
 import com.android.settingslib.core.instrumentation.MetricsFeatureProvider;
 import com.android.settingslib.core.instrumentation.SharedPreferencesLogger;
@@ -234,13 +234,13 @@ public abstract class TvSettingsActivity extends FragmentActivity {
         mSoundParameterSettingManager = new SoundParameterSettingManager(context);
         mOptionParameterManager = new OptionParameterManager(context);
         getAudioEffectManager();
-        getAudioSystemCmdManager();
+        getDroidAudioManager();
     }
     public AudioEffectManager getAudioEffectManager() {
         return AudioEffectManager.getInstance(getApplicationContext());
     }
-    public AudioSystemCmdManager getAudioSystemCmdManager() {
-        return AudioSystemCmdManager.getInstance(getApplicationContext());
+    public DroidAudioManager getDroidAudioManager() {
+        return DroidAudioManager.getInstance(getApplicationContext());
     }
     public SoundParameterSettingManager getSoundParameterSettingManager() {
         if (mSoundParameterSettingManager == null) {

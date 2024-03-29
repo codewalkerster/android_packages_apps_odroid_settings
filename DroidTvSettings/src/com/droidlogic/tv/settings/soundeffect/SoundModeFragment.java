@@ -50,10 +50,9 @@ import java.util.HashSet;
 import java.util.List;
 
 import com.droidlogic.app.DroidLogicUtils;
-import com.droidlogic.app.AudioConfigManager;
+import com.droidlogic.app.DroidAudioManager;
 import com.droidlogic.app.AudioEffectManager;
-import com.droidlogic.app.AudioSystemCmdManager;
-import com.droidlogic.app.OutputModeManager;
+import com.droidlogic.app.DroidAudioManager;
 import com.droidlogic.app.SystemControlManager;
 
 import com.droidlogic.tv.settings.TvSettingsActivity;
@@ -90,17 +89,15 @@ public class SoundModeFragment extends SettingsPreferenceFragment implements Pre
     public static final int UI_INDEX_DEVICE_OUT_BLUETOOTH                   = 7;
     public static final int UI_INDEX_DEVICE_OUT_MAX                         = 8;
 
-    private AudioConfigManager mAudioConfigManager;
     private AudioEffectManager mAudioEffectManager;
     private SoundParameterSettingManager mSoundParameterSettingManager;
-    private OutputModeManager mOutputModeManager;
-    private AudioSystemCmdManager mAudioSystemCmdManager = null;
+    private DroidAudioManager mDroidAudioManager = null;
     private AudioManager mAudioManager;
     private SystemControlManager mSystemControl;
     private ListPreference mAudioOutputDevPref;
     private TwoStatePreference mCoexistSpdifSwitchPref;
     private TwoStatePreference mVadSwitchPref;
-    private int mAudioDeviceOutputStrategy = AudioSystemCmdManager.OUTPUT_STRATEGY_AUTO;
+    private int mAudioDeviceOutputStrategy = DroidAudioManager.OUTPUT_STRATEGY_AUTO;
     private Context mContext = null;
     private HashSet<AudioDeviceInfo> mAudioOutputDevices = new HashSet<AudioDeviceInfo>();
 
@@ -175,11 +172,10 @@ public class SoundModeFragment extends SettingsPreferenceFragment implements Pre
     }
 
     private void init() {
-        mAudioConfigManager = AudioConfigManager.getInstance(getActivity());
+        mDroidAudioManager = DroidAudioManager.getInstance(getActivity());
         mAudioEffectManager = ((TvSettingsActivity)getActivity()).getAudioEffectManager();
-        mAudioSystemCmdManager = ((TvSettingsActivity)getActivity()).getAudioSystemCmdManager();
+        mDroidAudioManager = ((TvSettingsActivity)getActivity()).getDroidAudioManager();
         mSoundParameterSettingManager = ((TvSettingsActivity)getActivity()).getSoundParameterSettingManager();
-        mOutputModeManager = OutputModeManager.getInstance(getActivity());
     }
 
     @Override
@@ -199,17 +195,17 @@ public class SoundModeFragment extends SettingsPreferenceFragment implements Pre
 
         mAudioOutputDevPref = (ListPreference) findPreference(KEY_TV_SOUND_AUDIO_DEVICE);
         mAudioOutputDevPref.setOnPreferenceChangeListener(this);
-        mAudioDeviceOutputStrategy = mSystemControl.getPropertyInt(AudioSystemCmdManager.PROP_AUDIO_OUTPUT_STRATEGY, AudioSystemCmdManager.OUTPUT_STRATEGY_AUTO);
-        if (mAudioDeviceOutputStrategy < AudioSystemCmdManager.OUTPUT_STRATEGY_AUTO || mAudioDeviceOutputStrategy > AudioSystemCmdManager.OUTPUT_STRATEGY_MANUAL) {
+        mAudioDeviceOutputStrategy = mSystemControl.getPropertyInt(DroidAudioManager.PROP_AUDIO_OUTPUT_STRATEGY, DroidAudioManager.OUTPUT_STRATEGY_AUTO);
+        if (mAudioDeviceOutputStrategy < DroidAudioManager.OUTPUT_STRATEGY_AUTO || mAudioDeviceOutputStrategy > DroidAudioManager.OUTPUT_STRATEGY_MANUAL) {
             logDebug(TAG, false, "refreshPref strategy invalid:" + mAudioDeviceOutputStrategy);
-            mAudioDeviceOutputStrategy = AudioSystemCmdManager.OUTPUT_STRATEGY_AUTO;
+            mAudioDeviceOutputStrategy = DroidAudioManager.OUTPUT_STRATEGY_AUTO;
         }
 
         mCoexistSpdifSwitchPref = (TwoStatePreference) findPreference(KEY_COEXIST_SPDIF_OTHER);
         mCoexistSpdifSwitchPref.setChecked(mSystemControl.getPropertyBoolean("persist.vendor.media.audio.spdif.coexist", true));
 
         mVadSwitchPref = (TwoStatePreference) findPreference(KEY_VAD_SWITCH);
-        mVadSwitchPref.setChecked(mSoundParameterSettingManager.isVadOn());
+        mVadSwitchPref.setChecked(mDroidAudioManager.isVadOn());
     }
 
     private boolean initView() {
@@ -260,9 +256,9 @@ public class SoundModeFragment extends SettingsPreferenceFragment implements Pre
         } else if (TextUtils.equals(key, KEY_TV_SOUND_AUDIO_DEVICE)) {
             refreshPref();
         } else if (TextUtils.equals(key, KEY_VAD_SWITCH)) {
-            mSoundParameterSettingManager.setVadOn(mVadSwitchPref.isChecked());
+            mDroidAudioManager.setVadOn(mVadSwitchPref.isChecked());
         } else if (TextUtils.equals(key, KEY_COEXIST_SPDIF_OTHER)) {
-            mAudioSystemCmdManager.setCoexistSpdifOther(mCoexistSpdifSwitchPref.isChecked());
+            mDroidAudioManager.setCoexistSpdifOther(mCoexistSpdifSwitchPref.isChecked());
         }
         return super.onPreferenceTreeClick(preference);
     }
@@ -280,8 +276,8 @@ public class SoundModeFragment extends SettingsPreferenceFragment implements Pre
         } else if (TextUtils.equals(preference.getKey(), TV_VIRTUAL_SURROUND_SETTINGS)) {
             mAudioEffectManager.setVirtualSurround(selection);
         } else if (TextUtils.equals(preference.getKey(), KEY_TV_SOUND_AUDIO_DEVICE)) {
-            byte[] devices = new byte[] {(byte) indexToAudioDev(selection)};
-            mAudioSystemCmdManager.setOutputDevices(devices);
+            int[] devices = new int[] {indexToAudioDev(selection)};
+            mDroidAudioManager.setOutputDevices(devices);
             refreshPref();
         }
         return true;
@@ -592,7 +588,7 @@ public class SoundModeFragment extends SettingsPreferenceFragment implements Pre
     public void onAttach(Context context) {
         mContext = getActivity();
         mSystemControl = SystemControlManager.getInstance();
-        mAudioSystemCmdManager = AudioSystemCmdManager.getInstance(mContext);
+        mDroidAudioManager = DroidAudioManager.getInstance(mContext);
         super.onAttach(context);
     }
 
@@ -611,20 +607,20 @@ public class SoundModeFragment extends SettingsPreferenceFragment implements Pre
         mAudioOutputDevPref.setEntries(entryList.toArray(new String[]{}));
         mAudioOutputDevPref.setEntryValues(entryValueList.toArray(new String[]{}));
 
-        mAudioDeviceOutputStrategy = mSystemControl.getPropertyInt(AudioSystemCmdManager.PROP_AUDIO_OUTPUT_STRATEGY, AudioSystemCmdManager.OUTPUT_STRATEGY_AUTO);
-        int uiIndex = convertDevicesToUiDisplay(mAudioSystemCmdManager.getOutputDevices());
+        mAudioDeviceOutputStrategy = mSystemControl.getPropertyInt(DroidAudioManager.PROP_AUDIO_OUTPUT_STRATEGY, DroidAudioManager.OUTPUT_STRATEGY_AUTO);
+        int uiIndex = convertDevicesToUiDisplay(mDroidAudioManager.getOutputDevices());
         int prefIndex = uiIndex;
-        if (mAudioDeviceOutputStrategy == AudioSystemCmdManager.OUTPUT_STRATEGY_AUTO) {
+        if (mAudioDeviceOutputStrategy == DroidAudioManager.OUTPUT_STRATEGY_AUTO) {
             prefIndex = UI_INDEX_DEVICE_OUT_AUTO;
         }
         mAudioOutputDevPref.setValue(prefIndex + "");
 
-        String strategy = AudioSystemCmdManager.strategyToString(mAudioDeviceOutputStrategy);
+        String strategy = DroidAudioManager.strategyToString(mAudioDeviceOutputStrategy);
         mAudioOutputDevPref.setSummary(getActivity().getResources().getString(indexToStringIndex(uiIndex)) + " (" + strategy +  ")");
         mAudioOutputDevPref.setEnabled(true);
     }
 
-    private int convertDevicesToUiDisplay(byte[] devices) {
+    private int convertDevicesToUiDisplay(int[] devices) {
         if (devices == null || devices.length == 0) {
             logDebug(TAG, false, "convertDevicesToUiDisplay devices is null");
             return UI_INDEX_DEVICE_OUT_SPEAKER;
@@ -633,7 +629,7 @@ public class SoundModeFragment extends SettingsPreferenceFragment implements Pre
             return audioDevToIndex(devices[0]);
         } else if (devices.length == 2) {
             logDebug(TAG, false, "convertDevicesToUiDisplay not supported dev0:" + devices[0] + ", dev1:" + devices[1]);
-            if (devices[0] == AudioDeviceInfo.TYPE_LINE_DIGITAL) {
+            if (devices[0] == DroidAudioManager.DROID_AUDIO_FORCE_USE_SPDIF) {
                 return audioDevToIndex(devices[1]);
             } else {
                 return audioDevToIndex(devices[0]);
@@ -669,23 +665,19 @@ public class SoundModeFragment extends SettingsPreferenceFragment implements Pre
 
     private int audioDevToIndex(int device) {
         switch (device) {
-            case AudioDeviceInfo.TYPE_BUILTIN_SPEAKER:
+            case DroidAudioManager.DROID_AUDIO_FORCE_USE_SPEAKER:
                 return UI_INDEX_DEVICE_OUT_SPEAKER;
-            case AudioDeviceInfo.TYPE_WIRED_HEADPHONES:
-            case AudioDeviceInfo.TYPE_WIRED_HEADSET:
+            case DroidAudioManager.DROID_AUDIO_FORCE_USE_HEADPHONES:
                 return UI_INDEX_DEVICE_OUT_HEADPHONE;
-            case AudioDeviceInfo.TYPE_LINE_DIGITAL:
+            case DroidAudioManager.DROID_AUDIO_FORCE_USE_SPDIF:
                 return UI_INDEX_DEVICE_OUT_SPDIF;
-            case AudioDeviceInfo.TYPE_HDMI:
+            case DroidAudioManager.DROID_AUDIO_FORCE_USE_HDMI_OUT:
                 return UI_INDEX_DEVICE_OUT_HDMI_OUT;
-            case AudioDeviceInfo.TYPE_HDMI_ARC:
+            case DroidAudioManager.DROID_AUDIO_FORCE_USE_HDMI_ARC:
                 return UI_INDEX_DEVICE_OUT_HDMI_ARC;
-            case AudioDeviceInfo.TYPE_USB_DEVICE:
-            case AudioDeviceInfo.TYPE_USB_ACCESSORY:
-            case AudioDeviceInfo.TYPE_USB_HEADSET:
+            case DroidAudioManager.DROID_AUDIO_FORCE_USE_WIRED_ACCESSORY:
                 return UI_INDEX_DEVICE_OUT_USB;
-            case AudioDeviceInfo.TYPE_BLUETOOTH_A2DP:
-            case AudioDeviceInfo.TYPE_BLUETOOTH_SCO:
+            case DroidAudioManager.DROID_AUDIO_FORCE_USE_BT_A2DP:
                 return UI_INDEX_DEVICE_OUT_BLUETOOTH;
             default:
                 logDebug(TAG, false, "audioDevToIndex not supported AudioDeviceInfo device:" + device);
@@ -696,21 +688,21 @@ public class SoundModeFragment extends SettingsPreferenceFragment implements Pre
     private int indexToAudioDev(int index) {
         switch (index) {
             case UI_INDEX_DEVICE_OUT_AUTO:
-                return AudioDeviceInfo.TYPE_UNKNOWN;
+                return DroidAudioManager.DROID_AUDIO_FORCE_USE_NONE;
             case UI_INDEX_DEVICE_OUT_SPEAKER:
-                return AudioDeviceInfo.TYPE_BUILTIN_SPEAKER;
+                return DroidAudioManager.DROID_AUDIO_FORCE_USE_SPEAKER;
             case UI_INDEX_DEVICE_OUT_SPDIF:
-                return AudioDeviceInfo.TYPE_LINE_DIGITAL;
+                return DroidAudioManager.DROID_AUDIO_FORCE_USE_SPDIF;
             case UI_INDEX_DEVICE_OUT_HDMI_OUT:
-                return AudioDeviceInfo.TYPE_HDMI;
+                return DroidAudioManager.DROID_AUDIO_FORCE_USE_HDMI_OUT;
             case UI_INDEX_DEVICE_OUT_HEADPHONE:
-                return AudioDeviceInfo.TYPE_WIRED_HEADPHONES;
+                return DroidAudioManager.DROID_AUDIO_FORCE_USE_HEADPHONES;
             case UI_INDEX_DEVICE_OUT_HDMI_ARC:
-                return AudioDeviceInfo.TYPE_HDMI_ARC;
+                return DroidAudioManager.DROID_AUDIO_FORCE_USE_HDMI_ARC;
             case UI_INDEX_DEVICE_OUT_USB:
-                return AudioDeviceInfo.TYPE_USB_DEVICE;
+                return DroidAudioManager.DROID_AUDIO_FORCE_USE_WIRED_ACCESSORY;
             case UI_INDEX_DEVICE_OUT_BLUETOOTH:
-                return AudioDeviceInfo.TYPE_BLUETOOTH_A2DP;
+                return DroidAudioManager.DROID_AUDIO_FORCE_USE_BT_A2DP;
             default:
                 logDebug(TAG, false, "indexToAudioDev not supported ui index:" + index);
                 return 0;
@@ -719,7 +711,7 @@ public class SoundModeFragment extends SettingsPreferenceFragment implements Pre
 
     private boolean isAllowSetDevice() {
         AudioDeviceInfo[] outputDevices = mAudioManager.getDevices(AudioManager.GET_DEVICES_OUTPUTS);
-        if (mAudioDeviceOutputStrategy != AudioSystemCmdManager.OUTPUT_STRATEGY_MANUAL) {
+        if (mAudioDeviceOutputStrategy != DroidAudioManager.OUTPUT_STRATEGY_MANUAL) {
             for (AudioDeviceInfo info : outputDevices) {
                 if (info.getType() == AudioDeviceInfo.TYPE_BLUETOOTH_A2DP ||
                         info.getType() == AudioDeviceInfo.TYPE_BLUETOOTH_SCO ||
@@ -752,12 +744,12 @@ public class SoundModeFragment extends SettingsPreferenceFragment implements Pre
             return true;
         }
 //        // reserve auto ui code.
-//        if (mAudioDeviceOutputStrategy == AudioSystemCmdManager.OUTPUT_STRATEGY_SEMI_AUTO) {
+//        if (mAudioDeviceOutputStrategy == DroidAudioManager.OUTPUT_STRATEGY_SEMI_AUTO) {
 //            if (index == UI_INDEX_DEVICE_OUT_SPEAKER  || index == UI_INDEX_DEVICE_OUT_HDMI_ARC || index == UI_INDEX_DEVICE_OUT_SPDIF) {
 //                // Semi-Auto need display SPK/ARC/SPDIF
 //                return true;
 //            }
-//        } else if (mAudioDeviceOutputStrategy == AudioSystemCmdManager.OUTPUT_STRATEGY_MANUAL) {
+//        } else if (mAudioDeviceOutputStrategy == DroidAudioManager.OUTPUT_STRATEGY_MANUAL) {
 //            return true;
 //        } else {
 //            return true;

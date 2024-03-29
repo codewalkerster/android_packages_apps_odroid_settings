@@ -30,8 +30,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.droidlogic.app.OutputModeManager;
 import com.droidlogic.app.AudioEffectManager;
+import com.droidlogic.app.DroidAudioManager;
 import com.droidlogic.tv.settings.TvSettingsActivity;
 import com.droidlogic.tv.settings.R;
 
@@ -46,6 +46,7 @@ public class TrebleBassSeekBarFragment extends SettingsPreferenceFragment implem
     private TextView text_bass;
 
     private AudioEffectManager mAudioEffectManager;
+
     private boolean isSeekBarInited = false;
 
     public static TrebleBassSeekBarFragment newInstance() {
@@ -120,7 +121,7 @@ public class TrebleBassSeekBarFragment extends SettingsPreferenceFragment implem
         if (!isSeekBarInited) {
             return;
         }
-        boolean supportMs12Dap = OutputModeManager.getInstance(getActivity()).isAudioSupportMs12System();
+        boolean supportMs12Dap = DroidAudioManager.getInstance(getActivity()).isAudioSupportMs12System();
         switch (seekBar.getId()) {
             case R.id.seekbar_tv_treble:{
                 setShow(R.id.seekbar_tv_treble, progress);

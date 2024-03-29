@@ -6,7 +6,7 @@ import android.content.ContentResolver;
 
 import com.droidlogic.tv.settings.R;
 import static com.droidlogic.tv.settings.util.DroidUtils.logDebug;
-import com.droidlogic.app.AudioSettingManager;
+import com.droidlogic.app.DroidAudioManager;
 import com.droidlogic.app.AudioEffectManager;
 
 public class HdmiCecContentManager {
@@ -14,7 +14,7 @@ public class HdmiCecContentManager {
 
     private Context mContext;
     private static volatile HdmiCecContentManager mHdmiCecContentManager;
-    private AudioSettingManager mAudioSettingManager;
+    private DroidAudioManager mDroidAudioManager;
     private static AudioEffectManager mAudioEffectManager;
     private HdmiControlManager mHdmiControlManager;
 
@@ -46,8 +46,8 @@ public class HdmiCecContentManager {
     private HdmiCecContentManager(final Context context) {
         mContext = context;
         mHdmiControlManager = mContext.getSystemService(HdmiControlManager.class);
-        if (mAudioSettingManager == null) {
-            mAudioSettingManager = AudioSettingManager.getInstance(mContext);
+        if (mDroidAudioManager == null) {
+            mDroidAudioManager = DroidAudioManager.getInstance(mContext);
         }
         if (mAudioEffectManager == null) {
            mAudioEffectManager = AudioEffectManager.getInstance(context);
@@ -92,11 +92,11 @@ public class HdmiCecContentManager {
     }
 
     public boolean getSoundbarModeStatus() {
-        return mAudioSettingManager.isSoundBarModeEnabled();
+        return mDroidAudioManager.isSoundBarModeEnabled();
     }
 
     public void setSoundbarModeStatus(boolean state) {
-        mAudioSettingManager.setSoundBarModeEnabled(state);
+        mDroidAudioManager.setSoundBarModeEnabled(state);
         mAudioEffectManager.setAudioEffectOn(AudioEffectManager.DEBUG_DAP_2_UI, state);
     }
 

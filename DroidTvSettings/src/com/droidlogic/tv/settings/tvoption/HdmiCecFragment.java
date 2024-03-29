@@ -41,8 +41,7 @@ import android.os.SystemProperties;
 import java.util.*;
 
 import com.droidlogic.app.HdmiCecManager;
-import com.droidlogic.app.AudioConfigManager;
-import com.droidlogic.app.AudioSettingManager;
+import com.droidlogic.app.DroidAudioManager;
 import com.droidlogic.tv.settings.R;
 import com.droidlogic.tv.settings.RadioPreference;
 import com.droidlogic.tv.settings.SettingsConstant;
@@ -95,10 +94,9 @@ public class HdmiCecFragment extends SettingsPreferenceFragment implements Prefe
     private RadioPreference mArcEarcModeAutoPref;
     private RadioPreference mArcEarcModeARCPref;
 
+    private DroidAudioManager mDroidAudioManager;
     private SoundParameterSettingManager mSoundParameterSettingManager;
     private ProgressDialog mProgress;
-    private AudioConfigManager mAudioConfigManager = null;
-    private AudioSettingManager mAudioSettingManager;
     private HdmiCecManager mHdmiCecManager;
     private static long mLastObserveredCECTime = 0;
     private static long mLastObserveredArcEarcTime = 0;
@@ -113,12 +111,6 @@ public class HdmiCecFragment extends SettingsPreferenceFragment implements Prefe
     @Override
     public void onCreate(Bundle savedInstanceState) {
         mHdmiCecManager = new HdmiCecManager(getContext());
-        if (mAudioConfigManager == null) {
-            mAudioConfigManager = AudioConfigManager.getInstance(getActivity());
-        }
-        if (mAudioSettingManager ==null) {
-            mAudioSettingManager = AudioSettingManager.getInstance(getActivity());
-        }
         if (mSoundParameterSettingManager == null) {
             mSoundParameterSettingManager = new SoundParameterSettingManager(getActivity());
         }
@@ -127,6 +119,9 @@ public class HdmiCecFragment extends SettingsPreferenceFragment implements Prefe
         mProgress.setIndeterminate(false);
         mProgress.getWindow().setType(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY);
         mProgress.setCancelable(false);
+        if (mDroidAudioManager == null) {
+            mDroidAudioManager = DroidAudioManager.getInstance(getActivity());
+        }
         super.onCreate(savedInstanceState);
     }
 
@@ -194,7 +189,7 @@ public class HdmiCecFragment extends SettingsPreferenceFragment implements Prefe
         digitalSoundPref.setValue(mSoundParameterSettingManager.getDigitalAudioFormat());
         if (tvFlag) {
             /* not support passthrough when ms12 so are not included.*/
-            if (!mSoundParameterSettingManager.isAudioSupportMs12System()) {
+            if (!mDroidAudioManager.isAudioSupportMs12System()) {
                 String[] entry = getArrayString(R.array.digital_sounds_tv_entries);
                 String[] entryValue = getArrayString(R.array.digital_sounds_tv_entry_values);
                 List<String> entryList = new ArrayList<String>(Arrays.asList(entry));
@@ -305,7 +300,7 @@ public class HdmiCecFragment extends SettingsPreferenceFragment implements Prefe
                 updateVolumeControl(mCecVolumeControlPref.isChecked());
                 break;
             case KEY_SOUNDBAR_MODE:
-                mAudioSettingManager.setSoundBarModeEnabled(mSoundbarModePref.isChecked());
+                mDroidAudioManager.setSoundBarModeEnabled(mSoundbarModePref.isChecked());
                 break;
             default:
                 break;
@@ -358,6 +353,10 @@ public class HdmiCecFragment extends SettingsPreferenceFragment implements Prefe
         if (TextUtils.equals(preference.getKey(), SoundFragment.KEY_DIGITALSOUND_FORMAT)) {
             mSoundParameterSettingManager.setDigitalAudioFormat((String) newValue);
         }
+
+
+
+
         return true;
     }
 
@@ -394,7 +393,7 @@ public class HdmiCecFragment extends SettingsPreferenceFragment implements Prefe
             mArcEarcModeAutoPref.setChecked(true);
             mArcEarcModeARCPref.setChecked(false);
         }
-        mSoundbarModePref.setChecked(mAudioSettingManager.isSoundBarModeEnabled());
+        mSoundbarModePref.setChecked(mDroidAudioManager.isSoundBarModeEnabled());
     }
 
     private Handler mHandler = new Handler() {
