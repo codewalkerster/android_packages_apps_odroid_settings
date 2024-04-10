@@ -54,17 +54,9 @@ final class AccessoryUtils {
     }
 
     public static LocalBluetoothManager getLocalBluetoothManager(Context context) {
-        final FutureTask<LocalBluetoothManager> localBluetoothManagerFutureTask =
-                new FutureTask<>(
-                        // Avoid StrictMode ThreadPolicy violation
-                        () -> LocalBluetoothManager.getInstance(
-                                context, (c, bluetoothManager) -> {
-                                })
-                );
         try {
-            localBluetoothManagerFutureTask.run();
-            return localBluetoothManagerFutureTask.get();
-        } catch (InterruptedException | ExecutionException e) {
+            return LocalBluetoothManager.getInstance(context, (c, bluetoothManager) -> {});
+        } catch (Exception e) {
             Log.w(TAG, "Error getting LocalBluetoothManager.", e);
             return null;
         }

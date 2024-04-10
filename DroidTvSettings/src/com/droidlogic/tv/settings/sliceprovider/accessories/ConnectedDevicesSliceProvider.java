@@ -319,7 +319,7 @@ public class ConnectedDevicesSliceProvider extends SliceProvider implements
             connectionActionPref.setFollowupPendingIntent(followupIntent);
 
             String remote_type = SystemProperties.get("sys.vendor.remote.type", "IR_NONE");
-            if (!remote_type.contains(deviceName)) {
+            if (deviceName != null && !remote_type.contains(deviceName)) {
                 Log.d(TAG, "add connectionActionPref");
                 psb.addPreference(connectionActionPref);
             } else {
