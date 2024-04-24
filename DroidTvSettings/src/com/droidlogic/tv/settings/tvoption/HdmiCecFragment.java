@@ -76,7 +76,7 @@ public class HdmiCecFragment extends SettingsPreferenceFragment implements Prefe
     private static final int MSG_ENABLE_ARC_SWITCH = 1;
     private static final int MSG_ENABLE_EARC_SWITCH = 2;
     private static final int MSG_ENABLE_ARC_EARC_SWITCH = 3;
-    private static final int TIME_DELAYED = 5000;//ms
+    private static final int TIME_DELAYED = 2000;//ms
 
     private TwoStatePreference mCecSwitchPref;
     private TwoStatePreference mCecVolumeControlPref;
@@ -176,6 +176,15 @@ public class HdmiCecFragment extends SettingsPreferenceFragment implements Prefe
         }
         digitalSoundPref.setOnPreferenceChangeListener(this);
 
+        if (tvFlag && !SUPPORT_EARC) {
+            getPreferenceScreen().setTitle(R.string.cec_control);
+            mArcNEarcSwitchPref.setTitle(R.string.title_arc_and_earc_mode_arc);
+            mArcNEarcSwitchPref.setSummary(R.string.cec_arc_switch_description);
+        }
+        if (!tvFlag) {
+            getPreferenceScreen().setTitle(R.string.cec_control);
+        }
+
         boolean hideOptions = Settings.Global.getInt(getContext().getContentResolver(),
                 HdmiCecManager.SETTINGS_DROIDLOGIC_CEC_SUPPORT, 0) == 0;
 
@@ -202,8 +211,9 @@ public class HdmiCecFragment extends SettingsPreferenceFragment implements Prefe
         switch (preference.getKey()) {
             case KEY_CEC_SWITCH:
                 mCecSwitchPref.setEnabled(false);
-                if (mArcNEarcSwitchPref.isChecked() && !mCecSwitchPref.isChecked()) {
-                    showTipsDialog(TIPS_TYPE_CEC, getContext().getString(R.string.tips_turn_off_cec));
+                if (mHdmiCecManager.isTv() && mArcNEarcSwitchPref.isChecked() && !mCecSwitchPref.isChecked()) {
+                    showTipsDialog(TIPS_TYPE_CEC, getContext().getString(
+                        SUPPORT_EARC ? R.string.tips_turn_off_cec : R.string.tips_turn_off_cec_arc_device));
                 } else {
                     sendMsgEnableCECSwitch();
                     enablePreferences(false);
@@ -235,7 +245,8 @@ public class HdmiCecFragment extends SettingsPreferenceFragment implements Prefe
                 logDebug(TAG, false, "arc/earc_switch: " + mArcNEarcSwitchPref.isChecked());
                 //mHdmiCecManager.enableArc(mArcNEarcSwitchPref.isChecked());
                 if (!mCecSwitchPref.isChecked() && mArcNEarcSwitchPref.isChecked()) {
-                    showTipsDialog(TIPS_TYPE_ARC, getContext().getString(R.string.tips_turn_on_arc_earc));
+                    showTipsDialog(TIPS_TYPE_ARC, getContext().getString(
+                        SUPPORT_EARC ? R.string.tips_turn_on_arc_earc : R.string.tips_turn_on_arc));
                 } else {
                     sendMsgEnableArcEarcSwitch();
                     mArcNEarcSwitchPref.setEnabled(false);

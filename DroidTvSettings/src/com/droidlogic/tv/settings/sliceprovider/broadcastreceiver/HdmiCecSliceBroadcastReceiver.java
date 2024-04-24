@@ -22,7 +22,7 @@ public class HdmiCecSliceBroadcastReceiver extends BroadcastReceiver {
     private static final String TAG = HdmiCecSliceBroadcastReceiver.class.getSimpleName();
     private ProgressDialog mProgress;
     private static final int MSG_ENABLE_CEC_SWITCH = 0;
-    private static final int TIME_DELAYED = 5000;
+    private static final int TIME_DELAYED = 2000;
 
     private Handler mHandler = new Handler() {
         @Override
