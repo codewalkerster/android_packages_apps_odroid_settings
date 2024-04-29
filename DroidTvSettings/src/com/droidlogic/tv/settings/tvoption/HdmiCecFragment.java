@@ -14,6 +14,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.ContentResolver;
 import android.content.ComponentName;
+import android.hardware.hdmi.HdmiDeviceInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -135,6 +136,7 @@ public class HdmiCecFragment extends SettingsPreferenceFragment implements Prefe
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         setPreferencesFromResource(R.xml.hdmicec, null);
         boolean tvFlag = mHdmiCecManager.isTv();
+        boolean soundbarFlag = mHdmiCecManager.getClient(HdmiDeviceInfo.DEVICE_AUDIO_SYSTEM) != null;
         mCecSwitchPref = (TwoStatePreference) findPreference(KEY_CEC_SWITCH);
         mCecVolumeControlPref = (TwoStatePreference) findPreference(KEY_CEC_VOLUME_CONTROL);
         mCecOneKeyPlayPref = (TwoStatePreference) findPreference(KEY_CEC_ONE_KEY_PLAY);
@@ -188,15 +190,15 @@ public class HdmiCecFragment extends SettingsPreferenceFragment implements Prefe
         boolean hideOptions = Settings.Global.getInt(getContext().getContentResolver(),
                 HdmiCecManager.SETTINGS_DROIDLOGIC_CEC_SUPPORT, 0) == 0;
 
-        mCecOneKeyPlayPref.setVisible(!tvFlag && !hideOptions);
+        mCecOneKeyPlayPref.setVisible(!tvFlag && !hideOptions && !soundbarFlag);
         mCecAutoWakeupPref.setVisible(tvFlag);
-        mCecSwitchPref.setVisible(true);
+        mCecSwitchPref.setVisible(!soundbarFlag);
         mArcSwitchPref.setVisible(false);
         mEarcSwitchPref.setVisible(false);
-        mCecDeviceAutoPowerOffPref.setVisible(true);
+        mCecDeviceAutoPowerOffPref.setVisible(!soundbarFlag);
         mCecAutoChangeLanguagePref.setVisible(!tvFlag && !hideOptions);
         mCecVolumeControlPref.setVisible(!tvFlag && !hideOptions);
-        hdmiDeviceSelectPref.setVisible(tvFlag);
+        hdmiDeviceSelectPref.setVisible(tvFlag || soundbarFlag);
         digitalSoundPref.setVisible(false);
         boolean isChecked = mHdmiCecManager.isArcEnabled();
         mArcNEarcSwitchPref.setChecked(isChecked);

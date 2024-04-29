@@ -50,7 +50,10 @@ import android.hardware.hdmi.HdmiControlManager;
 import android.hardware.hdmi.HdmiDeviceInfo;
 import android.hardware.hdmi.HdmiTvClient;
 import android.hardware.hdmi.HdmiTvClient.SelectCallback;
+import android.hardware.hdmi.HdmiSwitchClient;
+import android.hardware.hdmi.HdmiSwitchClient.OnSelectListener;
 import android.os.SystemProperties;
+import android.sysprop.HdmiProperties;
 import com.droidlogic.tv.settings.SettingsConstant;
 import androidx.preference.Preference;
 import com.droidlogic.tv.settings.R;
@@ -84,6 +87,7 @@ public class HdmiCecDeviceSelectFragment extends SettingsPreferenceFragment impl
     HdmiControlManager mHdmiControlManager;
     TvInputManager mTvInputManager;
     HdmiTvClient mTvClient;
+    HdmiSwitchClient mSwitchClient;
 
     private ArrayList<HdmiDeviceInfo> mHdmiDeviceInfoList = new ArrayList();
     public static HdmiCecDeviceSelectFragment newInstance() {
@@ -94,12 +98,16 @@ public class HdmiCecDeviceSelectFragment extends SettingsPreferenceFragment impl
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         boolean tvFlag = SettingsConstant.needDroidlogicTvFeature(getContext())
                     && (SystemProperties.getBoolean("vendor.tv.soc.as.mbox", false) == false);
-        if (tvFlag) {
+        mHdmiControlManager = (HdmiControlManager) getActivity()
+                                        .getSystemService(Context.HDMI_CONTROL_SERVICE);
+        boolean soundbarFlag = mHdmiControlManager.getAudioSystemClient() != null;
+        if (tvFlag || soundbarFlag) {
             mTvInputManager = (TvInputManager) getActivity()
                                             .getSystemService(Context.TV_INPUT_SERVICE);
-            mHdmiControlManager = (HdmiControlManager) getActivity()
-                                        .getSystemService(Context.HDMI_CONTROL_SERVICE);
             mTvClient = mHdmiControlManager.getTvClient();
+            if (HdmiProperties.is_switch().orElse(false)) {
+                mSwitchClient = mHdmiControlManager.getSwitchClient();
+            }
             updatePreferenceFragment();
         }
     }
@@ -120,11 +128,17 @@ public class HdmiCecDeviceSelectFragment extends SettingsPreferenceFragment impl
         int logicalAddress;
         String deviceName = "";
         mHdmiDeviceInfoList.clear();
-        if (mTvClient == null) {
-            Log.e(TAG, "tv null!");
+        if (mTvClient == null && mSwitchClient == null) {
+            Log.e(TAG, "tv null and switch null!");
             return;
         }
-        for (HdmiDeviceInfo info : mTvClient.getDeviceList()) {
+        List<HdmiDeviceInfo> infoList = null;
+        if (mTvClient != null) {
+            infoList = mTvClient.getDeviceList();
+        } else if (mSwitchClient != null) {
+            infoList = mSwitchClient.getDeviceList();
+        }
+        for (HdmiDeviceInfo info : infoList) {
             if (info != null && info.isSourceType()) {
                 mHdmiDeviceInfoList.add(info);
                 logicalAddress = info.getLogicalAddress();
@@ -143,13 +157,19 @@ public class HdmiCecDeviceSelectFragment extends SettingsPreferenceFragment impl
     public boolean onPreferenceClick(Preference preference) {
         Log.d(TAG, "onPreferenceClick " + preference.getKey());
         final int logicalAddress = Integer.parseInt(preference.getKey());
-        if (mTvClient == null) {
-            Log.e(TAG, "onPreferenceClick tv null!");
+        if (mTvClient == null && mSwitchClient == null) {
+            Log.e(TAG, "onPreferenceClick tv null and switch null!");
             return false;
         }
-        mTvClient.deviceSelect(logicalAddress, result -> {
-            Log.d(TAG, "device select result=" + result);
-        });
+        if (mTvClient != null) {
+            mTvClient.deviceSelect(logicalAddress, result -> {
+                Log.d(TAG, "device select result=" + result);
+            });
+        } else if (mSwitchClient != null) {
+            mSwitchClient.selectDevice(logicalAddress, result -> {
+                Log.d(TAG, "device select result=" + result);
+            });
+        }
         return true;
     }
 
