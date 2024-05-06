@@ -227,7 +227,7 @@ public class HdmiCecFragment extends SettingsPreferenceFragment implements Prefe
         mEarcSwitchPref.setVisible(false);
         mCecDeviceAutoPowerOffPref.setVisible(!soundbarFlag);
         mCecAutoChangeLanguagePref.setVisible(!tvFlag && !hideOptions);
-        mCecVolumeControlPref.setVisible(!tvFlag && !hideOptions);
+        mCecVolumeControlPref.setVisible(!tvFlag && !mHdmiCecManager.isAudioSystem());
         hdmiDeviceSelectPref.setVisible(tvFlag || soundbarFlag);
         digitalSoundPref.setVisible(false);
         boolean isChecked = mHdmiCecManager.isArcEnabled();

@@ -83,6 +83,7 @@ public class HdmiCecContentSliceProvider extends MediaSliceProvider {
                             .setKey(getContext().getString(R.string.hdmi_volume_control_key))
                             .setTitle(getContext().getString(R.string.hdmi_volume_control_title))
                             .setSubtitle(title)
+                            .setInfoSummary(getContext().getString(R.string.cec_volume_control_description))
                             .addSwitch(
                                     generatePendingIntent(
                                             getContext(),

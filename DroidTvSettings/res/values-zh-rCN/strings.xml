@@ -90,7 +90,7 @@
     <string name="tips_turn_on_arc">打开 ARC 将会同时打开 CEC。是否继续？</string>
     <string name="tips_turn_off_cec_arc_device">关闭 CEC 将会同时关闭 ARC。是否继续？</string>
     <string name="cec_switch_description">允许设备之间通过 HDMI 连接进行控制</string>
-    <string name="cec_volume_control_description">允许控制电视或音频设备的音量</string>
+    <string name="cec_volume_control_description">允许本设备控制TV或者音频系统的音量。请注意本功能依赖TV的支持，如果您的电视不支持本功能请关闭本开关，或者在调节音量时换用TV的遥控器。</string>
     <string name="cec_one_key_play_description">允许本设备唤醒电视并让电视播放本设备的内容</string>
     <string name="cec_auto_power_off_description">允许控制其他设备跟随本设备一起关机</string>
     <string name="cec_auto_wake_up_description">允许本设备跟随其他设备一起唤醒</string>
