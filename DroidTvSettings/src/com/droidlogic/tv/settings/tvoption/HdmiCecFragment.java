@@ -214,8 +214,11 @@ public class HdmiCecFragment extends SettingsPreferenceFragment implements Prefe
             getPreferenceScreen().setTitle(R.string.cec_control);
         }
 
-        boolean hideOptions = Settings.Global.getInt(getContext().getContentResolver(),
-                HdmiCecManager.SETTINGS_DROIDLOGIC_CEC_SUPPORT, 0) == 0;
+        // settings SETTINGS_DROIDLOGIC_CEC_SUPPORT could be used to differentiate between
+        // the atv/gtv and aosp versions.
+        //boolean hideOptions = Settings.Global.getInt(getContext().getContentResolver(),
+        //        HdmiCecManager.SETTINGS_DROIDLOGIC_CEC_SUPPORT, 0) == 0;
+        boolean hideOptions = false;
 
         mCecOneKeyPlayPref.setVisible(!tvFlag && !hideOptions && !soundbarFlag);
         mCecAutoWakeupPref.setVisible(tvFlag);
