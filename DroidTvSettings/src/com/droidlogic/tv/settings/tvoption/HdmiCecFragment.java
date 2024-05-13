@@ -278,12 +278,17 @@ public class HdmiCecFragment extends SettingsPreferenceFragment implements Prefe
     }
 
     private void sendMsgEnableCECSwitch() {
+        sendMsgEnableCECSwitch(false);
+    }
+
+    private void sendMsgEnableCECSwitch(boolean enableEarc) {
         long curtime = System.currentTimeMillis();
         long timeDiff = curtime - mLastObserveredCECTime;
-        Message cecEnabled = mHandler.obtainMessage(MSG_ENABLE_CEC_SWITCH, 0, 0);
+        Message cecEnabled = mHandler.obtainMessage(MSG_ENABLE_CEC_SWITCH, enableEarc ? 1 : 0, 0);
         mHandler.removeMessages(MSG_ENABLE_CEC_SWITCH);
         mHandler.sendMessageDelayed(cecEnabled, ((timeDiff > TIME_DELAYED) ? 0 : TIME_DELAYED));
     }
+
 
     private void sendMsgEnableArcEarcSwitch() {
         long curtime = System.currentTimeMillis();
@@ -354,6 +359,10 @@ public class HdmiCecFragment extends SettingsPreferenceFragment implements Prefe
                 case MSG_ENABLE_CEC_SWITCH:
                     mCecSwitchPref.setEnabled(true);
                     mHdmiCecManager.enableHdmiControl(mCecSwitchPref.isChecked());
+                    if (msg.arg1 == 1) {
+                        Log.d(TAG, "Enable earc after cec");
+                        mHdmiCecManager.enableArc(mArcNEarcSwitchPref.isChecked());
+                    }
                     boolean hdmiControlEnabled = mHdmiCecManager.isHdmiControlEnabled();
                     logDebug(TAG, false, "hdmiControlEnabled :" + hdmiControlEnabled);
                     enablePreferences(hdmiControlEnabled);
@@ -400,8 +409,7 @@ public class HdmiCecFragment extends SettingsPreferenceFragment implements Prefe
                             //TODO:turn on cec ui ref
                             logDebug(TAG, false, "onClick yes, Type ARC/eARC, turn on arc and cec");
                             mCecSwitchPref.setChecked(true);
-                            mHdmiCecManager.enableArc(mArcNEarcSwitchPref.isChecked());
-                            sendMsgEnableCECSwitch();
+                            sendMsgEnableCECSwitch(true);
                             enablePreferences(false);
                             //turn on ARC
                             mArcEarcModeAutoPref.setVisible(SUPPORT_EARC && mArcNEarcSwitchPref.isChecked());
