@@ -26,9 +26,8 @@ import android.os.Handler;
 import android.os.Message;
 import androidx.preference.Preference;
 import androidx.preference.TwoStatePreference;
+import android.provider.Settings;
 import android.text.TextUtils;
-import android.util.Log;
-
 import com.droidlogic.app.SystemControlManager;
 
 public class FrameRateFragment extends SettingsPreferenceFragment implements Preference.OnPreferenceChangeListener {
@@ -36,51 +35,13 @@ public class FrameRateFragment extends SettingsPreferenceFragment implements Pre
 
     private static final String KEY_ENABLE_FRAME_RATE = "frame_rate_enable";
 
-    private Context mContext;
-    private static FrameRateService mService;
-    private static final int EVENT_UPDATE = 0;
-    private TwoStatePreference mEnableFrameRatePref;
-
-    private Handler mHandler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case EVENT_UPDATE:
-                    updateView();
-                    break;
-            }
-        }
-    };
-
-    private ServiceConnection mConnection = new ServiceConnection() {
-        @Override
-        public void onServiceConnected(ComponentName name, IBinder service) {
-            FrameRateService.FrameRateBinder binder = (FrameRateService.FrameRateBinder) service;
-            mService = binder.getService();
-            mHandler.sendEmptyMessage(EVENT_UPDATE);
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName name) {}
-    };
+    private static final String PROP_FRAME_RATE_ENABLE = "persist.vendor.sys.framerate.enable";
+    private static final String SAVE_FRAME_RATE = "FRAME_RATE";
+    private static final int FRAME_RATE_ENABLE = 1;
+    private static final int FRAME_RATE_DISABLE = 0;
 
     public static FrameRateFragment newInstance() {
         return new FrameRateFragment();
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        mContext = context;
-        mContext.bindService(new Intent(mContext, FrameRateService.class),
-            mConnection, mContext.BIND_AUTO_CREATE);
-    }
-
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        mContext.unbindService(mConnection);
     }
 
     @Override
@@ -91,28 +52,24 @@ public class FrameRateFragment extends SettingsPreferenceFragment implements Pre
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         setPreferencesFromResource(R.xml.framerate, null);
+        final TwoStatePreference mEnableFrameRatePref = (TwoStatePreference) findPreference(KEY_ENABLE_FRAME_RATE);
+        mEnableFrameRatePref.setOnPreferenceChangeListener(this);
+        mEnableFrameRatePref.setChecked(getFrameRateEnabled());
     }
 
     @Override
     public boolean onPreferenceChange(Preference preference, Object newValue) {
         if (TextUtils.equals(preference.getKey(), KEY_ENABLE_FRAME_RATE)) {
-            setFrameRateEnabled((boolean) newValue);
+            if ((boolean) newValue) {
+                Settings.Global.putInt(getActivity().getContentResolver(), SAVE_FRAME_RATE, FRAME_RATE_ENABLE);
+            } else {
+                Settings.Global.putInt(getActivity().getContentResolver(), SAVE_FRAME_RATE, FRAME_RATE_DISABLE);
+            }
         }
         return true;
     }
 
-    private void updateView() {
-        mEnableFrameRatePref = (TwoStatePreference) findPreference(KEY_ENABLE_FRAME_RATE);
-        mEnableFrameRatePref.setOnPreferenceChangeListener(this);
-        mEnableFrameRatePref.setChecked(getFrameRateEnabled());
-    }
-
-    private boolean getFrameRateEnabled() {
-        return mService.getFrameRateEnabled();
-    }
-
-    private void setFrameRateEnabled(boolean enable) {
-        mService.setFrameRateEnabled(enable);
-
+    private Boolean getFrameRateEnabled() {
+        return SystemControlManager.getInstance().getPropertyBoolean(PROP_FRAME_RATE_ENABLE, false);
     }
 }

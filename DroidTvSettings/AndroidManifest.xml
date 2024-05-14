@@ -352,9 +352,6 @@
                 android:name="com.droidlogic.tv.settings.sliceprovider.accessories.BluetoothActionActivity"
                 android:exported="false"/>
 
-        <service android:name=".FrameRateService"
-                 android:exported="false"/>
-
         <provider
                 android:authorities="com.google.android.tv.btservices.settings.sliceprovider"
                 android:name="com.droidlogic.tv.settings.sliceprovider.accessories.ConnectedDevicesSliceProvider"
