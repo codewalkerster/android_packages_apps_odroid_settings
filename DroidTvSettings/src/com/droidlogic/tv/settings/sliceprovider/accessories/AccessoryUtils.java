@@ -158,9 +158,51 @@ final class AccessoryUtils {
         return false;
     }
 
+    public static boolean isBluetoothHeadset (BluetoothDevice device){
+        if (device == null) {
+            return false;
+        }
+        final BluetoothClass bluetoothClass = device.getBluetoothClass();
+        final int devClass = bluetoothClass.getDeviceClass();
+        return (devClass == BluetoothClass.Device.AUDIO_VIDEO_WEARABLE_HEADSET
+                || devClass == BluetoothClass.Device.AUDIO_VIDEO_HEADPHONES
+                || devClass == BluetoothClass.Device.AUDIO_VIDEO_LOUDSPEAKER
+                || devClass == BluetoothClass.Device.AUDIO_VIDEO_PORTABLE_AUDIO
+                || devClass == BluetoothClass.Device.AUDIO_VIDEO_HIFI_AUDIO);
+    }
+
     public static boolean isA2dpSource(BluetoothDevice device) {
         return device != null && device.getBluetoothClass() != null
                 && device.getBluetoothClass().doesClassMatch(BluetoothProfile.A2DP);
+    }
+
+    /** Returns true if the BluetoothDevice is the active audio output, false otherwise. */
+    static boolean isActiveAudioOutput(BluetoothDevice device) {
+        if (device != null) {
+            final BluetoothAdapter btAdapter = getDefaultBluetoothAdapter();
+            if (btAdapter != null) {
+                return btAdapter.getActiveDevices(BluetoothProfile.A2DP).contains(device);
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Sets the specified BluetoothDevice as the active audio output. Passing `null`
+     * resets the active audio output to the default. Returns false on immediate error,
+     * true otherwise.
+     */
+    static boolean setActiveAudioOutput(BluetoothDevice device) {
+        // null is an accepted value for unsetting the active audio output
+        final BluetoothAdapter btAdapter = getDefaultBluetoothAdapter();
+        if (btAdapter != null) {
+            if (device == null) {
+                return btAdapter.removeActiveDevice(BluetoothAdapter.ACTIVE_DEVICE_AUDIO);
+            } else {
+                return btAdapter.setActiveDevice(device, BluetoothAdapter.ACTIVE_DEVICE_AUDIO);
+            }
+        }
+        return false;
     }
 
     /**

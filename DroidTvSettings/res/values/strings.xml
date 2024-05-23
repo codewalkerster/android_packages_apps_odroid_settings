@@ -443,6 +443,10 @@
     <string name="bluetooth_connected_status">Connected</string>
     <!-- Subtitle showing disconnected connection status of Bluetooth device. [CHAR LIMIT=40] -->
     <string name="bluetooth_disconnected_status">Disconnected</string>
+    <!-- Bluetooth Settings. text displayed when user has restriction DISALLOW_CONFIG_BLUETOOTH [CHAR LIMIT=NONE]-->
+    <string name="bluetooth_empty_list_user_restricted">You don\u2019t have permission to change Bluetooth settings.</string>
+    <!-- Text on button that allows users to toggle their Bluetooth device as the active audio output. [CHAR LIMIT=50] -->
+    <string name="bluetooth_toggle_active_audio_output_title">Use for TV audio</string>
 
     <!-- Help and feedback preferences -->
     <skip />
@@ -2876,4 +2880,13 @@
 	<string name="wake_on_lan_enable" translatable="false">Wake On Lan</string>
 	<string name="wake_on_lan_description">Allow TV waked by ethernel</string>
     <!-- DroidLogic end -->
+
+    <!-- Title for find my remote preference -->
+    <string name="settings_find_my_remote_title">Find my remote</string>
+    <!-- Description for find my remote preference -->
+    <string name="settings_find_my_remote_description">Play a sound to locate your Google TV remote if it\'s misplaced</string>
+    <string name="find_my_remote_slice_description">There is a button on your Google TV that you can push to play a sound on your remote for 30 seconds. This only works with supported Google TV remote controls.\n\nTo stop the sound, press any button on your remote.</string>
+    <string name="find_my_remote_integration_title" translatable="false">@string/settings_find_my_remote_title</string>
+    <string name="find_my_remote_integration_hint">When Find my remote is enabled, you can play a sound to locate your Google TV remote if it\'s misplaced.</string>
+    <string name="find_my_remote_play_sound">Play sound</string>
 </resources>

@@ -18,11 +18,20 @@ package com.droidlogic.tv.settings.sliceprovider.accessories;
 
 import static android.app.slice.Slice.EXTRA_TOGGLE_STATE;
 
+import static android.content.Intent.FLAG_INCLUDE_STOPPED_PACKAGES;
+import static android.content.Intent.FLAG_RECEIVER_FOREGROUND;
+import static android.content.Intent.FLAG_RECEIVER_INCLUDE_BACKGROUND;
+
+import static com.droidlogic.tv.settings.sliceprovider.accessories.ConnectedDevicesSliceProvider.KEY_EXTRAS_DEVICE;
 import static com.droidlogic.tv.settings.sliceprovider.accessories.ConnectedDevicesSliceUtils.DIRECTION_BACK;
 import static com.droidlogic.tv.settings.sliceprovider.accessories.ConnectedDevicesSliceUtils.EXTRAS_DIRECTION;
 import static com.droidlogic.tv.settings.sliceprovider.accessories.ConnectedDevicesSliceUtils.EXTRAS_SLICE_URI;
+import static com.droidlogic.tv.settings.sliceprovider.accessories.ConnectedDevicesSliceUtils.FIND_MY_REMOTE_PHYSICAL_BUTTON_ENABLED_SETTING;
+import static com.droidlogic.tv.settings.sliceprovider.accessories.ConnectedDevicesSliceUtils.notifyDeviceChanged;
 import static com.droidlogic.tv.settings.sliceprovider.accessories.ConnectedDevicesSliceUtils.notifyToGoBack;
+import static com.droidlogic.tv.settings.sliceprovider.accessories.ConnectedDevicesSliceUtils.setFindMyRemoteButtonEnabled;
 
+import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -46,12 +55,15 @@ public class ConnectedDevicesSliceBroadcastReceiver extends BroadcastReceiver {
 
     private static final String TAG = "ConnectedSliceReceiver";
 
+    static final String ACTION_FIND_MY_REMOTE = "com.google.android.tv.FIND_MY_REMOTE";
     static final String ACTION_TOGGLE_CHANGED =
             "com.droidlogic.googletv.settings.sliceprovider.accessories.TOGGLE_CHANGED";
     // The extra to specify toggle type. Currently, there is only Bluetooth toggle.
     static final String EXTRA_TOGGLE_TYPE = "TOGGLE_TYPE";
+    static final String EXTRA_TOGGLE_STATE = "TOGGLE_STATE";
     // Bluetooth off is handled differently by ResponseActivity with confirmation dialog.
     static final String BLUETOOTH_ON = "BLUETOOTH_ON";
+    static final String ACTIVE_AUDIO_OUTPUT = "ACTIVE_AUDIO_OUTPUT";
     static final String ACTION_BACK_AND_UPDATE_SLICE = "BACK_AND_UPDATE_SLICE";
 
     private ProgressDialog mProgress;
@@ -72,22 +84,45 @@ public class ConnectedDevicesSliceBroadcastReceiver extends BroadcastReceiver {
         }
         switch (action) {
             case ACTION_TOGGLE_CHANGED:
+                final boolean isChecked = intent.getBooleanExtra(EXTRA_TOGGLE_STATE, false);
                 if (BLUETOOTH_ON.equals(intent.getStringExtra(EXTRA_TOGGLE_TYPE))) {
                     BluetoothAdapter bluetoothAdapter = AccessoryUtils.getDefaultBluetoothAdapter();
                     if (bluetoothAdapter != null) {
                         bluetoothAdapter.enable();
                     }
-                }
 
-                mProgress = new ProgressDialog(context);
-                showBlueToothEnablingDialog(context, mProgress,
-                        "It takes a few seconds to update bluetooth status," +
-                                "\nplease wait...");
-                mHandler.sendEmptyMessageDelayed(MSG_ENABLE_BLUETOOTH_SWITCH, TIME_DELAYED);
+                    mProgress = new ProgressDialog(context);
+                    showBlueToothEnablingDialog(context, mProgress,
+                            "It takes a few seconds to update bluetooth status," +
+                                    "\nplease wait...");
+                    mHandler.sendEmptyMessageDelayed(MSG_ENABLE_BLUETOOTH_SWITCH, TIME_DELAYED);
+                } else if (ACTIVE_AUDIO_OUTPUT.equals(intent.getStringExtra(EXTRA_TOGGLE_TYPE))) {
+
+                        boolean enable = intent.getBooleanExtra(EXTRA_TOGGLE_STATE, false);
+                        BluetoothDevice device = intent.getParcelableExtra(KEY_EXTRAS_DEVICE,
+                                BluetoothDevice.class);
+                        AccessoryUtils.setActiveAudioOutput(enable ? device : null);
+                        // refresh device
+                    notifyDeviceChanged(context, device);
+                } else if (FIND_MY_REMOTE_PHYSICAL_BUTTON_ENABLED_SETTING.equals(EXTRA_TOGGLE_TYPE)) {
+                    setFindMyRemoteButtonEnabled(context, isChecked);
+                    context.getContentResolver().notifyChange(
+                            ConnectedDevicesSliceUtils.FIND_MY_REMOTE_SLICE_URI, null);
+                }
                 break;
             case ACTION_BACK_AND_UPDATE_SLICE:
                 notifyToGoBack(context, Uri.parse(intent.getStringExtra(EXTRAS_SLICE_URI)));
+                break;
+            case ACTION_FIND_MY_REMOTE:
+                context.sendBroadcast(
+                        new Intent(ACTION_FIND_MY_REMOTE)
+                                .putExtra("reason", "SETTINGS")
+                                .setFlags(FLAG_INCLUDE_STOPPED_PACKAGES | FLAG_RECEIVER_FOREGROUND
+                                        | FLAG_RECEIVER_INCLUDE_BACKGROUND),
+                        "com.google.android.tv.permission.FIND_MY_REMOTE");
+                break;
             default:
+                break;
                 // no-op
         }
 

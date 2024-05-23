@@ -16,10 +16,19 @@
 
 package com.droidlogic.tv.settings.sliceprovider.accessories;
 
+import static android.app.PendingIntent.FLAG_IMMUTABLE;
+import static android.app.PendingIntent.FLAG_UPDATE_CURRENT;
+import static android.content.Intent.FLAG_RECEIVER_FOREGROUND;
+
+import static  com.droidlogic.tv.settings.sliceprovider.accessories.ConnectedDevicesSliceBroadcastReceiver.ACTION_FIND_MY_REMOTE;
 import static com.droidlogic.tv.settings.sliceprovider.accessories.ConnectedDevicesSliceBroadcastReceiver.ACTION_TOGGLE_CHANGED;
+import static com.droidlogic.tv.settings.sliceprovider.accessories.ConnectedDevicesSliceBroadcastReceiver.ACTIVE_AUDIO_OUTPUT;
 import static com.droidlogic.tv.settings.sliceprovider.accessories.ConnectedDevicesSliceBroadcastReceiver.BLUETOOTH_ON;
+import static com.droidlogic.tv.settings.sliceprovider.accessories.ConnectedDevicesSliceBroadcastReceiver.EXTRA_TOGGLE_STATE;
 import static com.droidlogic.tv.settings.sliceprovider.accessories.ConnectedDevicesSliceBroadcastReceiver.EXTRA_TOGGLE_TYPE;
 import static com.droidlogic.tv.settings.sliceprovider.accessories.ConnectedDevicesSliceUtils.EXTRAS_SLICE_URI;
+import static com.droidlogic.tv.settings.sliceprovider.accessories.ConnectedDevicesSliceUtils.FIND_MY_REMOTE_PHYSICAL_BUTTON_ENABLED_SETTING;
+import static com.droidlogic.tv.settings.sliceprovider.accessories.ConnectedDevicesSliceUtils.isFindMyRemoteButtonEnabled;
 
 import android.app.PendingIntent;
 import android.app.admin.DevicePolicyManager;
@@ -33,6 +42,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.ConditionVariable;
@@ -97,6 +107,10 @@ public class ConnectedDevicesSliceProvider extends SliceProvider implements
     private int mNotifyChangeCount = 0;
     private boolean versionRequest = false;
 
+    // Listen to TV audio on this device
+    private static final int CONNECTED_SLICE_DEVICE_ENTRY_TOGGLE_ACTIVE_AUDIO_OUTPUT = 0x18240000;
+    private static final boolean DISCONNECT_PREFERENCE_ENABLED = false;
+    private static final int ACTIVE_AUDIO_OUTPUT_INTENT_REQUEST_CODE = 9;
     private final Map<Uri, Integer> mPinnedUris = new ArrayMap<>();
     private final Handler mHandler = new Handler(Looper.getMainLooper());
 
@@ -142,6 +156,8 @@ public class ConnectedDevicesSliceProvider extends SliceProvider implements
     static final String KEY_RENAME = "rename";
     static final String KEY_FORGET = "forget";
     static final String KEY_EXTRAS_DEVICE = "extra_devices";
+    static final String KEY_FIND_MY_REMOTE_TOGGLE = "fmr_toggle";
+    static final String KEY_TOGGLE_ACTIVE_AUDIO_OUTPUT = "toggle_active_audio_output";
 
     static final int YES = R.string.general_action_yes;
     static final int NO = R.string.general_action_no;
@@ -181,6 +197,8 @@ public class ConnectedDevicesSliceProvider extends SliceProvider implements
             return createGeneralSlice(sliceUri);
         } else if (ConnectedDevicesSliceUtils.isBluetoothDevicePath(sliceUri)) {
             return createBluetoothDeviceSlice(sliceUri);
+        } else if (ConnectedDevicesSliceUtils.isFindMyRemotePath(sliceUri)) {
+            return createFindMyRemoteSlice(sliceUri);
         }
         return null;
     }
@@ -234,6 +252,7 @@ public class ConnectedDevicesSliceProvider extends SliceProvider implements
         updatePairingButton(psb);
         updateConnectedDevices(psb);
         updateOfficialRemoteSettings(psb);
+        updateFmr(psb);
         return psb.build();
     }
 
@@ -280,6 +299,37 @@ public class ConnectedDevicesSliceProvider extends SliceProvider implements
 
         Bundle extras;
         Intent i;
+        // Update "Use for TV audio".
+        // Set as active audio output device only connected devices that have audio capabilities
+        if (cachedDevice != null && !cachedDevice.isBusy()
+                && AccessoryUtils.isConnected(device) && cachedDevice.isConnected()
+                && (AccessoryUtils.isBluetoothHeadset(device)
+                || AccessoryUtils.hasAudioProfile(cachedDevice))) {
+            boolean isActive = AccessoryUtils.isActiveAudioOutput(device);
+
+            Intent intent = new Intent(ACTION_TOGGLE_CHANGED);
+            intent.setClass(context, ConnectedDevicesSliceBroadcastReceiver.class);
+            intent.putExtra(EXTRA_TOGGLE_TYPE, ACTIVE_AUDIO_OUTPUT);
+            intent.putExtra(EXTRA_TOGGLE_STATE, !isActive);
+            intent.putExtra(KEY_EXTRAS_DEVICE, device);
+
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(context,
+                    ACTIVE_AUDIO_OUTPUT_INTENT_REQUEST_CODE, intent,
+                    PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
+
+            // Update set/unset active audio output preference
+            RowBuilder activeAudioOutputPref = new RowBuilder()
+                    .setKey(KEY_TOGGLE_ACTIVE_AUDIO_OUTPUT)
+                    .setTitle(getString(R.string.bluetooth_toggle_active_audio_output_title))
+                    .setActionId(
+                            CONNECTED_SLICE_DEVICE_ENTRY_TOGGLE_ACTIVE_AUDIO_OUTPUT)
+                    .addSwitch(pendingIntent,
+                            context.getText(R.string.bluetooth_toggle_active_audio_output_title),
+                            isActive);
+
+            psb.addPreference(activeAudioOutputPref);
+        }
+
         // Update "connect/disconnect preference"
         if (cachedDevice != null && !cachedDevice.isBusy()) {
             // Whether the device is actually connected from CachedBluetoothDevice's perceptive.
@@ -410,6 +460,54 @@ public class ConnectedDevicesSliceProvider extends SliceProvider implements
         // For Bluetooth devices actively disconnected scenario cachedDevice status update
         // will be a short delay, so in the need to initiate a notify update general device
         notifyGeneralDeviceSlice();
+        return psb.build();
+    }
+
+    private boolean showDisconnectButton(BluetoothDevice device, Context context) {
+        if (DISCONNECT_PREFERENCE_ENABLED) {
+            return true;
+        }
+        return !AccessoryUtils.isRemoteClass(device)
+                && !AccessoryUtils.isKnownDevice(context, device);
+    }
+
+    private Slice createFindMyRemoteSlice(Uri sliceUri) {
+        Context context = getContext();
+        final PreferenceSliceBuilder psb = new PreferenceSliceBuilder(context, sliceUri);
+        psb.addScreenTitle(new RowBuilder()
+                .setTitle(getString(R.string.settings_find_my_remote_title))
+                .setSubtitle(getString(R.string.find_my_remote_slice_description)));
+        Log.d(TAG, "config_find_my_remote_integration_enabled:"
+                + (context.getResources().getBoolean(R.bool.config_find_my_remote_integration_enabled)));
+        if (context.getResources().getBoolean(R.bool.config_find_my_remote_integration_enabled)) {
+            boolean isButtonEnabled = isFindMyRemoteButtonEnabled(context);
+            Intent intent = new Intent(ACTION_TOGGLE_CHANGED);
+            intent.putExtra(EXTRA_TOGGLE_TYPE, FIND_MY_REMOTE_PHYSICAL_BUTTON_ENABLED_SETTING);
+            intent.putExtra(EXTRA_TOGGLE_STATE, !isButtonEnabled);
+            intent.setClass(context, ConnectedDevicesSliceBroadcastReceiver.class);
+            psb.addPreference(new RowBuilder()
+                    .setKey(FIND_MY_REMOTE_PHYSICAL_BUTTON_ENABLED_SETTING)
+                    .setTitle(getString(R.string.find_my_remote_integration_title))
+                    .setSubtitle(getString(R.string.find_my_remote_integration_hint))
+                    .addSwitch(
+                            PendingIntent.getBroadcast(
+                                    context, 0, intent, FLAG_IMMUTABLE | FLAG_UPDATE_CURRENT),
+                            !isButtonEnabled));
+        }
+
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(
+                context, 0,
+                new Intent(context, ConnectedDevicesSliceBroadcastReceiver.class)
+                        .setAction(ACTION_FIND_MY_REMOTE)
+                        .setFlags(FLAG_RECEIVER_FOREGROUND),
+                FLAG_IMMUTABLE | FLAG_UPDATE_CURRENT);
+
+        psb.addPreference(new RowBuilder()
+                .setKey(ACTION_FIND_MY_REMOTE)
+                .setTitle(getString(R.string.find_my_remote_play_sound))
+                .setPendingIntent(pendingIntent)
+                .setIcon(IconCompat.createWithResource(context, R.drawable.ic_play_arrow))
+                .setIconNeedsToBeProcessed(true));
         return psb.build();
     }
 
@@ -560,6 +658,20 @@ public class ConnectedDevicesSliceProvider extends SliceProvider implements
                     .setTitle(getString(R.string.bluetooth_official_remote_entry_title))
                     .setTargetSliceUri(officialRemoteSettingsUri));
         }
+    }
+    private void updateFmr(PreferenceSliceBuilder psb) {
+        List<ResolveInfo> receivers = getContext().getPackageManager().queryBroadcastReceivers(
+                new Intent(ACTION_FIND_MY_REMOTE), 0);
+        if (receivers.isEmpty()) {
+            Log.d(TAG, "receivers is null");
+            return;
+        }
+
+        psb.addPreference(new RowBuilder()
+                .setKey(KEY_FIND_MY_REMOTE_TOGGLE)
+                .setTitle(getString(R.string.settings_find_my_remote_title))
+                .setSubtitle(getString(R.string.settings_find_my_remote_description))
+                .setTargetSliceUri(ConnectedDevicesSliceUtils.FIND_MY_REMOTE_SLICE_URI.toString()));
     }
 
     private void createAndAddBtDeviceSlicePreferenceFromSet(
@@ -724,11 +836,7 @@ public class ConnectedDevicesSliceProvider extends SliceProvider implements
                 final int batteryLevel =
                         characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT8, 0);
                 Log.d(TAG, "onCharacteristicRead mBatteryPref:" + batteryLevel);
-                if (batteryLevel >= 50) {
-                    deviceBatteryLevel = "Good";
-                } else {
-                    deviceBatteryLevel = "Low";
-                }
+                deviceBatteryLevel = batteryLevel + "%";
             }
             if (GATT_VERSION_CHARACTERISTIC_UUID.equals(characteristic.getUuid())) {
                 final byte[] versionData = characteristic.getValue();
