@@ -9,7 +9,7 @@ public class CpuReceiver  {
         CPU cpu;
         cpu = CPU.getCPU(TAG, CPU.Cluster.Little);
 
-        cpu.governor.set(ConfigEnv.getCpuGovernor());
-        cpu.frequency.setScalingMax(ConfigEnv.getCpuFreq());
+        cpu.governor.set(ConfigEnv.getLittleCpuGovernor());
+        cpu.frequency.setScalingMax(ConfigEnv.getLittleCpuFreq());
     }
 }

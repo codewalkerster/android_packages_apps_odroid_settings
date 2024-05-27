@@ -28,12 +28,13 @@ public class GovernorFragment extends LeanbackAddBackPreferenceFragment {
         final Context themedContext = getPreferenceManager().getContext();
         final PreferenceScreen screen = getPreferenceManager().createPreferenceScreen(themedContext);
 
-        if (cpu.cluster == CPU.Cluster.Big)
-            screen.setTitle(R.string.big_core_governor);
-        else if (cpu.cluster == CPU.Cluster.Little)
-            screen.setTitle(R.string.little_core_governor);
-        else
-            screen.setTitle(R.string.cpu);
+        switch(cpu.cluster) {
+            case Little:
+                screen.setTitle(R.string.little_core_governor);
+                break;
+            default:
+                screen.setTitle(R.string.cpu);
+        }
 
         setPreferenceScreen(screen);
 
@@ -70,6 +71,13 @@ public class GovernorFragment extends LeanbackAddBackPreferenceFragment {
     }
 
     private void saveGovernor(String governor) {
-        ConfigEnv.setCpuGovernor(governor);
+        switch (cpu.cluster) {
+            case Little:
+                ConfigEnv.setLittleCpuGovernor(governor);
+                break;
+            default:
+                ConfigEnv.setLittleCpuGovernor(governor);
+                break;
+        }
     }
 }

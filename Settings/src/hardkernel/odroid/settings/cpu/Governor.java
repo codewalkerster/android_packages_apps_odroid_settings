@@ -9,9 +9,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class Governor {
-    /* big Cluster */
-    private final static String BIG_GOVERNOR_NODE = "/sys/devices/system/cpu/cpufreq/policy2/scaling_governor";
-    private final static String BIG_SCALING_AVAILABLE_GOVERNORS = "/sys/devices/system/cpu/cpufreq/policy2/scaling_available_governors";
     /* little Cluster */
     private final static String LITTLE_GOVERNOR_NODE = "/sys/devices/system/cpu/cpufreq/policy0/scaling_governor";
     private final static String LITTLE_SCALING_AVAILABLE_GOVERNORS = "/sys/devices/system/cpu/cpufreq/policy0/scaling_available_governors";
@@ -35,14 +32,11 @@ public class Governor {
             FileReader fileReader;
 
             switch (cluster) {
-                case Big:
-                    fileReader = new FileReader(BIG_GOVERNOR_NODE);
-                    break;
                 case Little:
                     fileReader = new FileReader(LITTLE_GOVERNOR_NODE);
                     break;
                 default:
-                    fileReader = new FileReader(BIG_GOVERNOR_NODE);
+                    fileReader = new FileReader(LITTLE_GOVERNOR_NODE);
                     break;
             }
 
@@ -67,14 +61,11 @@ public class Governor {
 
         try {
             switch (cluster) {
-                case Big:
-                    fileWriter = new FileWriter(BIG_GOVERNOR_NODE);
-                    break;
                 case Little:
                     fileWriter = new FileWriter(LITTLE_GOVERNOR_NODE);
                     break;
                 default:
-                    fileWriter = new FileWriter(BIG_GOVERNOR_NODE);
+                    fileWriter = new FileWriter(LITTLE_GOVERNOR_NODE);
                     break;
             }
 
@@ -97,14 +88,11 @@ public class Governor {
             FileReader fileReader;
 
             switch (cluster) {
-                case Big:
-                    fileReader = new FileReader(BIG_SCALING_AVAILABLE_GOVERNORS);
-                    break;
                 case Little:
                     fileReader = new FileReader(LITTLE_SCALING_AVAILABLE_GOVERNORS);
                     break;
                 default:
-                    fileReader = new FileReader(BIG_SCALING_AVAILABLE_GOVERNORS);
+                    fileReader = new FileReader(LITTLE_SCALING_AVAILABLE_GOVERNORS);
                     break;
             }
 

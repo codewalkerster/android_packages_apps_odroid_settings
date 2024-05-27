@@ -31,16 +31,17 @@ public class FrequencyFragment extends LeanbackAddBackPreferenceFragment {
         final Context themedContext = getPreferenceManager().getContext();
         final PreferenceScreen screen = getPreferenceManager().createPreferenceScreen(themedContext);
 
-        if (cpu.cluster == CPU.Cluster.Big)
-            screen.setTitle(R.string.big_core_clock);
-        else if (cpu.cluster == CPU.Cluster.Little)
-            screen.setTitle(R.string.little_core_clock);
-        else
-            screen.setTitle(R.string.cpu);
+        switch(cpu.cluster) {
+            case Little:
+                screen.setTitle(R.string.little_core_clock);
+                break;
+            default:
+                screen.setTitle(R.string.cpu);
+        }
 
         setPreferenceScreen(screen);
 
-        String[] frequencyList = cpu.frequency.getFrequencies(getContext());
+        String[] frequencyList = cpu.frequency.getFrequencies();
 
         for (final String frequency : frequencyList) {
             if (Integer.parseInt(frequency) < cpu.frequency.getPolicyMin())
@@ -82,6 +83,13 @@ public class FrequencyFragment extends LeanbackAddBackPreferenceFragment {
     }
 
     private void saveFrequency(String frequency) {
-        ConfigEnv.setCpuFreq(frequency);
+        switch (cpu.cluster) {
+            case Little:
+                ConfigEnv.setLittleCpuFreq(frequency);
+                break;
+            default:
+                ConfigEnv.setLittleCpuFreq(frequency);
+                break;
+        }
     }
 }

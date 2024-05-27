@@ -3,7 +3,6 @@ package hardkernel.odroid.settings.cpu;
 import android.content.Context;
 import android.util.Log;
 import hardkernel.odroid.settings.R;
-import hardkernel.odroid.settings.util.OdroidUtils;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
@@ -16,12 +15,10 @@ import java.util.Comparator;
 import java.util.List;
 
 public class Frequency {
-    /* Big cluster */
-    private final static String BIG_SCALING_MAX_FREQ = "/sys/devices/system/cpu/cpufreq/policy2/scaling_max_freq";
-    private final static String BIG_SCALING_MIN_FREQ = "/sys/devices/system/cpu/cpufreq/policy2/scaling_min_freq";
     /* Little cluster */
     private final static String LITTLE_SCALING_MAX_FREQ = "/sys/devices/system/cpu/cpufreq/policy0/scaling_max_freq";
     private final static String LITTLE_SCALING_MIN_FREQ = "/sys/devices/system/cpu/cpufreq/policy0/scaling_min_freq";
+    private final static String LITTLE_SCALING_AVAIL_FREQ = "/sys/devices/system/cpu/cpufreq/policy0/scaling_available_frequencies";
 
     private static String TAG;
     private CPU.Cluster cluster;
@@ -32,9 +29,6 @@ public class Frequency {
         TAG = tag;
         this.cluster = cluster;
         switch (cluster) {
-            case Big:
-                policyMax = Integer.parseInt(getFreqFrom(BIG_SCALING_MAX_FREQ));
-                break;
             case Little:
                 policyMax = Integer.parseInt(getFreqFrom(LITTLE_SCALING_MAX_FREQ));
                 break;
@@ -51,9 +45,6 @@ public class Frequency {
         String minFreq;
 
         switch (cluster) {
-            case Big:
-                minFreq = getFreqFrom(BIG_SCALING_MIN_FREQ);
-                break;
             case Little:
                 minFreq = getFreqFrom(LITTLE_SCALING_MIN_FREQ);
                 break;
@@ -66,8 +57,19 @@ public class Frequency {
         return Integer.parseInt(minFreq);
     }
 
-    public String[] getFrequencies(Context context) {
-        String[] frequencies = (String[]) getScalingAvailables(context).toArray();
+    public String[] getFrequencies() {
+        String available_frequencies;
+
+        switch (cluster) {
+            case Little:
+                available_frequencies = getScalingAvailables(LITTLE_SCALING_AVAIL_FREQ);
+                break;
+            default:
+                available_frequencies = getScalingAvailables(LITTLE_SCALING_AVAIL_FREQ);
+                break;
+        }
+
+        String[] frequencies = available_frequencies.split(" ");
 
         Arrays.sort(frequencies, new Comparator<String>() {
             @Override
@@ -83,12 +85,8 @@ public class Frequency {
         String freq = null;
 
         switch (cluster) {
-            case Big:
-                freq = getFreqFrom(BIG_SCALING_MAX_FREQ);
-                break;
             case Little:
                 freq = getFreqFrom(LITTLE_SCALING_MAX_FREQ);
-
                 break;
             default:
                 freq = getFreqFrom(LITTLE_SCALING_MAX_FREQ);
@@ -104,9 +102,6 @@ public class Frequency {
 
         try {
             switch (cluster) {
-                case Big:
-                    fileWriter = new FileWriter(BIG_SCALING_MAX_FREQ);
-                    break;
                 case Little:
                     fileWriter = new FileWriter(LITTLE_SCALING_MAX_FREQ);
                     break;
@@ -129,11 +124,8 @@ public class Frequency {
 
     private String getFreqFrom(String node) {
         String freq = null;
-
-        FileReader fileReader;
-
         try {
-            fileReader = new FileReader(node);
+            FileReader fileReader = new FileReader(node);
 
             BufferedReader bufferedReader = new BufferedReader(fileReader);
             freq = bufferedReader.readLine();
@@ -148,14 +140,22 @@ public class Frequency {
         return freq;
     }
 
-    private List<String> getScalingAvailables(Context context) {
-        int id = 0;
-        if(OdroidUtils.isOdroidM1()) {
-            id = R.array.m1;
-        } else {
-            id = R.array.m1s;
+    private String getScalingAvailables(String node) {
+        String available_frequencies = null;
+        try {
+            FileReader fileReader = new FileReader(node);
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+
+            available_frequencies = bufferedReader.readLine();
+            bufferedReader.close();
+
+            Log.d(TAG, available_frequencies);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
-        return Arrays.asList(context.getResources().getStringArray(id));
+        return available_frequencies;
     }
 }
