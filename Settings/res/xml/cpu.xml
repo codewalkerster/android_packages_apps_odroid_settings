@@ -25,4 +25,20 @@
             android:key="little_core_governor"
             android:title="@string/little_core_governor"
             android:fragment="hardkernel.odroid.settings.cpu.governor.LittleCoreGovernorFragment" />
+        <Preference
+            android:key="middle_core_clock"
+            android:title="@string/middle_core_clock"
+            android:fragment="hardkernel.odroid.settings.cpu.frequency.MiddleCoreFrequencyFragment"/>
+        <Preference
+            android:key="middle_core_governor"
+            android:title="@string/middle_core_governor"
+            android:fragment="hardkernel.odroid.settings.cpu.governor.MiddleCoreGovernorFragment" />
+        <Preference
+            android:key="big_core_clock"
+            android:title="@string/big_core_clock"
+            android:fragment="hardkernel.odroid.settings.cpu.frequency.BigCoreFrequencyFragment"/>
+        <Preference
+            android:key="big_core_governor"
+            android:title="@string/big_core_governor"
+            android:fragment="hardkernel.odroid.settings.cpu.governor.BigCoreGovernorFragment" />
 </PreferenceScreen>

@@ -19,8 +19,30 @@ public class ConfigEnv {
         return value + "000";
     }
 
+    public static String getMiddleCpuFreq() {
+        String value = getValue("middle_cpu_max_freq");
+        if (value.length() > 4)
+            return value;
+        return value + "000";
+    }
+
+    public static String getBigCpuFreq() {
+        String value = getValue("big_cpu_max_freq");
+        if (value.length() > 4)
+            return value;
+        return value + "000";
+    }
+
     public static String getLittleCpuGovernor() {
         return getValue("little_cpu_governor");
+    }
+
+    public static String getMiddleCpuGovernor() {
+        return getValue("middle_cpu_governor");
+    }
+
+    public static String getBigCpuGovernor() {
+        return getValue("big_cpu_governor");
     }
 
     public static String getGpuFreq() {
@@ -91,8 +113,24 @@ public class ConfigEnv {
         setValue("little_cpu_max_freq", freq.substring(0, freq.length() - 3));
     }
 
+    public static void setMiddleCpuFreq(String freq) {
+        setValue("middle_cpu_max_freq", freq.substring(0, freq.length() - 3));
+    }
+
+    public static void setBigCpuFreq(String freq) {
+        setValue("big_cpu_max_freq", freq.substring(0, freq.length() - 3));
+    }
+
     public static void setLittleCpuGovernor(String governor) {
         setValue("little_cpu_governor", governor);
+    }
+
+    public static void setMiddleCpuGovernor(String governor) {
+        setValue("middle_cpu_governor", governor);
+    }
+
+    public static void setBigCpuGovernor(String governor) {
+        setValue("big_cpu_governor", governor);
     }
 
     public static void setGpuFreq(String freq) {

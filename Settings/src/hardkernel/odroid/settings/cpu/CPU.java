@@ -3,6 +3,7 @@ package hardkernel.odroid.settings.cpu;
 public class CPU {
     public enum Cluster {
         Big,
+        Middle,
         Little
     }
     public Governor governor;
@@ -16,23 +17,25 @@ public class CPU {
     }
 
     private static CPU cpu_big = null;
+    private static CPU cpu_middle = null;
     private static CPU cpu_little = null;
 
     public static CPU getCPU(String tag, Cluster cluster) {
-        CPU cpu = null;
         switch (cluster) {
             case Big:
                 if (cpu_big == null)
                     cpu_big = new CPU(tag, cluster);
-                cpu = cpu_big;
-                break;
+                return cpu_big;
+            case Middle:
+                if (cpu_middle == null)
+                    cpu_middle = new CPU(tag, cluster);
+                return cpu_middle;
             case Little:
                 if (cpu_little == null)
                     cpu_little = new CPU(tag, cluster);
-                cpu = cpu_little;
-                break;
+                return cpu_little;
+            default:
+                return null;
         }
-
-        return cpu;
     }
 }

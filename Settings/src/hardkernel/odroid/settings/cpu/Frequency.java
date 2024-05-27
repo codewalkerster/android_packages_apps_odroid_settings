@@ -15,6 +15,14 @@ import java.util.Comparator;
 import java.util.List;
 
 public class Frequency {
+    /* Big cluster */
+    private final static String BIG_SCALING_MAX_FREQ = "/sys/devices/system/cpu/cpufreq/policy6/scaling_max_freq";
+    private final static String BIG_SCALING_MIN_FREQ = "/sys/devices/system/cpu/cpufreq/policy6/scaling_min_freq";
+    private final static String BIG_SCALING_AVAIL_FREQ = "/sys/devices/system/cpu/cpufreq/policy6/scaling_available_frequencies";
+    /* Middle cluster */
+    private final static String MIDDLE_SCALING_MAX_FREQ = "/sys/devices/system/cpu/cpufreq/policy4/scaling_max_freq";
+    private final static String MIDDLE_SCALING_MIN_FREQ = "/sys/devices/system/cpu/cpufreq/policy4/scaling_min_freq";
+    private final static String MIDDLE_SCALING_AVAIL_FREQ = "/sys/devices/system/cpu/cpufreq/policy4/scaling_available_frequencies";
     /* Little cluster */
     private final static String LITTLE_SCALING_MAX_FREQ = "/sys/devices/system/cpu/cpufreq/policy0/scaling_max_freq";
     private final static String LITTLE_SCALING_MIN_FREQ = "/sys/devices/system/cpu/cpufreq/policy0/scaling_min_freq";
@@ -29,6 +37,12 @@ public class Frequency {
         TAG = tag;
         this.cluster = cluster;
         switch (cluster) {
+            case Big:
+                policyMax = Integer.parseInt(getFreqFrom(BIG_SCALING_MAX_FREQ));
+                break;
+            case Middle:
+                policyMax = Integer.parseInt(getFreqFrom(MIDDLE_SCALING_MAX_FREQ));
+                break;
             case Little:
                 policyMax = Integer.parseInt(getFreqFrom(LITTLE_SCALING_MAX_FREQ));
                 break;
@@ -45,6 +59,12 @@ public class Frequency {
         String minFreq;
 
         switch (cluster) {
+            case Big:
+                minFreq = getFreqFrom(BIG_SCALING_MIN_FREQ);
+                break;
+            case Middle:
+                minFreq = getFreqFrom(MIDDLE_SCALING_MIN_FREQ);
+                break;
             case Little:
                 minFreq = getFreqFrom(LITTLE_SCALING_MIN_FREQ);
                 break;
@@ -61,6 +81,12 @@ public class Frequency {
         String available_frequencies;
 
         switch (cluster) {
+            case Big:
+                available_frequencies = getScalingAvailables(BIG_SCALING_AVAIL_FREQ);
+                break;
+            case Middle:
+                available_frequencies = getScalingAvailables(MIDDLE_SCALING_AVAIL_FREQ);
+                break;
             case Little:
                 available_frequencies = getScalingAvailables(LITTLE_SCALING_AVAIL_FREQ);
                 break;
@@ -85,6 +111,12 @@ public class Frequency {
         String freq = null;
 
         switch (cluster) {
+            case Big:
+                freq = getFreqFrom(BIG_SCALING_MAX_FREQ);
+                break;
+            case Middle:
+                freq = getFreqFrom(MIDDLE_SCALING_MAX_FREQ);
+                break;
             case Little:
                 freq = getFreqFrom(LITTLE_SCALING_MAX_FREQ);
                 break;
@@ -102,6 +134,12 @@ public class Frequency {
 
         try {
             switch (cluster) {
+                case Big:
+                    fileWriter = new FileWriter(BIG_SCALING_MAX_FREQ);
+                    break;
+                case Middle:
+                    fileWriter = new FileWriter(MIDDLE_SCALING_MAX_FREQ);
+                    break;
                 case Little:
                     fileWriter = new FileWriter(LITTLE_SCALING_MAX_FREQ);
                     break;

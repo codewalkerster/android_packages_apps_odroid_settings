@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- GPU -->
+    <string name="m1_gpu">/sys/class/devfreq/fde60000.gpu</string>
+    <string name="m2_gpu">/sys/class/devfreq/fb000000.gpu</string>
+</resources>

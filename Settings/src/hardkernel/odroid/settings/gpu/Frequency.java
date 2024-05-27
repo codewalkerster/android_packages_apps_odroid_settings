@@ -2,6 +2,9 @@ package hardkernel.odroid.settings.gpu;
 
 import android.util.Log;
 
+import hardkernel.odroid.settings.OdroidSettingsApplication;
+import hardkernel.odroid.settings.R;
+import hardkernel.odroid.settings.util.OdroidUtils;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
@@ -12,10 +15,10 @@ import java.util.Arrays;
 import java.util.Comparator;
 
 public class Frequency {
-    private final static String MAX_FREQ = "/sys/class/devfreq/fde60000.gpu/max_freq";
-    private final static String MIN_FREQ = "/sys/class/devfreq/fde60000.gpu/min_freq";
-    private final static String CUR_FREQ = "/sys/class/devfreq/fde60000.gpu/cur_freq";
-    private final static String AVAILABLE_FREQ = "/sys/class/devfreq/fde60000.gpu/available_frequencies";
+    private String MAX_FREQ;
+    private String MIN_FREQ;
+    private String CUR_FREQ;
+    private String AVAILABLE_FREQ;
 
     private static String TAG;
 
@@ -24,6 +27,7 @@ public class Frequency {
 
     public Frequency (String tag) {
         TAG = tag;
+        init_sys_node();
         policyMax = Integer.parseInt(getFreqFrom(MAX_FREQ));
         policyMin = Integer.parseInt(getFreqFrom(MIN_FREQ));
     }
@@ -70,6 +74,23 @@ public class Frequency {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private void init_sys_node() {
+        String sys_node;
+        if (OdroidUtils.isOdroidM1() || OdroidUtils.isOdroidM1S()) {
+            sys_node = OdroidSettingsApplication
+                .getRes().getString(R.string.m1_gpu);
+        } else if (OdroidUtils.isOdroidM2()) {
+            sys_node = OdroidSettingsApplication
+                .getRes().getString(R.string.m2_gpu);
+        } else {
+            sys_node = "/sys/class/devfreq/fde60000.gpu";
+        }
+            MAX_FREQ = sys_node + "/max_freq";
+            MIN_FREQ = sys_node + "/min_freq";
+            CUR_FREQ = sys_node + "/cur_freq";
+            AVAILABLE_FREQ = sys_node + "/available_frequencies";
     }
 
     private String getFreqFrom(String node) {

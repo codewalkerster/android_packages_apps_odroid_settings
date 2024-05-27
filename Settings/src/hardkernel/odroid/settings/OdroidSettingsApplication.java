@@ -17,6 +17,7 @@
 package hardkernel.odroid.settings;
 
 import android.app.Application;
+import android.content.res.Resources;
 
 /**
  * Application class that instantiates system sound player singleton so sound effects are only
@@ -24,14 +25,20 @@ import android.app.Application;
  */
 public class OdroidSettingsApplication extends Application {
     private SystemSoundsPlayer mSystemSoundsPlayer;
+    protected static Resources res;
 
     @Override
     public void onCreate() {
         super.onCreate();
         mSystemSoundsPlayer = new SystemSoundsPlayer(this);
+        res = getResources();
     }
 
     public SystemSoundsPlayer getSystemSoundsPlayer() {
         return mSystemSoundsPlayer;
+    }
+
+    public static Resources getRes() {
+        return res;
     }
 }

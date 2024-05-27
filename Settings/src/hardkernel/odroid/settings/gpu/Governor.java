@@ -2,6 +2,9 @@ package hardkernel.odroid.settings.gpu;
 
 import android.util.Log;
 
+import hardkernel.odroid.settings.OdroidSettingsApplication;
+import hardkernel.odroid.settings.R;
+import hardkernel.odroid.settings.util.OdroidUtils;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
@@ -10,13 +13,14 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class Governor {
-    private final static String CUR_GOVERNOR = "/sys/class/devfreq/fde60000.gpu/governor";
-    private final static String AVAILABLE_GOVERNORS = "/sys/class/devfreq/fde60000.gpu/available_governors";
+    private String CUR_GOVERNOR;
+    private String AVAILABLE_GOVERNORS;
 
     private static String TAG;
 
     public Governor(String tag) {
         TAG = tag;
+        init_sys_node();
     }
 
     public String[] getGovernors() {
@@ -55,6 +59,20 @@ public class Governor {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+    private void init_sys_node() {
+        String sys_node;
+        if (OdroidUtils.isOdroidM1() || OdroidUtils.isOdroidM1S()) {
+            sys_node = OdroidSettingsApplication
+                .getRes().getString(R.string.m1_gpu);
+        } else if (OdroidUtils.isOdroidM2()) {
+            sys_node = OdroidSettingsApplication
+                .getRes().getString(R.string.m2_gpu);
+        } else {
+            sys_node = "/sys/class/devfreq/fde60000.gpu";
+        }
+        CUR_GOVERNOR = sys_node + "/governor";
+        AVAILABLE_GOVERNORS = sys_node + "/available_governors";
     }
 
     private String getAvailable() {

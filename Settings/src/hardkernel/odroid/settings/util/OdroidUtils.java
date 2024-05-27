@@ -11,6 +11,10 @@ public class OdroidUtils {
         return getModel().equals("odroidm1s");
     }
 
+    public static boolean isOdroidM2() {
+        return getModel().equals("odroidm2");
+    }
+
     private static String model = null;
 
     private static String getModel() {
