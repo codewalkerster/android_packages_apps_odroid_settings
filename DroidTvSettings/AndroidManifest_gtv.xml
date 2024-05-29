@@ -356,7 +356,7 @@
             android:name="com.droidlogic.tv.settings.sliceprovider.accessories.BluetoothDevicesService"
             android:exported="false" />
 
-        <provider
+<!--        <provider
             android:authorities="com.google.android.tv.btservices.settings.sliceprovider"
             android:name="com.droidlogic.tv.settings.sliceprovider.accessories.ConnectedDevicesSliceProvider"
             android:exported="true">
@@ -364,7 +364,7 @@
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.app.slice.category.SLICE"/>
             </intent-filter>
-        </provider>
+        </provider>-->
 
         <receiver
             android:name="com.droidlogic.tv.settings.sliceprovider.broadcastreceiver.HdrSliceBroadcastReceiver"
@@ -398,6 +398,39 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
             </intent-filter>
         </receiver>
+        <service
+                android:name=".DefaultBluetoothDeviceService"
+                android:exported="true" />
+        <activity
+                android:name="com.google.android.tv.btservices.settings.ConnectedDevicesSettingsActivity"
+                android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation|keyboard|keyboardHidden"
+                android:excludeFromRecents="true"
+                android:exported="true"
+                android:launchMode="singleTask"
+                android:taskAffinity=""
+                android:theme="@style/Theme.Settings.SidePanel">
+            <intent-filter>
+                <action android:name="com.android.tv.settings.CONNECTED_DEVICES" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <provider
+                android:name="com.google.android.tv.btservices.settings.ConnectedDevicesSliceProvider"
+                android:authorities="com.google.android.tv.btservices.settings.sliceprovider"
+                android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.app.slice.category.SLICE" />
+            </intent-filter>
+        </provider>
+
+        <receiver
+                android:name="com.google.android.tv.btservices.settings.SliceBroadcastReceiver"
+                android:exported="false" />
+
+        <activity
+                android:name="com.google.android.tv.btservices.settings.ResponseActivity"
+                android:exported="true" />
     </application>
 
     <queries>

@@ -38,6 +38,8 @@ public class BootReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         try {
             //context.startService(new Intent(context,FrameRateService.class));
+            Intent BtDeviceServiceIntent = new Intent(context, DefaultBluetoothDeviceService.class);
+            context.startService(BtDeviceServiceIntent);
         } catch (Exception e) {
             Log.e(TAG, "startFrameRateService error !!", e);
         }

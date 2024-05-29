@@ -193,13 +193,13 @@ public class ConnectedDevicesSliceProvider extends SliceProvider implements
         if (DEBUG) {
             Log.d(TAG, "onBindSlice: " + sliceUri);
         }
-        if (ConnectedDevicesSliceUtils.isGeneralPath(sliceUri)) {
+        /*if (ConnectedDevicesSliceUtils.isGeneralPath(sliceUri)) {
             return createGeneralSlice(sliceUri);
         } else if (ConnectedDevicesSliceUtils.isBluetoothDevicePath(sliceUri)) {
             return createBluetoothDeviceSlice(sliceUri);
         } else if (ConnectedDevicesSliceUtils.isFindMyRemotePath(sliceUri)) {
             return createFindMyRemoteSlice(sliceUri);
-        }
+        }*/
         return null;
     }
 
