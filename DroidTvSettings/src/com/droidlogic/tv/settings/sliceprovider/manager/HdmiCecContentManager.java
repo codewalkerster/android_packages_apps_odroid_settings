@@ -1,27 +1,22 @@
 package com.droidlogic.tv.settings.sliceprovider.manager;
 
-//import static android.provider.Settings.Global.HDMI_CONTROL_ENABLED;
-
 import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.os.UserHandle;
-import android.provider.Settings;
 import android.hardware.hdmi.HdmiControlManager;
 import android.content.ContentResolver;
 
 import com.droidlogic.tv.settings.R;
-import com.droidlogic.tv.settings.sliceprovider.utils.MediaSliceUtil;
-import com.droidlogic.tv.settings.sliceprovider.MediaSliceConstants;
 import static com.droidlogic.tv.settings.util.DroidUtils.logDebug;
+import com.droidlogic.app.AudioSettingManager;
+import com.droidlogic.app.AudioEffectManager;
 
 public class HdmiCecContentManager {
     private static final String TAG = HdmiCecContentManager.class.getSimpleName();
 
     private Context mContext;
-    private ContentResolver mResolver;
     private static volatile HdmiCecContentManager mHdmiCecContentManager;
-    private HdmiControlManager mHdmiControlManager;  // This is a system service(HdmiControlManager).
+    private AudioSettingManager mAudioSettingManager;
+    private static AudioEffectManager mAudioEffectManager;
+    private HdmiControlManager mHdmiControlManager;
 
     public static boolean isInit() {
         return mHdmiCecContentManager != null;
@@ -30,8 +25,9 @@ public class HdmiCecContentManager {
     public static HdmiCecContentManager getHdmiCecContentManager(final Context context) {
         if (mHdmiCecContentManager == null) {
             synchronized (HdmiCecContentManager.class) {
-            if (mHdmiCecContentManager == null)
-                mHdmiCecContentManager = new HdmiCecContentManager(context);
+                if (mHdmiCecContentManager == null) {
+                    mHdmiCecContentManager = new HdmiCecContentManager(context);
+                }
             }
         }
         return mHdmiCecContentManager;
@@ -49,8 +45,13 @@ public class HdmiCecContentManager {
 
     private HdmiCecContentManager(final Context context) {
         mContext = context;
-        mResolver = mContext.getContentResolver();
         mHdmiControlManager = mContext.getSystemService(HdmiControlManager.class);
+        if (mAudioSettingManager == null) {
+            mAudioSettingManager = AudioSettingManager.getInstance(mContext);
+        }
+        if (mAudioEffectManager == null) {
+           mAudioEffectManager = AudioEffectManager.getInstance(context);
+        }
     }
 
     public boolean isHdmiControlEnabled() {
@@ -66,8 +67,6 @@ public class HdmiCecContentManager {
         mHdmiControlManager.setHdmiCecEnabled(enable
                 ? HdmiControlManager.HDMI_CEC_CONTROL_ENABLED
                 : HdmiControlManager.HDMI_CEC_CONTROL_DISABLED);
-
-        mResolver.notifyChange(MediaSliceConstants.DISPLAYSOUND_HDMI_CEC_URI, null);
     }
 
     public boolean getVolumeControlStatus() {
@@ -82,7 +81,6 @@ public class HdmiCecContentManager {
         if (mHdmiControlManager != null) {
             mHdmiControlManager.setHdmiCecVolumeControlEnabled(state);
         }
-        resolver.notifyChange(MediaSliceConstants.DISPLAYSOUND_HDMI_CEC_URI, null);
         logDebug(TAG, false, "setVolumeControlStatus volume control:" + state);
     }
 
@@ -91,6 +89,15 @@ public class HdmiCecContentManager {
                 == HdmiControlManager.HDMI_CEC_CONTROL_ENABLED;
 
         return cecEnabled ? "Enabled" : "Disabled";
+    }
+
+    public boolean getSoundbarModeStatus() {
+        return mAudioSettingManager.isSoundBarModeEnabled();
+    }
+
+    public void setSoundbarModeStatus(boolean state) {
+        mAudioSettingManager.setSoundBarModeEnabled(state);
+        mAudioEffectManager.setAudioEffectOn(AudioEffectManager.DEBUG_DAP_2_UI, state);
     }
 
 }

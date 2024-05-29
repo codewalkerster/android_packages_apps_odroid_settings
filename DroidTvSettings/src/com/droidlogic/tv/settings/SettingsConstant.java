@@ -121,4 +121,8 @@ public class SettingsConstant {
         return ("1".equals(sm.getPropertyString("ro.vendor.platform.is.tv", "")));
     }
 
+    public static boolean isSoundbarFeature() {
+        SystemControlManager sm = SystemControlManager.getInstance();
+        return  sm.getPropertyBoolean("ro.vendor.platform.support.soundbar", false);
+    }
 }

@@ -84,4 +84,9 @@
         android:persistent="false"
         android:title="@string/device_sound_digital"
         android:summary="%s" />
+    <SwitchPreference
+        android:key="hdmi_soundbar_mode_key"
+        android:persistent="false"
+        android:title="@string/hdmi_soundbar_mode_title"
+        android:summary="@string/hdmi_soundbar_mode_description"/>
 </PreferenceScreen>

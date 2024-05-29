@@ -10,6 +10,7 @@ import com.android.tv.twopanelsettings.slices.builders.PreferenceSliceBuilder;
 import com.android.tv.twopanelsettings.slices.builders.PreferenceSliceBuilder.RowBuilder;
 
 import com.droidlogic.tv.settings.R;
+import com.droidlogic.tv.settings.SettingsConstant;
 import com.droidlogic.tv.settings.sliceprovider.manager.HdmiCecContentManager;
 import com.droidlogic.tv.settings.sliceprovider.utils.MediaSliceUtil;
 import com.droidlogic.tv.settings.sliceprovider.broadcastreceiver.HdmiCecSliceBroadcastReceiver;
@@ -91,7 +92,21 @@ public class HdmiCecContentSliceProvider extends MediaSliceProvider {
                                             HdmiCecSliceBroadcastReceiver.class),
                                     mHdmiCecContentManager.getVolumeControlStatus()));
         }
-
+        if (SettingsConstant.isSoundbarFeature()) {
+            psb.addPreference(
+                    new RowBuilder()
+                            .setKey(getContext().getString(R.string.hdmi_soundbar_mode_key))
+                            .setTitle(getContext().getString(R.string.hdmi_soundbar_mode_title))
+                            .setInfoSummary(getContext().getString(R.string.hdmi_soundbar_mode_description))
+                            .setSubtitle(mHdmiCecContentManager.getSoundbarModeStatus() ?
+                                    getContext().getString(R.string.enabled) : getContext().getString(R.string.disabled))
+                            .addSwitch(
+                                    generatePendingIntent(
+                                            getContext(),
+                                            MediaSliceConstants.ACTION_HDMI_SOUNDBAR_MODE_CONTROL_CHANGED,
+                                            HdmiCecSliceBroadcastReceiver.class),
+                                    mHdmiCecContentManager.getSoundbarModeStatus()));
+        }
         return psb.build();
     }
 }

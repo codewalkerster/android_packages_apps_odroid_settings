@@ -42,6 +42,7 @@ import java.util.*;
 
 import com.droidlogic.app.HdmiCecManager;
 import com.droidlogic.app.AudioConfigManager;
+import com.droidlogic.app.AudioSettingManager;
 import com.droidlogic.tv.settings.R;
 import com.droidlogic.tv.settings.RadioPreference;
 import com.droidlogic.tv.settings.SettingsConstant;
@@ -63,6 +64,7 @@ public class HdmiCecFragment extends SettingsPreferenceFragment implements Prefe
     private static final String KEY_CEC_AUTO_CHANGE_LANGUAGE    = "key_cec_auto_change_language";
     private static final String KEY_CEC_ARC_SWITCH              = "key_cec_arc_switch";
     private static final String KEY_CEC_DEVICE_LIST             = "key_cec_device_list";
+    private static final String KEY_SOUNDBAR_MODE               = "hdmi_soundbar_mode_key";
     private static final String KEY_EARC_SWITCH                 = "key_earc_switch";
     private static final String KEY_ARC_AND_EARC_SWITCH         = "key_arc_and_earc_switch";
     private static final String KEY_ARC_EARC_MODE_AUTO          = "arc_earc_mode_auto";
@@ -87,6 +89,7 @@ public class HdmiCecFragment extends SettingsPreferenceFragment implements Prefe
     private TwoStatePreference mCecAutoWakeupPref;
     private TwoStatePreference mCecAutoChangeLanguagePref;
     private TwoStatePreference mArcSwitchPref;
+    private TwoStatePreference mSoundbarModePref;
     private TwoStatePreference mEarcSwitchPref;
     private TwoStatePreference mArcNEarcSwitchPref;
     private RadioPreference mArcEarcModeAutoPref;
@@ -95,6 +98,7 @@ public class HdmiCecFragment extends SettingsPreferenceFragment implements Prefe
     private SoundParameterSettingManager mSoundParameterSettingManager;
     private ProgressDialog mProgress;
     private AudioConfigManager mAudioConfigManager = null;
+    private AudioSettingManager mAudioSettingManager;
     private HdmiCecManager mHdmiCecManager;
     private static long mLastObserveredCECTime = 0;
     private static long mLastObserveredArcEarcTime = 0;
@@ -111,6 +115,9 @@ public class HdmiCecFragment extends SettingsPreferenceFragment implements Prefe
         mHdmiCecManager = new HdmiCecManager(getContext());
         if (mAudioConfigManager == null) {
             mAudioConfigManager = AudioConfigManager.getInstance(getActivity());
+        }
+        if (mAudioSettingManager ==null) {
+            mAudioSettingManager = AudioSettingManager.getInstance(getActivity());
         }
         if (mSoundParameterSettingManager == null) {
             mSoundParameterSettingManager = new SoundParameterSettingManager(getActivity());
@@ -165,6 +172,7 @@ public class HdmiCecFragment extends SettingsPreferenceFragment implements Prefe
         boolean tvFlag = mHdmiCecManager.isTv();
         boolean soundbarFlag = mHdmiCecManager.getClient(HdmiDeviceInfo.DEVICE_AUDIO_SYSTEM) != null;
         mCecSwitchPref = (TwoStatePreference) findPreference(KEY_CEC_SWITCH);
+        mSoundbarModePref = (TwoStatePreference) findPreference(KEY_SOUNDBAR_MODE);
         mCecVolumeControlPref = (TwoStatePreference) findPreference(KEY_CEC_VOLUME_CONTROL);
         mCecOneKeyPlayPref = (TwoStatePreference) findPreference(KEY_CEC_ONE_KEY_PLAY);
         mCecDeviceAutoPowerOffPref = (TwoStatePreference) findPreference(KEY_CEC_AUTO_POWER_OFF);
@@ -228,6 +236,7 @@ public class HdmiCecFragment extends SettingsPreferenceFragment implements Prefe
         mCecDeviceAutoPowerOffPref.setVisible(!soundbarFlag);
         mCecAutoChangeLanguagePref.setVisible(!tvFlag && !hideOptions);
         mCecVolumeControlPref.setVisible(!tvFlag && !mHdmiCecManager.isAudioSystem());
+        mSoundbarModePref.setVisible(SettingsConstant.isSoundbarFeature());
         hdmiDeviceSelectPref.setVisible(tvFlag || soundbarFlag);
         digitalSoundPref.setVisible(false);
         boolean isChecked = mHdmiCecManager.isArcEnabled();
@@ -300,6 +309,9 @@ public class HdmiCecFragment extends SettingsPreferenceFragment implements Prefe
                 break;
             case KEY_CEC_VOLUME_CONTROL:
                 updateVolumeControl(mCecVolumeControlPref.isChecked());
+                break;
+            case KEY_SOUNDBAR_MODE:
+                mAudioSettingManager.setSoundBarModeEnabled(mSoundbarModePref.isChecked());
                 break;
             default:
                 break;
@@ -388,6 +400,7 @@ public class HdmiCecFragment extends SettingsPreferenceFragment implements Prefe
             mArcEarcModeAutoPref.setChecked(true);
             mArcEarcModeARCPref.setChecked(false);
         }
+        mSoundbarModePref.setChecked(mAudioSettingManager.isSoundBarModeEnabled());
     }
 
     private Handler mHandler = new Handler() {

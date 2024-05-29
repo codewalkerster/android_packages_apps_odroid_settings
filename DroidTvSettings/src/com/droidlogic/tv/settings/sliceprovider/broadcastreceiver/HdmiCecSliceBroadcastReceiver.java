@@ -43,14 +43,13 @@ public class HdmiCecSliceBroadcastReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         final String action = intent.getAction();
         logDebug(TAG, true, "onReceive " + intent);
-        boolean isChecked;
+        boolean isChecked = intent.getBooleanExtra(EXTRA_TOGGLE_STATE, true);;
         mProgress = new ProgressDialog(context);
         mProgress.setMessage(context.getString(R.string.cec_status_update));
         mProgress.setIndeterminate(false);
         mProgress.getWindow().setType(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY);
         switch (action) {
             case MediaSliceConstants.ACTION_HDMI_SWITCH_CEC_CHANGED:
-                isChecked = intent.getBooleanExtra(EXTRA_TOGGLE_STATE, true);
                 getHdmiCecContentManager(context).setHdmiCecEnabled(isChecked);
                 if (mProgress != null && !mProgress.isShowing()) {
                     mProgress.show();
@@ -58,12 +57,15 @@ public class HdmiCecSliceBroadcastReceiver extends BroadcastReceiver {
                 mHandler.sendEmptyMessageDelayed(MSG_ENABLE_CEC_SWITCH, TIME_DELAYED);
                 break;
             case MediaSliceConstants.ACTION_HDMI_VOLUME_CONTROL_CHANGED:
-                isChecked = intent.getBooleanExtra(EXTRA_TOGGLE_STATE, true);
                 getHdmiCecContentManager(context).setVolumeControlStatus(isChecked ? 1 : 0);
+                break;
+            case MediaSliceConstants.ACTION_HDMI_SOUNDBAR_MODE_CONTROL_CHANGED:
+                getHdmiCecContentManager(context).setSoundbarModeStatus(isChecked);
                 break;
             default:
                 break;
         }
+        context.getContentResolver().notifyChange(MediaSliceConstants.DISPLAYSOUND_HDMI_CEC_URI, null);
     }
 
     private HdmiCecContentManager getHdmiCecContentManager(Context context) {
