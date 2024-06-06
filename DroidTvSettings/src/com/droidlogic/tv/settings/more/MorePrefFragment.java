@@ -87,6 +87,7 @@ public class MorePrefFragment extends SettingsPreferenceFragment {
     public static final String TV_FEATURE = "android.hardware.type.television";
     public static final String AUTOMOTIVE_FEATURE = "android.hardware.type.automotive";
     public static final String FEATURE_SOFTWARE_NETFLIX = "droidlogic.software.netflix";
+    private static final String KEY_PICTURE = "picture_mode";
     public static final String FEATURE_HDMI_CEC = "android.hardware.hdmi.cec";
 
     private Preference mSoundsPref;
@@ -138,6 +139,7 @@ public class MorePrefFragment extends SettingsPreferenceFragment {
         final Preference mUpgradeBluetoothRemote = findPreference(KEY_UPGRADE_BLUETOOTH_REMOTE);
         final Preference netflixesnPref = findPreference(KEY_NETFLIX_ESN);
         final Preference versionPref = findPreference(KEY_VERSION);
+        final Preference picturePref = findPreference(KEY_PICTURE);
         final Preference advanced_sound_settings_pref = findPreference(KEY_ADVANCE_SOUND);
         final Preference frameRatePref = findPreference(KEY_FRAME_RATE);
         final Preference tvExtrasPref = findPreference(KEY_TV_EXTRAS);
@@ -201,6 +203,8 @@ public class MorePrefFragment extends SettingsPreferenceFragment {
 
             if (!SettingsConstant.isTvFeature()) {
                 tvExtrasPref.setVisible(false);
+            } else {
+                picturePref.setVisible(false);
             }
         }
 

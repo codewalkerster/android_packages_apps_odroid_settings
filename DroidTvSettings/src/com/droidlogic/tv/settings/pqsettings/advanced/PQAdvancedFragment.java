@@ -1,0 +1,118 @@
+/*
+ * Copyright (c) 2014 Amlogic, Inc. All rights reserved.
+ *
+ * This source code is subject to the terms and conditions defined in the
+ * file 'LICENSE' which is part of this source code package.
+ *
+ * Description:
+ *     AMLOGIC PQAdvancedFragment
+ */
+
+
+
+package com.droidlogic.tv.settings.pqsettings.advanced;
+
+import android.content.Context;
+import android.os.Bundle;
+import android.os.Handler;
+import androidx.preference.SwitchPreference;
+import androidx.preference.ListPreference;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceScreen;
+import androidx.preference.TwoStatePreference;
+import androidx.preference.PreferenceCategory;
+import androidx.preference.Preference.OnPreferenceChangeListener;
+import android.text.TextUtils;
+
+import java.util.List;
+import java.util.Map;
+import java.util.ArrayList;
+
+import com.droidlogic.tv.settings.R;
+import com.droidlogic.tv.settings.SettingsConstant;
+import com.droidlogic.tv.settings.SettingsPreferenceFragment;
+import com.droidlogic.tv.settings.pqsettings.PQSettingsManager;
+import static com.droidlogic.tv.settings.util.DroidUtils.logDebug;
+
+public class PQAdvancedFragment extends SettingsPreferenceFragment implements Preference.OnPreferenceChangeListener {
+    private static final String TAG = "PQAdvancedFragment";
+
+    private static final String PQ_PICTURE_ADVANCED_COLOR_MANAGEMENT = "pq_picture_advanced_color_management";
+    private static final String PQ_PICTURE_ADVANCED_COLOR_SPACE = "pq_picture_advanced_color_space";
+    private static final String PQ_PICTURE_ADVANCED_BLACK_STRETCH = "pq_picture_advanced_black_stretch";
+    private static final String PQ_PICTURE_ADVANCED_DNLP = "pq_picture_advanced_dnlp";
+    private static final String PQ_PICTURE_ADVANCED_SR = "pq_picture_advanced_sr";
+    private static final String PQ_DNR = "pq_dnr";
+
+    private PQSettingsManager mPQSettingsManager;
+
+    public static PQAdvancedFragment newInstance() {
+        return new PQAdvancedFragment();
+    }
+
+    @Override
+    public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
+        setPreferencesFromResource(R.xml.pq_picture_advanced, null);
+        if (mPQSettingsManager == null) {
+            mPQSettingsManager = new PQSettingsManager(getActivity());
+        }
+
+        final ListPreference pictureAdvancedColorManagementPref = (ListPreference) findPreference(PQ_PICTURE_ADVANCED_COLOR_MANAGEMENT);
+        final ListPreference pictureAdvancedColorSpacePref = (ListPreference) findPreference(PQ_PICTURE_ADVANCED_COLOR_SPACE);
+        final ListPreference pictureAdvancedBlackStretchPref = (ListPreference) findPreference(PQ_PICTURE_ADVANCED_BLACK_STRETCH);
+        final ListPreference pictureAdvancedDNLPPref = (ListPreference) findPreference(PQ_PICTURE_ADVANCED_DNLP);
+        final ListPreference pictureAdvancedSRPref = (ListPreference) findPreference(PQ_PICTURE_ADVANCED_SR);
+        final ListPreference pictureAdvancedDNRPref = (ListPreference) findPreference(PQ_DNR);
+
+        pictureAdvancedColorManagementPref.setValueIndex(mPQSettingsManager.getAdvancedColorManagementStatus());
+        pictureAdvancedColorManagementPref.setOnPreferenceChangeListener(this);
+        pictureAdvancedColorSpacePref.setValueIndex(mPQSettingsManager.getAdvancedColorSpaceStatus());
+        pictureAdvancedColorSpacePref.setOnPreferenceChangeListener(this);
+
+        pictureAdvancedBlackStretchPref.setValueIndex(mPQSettingsManager.getAdvancedBlackStretchStatus());
+        pictureAdvancedBlackStretchPref.setOnPreferenceChangeListener(this);
+        pictureAdvancedDNLPPref.setValueIndex(mPQSettingsManager.getAdvancedDNLPStatus());
+        pictureAdvancedDNLPPref.setOnPreferenceChangeListener(this);
+        pictureAdvancedSRPref.setValueIndex(mPQSettingsManager.getAdvancedSRStatus());
+        pictureAdvancedSRPref.setOnPreferenceChangeListener(this);
+        pictureAdvancedDNRPref.setValueIndex(mPQSettingsManager.getDnrStatus());
+        pictureAdvancedDNRPref.setOnPreferenceChangeListener(this);
+
+    }
+
+    @Override
+    public boolean onPreferenceChange(Preference preference, Object newValue) {
+        logDebug(TAG, true, "[onPreferenceTreeClick] preference.getKey() = " + preference.getKey());
+
+        final int selection = Integer.parseInt((String)newValue);
+        switch (preference.getKey()) {
+            case PQ_PICTURE_ADVANCED_COLOR_MANAGEMENT:
+                mPQSettingsManager.setAdvancedColorManagementStatus(selection);
+                break;
+            case PQ_PICTURE_ADVANCED_COLOR_SPACE:
+                mPQSettingsManager.setAdvancedColorSpaceStatus(selection);
+                break;
+            case PQ_PICTURE_ADVANCED_BLACK_STRETCH:
+                mPQSettingsManager.setAdvancedBlackStretchStatus(selection);
+                break;
+            case PQ_PICTURE_ADVANCED_DNLP:
+                mPQSettingsManager.setAdvancedDNLPStatus(selection);
+                break;
+            case PQ_PICTURE_ADVANCED_SR:
+                mPQSettingsManager.setAdvancedSRStatus(selection);
+                break;
+            case PQ_DNR:
+                mPQSettingsManager.setDnr(selection);
+                break;
+            default:
+                break;
+        }
+        return true;
+    }
+
+    @Override
+    public int getMetricsCategory() {
+        return 0;
+    }
+
+}

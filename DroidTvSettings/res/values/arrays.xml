@@ -678,13 +678,45 @@
     </string-array>
 
     <string-array name="pq_ai_pq_entries">
-        <item>On</item>
         <item>Off</item>
+        <item>low</item>
+        <item>medium</item>
+        <item>high</item>
     </string-array>
 
     <string-array name="pq_ai_pq_entry_values" translatable="false">
         <item>0</item>
         <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
+    <string-array name="pq_ai_sr_entries">
+        <item>off</item>
+        <item>low</item>
+        <item>medium</item>
+        <item>high</item>
+    </string-array>
+
+    <string-array name="pq_ai_sr_entry_values" translatable="false">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
+    <string-array name="pq_ai_color_entries">
+        <item>off</item>
+        <item>low</item>
+        <item>medium</item>
+        <item>high</item>
+    </string-array>
+
+    <string-array name="pq_ai_color_entry_values" translatable="false">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
     </string-array>
 
     <string-array name="pq_dnr_entries">

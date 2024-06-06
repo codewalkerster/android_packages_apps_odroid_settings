@@ -2506,6 +2506,7 @@
     <string name="pq_color_temperature">Color Temperature</string>
     <string name="pq_aspect_ratio">Aspect Ratio</string>
     <string name="pq_ai_pq">AI PQ</string>
+    <string name="pq_ai_pq_sr">AI-PQ/AI-SR</string>
     <string name="ai_sr_enable" translatable="false">Enable AI SR</string>
     <string name="pq_dnr">DNR</string>
     <string name="pq_hdmi_color">Hdmi Color Range Mode</string>
@@ -2558,6 +2559,7 @@
     <string name="pq_picture_advanced_decontour">Decontour</string>
     <string name="pq_picture_advanced_memc">MEMC</string>
     <string name="pq_picture_advanced_memc_switch">MEMC Switch</string>
+    <string name="pq_picture_advanced_memc_demo_switch">MEMC Demo</string>
     <string name="pq_picture_advanced_manual_gamma_level">Level</string>
     <string name="pq_picture_advanced_manual_gamma_rgain">R Gain</string>
     <string name="pq_picture_advanced_manual_gamma_ggain">G Gain</string>
@@ -2862,10 +2864,12 @@
     <string name="ai_pq" translatable="false">AI PQ</string>
     <string name="ai_pq_enable" translatable="false">Enable AI PQ</string>
     <string name="ai_pq_info_enable" translatable="false">Show AI PQ information</string>
+    <string name="ai_pq_aisr_demo_switch">AISR Demo</string>
     <string name="prepare">AI PQ invalid value...</string>
     <string name="frame_rate" translatable="false">FrameRate</string>
     <string name="frame_rate_enable" translatable="false">Enable FrameRate</string>
     <string name="frame_rate_prepare">invalid value...</string>
+    <string name="ai_color_enable">AI Color</string>
     <string name="tv_extras" translatable="true">Panel TV</string>
 
     <!-- Processing Dialog -->

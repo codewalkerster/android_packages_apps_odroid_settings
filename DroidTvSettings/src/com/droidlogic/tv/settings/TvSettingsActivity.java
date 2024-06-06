@@ -78,6 +78,7 @@ public abstract class TvSettingsActivity extends FragmentActivity {
 
             final Fragment fragment = createSettingsFragment();
             if (fragment == null) {
+                finish();
                 return;
             }
             if (isStartupVerificationRequired()) {

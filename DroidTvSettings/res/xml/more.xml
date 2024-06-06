@@ -79,7 +79,11 @@
         android:icon="@drawable/ic_settings_display"
         android:key="keyStone"
         android:title="@string/keystone" />
-
+    <Preference
+        android:fragment="com.droidlogic.tv.settings.pqsettings.PictureModeFragment"
+        android:icon="@drawable/ic_settings_display"
+        android:key="picture_mode"
+        android:title="@string/pq_picture" />
     <Preference
         android:key="advanced_sound_settings"
         android:icon="@drawable/ic_volume_up"

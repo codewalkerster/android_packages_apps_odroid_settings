@@ -40,9 +40,10 @@ public class SettingsConstant {
     public static String PACKAGE_NAME_SOUNDEFFECT = "com.droidlogic.tv.settings";
     public static String ACTIVITY_NAME_SOUNDEFFECT = "com.droidlogic.tv.settings.soundeffect.AdvancedVolumeActivity";
 
-    public static String PACKAGE_NAME_TV_EXTRAS = "com.droidlogic.tv.extras";
+    public static String PACKAGE_NAME_TV_EXTRAS  = "com.droidlogic.tv.extras";
     public static String ACTIVITY_NAME_TV_EXTRAS = "com.droidlogic.tv.extras.MainActivity";
-    public static String ACTIVITY_NAME_PICTURE = "com.droidlogic.tv.extras.pqsettings.PictureModeActivity";
+    public static String ACTIVITY_NAME_PICTURE   = "com.droidlogic.tv.extras.pqsettings.PictureModeActivity";
+    public static String ACTIVITY_NAME_TV_SOURCE = "com.droidlogic.tv.extras.tvsource.TvSourceActivity";
     public static String ACTIVITY_NAME_TV_OPTION = "com.droidlogic.tv.extras.tvoption.DroidSettingsModeActivity";
 
     public static boolean needDroidlogicMboxFeature(Context context){
