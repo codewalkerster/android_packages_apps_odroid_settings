@@ -106,13 +106,12 @@ public class AiPqFragment extends SettingsPreferenceFragment implements Preferen
         mEnableAipqInfoPref.setChecked(mPQSettingsManager.getAipqInfo(PROP_AIPQ_ENABLE));
 
         mEnableAiColorPref = (ListPreference) findPreference(KEY_ENABLE_AI_COLOR);
-        /*
         if (mPQSettingsManager.hasAiColorFunc()) {
             mEnableAiColorPref.setOnPreferenceChangeListener(this);
             mEnableAiColorPref.setValueIndex(mPQSettingsManager.getAiColor());
-        } else {*/
+        } else {
             mEnableAiColorPref.setEnabled(false);
-        //}
+        }
 
 
         mEnableAisrDemoPref = (TwoStatePreference) findPreference(KEY_ENABLE_AISR_DEMO);

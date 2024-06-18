@@ -206,6 +206,10 @@ public class PQSettingsManager {
         return isAisrFun;
     }
 
+    public boolean hasAiColorFunc() {
+        return mSystemControlManager.hasAiColorFunc();
+    }
+
     public int getAisrModeLevel() {
         logDebug(TAG, true, "getAisrModeLevel:" + mSystemControlManager.GetAipqMode());
         return mSystemControlManager.GetAisrMode();
@@ -344,6 +348,12 @@ public class PQSettingsManager {
         }
         logDebug(TAG, false, "setAisreDemoEnabled stateValue: " + stateValue);
         return mSystemControlManager.SetPQModuleDemoState(AISR_DEMO, stateValue);
+    }
+
+    public boolean hasPqCaseFunc(SystemControlManager.PqFuncCase type) {
+        boolean isSupported = mSystemControlManager.hasPqCaseFunc(type);
+        logDebug(TAG, true, type + ", isSupported:" + isSupported);
+        return isSupported;
     }
 
 }
