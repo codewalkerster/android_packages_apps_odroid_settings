@@ -60,6 +60,8 @@ public class DisplayFragment extends LeanbackAddBackPreferenceFragment {
         setPreferencesFromResource(R.xml.display, null);
         mSdrManager = new SdrManager((Context) getActivity());
 
+        boolean isHdrSupport = mSdrManager.isHdrSupport();
+
         final Preference outputmodePref = findPreference(KEY_OUTPUTMODE);
         outputmodePref.setVisible(SettingsConstant.needScreenResolutionFeture(getContext()));
 
@@ -68,11 +70,11 @@ public class DisplayFragment extends LeanbackAddBackPreferenceFragment {
 
         final Preference sdrPref = findPreference(KEY_SDR);
         boolean sdrFeature = SettingsConstant.needDroidlogicSdrFeature(getContext());
-        sdrPref.setVisible(sdrFeature);
+        sdrPref.setVisible(isHdrSupport&&sdrFeature);
 
         final Preference hdrPref = findPreference(KEY_HDR);
         boolean hdrFeature = SettingsConstant.needDroidlogicHdrFeature(getContext());
-        hdrPref.setVisible(hdrFeature);
+        hdrPref.setVisible(!isHdrSupport||hdrFeature);
 
         final Preference dvPref =(Preference) findPreference(KEY_DOLBY_VISION);
         dvPref.setVisible(false);

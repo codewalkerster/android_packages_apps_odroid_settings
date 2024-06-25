@@ -142,8 +142,8 @@ public class ConfigEnv {
     public static int getSdr2Hdr() {
         String value = getValue("hdr_policy");
         if (value == null) {
-            value = "0";
-            setSdr2Hdr(SdrManager.HDR_POLICY_HDR_ON);
+            value = "1";
+            setSdr2Hdr(SdrManager.HDR_POLICY_HDR_OFF);
         }
         return Integer.parseInt(value);
     }

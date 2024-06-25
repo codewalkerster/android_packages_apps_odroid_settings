@@ -95,7 +95,7 @@ public class SdrSettingFragment extends LeanbackAddBackPreferenceFragment {
 	private ArrayList<Action> getActions() {
 		int mode = ConfigEnv.getSdr2Hdr();
 		if (!mSdrManager.isHdrSupport())
-			mode = 0;
+			mode = 1;
 		ArrayList<Action> actions = new ArrayList<Action>();
 		actions.add(new Action.Builder().key(ACTION_AUTO).title(getString(R.string.on))
 				.checked(mode == SdrManager.HDR_POLICY_HDR_ON).build());
