@@ -23,6 +23,7 @@ import androidx.preference.ListPreference;
 import androidx.preference.Preference;
 import android.text.TextUtils;
 
+import com.droidlogic.app.SystemControlManager;
 import com.droidlogic.tv.settings.SettingsPreferenceFragment;
 import com.droidlogic.tv.settings.R;
 import static com.droidlogic.tv.settings.util.DroidUtils.logDebug;
@@ -31,6 +32,7 @@ public class PictureModeFragment extends SettingsPreferenceFragment implements P
 
     private static final String TAG = "PictureModeFragment";
     private static final String PQ_AI_PQ = "ai_pq";
+    private static final String PQ_CUSTOM = "pq_custom";
     private static final String PQ_ASPECT_RATIO = "pq_aspect_ratio";
     private static final String PQ_BACKLIGHT = "pq_backlight";
     private static final String PQ_ALLRESET = "pq_allreset";
@@ -50,20 +52,35 @@ public class PictureModeFragment extends SettingsPreferenceFragment implements P
             mPQSettingsManager = new PQSettingsManager(getActivity());
         }
 
+        final Preference pictureCustomerPref = (Preference) findPreference(PQ_CUSTOM);
+        if (!curPictureModeShow()) {
+            pictureCustomerPref.setEnabled(false);
+        }
+
         final ListPreference aspectratioPref = (ListPreference) findPreference(PQ_ASPECT_RATIO);
-        aspectratioPref.setValueIndex(mPQSettingsManager.getAspectRatioStatus());
-        aspectratioPref.setOnPreferenceChangeListener(this);
+        if (mPQSettingsManager.hasPqCaseFunc(SystemControlManager.PqFuncCase.PQ_CASE_FUNC_ASPECT_RATIO)) {
+            aspectratioPref.setValueIndex(mPQSettingsManager.getAspectRatioStatus());
+            aspectratioPref.setOnPreferenceChangeListener(this);
+        } else {
+            aspectratioPref.setEnabled(false);
+        }
 
         final Preference aipqPref = (Preference) findPreference(PQ_AI_PQ);
         if (!mPQSettingsManager.hasAipqFunc() && !mPQSettingsManager.hasAisrFunc()) {
-            aipqPref.setVisible(false);
+            aipqPref.setEnabled(false);
         }
 
         final Preference backlightPref = (Preference) findPreference(PQ_BACKLIGHT);
         backlightPref.setSummary(mPQSettingsManager.getBacklightStatus() + "%");
 
+        if (!mPQSettingsManager.hasPqCaseFunc(SystemControlManager.PqFuncCase.PQ_CASE_FUNC_BACKLIGHT)) {
+            backlightPref.setEnabled(false);
+        }
+
         final Preference pictureAllResetPref = (Preference) findPreference(PQ_ALLRESET);
-        pictureAllResetPref.setVisible(false);
+        if (!mPQSettingsManager.hasPqCaseFunc(SystemControlManager.PqFuncCase.PQ_CASE_FUNC_RESET)) {
+            pictureAllResetPref.setEnabled(false);
+        }
 
     }
 
@@ -98,6 +115,14 @@ public class PictureModeFragment extends SettingsPreferenceFragment implements P
     @Override
     public int getMetricsCategory() {
         return 0;
+    }
+
+    private boolean curPictureModeShow() {
+        return mPQSettingsManager.hasPqCaseFunc(SystemControlManager.PqFuncCase.PQ_CASE_FUNC_CONTRAST)
+                && mPQSettingsManager.hasPqCaseFunc(SystemControlManager.PqFuncCase.PQ_CASE_FUNC_BRIGHTNESS)
+                && mPQSettingsManager.hasPqCaseFunc(SystemControlManager.PqFuncCase.PQ_CASE_FUNC_SATURATION)
+                && mPQSettingsManager.hasPqCaseFunc(SystemControlManager.PqFuncCase.PQ_CASE_FUNC_HUE)
+                && mPQSettingsManager.hasPqCaseFunc(SystemControlManager.PqFuncCase.PQ_CASE_FUNC_SHARPNESS);
     }
 
 }

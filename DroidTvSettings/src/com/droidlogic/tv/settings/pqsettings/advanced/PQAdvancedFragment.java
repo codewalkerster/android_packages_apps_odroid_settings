@@ -33,6 +33,7 @@ import com.droidlogic.tv.settings.SettingsConstant;
 import com.droidlogic.tv.settings.SettingsPreferenceFragment;
 import com.droidlogic.tv.settings.pqsettings.PQSettingsManager;
 import static com.droidlogic.tv.settings.util.DroidUtils.logDebug;
+import com.droidlogic.app.SystemControlManager;
 
 public class PQAdvancedFragment extends SettingsPreferenceFragment implements Preference.OnPreferenceChangeListener {
     private static final String TAG = "PQAdvancedFragment";
@@ -64,19 +65,42 @@ public class PQAdvancedFragment extends SettingsPreferenceFragment implements Pr
         final ListPreference pictureAdvancedSRPref = (ListPreference) findPreference(PQ_PICTURE_ADVANCED_SR);
         final ListPreference pictureAdvancedDNRPref = (ListPreference) findPreference(PQ_DNR);
 
-        pictureAdvancedColorManagementPref.setValueIndex(mPQSettingsManager.getAdvancedColorManagementStatus());
-        pictureAdvancedColorManagementPref.setOnPreferenceChangeListener(this);
-        pictureAdvancedColorSpacePref.setValueIndex(mPQSettingsManager.getAdvancedColorSpaceStatus());
-        pictureAdvancedColorSpacePref.setOnPreferenceChangeListener(this);
-
-        pictureAdvancedBlackStretchPref.setValueIndex(mPQSettingsManager.getAdvancedBlackStretchStatus());
-        pictureAdvancedBlackStretchPref.setOnPreferenceChangeListener(this);
-        pictureAdvancedDNLPPref.setValueIndex(mPQSettingsManager.getAdvancedDNLPStatus());
-        pictureAdvancedDNLPPref.setOnPreferenceChangeListener(this);
-        pictureAdvancedSRPref.setValueIndex(mPQSettingsManager.getAdvancedSRStatus());
-        pictureAdvancedSRPref.setOnPreferenceChangeListener(this);
-        pictureAdvancedDNRPref.setValueIndex(mPQSettingsManager.getDnrStatus());
-        pictureAdvancedDNRPref.setOnPreferenceChangeListener(this);
+        if (mPQSettingsManager.hasPqCaseFunc(SystemControlManager.PqFuncCase.PQ_CASE_FUNC_COLOR_MANAGEMENT)) {
+            pictureAdvancedColorManagementPref.setValueIndex(mPQSettingsManager.getAdvancedColorManagementStatus());
+            pictureAdvancedColorManagementPref.setOnPreferenceChangeListener(this);
+        } else {
+            pictureAdvancedColorManagementPref.setEnabled(false);
+        }
+        if (mPQSettingsManager.hasPqCaseFunc(SystemControlManager.PqFuncCase.PQ_CASE_FUNC_COLOR_SPACE)) {
+            pictureAdvancedColorSpacePref.setValueIndex(mPQSettingsManager.getAdvancedColorSpaceStatus());
+            pictureAdvancedColorSpacePref.setOnPreferenceChangeListener(this);
+        } else {
+            pictureAdvancedColorSpacePref.setEnabled(false);
+        }
+        if (mPQSettingsManager.hasPqCaseFunc(SystemControlManager.PqFuncCase.PQ_CASE_FUNC_BLACK_STRETCH)) {
+            pictureAdvancedBlackStretchPref.setValueIndex(mPQSettingsManager.getAdvancedBlackStretchStatus());
+            pictureAdvancedBlackStretchPref.setOnPreferenceChangeListener(this);
+        } else {
+            pictureAdvancedBlackStretchPref.setEnabled(false);
+        }
+        if (mPQSettingsManager.hasPqCaseFunc(SystemControlManager.PqFuncCase.PQ_CASE_FUNC_DNLP)) {
+            pictureAdvancedDNLPPref.setValueIndex(mPQSettingsManager.getAdvancedDNLPStatus());
+            pictureAdvancedDNLPPref.setOnPreferenceChangeListener(this);
+        } else {
+            pictureAdvancedDNLPPref.setEnabled(false);
+        }
+        if (mPQSettingsManager.hasPqCaseFunc(SystemControlManager.PqFuncCase.PQ_CASE_FUNC_SR)) {
+            pictureAdvancedSRPref.setValueIndex(mPQSettingsManager.getAdvancedSRStatus());
+            pictureAdvancedSRPref.setOnPreferenceChangeListener(this);
+        } else {
+            pictureAdvancedSRPref.setEnabled(false);
+        }
+        if (mPQSettingsManager.hasPqCaseFunc(SystemControlManager.PqFuncCase.PQ_CASE_FUNC_DNR)) {
+            pictureAdvancedDNRPref.setValueIndex(mPQSettingsManager.getDnrStatus());
+            pictureAdvancedDNRPref.setOnPreferenceChangeListener(this);
+        } else {
+            pictureAdvancedDNRPref.setEnabled(false);
+        }
 
     }
 

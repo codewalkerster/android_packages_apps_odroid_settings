@@ -35,6 +35,7 @@ import android.provider.Settings;
 import com.droidlogic.tv.settings.util.DroidUtils;
 import com.droidlogic.tv.settings.SettingsConstant;
 import com.droidlogic.tv.settings.R;
+import com.droidlogic.app.SystemControlManager;
 
 public class AdjustValueFragment extends SettingsPreferenceFragment implements SeekBar.OnSeekBarChangeListener {
 
@@ -71,6 +72,21 @@ public class AdjustValueFragment extends SettingsPreferenceFragment implements S
     @Override
     public void onViewCreated (View view, Bundle savedInstanceState) {
         initSeekBar(view);
+        if (!mPQSettingsManager.hasPqCaseFunc(SystemControlManager.PqFuncCase.PQ_CASE_FUNC_CONTRAST)) {
+            seekbar_contrast.setVisibility(View.GONE);
+        }
+        if (!mPQSettingsManager.hasPqCaseFunc(SystemControlManager.PqFuncCase.PQ_CASE_FUNC_BRIGHTNESS)) {
+            seekbar_brightness.setVisibility(View.GONE);
+        }
+        if (!mPQSettingsManager.hasPqCaseFunc(SystemControlManager.PqFuncCase.PQ_CASE_FUNC_SATURATION)) {
+            seekbar_saturation.setVisibility(View.GONE);
+        }
+        if (!mPQSettingsManager.hasPqCaseFunc(SystemControlManager.PqFuncCase.PQ_CASE_FUNC_HUE)) {
+            seekbar_hue.setVisibility(View.GONE);
+        }
+        if (!mPQSettingsManager.hasPqCaseFunc(SystemControlManager.PqFuncCase.PQ_CASE_FUNC_SHARPNESS)) {
+            seekbar_sharpness.setVisibility(View.GONE);
+        }
     }
 
     @Override

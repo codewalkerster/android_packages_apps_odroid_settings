@@ -89,7 +89,7 @@ public class AiPqFragment extends SettingsPreferenceFragment implements Preferen
             mAipqLevelPref.setValueIndex(mPQSettingsManager.getAipqModeLevel());
             mAipqLevelPref.setOnPreferenceChangeListener(this);
         } else {
-            mAipqLevelPref.setVisible(false);
+            mAipqLevelPref.setEnabled(false);
         }
 
         mAisrLevelPref = (ListPreference) findPreference(KEY_LEVEL_AISR);
@@ -97,13 +97,17 @@ public class AiPqFragment extends SettingsPreferenceFragment implements Preferen
             mAisrLevelPref.setValueIndex(mPQSettingsManager.getAisrModeLevel());
             mAisrLevelPref.setOnPreferenceChangeListener(this);
         } else {
-            mAisrLevelPref.setVisible(false);
+            mAisrLevelPref.setEnabled(false);
         }
 
         mEnableAipqInfoPref = (TwoStatePreference) findPreference(KEY_ENABLE_AIPQ_INFO);
         mEnableAipqInfoPref.setOnPreferenceChangeListener(this);
         Log.i(TAG, "init Aipqinfo: " + mPQSettingsManager.getAipqInfo(PROP_AIPQ_ENABLE));
         mEnableAipqInfoPref.setChecked(mPQSettingsManager.getAipqInfo(PROP_AIPQ_ENABLE));
+        if (!mPQSettingsManager.hasPqCaseFunc(SystemControlManager.PqFuncCase.PQ_CASE_FUNC_AI_PQ)) {
+            mAipqLevelPref.setEnabled(false);
+            mEnableAipqInfoPref.setEnabled(false);
+        }
 
         mEnableAiColorPref = (ListPreference) findPreference(KEY_ENABLE_AI_COLOR);
         if (mPQSettingsManager.hasAiColorFunc()) {
@@ -113,10 +117,19 @@ public class AiPqFragment extends SettingsPreferenceFragment implements Preferen
             mEnableAiColorPref.setEnabled(false);
         }
 
+        if (!mPQSettingsManager.hasPqCaseFunc(SystemControlManager.PqFuncCase.PQ_CASE_FUNC_AI_COLOR)) {
+            mEnableAiColorPref.setEnabled(false);
+        }
 
         mEnableAisrDemoPref = (TwoStatePreference) findPreference(KEY_ENABLE_AISR_DEMO);
         mEnableAisrDemoPref.setOnPreferenceChangeListener(this);
         mEnableAisrDemoPref.setChecked(mPQSettingsManager.getAisreDemoEnabled() >= 1 ? true : false);
+
+        if (!mPQSettingsManager.hasPqCaseFunc(SystemControlManager.PqFuncCase.PQ_CASE_FUNC_AI_SR)) {
+            mAisrLevelPref.setEnabled(false);
+            mEnableAisrDemoPref.setEnabled(false);
+        }
+
     }
 
     @Override
