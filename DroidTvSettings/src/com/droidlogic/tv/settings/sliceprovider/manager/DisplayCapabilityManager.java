@@ -80,6 +80,7 @@ public class DisplayCapabilityManager {
 
     private static final String[] DOLBY_VISION_TYPE = OutputModeManager.DOLBY_VISION_TYPE;
     private static final List<String> HDMI_COLOR_LIST = Arrays.asList(OutputModeManager.HDMI_COLOR_LIST);
+    private static final List<String> HDMI_DEEP_COLOR_LIST = Arrays.asList(OutputModeManager.HDMI_DEEP_COLOR_LIST);
     private static final List<String> HDMI_COLOR_TITLE_LIST =Arrays.asList(OutputModeManager.HDMI_COLOR_TITLE_LIST);
 
     private static final ImmutableMap<String, Display.Mode> USER_PREFERRED_MODE_BY_MODE =
@@ -445,9 +446,9 @@ public class DisplayCapabilityManager {
             for (String hdmiColor : HDMI_COLOR_LIST) {
                 if (strColorList.contains(hdmiColor)) {
                     hdmiColorAttrList.add(hdmiColor);
-                    //if (HDMI_DEEP_COLOR_SET.contains(hdmiColor)) {
-                    hdmiDeepColorAttrList.add(hdmiColor);
-                    //}
+                    if (HDMI_DEEP_COLOR_LIST.contains(hdmiColor)) {
+                        hdmiDeepColorAttrList.add(hdmiColor);
+                    }
                 }
             }
         }
@@ -750,6 +751,7 @@ public class DisplayCapabilityManager {
     }
 
     public String getCurrentColorAttribute() {
+        String colorAttr = mOutputModeManager.getCurrentColorAttribute();
         return mOutputModeManager.getCurrentColorAttribute();
     }
 
@@ -836,14 +838,16 @@ public class DisplayCapabilityManager {
         return mOutputModeManager.isDolbyVisionPreference();
     }
 
+    public boolean isHdrPreference() {
+        return mOutputModeManager.isHdrPreference();
+    }
+
     public HdrFormat getPreferredFormat() {
         HdrFormat hdrPreference = getHdrPriority();
         logDebug(TAG, false, "getPreferredFormat hdrPreference:" + hdrPreference);
         if (isDolbyVisionPreference()) {
             return HdrFormat.DOLBY_VISION;
-        } else if (((hdrPreference.supports(HdrFormat.HDR) && hdrPreference == HdrFormat.HDR)
-                     || hdrPreference == HdrFormat.DOLBY_VISION)
-                   && mIsHdr10Supported) {
+        } else if (isHdrPreference()) {
             return HdrFormat.HDR;
         }
         return HdrFormat.SDR;

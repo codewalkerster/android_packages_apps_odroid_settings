@@ -318,6 +318,8 @@ public class HdrSliceProvider extends MediaSliceProvider {
             List<String> colorAttrs = mDisplayCapabilityManager.getColorAttributes();
             String currentColorAttr = mDisplayCapabilityManager.getCurrentColorAttribute();
             currentColorAttr = currentColorAttr.trim();
+            boolean autoColorAttr = (mDisplayCapabilityManager.isHdrPreference()
+                    && currentColorAttr.contains("8bit"));
 
             logDebug(TAG, true, "createHdrAndColorFormatSlice; colorAttrsList: " + colorAttrs);
             logDebug(TAG, true, "createHdrAndColorFormatSlice; currentColorAttr: " + currentColorAttr);
@@ -325,13 +327,16 @@ public class HdrSliceProvider extends MediaSliceProvider {
             psb.setEmbeddedPreference(
                     new RowBuilder()
                             .setTitle(getContext().getString(R.string.dynamic_range_and_color_format_title))
-                            .setSubtitle(mDisplayCapabilityManager.getTitleByColorAttr(currentColorAttr)));
+                            .setSubtitle(autoColorAttr ?
+                                    getContext().getString(R.string.color_format_auto_title)
+                                    : mDisplayCapabilityManager.getTitleByColorAttr(currentColorAttr)));
 
             psb.addPreference(
                     new RowBuilder()
                             .setTitle(getContext().getString(R.string.color_format_title))
-                            .setSubtitle(
-                                    mDisplayCapabilityManager.getTitleByColorAttr(currentColorAttr))
+                            .setSubtitle(autoColorAttr ?
+                                    getContext().getString(R.string.color_format_auto_title)
+                                    : mDisplayCapabilityManager.getTitleByColorAttr(currentColorAttr))
                             .setTargetSliceUri(
                                     MediaSliceUtil.generateTargetSliceUri(MediaSliceConstants.COLOR_ATTRIBUTE_PATH)));
         }
@@ -422,20 +427,35 @@ public class HdrSliceProvider extends MediaSliceProvider {
         logDebug(TAG, true, "createColorAttributeSlice; currentColorAttr: " + currentColorAttr);
 
         String currentMode = mDisplayCapabilityManager.getCurrentMode();
-        for (String colorAttr : colorAttrs) {
-            logDebug(TAG, false, "currentMode:" + currentMode + " colorAttr:" + colorAttr);
+
+        if (mDisplayCapabilityManager.isHdrPreference() && currentColorAttr.contains("8bit")) {
             psb.addPreference(
                     new RowBuilder()
-                            .setKey(colorAttr)
-                            .setTitle(mDisplayCapabilityManager.getTitleByColorAttr(colorAttr))
-                            .setInfoSummary(getContext().getString(R.string.color_format_info_summary))
+                            .setKey(getContext().getString(R.string.color_format_title))
+                            .setTitle(getContext().getString(R.string.color_format_auto_title))
                             .addRadioButton(
                                     generatePendingIntent(
                                             getContext(),
                                             MediaSliceConstants.ACTION_SET_COLOR_ATTRIBUTE,
                                             AdjustColorFormatDialogActivity.class),
-                                    currentColorAttr.equals(colorAttr),
+                                    true,
                                     getContext().getString(R.string.color_attribute_select_type_radio_group_name)));
+        } else {
+            for (String colorAttr : colorAttrs) {
+                logDebug(TAG, false, "currentMode:" + currentMode + " colorAttr:" + colorAttr);
+                psb.addPreference(
+                        new RowBuilder()
+                                .setKey(colorAttr)
+                                .setTitle(mDisplayCapabilityManager.getTitleByColorAttr(colorAttr))
+                                .setInfoSummary(getContext().getString(R.string.color_format_info_summary))
+                                .addRadioButton(
+                                        generatePendingIntent(
+                                                getContext(),
+                                                MediaSliceConstants.ACTION_SET_COLOR_ATTRIBUTE,
+                                                AdjustColorFormatDialogActivity.class),
+                                        currentColorAttr.equals(colorAttr),
+                                        getContext().getString(R.string.color_attribute_select_type_radio_group_name)));
+            }
         }
         return psb.build();
     }

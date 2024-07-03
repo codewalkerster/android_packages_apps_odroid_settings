@@ -2766,6 +2766,7 @@
     <string translatable="false" name="hdr_format_select_type_radio_group_name">hdr_format_select_type_radio_group</string>
 
     <string name="color_format_title">Color format</string>
+    <string name="color_format_auto_title">Auto</string>
     <string name="color_format_info_summary">8-bit will limit the output of the hdr signal and only output the sdr signal.</string>
     <string translatable="false" name="color_attribute_select_type_radio_group_name">color_attribute_select_type_radio_group</string>
 
