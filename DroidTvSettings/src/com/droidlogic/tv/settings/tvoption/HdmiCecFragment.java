@@ -79,6 +79,8 @@ public class HdmiCecFragment extends SettingsPreferenceFragment implements Prefe
     private static final int MSG_ENABLE_ARC_SWITCH = 1;
     private static final int MSG_ENABLE_EARC_SWITCH = 2;
     private static final int MSG_ENABLE_ARC_EARC_SWITCH = 3;
+    private static final int MSG_ENABLE_SONUDBAR_MODE_SWITCH = 4;
+
     private static final int TIME_DELAYED = 2000;//ms
 
     private TwoStatePreference mCecSwitchPref;
@@ -93,6 +95,8 @@ public class HdmiCecFragment extends SettingsPreferenceFragment implements Prefe
     private TwoStatePreference mArcNEarcSwitchPref;
     private RadioPreference mArcEarcModeAutoPref;
     private RadioPreference mArcEarcModeARCPref;
+    private Preference mHdmiDeviceSelectPref;
+    private ListPreference mDigitalSoundPref;
 
     private DroidAudioManager mDroidAudioManager;
     private SoundParameterSettingManager mSoundParameterSettingManager;
@@ -100,6 +104,7 @@ public class HdmiCecFragment extends SettingsPreferenceFragment implements Prefe
     private HdmiCecManager mHdmiCecManager;
     private static long mLastObserveredCECTime = 0;
     private static long mLastObserveredArcEarcTime = 0;
+    private static long mLastObserveredSoundbarModeTime = 0;
 
     public static HdmiCecFragment newInstance() {
         if (mHdmiCecFragment == null) {
@@ -165,7 +170,8 @@ public class HdmiCecFragment extends SettingsPreferenceFragment implements Prefe
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         setPreferencesFromResource(R.xml.hdmicec, null);
         boolean tvFlag = mHdmiCecManager.isTv();
-        boolean soundbarFlag = mHdmiCecManager.getClient(HdmiDeviceInfo.DEVICE_AUDIO_SYSTEM) != null;
+        boolean soundbarFlag = mHdmiCecManager.getClient(HdmiDeviceInfo.DEVICE_AUDIO_SYSTEM) != null
+                                && mHdmiCecManager.isSoundbarModeEnabled();
         mCecSwitchPref = (TwoStatePreference) findPreference(KEY_CEC_SWITCH);
         mSoundbarModePref = (TwoStatePreference) findPreference(KEY_SOUNDBAR_MODE);
         mCecVolumeControlPref = (TwoStatePreference) findPreference(KEY_CEC_VOLUME_CONTROL);
@@ -179,14 +185,14 @@ public class HdmiCecFragment extends SettingsPreferenceFragment implements Prefe
         mArcEarcModeAutoPref = (RadioPreference) findPreference(KEY_ARC_EARC_MODE_AUTO);
         mArcEarcModeARCPref = (RadioPreference) findPreference(KEY_ARC_EARC_MODE_ARC);
 
-        final Preference hdmiDeviceSelectPref = findPreference(KEY_CEC_DEVICE_LIST);
+        mHdmiDeviceSelectPref = findPreference(KEY_CEC_DEVICE_LIST);
         if (mHdmiCecFragment == null) {
             mHdmiCecFragment = newInstance();
         }
-        hdmiDeviceSelectPref.setOnPreferenceChangeListener(mHdmiCecFragment);
+        mHdmiDeviceSelectPref.setOnPreferenceChangeListener(mHdmiCecFragment);
 
-        final ListPreference digitalSoundPref = (ListPreference) findPreference(SoundFragment.KEY_DIGITALSOUND_FORMAT);
-        digitalSoundPref.setValue(mSoundParameterSettingManager.getDigitalAudioFormat());
+        mDigitalSoundPref = (ListPreference) findPreference(SoundFragment.KEY_DIGITALSOUND_FORMAT);
+        mDigitalSoundPref.setValue(mSoundParameterSettingManager.getDigitalAudioFormat());
         if (tvFlag) {
             /* not support passthrough when ms12 so are not included.*/
             if (!mDroidAudioManager.isAudioSupportMs12System()) {
@@ -196,17 +202,17 @@ public class HdmiCecFragment extends SettingsPreferenceFragment implements Prefe
                 List<String> entryValueList = new ArrayList<String>(Arrays.asList(entryValue));
                 entryList.remove("Passthough");
                 entryValueList.remove(SoundParameterSettingManager.DIGITAL_SOUND_PASSTHROUGH);
-                digitalSoundPref.setEntries(entryList.toArray(new String[]{}));
-                digitalSoundPref.setEntryValues(entryValueList.toArray(new String[]{}));
+                mDigitalSoundPref.setEntries(entryList.toArray(new String[]{}));
+                mDigitalSoundPref.setEntryValues(entryValueList.toArray(new String[]{}));
             } else {
-                digitalSoundPref.setEntries(R.array.digital_sounds_tv_entries);
-                digitalSoundPref.setEntryValues(R.array.digital_sounds_tv_entry_values);
+                mDigitalSoundPref.setEntries(R.array.digital_sounds_tv_entries);
+                mDigitalSoundPref.setEntryValues(R.array.digital_sounds_tv_entry_values);
             }
         } else {
-            digitalSoundPref.setEntries(R.array.digital_sounds_box_entries);
-            digitalSoundPref.setEntryValues(R.array.digital_sounds_box_entry_values);
+            mDigitalSoundPref.setEntries(R.array.digital_sounds_box_entries);
+            mDigitalSoundPref.setEntryValues(R.array.digital_sounds_box_entry_values);
         }
-        digitalSoundPref.setOnPreferenceChangeListener(this);
+        mDigitalSoundPref.setOnPreferenceChangeListener(this);
 
         if (tvFlag && !SUPPORT_EARC) {
             getPreferenceScreen().setTitle(R.string.cec_control);
@@ -217,6 +223,10 @@ public class HdmiCecFragment extends SettingsPreferenceFragment implements Prefe
             getPreferenceScreen().setTitle(R.string.cec_control);
         }
 
+        setVisibleForPref(tvFlag, soundbarFlag);
+    }
+
+    private void setVisibleForPref(boolean tvFlag, boolean soundbarFlag) {
         mCecOneKeyPlayPref.setVisible(!tvFlag && !soundbarFlag);
         mCecAutoWakeupPref.setVisible(tvFlag);
         mCecSwitchPref.setVisible(!soundbarFlag);
@@ -224,16 +234,17 @@ public class HdmiCecFragment extends SettingsPreferenceFragment implements Prefe
         mEarcSwitchPref.setVisible(false);
         mCecDeviceAutoPowerOffPref.setVisible(!soundbarFlag);
         mCecAutoChangeLanguagePref.setVisible(!tvFlag && !soundbarFlag);
-        mCecVolumeControlPref.setVisible(!tvFlag && !mHdmiCecManager.isAudioSystem());
+        mCecVolumeControlPref.setVisible(!tvFlag && !soundbarFlag);
         mSoundbarModePref.setVisible(SettingsConstant.isSoundbarFeature());
-        hdmiDeviceSelectPref.setVisible(tvFlag || soundbarFlag);
-        digitalSoundPref.setVisible(false);
+        mHdmiDeviceSelectPref.setVisible(tvFlag || soundbarFlag);
+        mDigitalSoundPref.setVisible(false);
         boolean isChecked = mHdmiCecManager.isArcEnabled();
         mArcNEarcSwitchPref.setChecked(isChecked);
         //mHdmiCecManager.enableArc(mArcNEarcSwitchPref.isChecked());
         mArcNEarcSwitchPref.setVisible(tvFlag);
         mArcEarcModeAutoPref.setVisible(tvFlag && SUPPORT_EARC && mArcNEarcSwitchPref.isChecked());
         mArcEarcModeARCPref.setVisible(tvFlag && SUPPORT_EARC && mArcNEarcSwitchPref.isChecked());
+        refresh();
     }
 
     @Override
@@ -300,7 +311,14 @@ public class HdmiCecFragment extends SettingsPreferenceFragment implements Prefe
                 updateVolumeControl(mCecVolumeControlPref.isChecked());
                 break;
             case KEY_SOUNDBAR_MODE:
-                mDroidAudioManager.setSoundBarModeEnabled(mSoundbarModePref.isChecked());
+                Log.d(TAG, "soundbar mode switch clicked: " + mSoundbarModePref.isChecked());
+                if (mSoundbarModePref.isChecked() && !mHdmiCecManager.isHdmiControlEnabled()) {
+                    // open soundbar mode with cec disabled, need to turn on cec at the same time
+                    showTipsDialogForSoundbarMode(getContext().getString(
+                            R.string.tips_turn_on_soundbar_mode));
+                } else {
+                    updateSoundbarMode(mSoundbarModePref.isChecked());
+                }
                 break;
             default:
                 break;
@@ -353,10 +371,6 @@ public class HdmiCecFragment extends SettingsPreferenceFragment implements Prefe
         if (TextUtils.equals(preference.getKey(), SoundFragment.KEY_DIGITALSOUND_FORMAT)) {
             mSoundParameterSettingManager.setDigitalAudioFormat((String) newValue);
         }
-
-
-
-
         return true;
     }
 
@@ -367,6 +381,19 @@ public class HdmiCecFragment extends SettingsPreferenceFragment implements Prefe
 
     private void updateVolumeControl(boolean enabled) {
         mHdmiCecManager.enableVolumeControl(enabled);
+    }
+
+    private void updateSoundbarMode(boolean soundbarModeEnabled) {
+        long curtime = System.currentTimeMillis();
+        long timeDiff = curtime - mLastObserveredSoundbarModeTime;
+        Log.d(TAG, "updateSoundbarMode soundbarModeEnabled: " + soundbarModeEnabled);
+        if (mProgress != null && !mProgress.isShowing() && (timeDiff <= TIME_DELAYED)) {
+             Log.d(TAG, "check enable/disable soundbar mode");
+             mProgress.show();
+        }
+        mHandler.removeMessages(MSG_ENABLE_SONUDBAR_MODE_SWITCH);
+        mHandler.sendEmptyMessageDelayed(MSG_ENABLE_SONUDBAR_MODE_SWITCH,
+                ((timeDiff > TIME_DELAYED) ? 0 : TIME_DELAYED));
     }
 
     private void refresh() {
@@ -411,6 +438,10 @@ public class HdmiCecFragment extends SettingsPreferenceFragment implements Prefe
                     Log.d(TAG, "hdmiControlEnabled :" + hdmiControlEnabled);
                     enablePreferences(hdmiControlEnabled);
                     mLastObserveredCECTime = System.currentTimeMillis();
+                    if (mCecSwitchPref.isChecked()) {
+                        mLastObserveredSoundbarModeTime = System.currentTimeMillis();
+                    }
+                    setVisibleForPref(mHdmiCecManager.isTv(), mSoundbarModePref.isChecked());
                     if (mProgress != null && mProgress.isShowing()) {
                         mProgress.dismiss();
                     }
@@ -428,6 +459,20 @@ public class HdmiCecFragment extends SettingsPreferenceFragment implements Prefe
                     mLastObserveredArcEarcTime = System.currentTimeMillis();
                     if (mProgress != null && mProgress.isShowing()) {
                         mProgress.dismiss();
+                    }
+                    break;
+                case MSG_ENABLE_SONUDBAR_MODE_SWITCH:
+                    mDroidAudioManager.setSoundBarModeEnabled(mSoundbarModePref.isChecked());
+                    mLastObserveredSoundbarModeTime = System.currentTimeMillis();
+                    if (mProgress != null && mProgress.isShowing() && mHdmiCecManager.isHdmiControlEnabled()) {
+                        mProgress.dismiss();
+                    }
+                    if (mDroidAudioManager.isSoundBarModeEnabled() && !mHdmiCecManager.isHdmiControlEnabled()) {
+                        mCecSwitchPref.setChecked(true);
+                        sendMsgEnableCECSwitch();
+                    } else {
+                        mLastObserveredCECTime = System.currentTimeMillis();
+                        setVisibleForPref(mHdmiCecManager.isTv(), mSoundbarModePref.isChecked());
                     }
                     break;
                 default:
@@ -490,6 +535,29 @@ public class HdmiCecFragment extends SettingsPreferenceFragment implements Prefe
                         }
                     }
                 });
+        tipsDialog.setCancelable(false);
+        tipsDialog.show();
+    }
+
+    private void showTipsDialogForSoundbarMode(String tips) {
+        final AlertDialog.Builder tipsDialog = new AlertDialog.Builder(getActivity());
+        tipsDialog.setTitle("TIPS");
+        tipsDialog.setMessage(tips);
+        tipsDialog.setPositiveButton("YES",
+             new DialogInterface.OnClickListener() {
+                 @Override
+                 public void onClick(DialogInterface dialog, int which) {
+                     Log.d(TAG, "onClick yes, turn on soundbar mode, and then turn on CEC");
+                     updateSoundbarMode(mSoundbarModePref.isChecked());
+                 }
+             });
+        tipsDialog.setNegativeButton("CANCEL",
+             new DialogInterface.OnClickListener() {
+                 @Override
+                 public void onClick(DialogInterface dialog, int which) {
+                    mSoundbarModePref.setChecked(false);
+                }
+            });
         tipsDialog.setCancelable(false);
         tipsDialog.show();
     }

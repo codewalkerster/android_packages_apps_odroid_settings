@@ -2350,6 +2350,7 @@
     <string name="tips_turn_off_cec">If CEC is turned off, ARC / eARC function will not work. Do you want to continue?</string>
     <string name="tips_turn_on_arc">Turning on ARC will turn on CEC function at the same time. Do you want to continue？</string>
     <string name="tips_turn_off_cec_arc_device">If CEC is turned off, ARC function will not work. Do you want to continue?</string>
+    <string name="tips_turn_on_soundbar_mode">Turning on Soundbar Mode will turn on CEC function at the same time. Do you want to continue？</string>
     <string name="cec_switch_description">Allow devices to control each other via HDMI connection</string>
     <string name="cec_volume_control_description">"Allows this device to control the volume of your TV or audio system. \n\nNote: This function relies on TV support. If your TV does not support this function, please turn off this switch, or use the TV's remote control when adjusting the volume."</string>
     <string name="cec_one_key_play_description">Allow the device to wake up TV and play its content on TV</string>
