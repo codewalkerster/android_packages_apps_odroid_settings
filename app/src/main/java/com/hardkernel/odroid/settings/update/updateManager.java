@@ -91,7 +91,7 @@ public class updateManager {
     }
 
     public static Boolean isCheckAtBoot() {
-        return pref.getBoolean(KEY_CHECK_UPDATE, true);
+        return pref.getBoolean(KEY_CHECK_UPDATE, false);
     }
 
     public static void setCheckUpdate(boolean check) {
