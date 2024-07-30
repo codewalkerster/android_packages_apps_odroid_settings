@@ -277,6 +277,11 @@ public class SoundModeFragment extends SettingsPreferenceFragment implements Pre
             mAudioEffectManager.setVirtualSurround(selection);
         } else if (TextUtils.equals(preference.getKey(), KEY_TV_SOUND_AUDIO_DEVICE)) {
             int[] devices = new int[] {indexToAudioDev(selection)};
+            int strategy = DroidAudioManager.OUTPUT_STRATEGY_MANUAL;
+            if (devices.length == 1 && devices[0] == DroidAudioManager.DROID_AUDIO_FORCE_USE_NONE) {
+                strategy = DroidAudioManager.OUTPUT_STRATEGY_AUTO;
+            }
+            mSystemControl.setProperty(DroidAudioManager.PROP_AUDIO_OUTPUT_STRATEGY, strategy + "");
             mDroidAudioManager.setOutputDevices(devices);
             refreshPref();
         }
