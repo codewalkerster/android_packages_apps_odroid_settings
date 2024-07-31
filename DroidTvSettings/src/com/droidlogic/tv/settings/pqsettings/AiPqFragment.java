@@ -53,7 +53,7 @@ public class AiPqFragment extends SettingsPreferenceFragment implements Preferen
     private TwoStatePreference mEnableAipqInfoPref;
     private ListPreference mAisrLevelPref;
     private ListPreference mEnableAiColorPref;
-    private TwoStatePreference mEnableAisrDemoPref;
+    private Preference mEnableAisrDemoPref;
 
     private PQSettingsManager mPQSettingsManager;
     private SystemControlManager mSystemControlManager;
@@ -121,9 +121,7 @@ public class AiPqFragment extends SettingsPreferenceFragment implements Preferen
             mEnableAiColorPref.setEnabled(false);
         }
 
-        mEnableAisrDemoPref = (TwoStatePreference) findPreference(KEY_ENABLE_AISR_DEMO);
-        mEnableAisrDemoPref.setOnPreferenceChangeListener(this);
-        mEnableAisrDemoPref.setChecked(mPQSettingsManager.getAisreDemoEnabled() >= 1 ? true : false);
+        mEnableAisrDemoPref = (Preference) findPreference(KEY_ENABLE_AISR_DEMO);
 
         if (!mPQSettingsManager.hasPqCaseFunc(SystemControlManager.PqFuncCase.PQ_CASE_FUNC_AI_SR)) {
             mAisrLevelPref.setEnabled(false);
@@ -163,18 +161,7 @@ public class AiPqFragment extends SettingsPreferenceFragment implements Preferen
             mPQSettingsManager.setAisrModeLevel(Integer.parseInt((String) newValue), isSave);
         } else if (TextUtils.equals(preference.getKey(), KEY_ENABLE_AI_COLOR)) {
             mPQSettingsManager.setAiColor(Integer.parseInt((String) newValue), isSave);
-        } else if (TextUtils.equals(preference.getKey(), KEY_ENABLE_AISR_DEMO)) {
-            turnOnAiSRDemo((boolean) newValue);
         }
         return true;
-    }
-
-    private void turnOnAiSRDemo(boolean enabled) {
-        mPQSettingsManager.setAisreDemoEnabled(enabled);
-        if (enabled) {
-            mLineView.showLine();
-        } else {
-            mLineView.hideLine();
-        }
     }
 }

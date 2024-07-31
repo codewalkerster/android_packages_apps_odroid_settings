@@ -115,6 +115,12 @@
             android:excludeFromRecents="true"
             android:exported="true">
         </activity>
+        <activity android:name=".AiSrDemoFragmentActivity"
+            android:theme="@style/Theme.Settings.Transparent"
+            android:configChanges="keyboard|keyboardHidden|navigation"
+            android:excludeFromRecents="true"
+            android:exported="true">
+        </activity>
         <activity
                 android:name=".sliceprovider.dialog.DisplayResetActivity"
                 android:configChanges="keyboard|keyboardHidden|navigation"

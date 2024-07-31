@@ -43,8 +43,8 @@
           android:entryValues="@array/pq_ai_color_entry_values"
           android:title="@string/ai_color_enable"
           android:summary="%s"/>
-      <SwitchPreference
+      <Preference
           android:key="ai_pq_aisr_demo_switch"
-          android:persistent="true"
-          android:title="@string/ai_pq_aisr_demo_switch" />
+          android:title="@string/ai_pq_aisr_demo_switch"
+          android:fragment="com.droidlogic.tv.settings.pqsettings.AiSrDemoFragment"/>
 </PreferenceScreen>

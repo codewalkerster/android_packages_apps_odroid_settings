@@ -2870,6 +2870,8 @@
     <string name="ai_pq_enable" translatable="false">Enable AI PQ</string>
     <string name="ai_pq_info_enable" translatable="false">Show AI PQ information</string>
     <string name="ai_pq_aisr_demo_switch">AISR Demo</string>
+    <string name="ai_pq_aisr_demo_switch_left_show">Left Show</string>
+    <string name="ai_pq_aisr_demo_switch_right_show">Right Show</string>
     <string name="prepare">AI PQ invalid value...</string>
     <string name="frame_rate" translatable="false">FrameRate</string>
     <string name="frame_rate_enable" translatable="false">Enable FrameRate</string>
