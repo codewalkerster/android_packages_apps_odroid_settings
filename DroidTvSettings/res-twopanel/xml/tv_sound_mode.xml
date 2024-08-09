@@ -81,4 +81,8 @@
         android:key="key_tv_vad_switch"
         android:persistent="false"
         android:title="@string/title_tv_vad_switch" />
+    <Preference
+        android:key="key_audio_reset"
+        android:title="Reset"
+        android:summary="reset all audio settings" />
 </PreferenceScreen>
