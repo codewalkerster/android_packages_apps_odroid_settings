@@ -104,7 +104,7 @@ public class HdmiCecContentManager {
 
     public void setSoundbarModeStatus(boolean state) {
         mDroidAudioManager.setSoundBarModeEnabled(state);
-        mAudioEffectManager.setAudioEffectOn(AudioEffectManager.DEBUG_DAP_2_UI, state);
+        mAudioEffectManager.setAudioEffectOn(AudioEffectManager.EFFECT_DAP2_UI_ID, state);
     }
 
     public boolean isSetMenuLanguageEnabled() {

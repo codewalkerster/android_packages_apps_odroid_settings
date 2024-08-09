@@ -56,7 +56,7 @@ public class DebugAudioUIFragment extends SettingsPreferenceFragment implements 
     private TwoStatePreference mVirtualSDebug;
     private TwoStatePreference mDpeDebug;
     private TwoStatePreference mVirtualXDebug;
-    private TwoStatePreference mDap2Debug;
+    private ListPreference mDap2Debug;
     private TwoStatePreference mDolbyDrcDebug;
     private TwoStatePreference mDtsDrcDebug;
     private TwoStatePreference mForceDDPDebug;
@@ -116,12 +116,6 @@ public class DebugAudioUIFragment extends SettingsPreferenceFragment implements 
         mDpeDebug = (TwoStatePreference) findPreference(KEY_DPE_DEBUG);
         mDpeDebug.setOnPreferenceChangeListener(this);
 
-        mVirtualXDebug = (TwoStatePreference) findPreference(KEY_VIRTUAL_X_DEBUG);
-        mVirtualXDebug.setOnPreferenceChangeListener(this);
-
-        mDap2Debug = (TwoStatePreference) findPreference(KEY_DAP_2_DEBUG);
-        mDap2Debug.setOnPreferenceChangeListener(this);
-
         mDolbyDrcDebug = (TwoStatePreference) findPreference(KEY_DOLBY_DRC_DEBUG);
         mDolbyDrcDebug.setOnPreferenceChangeListener(this);
 
@@ -134,6 +128,17 @@ public class DebugAudioUIFragment extends SettingsPreferenceFragment implements 
         mAudioLatencyDebug = (TwoStatePreference) findPreference(KEY_AUDIO_LATENCY_DEBUG);
         mAudioLatencyDebug.setOnPreferenceChangeListener(this);
 
+        //TBD: remove DAP, Virtual:X from debug UI
+        //Temp solution: hide UI
+        mVirtualXDebug = (TwoStatePreference) findPreference(KEY_VIRTUAL_X_DEBUG);
+        mVirtualXDebug.setOnPreferenceChangeListener(this);
+        mVirtualXDebug.setVisible(false);
+
+        mDap2Debug = (ListPreference) findPreference(KEY_DAP_2_DEBUG);
+        mDap2Debug.setOnPreferenceChangeListener(this);
+        mDap2Debug.setVisible(false);
+        //TBD: End
+
         if (!DroidLogicUtils.isTv()) {
             mAudioLatencyDebug.setVisible(false);
         }
@@ -143,39 +148,40 @@ public class DebugAudioUIFragment extends SettingsPreferenceFragment implements 
         return getActivity().getResources().getString(resid);
     }
 
+    private String[] getArrayString(int resid) {
+        return getActivity().getResources().getStringArray(resid);
+    }
+
     private void updateDetail() {
         boolean enable = false;
         int value = 0;
 
-        enable = mAudioEffectManager.isAudioEffectOn(AudioEffectManager.DEBUG_HPEQ_UI);
+        enable = mAudioEffectManager.isAudioEffectOn(AudioEffectManager.EFFECT_HPEQ_UI_ID);
         mHpeqDebug.setChecked(enable);
         mHpeqBandNumDebug.setVisible(enable);
 
-        value = mAudioEffectManager.getHpeqBandNum(AudioEffectManager.DEBUG_HPEQ_BAND_NUM_UI);
+        value = mAudioEffectManager.getHpeqBandNum(AudioEffectManager.EFFECT_HPEQ_BAND_UI_ID);
         String hpeqBandIndex = Integer.toString(value);
         mHpeqBandNumDebug.setValueIndex(mHpeqBandNumDebug.findIndexOfValue(hpeqBandIndex));
 
-        enable = mAudioEffectManager.isAudioEffectOn(AudioEffectManager.DEBUG_BALANCE_UI);
+        enable = mAudioEffectManager.isAudioEffectOn(AudioEffectManager.EFFECT_BALANCE_UI_ID);
         mBalanceDebug.setChecked(enable);
 
-        enable = mAudioEffectManager.isAudioEffectOn(AudioEffectManager.DEBUG_TREBLEBASS_UI);
+        enable = mAudioEffectManager.isAudioEffectOn(AudioEffectManager.EFFECT_TREBLEBASS_UI_ID);
         mTreblebassDebug.setChecked(enable);
 
-        enable = mAudioEffectManager.isAudioEffectOn(AudioEffectManager.DEBUG_VIRTUAL_SURROUND_UI);
+        enable = mAudioEffectManager.isAudioEffectOn(AudioEffectManager.EFFECT_VIRTUAL_SURROUND_UI_ID);
         mVirtualSDebug.setChecked(enable);
 
-        enable = mAudioEffectManager.isAudioEffectOn(AudioEffectManager.DEBUG_DPE_UI);
+        enable = mAudioEffectManager.isAudioEffectOn(AudioEffectManager.EFFECT_DPE_UI_ID);
         mDpeDebug.setChecked(enable);
-        enable = mAudioEffectManager.isAudioEffectOn(AudioEffectManager.DEBUG_VIRTUAL_X_UI);
+        enable = mAudioEffectManager.isAudioEffectOn(AudioEffectManager.EFFECT_VIRTUALX_UI_ID);
         mVirtualXDebug.setChecked(enable);
-
-        enable = mAudioEffectManager.isAudioEffectOn(AudioEffectManager.DEBUG_DAP_2_UI);
-        mDap2Debug.setChecked(enable);
 
         enable = mSoundParameterSettingManager.isDebugAudioOn(SoundParameterSettingManager.DEBUG_DOLBY_DRC_UI);
         mDolbyDrcDebug.setChecked(enable);
 
-        enable = mSoundParameterSettingManager.isDebugAudioOn(SoundParameterSettingManager.DEBUG_DTS_DRC_UI);
+        enable = mSoundParameterSettingManager.isDebugAudioOn(SoundParameterSettingManager.DEBUG_DTS_DRC_UI_ID);
         mDtsDrcDebug.setChecked(enable);
 
         enable = mSoundParameterSettingManager.isDebugAudioOn(SoundParameterSettingManager.DEBUG_FORCE_DDP_UI);
@@ -184,6 +190,26 @@ public class DebugAudioUIFragment extends SettingsPreferenceFragment implements 
         enable = mSoundParameterSettingManager.isDebugAudioOn(SoundParameterSettingManager.DEBUG_AUDIO_LATENCY_UI);
         mAudioLatencyDebug.setChecked(enable);
 
+        updateDap2Status();
+    }
+
+    private void updateDap2Status() {
+        String[] entry = getArrayString(R.array.tv_offon_entries);
+        boolean isDapOn = mAudioEffectManager.isAudioEffectOn(AudioEffectManager.EFFECT_DAP2_UI_ID);
+        int dolbyConfig = mAudioEffectManager.getDolbyMS12AudioConfig();
+        int state = (isDapOn ? 1 : 0);
+
+        String summary = entry[state];
+        if (dolbyConfig == AudioEffectManager.DOLBY_MS12_AUDIO_CONFIG_Z) {
+            summary += " (DolbyConfig: Z)";
+        } else if (dolbyConfig == AudioEffectManager.DOLBY_MS12_AUDIO_CONFIG_X) {
+            summary += " (DolbyConfig: X)";
+        } else {
+            summary += " (DolbyConfig: Y)";
+        }
+        mDap2Debug.setValue(state + "");
+        mDap2Debug.setSummary(summary);
+        mDap2Debug.setEnabled(true);
     }
 
     @Override
@@ -192,40 +218,24 @@ public class DebugAudioUIFragment extends SettingsPreferenceFragment implements 
         switch (preference.getKey()) {
             case KEY_HPEQ_DEBUG:
                 isChecked = mHpeqDebug.isChecked();
-                mAudioEffectManager.setAudioEffectOn(AudioEffectManager.DEBUG_HPEQ_UI, isChecked);
+                mAudioEffectManager.setAudioEffectOn(AudioEffectManager.EFFECT_HPEQ_UI_ID, isChecked);
                 mHpeqBandNumDebug.setVisible(isChecked);
                 break;
             case KEY_BALANCE_DEBUG:
                 isChecked = mBalanceDebug.isChecked();
-                mAudioEffectManager.setAudioEffectOn(AudioEffectManager.DEBUG_BALANCE_UI, isChecked);
+                mAudioEffectManager.setAudioEffectOn(AudioEffectManager.EFFECT_BALANCE_UI_ID, isChecked);
                 break;
             case KEY_TREBLEBASS_DEBUG:
                 isChecked = mTreblebassDebug.isChecked();
-                mAudioEffectManager.setAudioEffectOn(AudioEffectManager.DEBUG_TREBLEBASS_UI, isChecked);
+                mAudioEffectManager.setAudioEffectOn(AudioEffectManager.EFFECT_TREBLEBASS_UI_ID, isChecked);
                 break;
             case KEY_VIRTUAL_SURROUND_DEBUG:
                 isChecked = mVirtualSDebug.isChecked();
-                mAudioEffectManager.setAudioEffectOn(AudioEffectManager.DEBUG_VIRTUAL_SURROUND_UI, isChecked);
+                mAudioEffectManager.setAudioEffectOn(AudioEffectManager.EFFECT_VIRTUAL_SURROUND_UI_ID, isChecked);
                 break;
             case KEY_DPE_DEBUG:
                 isChecked = mDpeDebug.isChecked();
-                mAudioEffectManager.setAudioEffectOn(AudioEffectManager.DEBUG_DPE_UI, isChecked);
-                break;
-            case KEY_VIRTUAL_X_DEBUG:
-                isChecked = mVirtualXDebug.isChecked();
-                mAudioEffectManager.setAudioEffectOn(AudioEffectManager.DEBUG_VIRTUAL_X_UI, isChecked);
-                break;
-            case KEY_DAP_2_DEBUG:
-                isChecked = mDap2Debug.isChecked();
-                mAudioEffectManager.setAudioEffectOn(AudioEffectManager.DEBUG_DAP_2_UI, isChecked);
-                break;
-            case KEY_DOLBY_DRC_DEBUG:
-                isChecked = mDolbyDrcDebug.isChecked();
-                mSoundParameterSettingManager.setDebugAudioOn(SoundParameterSettingManager.DEBUG_DOLBY_DRC_UI, isChecked);
-                break;
-            case KEY_DTS_DRC_DEBUG:
-                isChecked = mDtsDrcDebug.isChecked();
-                mSoundParameterSettingManager.setDebugAudioOn(SoundParameterSettingManager.DEBUG_DTS_DRC_UI, isChecked);
+                mAudioEffectManager.setAudioEffectOn(AudioEffectManager.EFFECT_DPE_UI_ID, isChecked);
                 break;
             case KEY_FORCE_DDP_DEBUG:
                 isChecked = mForceDDPDebug.isChecked();
@@ -244,7 +254,18 @@ public class DebugAudioUIFragment extends SettingsPreferenceFragment implements 
         switch (preference.getKey()) {
             case KEY_HPEQ_BAND_NUM_DEBUG:
                 final int selection = Integer.parseInt((String)newValue);
-                mAudioEffectManager.setHpeqBandNum(AudioEffectManager.DEBUG_HPEQ_BAND_NUM_UI, selection);
+                mAudioEffectManager.setHpeqBandNum(AudioEffectManager.EFFECT_HPEQ_BAND_UI_ID, selection);
+                break;
+            case KEY_DAP_2_DEBUG:
+                int curSelectionInt = Integer.parseInt((String)newValue);
+                Log.d(TAG, "+onPreferenceChange() selection:" + curSelectionInt);
+                if (curSelectionInt == 0) {
+                    mAudioEffectManager.setAudioEffectOn(AudioEffectManager.EFFECT_DAP2_UI_ID, false);
+                } else {
+                    mAudioEffectManager.setAudioEffectOn(AudioEffectManager.EFFECT_DAP2_UI_ID, true);
+                }
+                updateDap2Status();
+                Log.d(TAG, "-onPreferenceChange() selection:" + curSelectionInt);
                 break;
         }
         return true;

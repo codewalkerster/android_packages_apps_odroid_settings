@@ -16,26 +16,20 @@
   -->
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-    android:title="DTS Virtual:X">
+        android:title="@string/title_audio_settings_audio_output_dev">
     <ListPreference
-        android:key="key_dts_dialog_enhancement"
+        android:entries="@array/tv_sound_output_device_entries"
+        android:entryValues="@array/tv_sound_output_device_entry_values"
+        android:key="key_tv_sound_output_device"
         android:persistent="false"
-        android:entries="@array/tv_dts_dialog_enhancement_entries"
-        android:entryValues="@array/tv_dts_dialog_enhancement_entry_values"
-        android:title="Dialog Enhancer"
-        android:summary="%s" />
-    <ListPreference
-        android:key="key_tv_dts_tru_volume"
+        android:summary="%s"
+        android:title="@string/title_audio_settings_audio_output_dev" />
+    <SwitchPreference
+        android:key="key_speaker_mute"
         android:persistent="false"
-        android:entries="@array/tv_dts_truvolume_entries"
-        android:entryValues="@array/tv_dts_truvolume_entry_values"
-        android:title="TruVolume"
-        android:summary="%s" />
-    <ListPreference
-        android:key="key_tv_dts_bass_enhancement"
+        android:title="Speaker Mute" />
+    <SwitchPreference
+        android:key="key_coexist_spdif_other"
         android:persistent="false"
-        android:entries="@array/tv_dts_bass_enhancement_entries"
-        android:entryValues="@array/tv_dts_bass_enhancement_entry_values"
-        android:title="Bass Enhancement"
-        android:summary="%s" />
+        android:title="@string/title_coexist_spdif_other" />
 </PreferenceScreen>

@@ -55,9 +55,13 @@ public class QuickSettingActivity extends TvSettingsActivity {
             return false;
         } else if (eventAction == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_PROG_BLUE){
             if (redLongPress) {
+                /*
+                 * SWPL-196256 remove debug audio UI
+                 * Keep the code but disable the functionality.
                 Intent intent=new Intent();
                 intent.setClassName("com.droidlogic.tv.settings","com.droidlogic.tv.settings.soundeffect.DebugAudioUIActivity");
                 startActivity(intent);
+                */
                 redLongPress = false;
                 return true;
             }

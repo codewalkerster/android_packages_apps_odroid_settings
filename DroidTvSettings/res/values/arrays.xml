@@ -301,19 +301,27 @@
     <!-- Entry values for surround sound preference -->
     <string-array name="key_ac4_enhancer_switch_entry_values" translatable="false">
         <item>0</item>
-        <item>4</item>
-        <item>8</item>
-        <item>12</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
+   <string-array name="dolby_down_mix_mode_entries" translatable="false">
+        <item>surround</item>
+        <item>stereo</item>
+    </string-array>
+
+    <string-array name="dolby_own_mix_mode_entry_values" translatable="false">
+        <item>0</item>
+        <item>1</item>
     </string-array>
 
     <string-array name="dolby_sounds_entries">
-        <item>OFF</item>
         <item>LINE</item>
         <item>RF</item>
     </string-array>
 
     <string-array name="dolby_sounds_entry_values" translatable="false">
-        <item>off</item>
         <item>line</item>
         <item>rf</item>
     </string-array>
@@ -436,31 +444,23 @@
     </string-array>
 
     <string-array name="dts_sounds_entries">
-        <item>0</item>
-        <item>10%</item>
-        <item>20%</item>
-        <item>30%</item>
-        <item>40%</item>
-        <item>50%</item>
-        <item>60%</item>
-        <item>70%</item>
-        <item>80%</item>
-        <item>90%</item>
-        <item>100%</item>
+        <item>ON</item>
+        <item>OFF</item>
     </string-array>
 
     <string-array name="dts_sounds_entry_values" translatable="false">
         <item>0</item>
-        <item>10</item>
-        <item>20</item>
-        <item>30</item>
-        <item>40</item>
-        <item>50</item>
-        <item>60</item>
-        <item>70</item>
-        <item>80</item>
-        <item>90</item>
         <item>100</item>
+    </string-array>
+
+    <string-array name="dtsx_drc_mode_entries">
+        <item>ON</item>
+        <item>OFF</item>
+    </string-array>
+
+    <string-array name="dtsx_sounds_entry_values" translatable="false">
+        <item>1</item>
+        <item>0</item>
     </string-array>
 
     <string-array name="dts_custom_sounds_entries">
@@ -484,16 +484,38 @@
         <item>dolby_vision_source</item>
     </string-array>
 
-    <string-array name="tv_dts_virtualx_effect_entries" translatable="false">
-        <item>OFF</item>
-        <item>BASS</item>
-        <item>FULL</item>
+    <string-array name="tv_dts_dialog_enhancement_entries" translatable="false">
+        <item>Off</item>
+        <item>Low</item>
+        <item>Midum</item>
+        <item>High</item>
     </string-array>
 
-    <string-array name="tv_dts_virtualx_effect_entry_values" translatable="false">
+    <string-array name="tv_dts_dialog_enhancement_entry_values" translatable="false">
         <item>0</item>
         <item>1</item>
         <item>2</item>
+        <item>3</item>
+    </string-array>
+
+    <string-array name="tv_dts_truvolume_entries" translatable="false">
+        <item>Off</item>
+        <item>On</item>
+    </string-array>
+
+    <string-array name="tv_dts_truvolume_entry_values" translatable="false">
+        <item>0</item>
+        <item>1</item>
+    </string-array>
+
+    <string-array name="tv_dts_bass_enhancement_entries" translatable="false">
+        <item>Off</item>
+        <item>On</item>
+    </string-array>
+
+    <string-array name="tv_dts_bass_enhancement_entry_values" translatable="false">
+        <item>0</item>
+        <item>1</item>
     </string-array>
 
     <string-array name="tv_dbx_sound_mode_entries">
@@ -920,12 +942,13 @@
     </string-array>
 
     <string-array name="tv_sound_mode_entries">
-        <item>standard</item>
-        <item>music</item>
-        <item>news</item>
-        <item>movie</item>
-        <item>game</item>
-        <item>user</item>
+        <item>Standard</item>
+        <item>Music</item>
+        <item>News</item>
+        <item>Movie</item>
+        <item>Game</item>
+        <item>Night</item>
+        <item>User</item>
     </string-array>
 
     <string-array name="tv_sound_mode_entry_values" translatable="false">
@@ -935,6 +958,7 @@
         <item>3</item>
         <item>4</item>
         <item>5</item>
+        <item>6</item>
     </string-array>
 
     <string-array name="tv_sound_mode_extend_entries">
@@ -953,6 +977,20 @@
         <item>3</item>
         <item>4</item>
         <item>5</item>
+    </string-array>
+
+    <string-array name="sound_dual_effect_entries">
+        <item>AUTO</item>
+        <item>DTS Mode</item>
+        <item>Dolby Mode</item>
+        <item>OFF</item>
+    </string-array>
+
+    <string-array name="sound_dual_effect_entry_values" translatable="false">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
     </string-array>
 
     <string-array name="tv_dialogcharity_entries">

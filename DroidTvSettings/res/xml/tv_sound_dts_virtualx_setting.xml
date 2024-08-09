@@ -16,12 +16,26 @@
   -->
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-    android:title="@string/title_tv_dts_virtualx_truvolumehd">
+    android:title="DTS Virtual:X">
     <ListPreference
-        android:key="key_tv_dts_virtualx_effect"
+        android:key="key_dts_dialog_enhancement"
         android:persistent="false"
-        android:entries="@array/tv_dts_virtualx_effect_entries"
-        android:entryValues="@array/tv_dts_virtualx_effect_entry_values"
-        android:title="@string/title_tv_dts_virtualx"
+        android:entries="@array/tv_dts_dialog_enhancement_entries"
+        android:entryValues="@array/tv_dts_dialog_enhancement_entry_values"
+        android:title="Dialog Enhancer"
+        android:summary="%s" />
+    <ListPreference
+        android:key="key_tv_dts_tru_volume"
+        android:persistent="false"
+        android:entries="@array/tv_dts_truvolume_entries"
+        android:entryValues="@array/tv_dts_truvolume_entry_values"
+        android:title="TruVolume"
+        android:summary="%s" />
+    <ListPreference
+        android:key="key_tv_dts_bass_enhancement"
+        android:persistent="false"
+        android:entries="@array/tv_dts_bass_enhancement_entries"
+        android:entryValues="@array/tv_dts_bass_enhancement_entry_values"
+        android:title="Bass Enhancement"
         android:summary="%s" />
 </PreferenceScreen>

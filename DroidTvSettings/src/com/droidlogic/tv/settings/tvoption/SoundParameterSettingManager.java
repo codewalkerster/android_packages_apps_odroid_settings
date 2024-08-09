@@ -35,6 +35,7 @@ import com.droidlogic.app.DroidLogicUtils;
 import com.droidlogic.app.DroidAudioManager;
 import com.droidlogic.app.SystemControlManager;
 import static com.droidlogic.tv.settings.util.DroidUtils.logDebug;
+import com.droidlogic.app.AudioEffectManager;
 
 import java.util.Arrays;
 import java.util.ArrayList;
@@ -53,10 +54,10 @@ public class SoundParameterSettingManager {
     public static final String DIGITAL_SOUND_PASSTHROUGH        = "passthrough";
     public static final String TV_KEY_AD_SWITCH                 = "ad_switch";
 
-    public static final int DEBUG_DOLBY_DRC_UI                  = 0;
-    public static final int DEBUG_DTS_DRC_UI                    = 1;
-    public static final int DEBUG_FORCE_DDP_UI                  = 2;
-    public static final int DEBUG_AUDIO_LATENCY_UI              = 3;
+    public static final int DEBUG_DOLBY_DRC_UI                  = AudioEffectManager.DOLBY_DRC_UI_ID;
+    public static final int DEBUG_DTS_DRC_UI_ID                 = AudioEffectManager.DTS_DRC_UI_ID;
+    public static final int DEBUG_FORCE_DDP_UI                  = AudioEffectManager.FORCE_DDP_UI_ID;
+    public static final int DEBUG_AUDIO_LATENCY_UI              = AudioEffectManager.AUDIO_LATENCY_UI_ID;
 
     public static final int DEBUG_AUDIO_UI_ON                   = 1;
     public static final int DEBUG_AUDIO_UI_OFF                  = 0;
@@ -69,23 +70,18 @@ public class SoundParameterSettingManager {
     private Resources mResources;
     private Context mContext;
     private DroidAudioManager mDroidAudioManager;
+    private AudioEffectManager mAudioEffectManager;
 
     public SoundParameterSettingManager (Context context) {
         mContext = context;
         mResources = mContext.getResources();
         mDroidAudioManager = DroidAudioManager.getInstance(context);
+        mAudioEffectManager = AudioEffectManager.getInstance(context);
     }
 
     public void setDebugAudioOn (int id, boolean dbSwitch) {
         logDebug(TAG, false, "setDebugAudioOn id:" + id + ", dbSwitch:" + dbSwitch);
-
         switch (id) {
-            case DEBUG_DOLBY_DRC_UI:
-                Settings.Global.putInt(mContext.getContentResolver(), DB_ID_DOLBY_DRC_DEBUG, dbSwitch ? 1 : 0);
-                break;
-            case DEBUG_DTS_DRC_UI:
-                Settings.Global.putInt(mContext.getContentResolver(), DB_ID_DTS_DRC_DEBUG, dbSwitch ? 1 : 0);
-                break;
             case DEBUG_FORCE_DDP_UI:
                 Settings.Global.putInt(mContext.getContentResolver(), DB_ID_FORCE_DDP_DEBUG, dbSwitch ? 1 : 0);
                 break;
@@ -98,26 +94,26 @@ public class SoundParameterSettingManager {
     }
 
     public boolean isDebugAudioOn(int id) {
-        int value = -1;
+        boolean value = false;
         switch (id) {
-            case DEBUG_DOLBY_DRC_UI:
-                value = Settings.Global.getInt(mContext.getContentResolver(), DB_ID_DOLBY_DRC_DEBUG, DEBUG_AUDIO_UI_OFF);
+            case AudioEffectManager.DOLBY_DRC_UI_ID:
+                value = mAudioEffectManager.getEffectFunctionConfig(AudioEffectManager.DOLBY_DRC_UI_ID) == DEBUG_AUDIO_UI_ON;
                 break;
-            case DEBUG_DTS_DRC_UI:
-                value = Settings.Global.getInt(mContext.getContentResolver(), DB_ID_DTS_DRC_DEBUG, DEBUG_AUDIO_UI_OFF);
+            case AudioEffectManager.DTS_DRC_UI_ID:
+                value =  mAudioEffectManager.getEffectFunctionConfig(AudioEffectManager.DTS_DRC_UI_ID) == DEBUG_AUDIO_UI_ON;
                 break;
             case DEBUG_FORCE_DDP_UI:
-                value = Settings.Global.getInt(mContext.getContentResolver(), DB_ID_FORCE_DDP_DEBUG, DEBUG_AUDIO_UI_OFF);
+                value = mAudioEffectManager.getEffectFunctionConfig(AudioEffectManager.FORCE_DDP_UI_ID) == DEBUG_AUDIO_UI_ON;
                 break;
             case DEBUG_AUDIO_LATENCY_UI:
-                value = Settings.Global.getInt(mContext.getContentResolver(), DB_ID_AUDIO_LATENCY_DEBUG, DEBUG_AUDIO_UI_OFF);
+                value = mAudioEffectManager.getEffectFunctionConfig(AudioEffectManager.AUDIO_LATENCY_UI_ID) == DEBUG_AUDIO_UI_ON;
                 break;
             default:
                 break;
         }
         logDebug(TAG, false, "isDebugAudioOn id:" + id + ", value:" + value);
 
-        return value == DEBUG_AUDIO_UI_ON;
+        return value;
     }
 
     public void setDigitalAudioFormat (String mode) {

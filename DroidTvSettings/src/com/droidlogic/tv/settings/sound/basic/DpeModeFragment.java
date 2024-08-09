@@ -190,8 +190,9 @@ public class DpeModeFragment extends SettingsPreferenceFragment implements Prefe
     private SeekBarPreference mSeekBarLimiterThreshold;
     private SeekBarPreference mSeekBarLimiterPostGain;
 
-
     private AudioEffectManager mAudioEffectManager;
+
+    private boolean mNeedFreshUI = false;
 
     public static DpeModeFragment newInstance() {
         return new DpeModeFragment();
@@ -207,8 +208,11 @@ public class DpeModeFragment extends SettingsPreferenceFragment implements Prefe
 
     @Override
     public void onResume() {
+        if (mNeedFreshUI) {
+            updateDetail();
+        }
+        mNeedFreshUI = true;
         super.onResume();
-        updateDetail();
     }
 
     @Override
@@ -565,6 +569,9 @@ public class DpeModeFragment extends SettingsPreferenceFragment implements Prefe
         mSeekBarLimiterPostGain.setMax(10);
         mSeekBarLimiterPostGain.setOnPreferenceChangeListener(this);
         mSeekBarLimiterPostGain.setSeekBarIncrement(1);
+
+        updateDetail();
+        mNeedFreshUI = false;
     }
 
     // update pre eq param
@@ -1081,17 +1088,24 @@ public class DpeModeFragment extends SettingsPreferenceFragment implements Prefe
                 }
 
                 //limiter
+                int limiterStatus = mAudioEffectManager.getDpeParam(AudioEffectManager.CMD_DPE_LIMITER);
                 mLimiterPref.setVisible(isChecked);
-                mLimiterPref.setChecked(false);
-                mAudioEffectManager.setDpeParam(AudioEffectManager.CMD_DPE_LIMITER, 0);
-                if (isChecked == false) {
+                mLimiterPref.setChecked(isChecked);
+                if (isChecked) {
+                    mAudioEffectManager.setDpeParam(AudioEffectManager.CMD_DPE_LIMITER, AudioEffectManager.DPE_LIMITER_ON);
+                    mSeekBarLimiterAttackTime.setVisible(true);
+                    mSeekBarLimiterReleaseTime.setVisible(true);
+                    mSeekBarLimiterRatio.setVisible(true);
+                    mSeekBarLimiterThreshold.setVisible(true);
+                    mSeekBarLimiterPostGain.setVisible(true);
+                } else {
+                    mAudioEffectManager.setDpeParam(AudioEffectManager.CMD_DPE_LIMITER, AudioEffectManager.DPE_LIMITER_OFF);
                     mSeekBarLimiterAttackTime.setVisible(false);
                     mSeekBarLimiterReleaseTime.setVisible(false);
                     mSeekBarLimiterRatio.setVisible(false);
                     mSeekBarLimiterThreshold.setVisible(false);
                     mSeekBarLimiterPostGain.setVisible(false);
                 }
-
                 break;
             case KEY_PRE_EQ:
                 isChecked = mPreEqPref.isChecked();

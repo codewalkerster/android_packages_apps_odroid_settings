@@ -16,18 +16,8 @@
   -->
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-        android:title="@string/title_dolby_audio_processing_2_4">
-
-    <ListPreference
-        android:key="key_dap_2_4_profile"
-        android:persistent="false"
-        android:entries="@array/dap_2_4_profile_entries"
-        android:entryValues="@array/dap_2_4_profile_entry_values"
-        android:title="@string/title_sound_mode"
-        android:summary="%s" />
-    <PreferenceCategory
-        android:key="key_dap_2_4_detail"
-        android:title="@string/title_dap_2_4_detail">
+    android:title="@string/title_dolby_audio_processing_2_4">
+        <!-- Config Z -->
         <ListPreference
             android:key="key_dap_2_4_surround_virtualizer_mode"
             android:persistent="false"
@@ -37,44 +27,24 @@
             android:summary="%s" />
         <SeekBarPreference
             android:key="key_dap_2_4_surround_virtualizer_boost"
+            android:title="@string/title_dap_2_4_surround_virtualizer_boost"
             android:persistent="false"
+            android:min="0"
             android:max="96" />
-        <SwitchPreference
-            android:key="key_dap_2_4_dialogue_enhancer_enable"
-            android:persistent="false"
-            android:title="@string/title_dap_2_4_dialogue_enhancer_enable" />
-        <SeekBarPreference
-            android:key="key_dap_2_4_dialogue_enhancer_amount"
-            android:persistent="false"
-            android:max="16" />
-        <SwitchPreference
-            android:key="key_dap_2_4_bass_enhancer_enable"
-            android:persistent="false"
-            android:title="@string/title_dap_2_4_bass_enhancer_enable" />
-        <SeekBarPreference
-            android:key="key_dap_2_4_bass_enhancer_boost"
-            android:persistent="false"
-            android:max="384" />
-        <SeekBarPreference
-            android:key="key_dap_2_4_bass_enhancer_cutoffX100"
-            android:persistent="false"
-            android:max="200" />
-        <SeekBarPreference
-            android:key="key_dap_2_4_bass_enhancer_cutoffX1"
-            android:persistent="false"
-            android:max="100" />
-        <SeekBarPreference
-            android:key="key_dap_2_4_bass_enhancer_width"
-            android:persistent="false"
-            android:max="16" />
-        <SwitchPreference
-            android:key="key_dap_2_4_mi_steering"
-            android:persistent="false"
-            android:title="@string/title_dap_2_4_mi_steering" />
+        <!-- Config X/Y -->
+        <ListPreference
+            android:entries="@array/key_ac4_enhancer_switch_entries"
+            android:entryValues="@array/key_ac4_enhancer_switch_entry_values"
+            android:key="key_ac4_output_switch"
+            android:persistent="true"
+            android:summary="Increase the quality and clarity of the dialogue"
+            android:title="@string/title_dap_2_4_dialogue_enhancer_enable"/>
+        <!-- Unknown -->
         <SwitchPreference
             android:key="key_dap_2_4_surround_decoder_enable"
             android:persistent="false"
             android:title="@string/title_dap_2_4_surround_decoder_enable" />
+        <!-- Config Z -->
         <ListPreference
             android:key="key_dap_2_4_leveler_setting"
             android:persistent="false"
@@ -86,5 +56,4 @@
             android:key="key_dap_2_4_leveler_amount"
             android:persistent="false"
             android:max="10" />
-    </PreferenceCategory>
 </PreferenceScreen>

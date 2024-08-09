@@ -95,7 +95,7 @@ public class SoundFragment extends SettingsPreferenceFragment implements Prefere
         final TwoStatePreference forcedDpPref = (TwoStatePreference) findPreference(KEY_FORCE_DDP);
         forcedDpPref.setVisible(mSoundParameterSettingManager.isDebugAudioOn(SoundParameterSettingManager.DEBUG_FORCE_DDP_UI));
         dolbyDrcModePref.setVisible(mSoundParameterSettingManager.isDebugAudioOn(SoundParameterSettingManager.DEBUG_DOLBY_DRC_UI));
-        dtsDrcModePref.setVisible(mSoundParameterSettingManager.isDebugAudioOn(SoundParameterSettingManager.DEBUG_DTS_DRC_UI));
+        dtsDrcModePref.setVisible(mSoundParameterSettingManager.isDebugAudioOn(SoundParameterSettingManager.DEBUG_DTS_DRC_UI_ID));
         super.onResume();
     }
 
@@ -159,7 +159,7 @@ public class SoundFragment extends SettingsPreferenceFragment implements Prefere
 
         dolbyDrcModePref.setVisible(mSoundParameterSettingManager.isDebugAudioOn(SoundParameterSettingManager.DEBUG_DOLBY_DRC_UI));
         String drcModeStr = "";
-        switch (mDroidAudioManager.getDrcMode()) {
+        switch (mDroidAudioManager.getDolbyDrcMode()) {
             case DroidAudioManager.IS_DRC_OFF:
                 drcModeStr = DRC_OFF;
                 break;
@@ -173,7 +173,7 @@ public class SoundFragment extends SettingsPreferenceFragment implements Prefere
         dolbyDrcModePref.setValue(drcModeStr);
         dolbyDrcModePref.setOnPreferenceChangeListener(this);
 
-        dtsDrcModePref.setVisible(mSoundParameterSettingManager.isDebugAudioOn(SoundParameterSettingManager.DEBUG_DTS_DRC_UI));
+        dtsDrcModePref.setVisible(mSoundParameterSettingManager.isDebugAudioOn(SoundParameterSettingManager.DEBUG_DTS_DRC_UI_ID));
 
         dtsDrcModePref.setValue(mSystemControlManager.getPropertyString("persist.vendor.sys.dtsdrcscale", OutputModeManager.DEFAULT_DRC_SCALE));
         dtsDrcModePref.setOnPreferenceChangeListener(this);
@@ -385,7 +385,7 @@ public class SoundFragment extends SettingsPreferenceFragment implements Prefere
                 default:
                     throw new IllegalArgumentException("Unknown drc mode pref value");
             }
-            mDroidAudioManager.setDrcMode(drcMode);
+            mDroidAudioManager.setDolbyDrcMode(drcMode);
         } else if (TextUtils.equals(preference.getKey(), KEY_DIGITALSOUND_FORMAT)) {
             final String selection = (String)newValue;
             mSoundParameterSettingManager.setDigitalAudioFormat(selection);

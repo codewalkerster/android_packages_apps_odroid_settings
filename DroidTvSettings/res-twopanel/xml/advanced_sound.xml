@@ -17,20 +17,19 @@
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
                   android:title="@string/advanced_sound_settings_title">
-
+    <Preference
+        android:persistent="false"
+        android:key="tv_sound_audio_only"
+        android:title="@string/title_tv_sound_audio_only" />
+    <Preference
+        android:key="key_audio_latency"
+        android:fragment="com.droidlogic.tv.settings.soundeffect.AudioLatencyFragment"
+        android:title="@string/title_key_audio_latency" />
     <!-- DroidLogic start -->
     <SwitchPreference
         android:key="key_spdif_output_switch"
         android:persistent="false"
         android:title="@string/title_sound_spdif_output"/>
-
-    <ListPreference
-        android:entries="@array/key_ac4_enhancer_switch_entries"
-        android:entryValues="@array/key_ac4_enhancer_switch_entry_values"
-        android:key="key_ac4_output_switch"
-        android:persistent="true"
-        android:summary="Increase the quality and clarity of the dialogue"
-        android:title="@string/title_sound_ac4_output"/>
     <!-- DroidLogic end -->
 
  <!-- TODO(b/172050661) - add sidebar text -->
@@ -42,5 +41,54 @@
         android:persistent="true"
         android:summary="%s"
         android:title="@string/surround_sound_select_formats"/>
-
+    <ListPreference
+        android:entries="@array/key_ac4_enhancer_switch_entries"
+        android:entryValues="@array/key_ac4_enhancer_switch_entry_values"
+        android:key="key_ac4_output_switch"
+        android:persistent="true"
+        android:summary="Increase the quality and clarity of the dialogue"
+        android:title="@string/title_sound_ac4_output"/>
+    <ListPreference
+        android:key="key_dolby_down_mix"
+        android:persistent="false"
+        android:entries="@array/dolby_down_mix_mode_entries"
+        android:entryValues="@array/dolby_own_mix_mode_entry_values"
+        android:title="Downmix Mode"
+        android:summary="%s" />
+    <ListPreference
+        android:key="key_dolby_drc_mode"
+        android:persistent="false"
+        android:entries="@array/dolby_sounds_entries"
+        android:entryValues="@array/dolby_sounds_entry_values"
+        android:title="@string/device_sound_dolby"
+        android:summary="%s" />
+    <SeekBarPreference
+        android:key="key_drc_line_mode"
+        android:persistent="false"
+        android:max="100"
+        android:title="Cut/Boost Scalefactor" />
+    <ListPreference
+        android:key="dtshd_drc_mode"
+        android:persistent="false"
+        android:entries="@array/dts_sounds_entries"
+        android:entryValues="@array/dts_sounds_entry_values"
+        android:title="@string/device_sound_dts_sound"
+        android:dialogTitle="@string/device_sound_dts_drcscale"
+        android:summary="%s" />
+    <ListPreference
+        android:key="dtsx_drc_mode"
+        android:persistent="false"
+        android:entries="@array/dtsx_drc_mode_entries"
+        android:entryValues="@array/dtsx_sounds_entry_values"
+        android:title="@string/device_sound_dts_sound"
+        android:dialogTitle="@string/device_sound_dts_sound"
+        android:summary="%s" />
+    <ListPreference
+        android:key="dtsdrc_custom_mode"
+        android:persistent="false"
+        android:entries="@array/dts_custom_sounds_entries"
+        android:entryValues="@array/dts_custom_sounds_entry_values"
+        android:title="@string/device_sound_dts_sound"
+        android:dialogTitle="@string/device_sound_dts_drcscale"
+        android:summary="%s" />
 </PreferenceScreen>

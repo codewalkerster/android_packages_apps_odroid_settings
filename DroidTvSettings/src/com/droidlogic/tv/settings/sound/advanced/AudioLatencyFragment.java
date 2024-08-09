@@ -43,6 +43,7 @@ import android.content.DialogInterface.OnDismissListener;
 import com.droidlogic.app.DroidLogicUtils;
 import com.droidlogic.app.DroidAudioManager;
 import com.droidlogic.app.SystemControlManager;
+import androidx.preference.PreferenceScreen;
 
 import com.droidlogic.tv.settings.SettingsPreferenceFragment;
 import com.droidlogic.tv.settings.TvSettingsActivity;
@@ -82,14 +83,16 @@ public class AudioLatencyFragment extends SettingsPreferenceFragment
         super.onResume();
         mTvSourceSelectPref.setValueIndex(mCurrentSettingSourceId);
         final Preference hdmiAudioLatency = (Preference) findPreference(KEY_HDMI_AUDIO_LATENCY);
-        hdmiAudioLatency.setSummary(getHdmiAudioLatency() + "ms");
+        if (hdmiAudioLatency != null) {
+            hdmiAudioLatency.setSummary(getHdmiAudioLatency() + "ms");
+        }
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         mDroidAudioManager = DroidAudioManager.getInstance(getActivity());
         mSystemControlManager = SystemControlManager.getInstance();
+        super.onCreate(savedInstanceState);
     }
 
     @Override
@@ -106,6 +109,8 @@ public class AudioLatencyFragment extends SettingsPreferenceFragment
         boolean tvFlag = SettingsConstant.needDroidlogicTvFeature(getContext())
                     && (SystemProperties.getBoolean("vendor.tv.soc.as.mbox", false) == false);
 
+        PreferenceScreen audioLatencyScreenPref = getPreferenceScreen();
+
         mTvSourceSelectPref = (ListPreference) findPreference(KEY_TV_SOUND_AUDIO_SOURCE_SELECT);
         mTvSourceSelectPref.setValueIndex(mCurrentSettingSourceId);
         mTvSourceSelectPref.setOnPreferenceChangeListener(this);
@@ -117,14 +122,17 @@ public class AudioLatencyFragment extends SettingsPreferenceFragment
         audioOutputLatencyPref.setMin(DroidAudioManager.HAL_AUDIO_OUT_DEV_DELAY_MIN);
         audioOutputLatencyPref.setSeekBarIncrement(SoundFragment.KEY_AUDIO_OUTPUT_LATENCY_STEP);
         audioOutputLatencyPref.setValue(mDroidAudioManager.getAudioOutputAllDelay());
-
         audioOutputLatencyPref.setVisible(tvFlag);
+        //Note: remove "Audio all Latency settings" UI
+        audioLatencyScreenPref.removePreference(audioOutputLatencyPref);
 
         final Preference hdmiAudioLatency = (Preference) findPreference(KEY_HDMI_AUDIO_LATENCY);
         if (tvFlag) {
             hdmiAudioLatency.setTitle(getActivity().getResources().getString(R.string.arc_hdmi_audio_latency));
         }
         hdmiAudioLatency.setSummary(getHdmiAudioLatency() + "ms");
+        //Note: remove "HDMI ARC Audio Latency" UI
+        audioLatencyScreenPref.removePreference(hdmiAudioLatency);
     }
 
     private boolean initView() {

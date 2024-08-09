@@ -34,7 +34,6 @@
         android:key="key_audio_latency_debug"
         android:persistent="false"
         android:title="@string/title_key_audio_latency_debug" />
-
     <PreferenceCategory
         android:title="@string/title_key_audio_effect_ui_debug">
         <SwitchPreference
@@ -68,9 +67,12 @@
             android:key="key_dpe_debug"
             android:persistent="false"
             android:title="@string/title_key_dpe_debug" />
-        <SwitchPreference
+        <ListPreference
             android:key="key_dap_2_debug"
             android:persistent="false"
-            android:title="@string/title_key_dap_2_debug" />
+            android:entries="@array/tv_offon_entries"
+            android:entryValues="@array/tv_offon_entry_values"
+            android:title="@string/title_key_dap_2_debug"
+            android:summary="%s" />
     </PreferenceCategory>
 </PreferenceScreen>

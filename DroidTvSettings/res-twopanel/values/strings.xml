@@ -2146,11 +2146,11 @@
     <string name="audio_output_latency">Audio Output Latency</string>
 
     <!-- Title for dap 2.4 -->
-    <string name="title_dolby_audio_processing_2_4">Dolby Audio Effect 2.4</string>
-    <string name="title_sound_mode">Audio Effect</string>
+    <string name="title_dolby_audio_processing_2_4">Dolby Audio Setting</string>
+    <string name="title_sound_mode">Dolby Sound Mode</string>
     <string name="title_dap_2_4_detail">User Control</string>
     <!-- <string name="title_dap_2_4_surround_virtualizer_mode">Surround Virtualizer</string> -->
-    <string name="title_dap_2_4_surround_virtualizer_mode">Dolby Speaker Virtualizer (Surround Virtualizer)</string>
+    <string name="title_dap_2_4_surround_virtualizer_mode">Dolby Speaker Virtualizer (Dolby Atoms)</string>
     <string name="title_dap_2_4_surround_virtualizer_boost">Surround Virtualizer Boost</string>
     <string name="title_dap_2_4_dialogue_enhancer_enable">Dialogue Enhancer</string>
     <string name="title_dap_2_4_dialogue_enhancer_amount">Dialogue Enhancer Amount</string>
@@ -2193,7 +2193,13 @@
 
     <!-- tv setting. -->
     <string name="tv_sound">Sound</string>
-    <string name="tv_sound_mode">Equalizer Mode</string>
+    <string name="title_tv_basic_effect">Basic</string>
+    <string name="title_tv_basic_effect_processing">Basic Sound Processing</string>
+    <string name="title_basic_effect_setting">Basic Audio Setting</string>
+    <string name="title_auto_sound_mode">Auto Sound Mode</string>
+    <string name="tv_sound_mode">Sound Mode</string>
+    <string name="tv_sound_processing">Sound Processing</string>
+    <string name="tv_title_equalizer_effect"> Equalizer Control</string>
     <string name="tv_audio_effect_band1">Band 1:</string>
     <string name="tv_audio_effect_band2">Band 2:</string>
     <string name="tv_audio_effect_band3">Band 3:</string>
@@ -2211,9 +2217,12 @@
     <string name="tv_balance_effect">Balance</string>
     <string name="tv_spdif">SPDIF</string>
     <string name="tv_virtual_surround">Virtual Surround</string>
-    <string name="title_tv_dts_virtualx">DTS Virtual:X</string>
+    <string name="title_tv_dts_virtualx">DTS Audio Setting</string>
     <string name="title_tv_dts_virtualx_truvolumehd">DTS TruVolume HD</string>
     <string name="tv_sound_output_device">Sound Output Device</string>
+    <string name="title_dulal_effect_all">Dolby/DTS</string>
+    <string name="title_dual_effect_processing">Dolby/DTS Audio Processing</string>
+    <string name="sound_dual_effect">Dolby/DTS Audio Mode Switch</string>
     <string name="title_tv_sound_audio_only">Audio Only</string>
     <string name="msg_tv_sound_audio_only">Are you sure to turn on audio only? After selection, the system will black out, and press any key to turn on the screen.</string>
     <string name="tv_sound_standard">standard</string>
@@ -2235,8 +2244,8 @@
     <string name="title_tv_sound_audio_settings_by_source">Audio Latency Settings by source id</string>
 
     <!-- DPE setting title -->
-    <string name="title_dpe_audio_effect">DPE</string>
-    <string name="title_dpe_enabled">DPE Enable</string>
+    <string name="title_dpe_audio_effect">Auto Volume Control</string>
+    <string name="title_dpe_enabled">AVC Enable</string>
     <string name="title_dpe_inputgain">Input Gain</string>
 
     <!-- DPE Pre EQ title-->
@@ -2729,7 +2738,7 @@
     <!-- S/PDIF output switch control -->
     <string name="title_sound_spdif_output">S/PDIF output</string>
     <!-- Name of the AC4 surround sound format output switch control -->
-    <string name="title_sound_ac4_output">AC4 Dialog Enhancer</string>
+    <string name="title_sound_ac4_output">Dialog Enhancer</string>
     <string name="key_ac4_enhancer_switch_off">Off</string>
     <string name="key_ac4_enhancer_switch_low">Low</string>
     <string name="key_ac4_enhancer_switch_medium">Medium</string>
