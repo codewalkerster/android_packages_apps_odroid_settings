@@ -17,8 +17,10 @@
     <bool name="enable_energy_modes">true</bool>
 
 
-
-   <!-- <string-array name="energy_mode_low_vendorExemptPackages" translatable="false" >
+    <string-array name="energy_mode_low_features">
+        <item>Critical updates and features</item>
+    </string-array>
+    <!-- <string-array name="energy_mode_low_vendorExemptPackages" translatable="false" >
         <item>oem.package</item>
     </string-array>
     <string-array name="energy_mode_low_vendorAllowedFeatures" translatable="false">
@@ -42,7 +44,10 @@
 
 
     <string-array name="energy_mode_moderate_features">
-        <item>Google Cast</item>
+        <item>Critical updates and features</item>
+        <item>Say Hey, Google to talk to Google Assistant</item>
+        <item>Control the TV with other Google Assistant devices, and vice versa</item>
+        <item>Google Cast (over Wi-Fi only)</item>
     </string-array>
     <!--<string-array name="energy_mode_moderate_vendorAllowedFeatures" translatable="false">
         <item>oem.package.MODERATE_POWER_CUSTOM_FEATURE</item>
@@ -70,11 +75,14 @@
 
 
 
-    <!-- <string-array name="energy_mode_high_features">
-        <item>All recommended features</item>
-        <item>OEM home automation</item>
+    <string-array name="energy_mode_high_features">
+        <item>Critical updates and features</item>
+        <item>Say Hey, Google to talk to Google Assistant</item>
+        <item>Control the TV with other Google Assistant devices, and vice versa</item>
+        <item>Google Cast (over Wi-Fi and ethernet)</item>
+        <item>Google Home Platform, enables connected home set up, control and automations</item>
     </string-array>
-     <string-array name="energy_mode_high_vendorAllowedFeatures" translatable="false">
+     <!-- <string-array name="energy_mode_high_vendorAllowedFeatures" translatable="false">
         <item>oem.package.MODERATE_POWER_CUSTOM_FEATURE</item>
         <item>oem.package.HIGH_POWER_CUSTOM_FEATURE</item>
     </string-array>
