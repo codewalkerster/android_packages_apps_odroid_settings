@@ -2999,10 +2999,6 @@
     <string name="mouse_right">Right Button as Back Button</string>
     <string name="mouse_right_info">Mouse Right Button as Back Button ON/OFF.</string>
 
-    <!-- LED -->
-    <string name="led">LED</string>
-    <string name="heartbeat">Blue LED</string>
-
     <!-- Update check -->
     <string name="check_update">Check Update at Boot</string>
 

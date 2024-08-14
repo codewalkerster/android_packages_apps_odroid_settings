@@ -67,10 +67,6 @@ public class ConfigEnv {
         return getValue("npu_governor");
     }
 
-    public static String getHeartBeat() {
-        return getValue("heartbeat");
-    }
-
     public static String getOverlay() {
         String overlays = getValue("overlays");
 
@@ -158,10 +154,6 @@ public class ConfigEnv {
 
     public static void setNpuGovernor(String governor) {
         setValue("npu_governor", governor);
-    }
-
-    public static void setHeartBeat(String mode) {
-        setValue("heartbeat", mode);
     }
 
     public static void setOverlay(String overlay) {
