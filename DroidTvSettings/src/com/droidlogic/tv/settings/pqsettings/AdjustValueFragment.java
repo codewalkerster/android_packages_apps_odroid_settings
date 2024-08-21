@@ -74,18 +74,23 @@ public class AdjustValueFragment extends SettingsPreferenceFragment implements S
         initSeekBar(view);
         if (!mPQSettingsManager.hasPqCaseFunc(SystemControlManager.PqFuncCase.PQ_CASE_FUNC_CONTRAST)) {
             seekbar_contrast.setVisibility(View.GONE);
+            text_contrast.setVisibility(View.GONE);
         }
         if (!mPQSettingsManager.hasPqCaseFunc(SystemControlManager.PqFuncCase.PQ_CASE_FUNC_BRIGHTNESS)) {
             seekbar_brightness.setVisibility(View.GONE);
+            text_brightness.setVisibility(View.GONE);
         }
         if (!mPQSettingsManager.hasPqCaseFunc(SystemControlManager.PqFuncCase.PQ_CASE_FUNC_SATURATION)) {
             seekbar_saturation.setVisibility(View.GONE);
+            text_saturation.setVisibility(View.GONE);
         }
         if (!mPQSettingsManager.hasPqCaseFunc(SystemControlManager.PqFuncCase.PQ_CASE_FUNC_HUE)) {
             seekbar_hue.setVisibility(View.GONE);
+            text_hue.setVisibility(View.GONE);
         }
         if (!mPQSettingsManager.hasPqCaseFunc(SystemControlManager.PqFuncCase.PQ_CASE_FUNC_SHARPNESS)) {
             seekbar_sharpness.setVisibility(View.GONE);
+            text_sharpness.setVisibility(View.GONE);
         }
     }
 
