@@ -431,6 +431,10 @@
         <activity
                 android:name="com.google.android.tv.btservices.settings.ResponseActivity"
                 android:exported="true" />
+        <provider
+            android:name="androidx.startup.InitializationProvider"
+            android:authorities="${applicationId}.androidx-startup"
+            tools:node="remove" />
     </application>
 
     <queries>
