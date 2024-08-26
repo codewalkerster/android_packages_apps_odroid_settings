@@ -41,6 +41,7 @@ import android.provider.Settings;
 
 import androidx.preference.Preference;
 import androidx.preference.PreferenceGroup;
+import androidx.preference.TwoStatePreference;
 
 import android.text.TextUtils;
 import android.util.ArraySet;
@@ -51,13 +52,14 @@ import com.droidlogic.tv.settings.util.DroidUtils;
 import com.droidlogic.tv.settings.SettingsConstant;
 import com.droidlogic.tv.settings.SettingsPreferenceFragment;
 import com.droidlogic.tv.settings.tvoption.SoundParameterSettingManager;
+import com.droidlogic.tv.settings.pqsettings.PQSettingsManager;
 
 import com.droidlogic.app.DroidLogicUtils;
 import com.droidlogic.app.SystemControlManager;
 
 import com.droidlogic.tv.settings.R;
 
-public class MorePrefFragment extends SettingsPreferenceFragment {
+public class MorePrefFragment extends SettingsPreferenceFragment implements Preference.OnPreferenceChangeListener{
     private static final String TAG = "MorePrefFragment";
 
     private static final String KEY_MAIN_MENU = "moresettings";
@@ -88,12 +90,14 @@ public class MorePrefFragment extends SettingsPreferenceFragment {
     public static final String AUTOMOTIVE_FEATURE = "android.hardware.type.automotive";
     public static final String FEATURE_SOFTWARE_NETFLIX = "droidlogic.software.netflix";
     private static final String KEY_PICTURE = "picture_mode";
+    public static final String KEY_ENABLE_OSD_SHARPNESS = "pq_osd_sharpness_enabled";
     public static final String FEATURE_HDMI_CEC = "android.hardware.hdmi.cec";
 
     private Preference mSoundsPref;
 
     private String mEsnText;
     private SystemControlManager mSystemControlManager;
+    private PQSettingsManager mPQSettingsManager;
 
     private BroadcastReceiver esnReceiver = new BroadcastReceiver() {
         @Override
@@ -115,6 +119,10 @@ public class MorePrefFragment extends SettingsPreferenceFragment {
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         setPreferencesFromResource(R.xml.more, null);
+        if (mPQSettingsManager == null) {
+            mPQSettingsManager = new PQSettingsManager(getActivity());
+        }
+
         boolean is_from_new_live_tv = getActivity().getIntent().getIntExtra("from_new_live_tv", 0) == 1;
         boolean is_from_live_tv = getActivity().getIntent().getIntExtra("from_live_tv", 0) == 1 || is_from_new_live_tv;
         //tvFlag, is true when TV and T962E as TV, false when Mbox and T962E as Mbox.
@@ -207,6 +215,12 @@ public class MorePrefFragment extends SettingsPreferenceFragment {
             picturePref.setVisible(false);
         }
 
+        TwoStatePreference enableOsdSharpnessPref = (TwoStatePreference) findPreference(KEY_ENABLE_OSD_SHARPNESS);
+        enableOsdSharpnessPref.setOnPreferenceChangeListener(this);
+        enableOsdSharpnessPref.setChecked(mPQSettingsManager.getOsdSharpnessEnabled());
+        if (!mPQSettingsManager.hasPqCaseFunc(SystemControlManager.PqFuncCase.PQ_CASE_FUNC_OSD_SHARPNESS)) {
+            enableOsdSharpnessPref.setEnabled(false);
+        }
 
         if (DroidUtils.hasGtvsUiMode()) {
             Log.i(TAG, "hide powerkey_action");
@@ -217,6 +231,15 @@ public class MorePrefFragment extends SettingsPreferenceFragment {
             advanced_sound_settings_pref.setVisible(false);
             mboxSoundsPref.setVisible(false);
         }
+    }
+
+    @Override
+    public boolean onPreferenceChange(Preference preference, Object newValue) {
+        Log.d(TAG, "[onPreferenceChange] preference.getKey() = " + preference.getKey() + ", newValue = " + newValue);
+        if (TextUtils.equals(preference.getKey(), KEY_ENABLE_OSD_SHARPNESS)) {
+            mPQSettingsManager.setOsdSharpnessEnabled((boolean) newValue);
+        }
+        return true;
     }
 
     @Override

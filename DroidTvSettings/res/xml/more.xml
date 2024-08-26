@@ -102,4 +102,8 @@
         android:icon="@drawable/ic_settings_tv"
         android:key="tv_extras"
         android:title="@string/tv_extras" />
+    <SwitchPreference
+        android:key="pq_osd_sharpness_enabled"
+        android:persistent="true"
+        android:title="@string/pq_osd_sharpness"/>
 </PreferenceScreen>

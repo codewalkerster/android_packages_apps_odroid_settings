@@ -52,11 +52,6 @@ public class PictureModeFragment extends SettingsPreferenceFragment implements P
             mPQSettingsManager = new PQSettingsManager(getActivity());
         }
 
-        final Preference pictureCustomerPref = (Preference) findPreference(PQ_CUSTOM);
-        if (!curPictureModeShow()) {
-            pictureCustomerPref.setEnabled(false);
-        }
-
         final ListPreference aspectratioPref = (ListPreference) findPreference(PQ_ASPECT_RATIO);
         if (mPQSettingsManager.hasPqCaseFunc(SystemControlManager.PqFuncCase.PQ_CASE_FUNC_ASPECT_RATIO)) {
             aspectratioPref.setValueIndex(mPQSettingsManager.getAspectRatioStatus());

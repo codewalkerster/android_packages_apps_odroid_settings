@@ -35,5 +35,9 @@
         android:icon="@drawable/ic_settings_more"
         android:key="key_quick_setting_more_settings"
         android:title="@string/title_key_quick_setting_more_settings" />
+    <SwitchPreference
+        android:key="pq_osd_sharpness_enabled"
+        android:persistent="true"
+        android:title="@string/pq_osd_sharpness"/>
 
 </PreferenceScreen>

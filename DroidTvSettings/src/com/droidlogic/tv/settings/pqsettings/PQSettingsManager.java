@@ -24,6 +24,8 @@ import vendor.amlogic.hardware.systemcontrol.V1_0.SourceInputParam;
 
 public class PQSettingsManager {
     public static final String TAG = "PQSettingsManager";
+    private final int mSave = 1;
+
     SystemControlManager mSystemControlManager;
     public PQSettingsManager (Context context) {
         mSystemControlManager = SystemControlManager.getInstance();
@@ -219,6 +221,19 @@ public class PQSettingsManager {
         mSystemControlManager.SetAisrMode(selection, save);
     }
 
+    public int getAisreDemoEnabled() {
+        final int AISR_DEMO = 1;
+        return mSystemControlManager.GetPQModuleDemoState(AISR_DEMO);
+    }
+
+    public int setAisreDemoEnabled(boolean enable) {
+        final int AISR_DEMO = 1;
+        int stateValue = 0;
+        if (enable) {
+            stateValue = 1;
+        }
+        return mSystemControlManager.SetPQModuleDemoState(AISR_DEMO, stateValue);
+    }
 
     public void setAdvancedColorManagementStatus (int value) {
         logDebug(TAG, true, "setAdvancedColorManagementStatus value:"+value);
@@ -333,21 +348,14 @@ public class PQSettingsManager {
         return mSystemControlManager.SetAiColor(value, isSave);
     }
 
-    public int getAisreDemoEnabled() {
-        final int AISR_DEMO = 1;
-        logDebug(TAG, false, "getAisreDemoEnabled: " +  mSystemControlManager.GetPQModuleDemoState(AISR_DEMO));
-        return mSystemControlManager.GetPQModuleDemoState(AISR_DEMO);
+    public boolean getOsdSharpnessEnabled() {
+        boolean osdSharpnessEnabled = mSystemControlManager.GetOsdSharpness();
+        logDebug(TAG, false, "getOsdSharpnessEnabled: " + osdSharpnessEnabled);
+        return osdSharpnessEnabled;
     }
 
-    public int setAisreDemoEnabled(boolean enable) {
-        logDebug(TAG, false, "setAisreDemoEnabled enable: " + enable);
-        final int AISR_DEMO = 1;
-        int stateValue = 0;
-        if (enable) {
-            stateValue = 1;
-        }
-        logDebug(TAG, false, "setAisreDemoEnabled stateValue: " + stateValue);
-        return mSystemControlManager.SetPQModuleDemoState(AISR_DEMO, stateValue);
+    public int setOsdSharpnessEnabled(boolean enable) {
+        return mSystemControlManager.SetOsdSharpness(enable, mSave);
     }
 
     public boolean hasPqCaseFunc(SystemControlManager.PqFuncCase type) {

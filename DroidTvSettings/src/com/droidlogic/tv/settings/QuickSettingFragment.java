@@ -49,6 +49,7 @@ import com.droidlogic.tv.settings.SettingsPreferenceFragment;
 import com.droidlogic.tv.settings.util.DroidUtils;
 import com.droidlogic.app.AudioEffectManager;
 import com.droidlogic.app.SystemControlManager;
+import com.droidlogic.tv.settings.pqsettings.PQSettingsManager;
 
 public class QuickSettingFragment extends SettingsPreferenceFragment implements Preference.OnPreferenceChangeListener {
 
@@ -57,9 +58,11 @@ public class QuickSettingFragment extends SettingsPreferenceFragment implements 
     private static final String KEY_TV_PICTURE = "key_quick_setting_picture_mode";
     private static final String KEY_MORE_SETTINGS = "key_quick_setting_more_settings";
     private static final String KEY_AI_PQ = "key_quick_setting_ai_pq";
+    public static final String KEY_ENABLE_OSD_SHARPNESS = "pq_osd_sharpness_enabled";
 
     private SystemControlManager mSystemControlManager;
     private AudioEffectManager mAudioEffectManager;
+    private PQSettingsManager mPQSettingsManager;
 
     public static QuickSettingFragment newInstance() {
         return new QuickSettingFragment();
@@ -71,6 +74,10 @@ public class QuickSettingFragment extends SettingsPreferenceFragment implements 
             mAudioEffectManager = AudioEffectManager.getInstance(getActivity());
         }
         mSystemControlManager = SystemControlManager.getInstance();
+        if (mPQSettingsManager == null) {
+            mPQSettingsManager = new PQSettingsManager(getActivity());
+        }
+
         super.onCreate(savedInstanceState);
     }
 
@@ -87,6 +94,12 @@ public class QuickSettingFragment extends SettingsPreferenceFragment implements 
         if (!isTv) {
             tvPicturePref.setVisible(false);
             moreSettingsPref.setVisible(false);
+        }
+        TwoStatePreference enableOsdSharpnessPref = (TwoStatePreference) findPreference(KEY_ENABLE_OSD_SHARPNESS);
+        enableOsdSharpnessPref.setOnPreferenceChangeListener(this);
+        enableOsdSharpnessPref.setChecked(mPQSettingsManager.getOsdSharpnessEnabled());
+        if (!mPQSettingsManager.hasPqCaseFunc(SystemControlManager.PqFuncCase.PQ_CASE_FUNC_OSD_SHARPNESS)) {
+            enableOsdSharpnessPref.setEnabled(false);
         }
     }
 
@@ -108,6 +121,10 @@ public class QuickSettingFragment extends SettingsPreferenceFragment implements 
     }
     @Override
     public boolean onPreferenceChange(Preference preference, Object newValue) {
+        Log.d(TAG, "[onPreferenceChange] preference.getKey() = " + preference.getKey() + ", newValue = " + newValue);
+        if (TextUtils.equals(preference.getKey(), KEY_ENABLE_OSD_SHARPNESS)) {
+            mPQSettingsManager.setOsdSharpnessEnabled((boolean)newValue);
+        }
         return true;
     }
 

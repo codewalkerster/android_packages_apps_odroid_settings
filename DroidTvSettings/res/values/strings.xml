@@ -2489,6 +2489,7 @@
     <string name="pq_saturation">Saturation</string>
     <string name="pq_color">color</string>
     <string name="pq_sharpness">Sharpness</string>
+    <string name="pq_osd_sharpness">OSD Sharpness enable</string>
     <string name="pq_backlight">Backlight</string>
     <string name="pq_tone">Tone</string>
     <string name="pq_hue">Hue</string>
