@@ -16,6 +16,9 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <bool name="enable_energy_modes">true</bool>
 
+    <string-array name="energy_mode_low_features">
+        <item>Critical updates and features</item>
+    </string-array>
     <string-array name="energy_mode_low_baseExemptPackages" translatable="false" >
         <item>com.netflix.ninja</item>
         <item>com.droidlogic.android.tv</item>
@@ -30,6 +33,12 @@
         <item>com.google.android.tv.NON_NETWORKED_STANDBY_FEATURES</item>
     </string-array>
 
+    <string-array name="energy_mode_moderate_features">
+        <item>Critical updates and features</item>
+        <item>Say Hey, Google to talk to Google Assistant</item>
+        <item>Control the TV with other Google Assistant devices, and vice versa</item>
+        <item>Google Cast (over Wi-Fi only)</item>
+    </string-array>
     <string-array name="energy_mode_moderate_baseExemptPackages" translatable="false">
         <item>com.google.android.gms</item>
         <item>com.google.android.katniss</item>
@@ -44,6 +53,13 @@
         <item>com.android.lowpowerstandby.HARDWARE_HOTWORD_DETECTION</item>
         <item>com.google.android.gms.PUSH_NOTIFICATIONS</item>
         <item>com.google.android.apps.mediashell.CAST_WIFI</item>
+    </string-array>
+    <string-array name="energy_mode_high_features">
+        <item>Critical updates and features</item>
+        <item>Say Hey, Google to talk to Google Assistant</item>
+        <item>Control the TV with other Google Assistant devices, and vice versa</item>
+        <item>Google Cast (over Wi-Fi and ethernet)</item>
+        <item>Google Home Platform, enables connected home set up, control and automations</item>
     </string-array>
 
     <string-array name="energy_mode_high_baseExemptPackages" translatable="false">
