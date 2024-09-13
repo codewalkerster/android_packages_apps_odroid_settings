@@ -14,7 +14,6 @@
      limitations under the License.
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string translatable="false" name="bluetooth_device_service_class">com.droidlogic.tv.settings.DefaultBluetoothDeviceService</string>
     <!-- DroidLogic start -->
     <!-- Main app title [CHAR LIMIT=40] -->
     <string name="settings_app_name">More Settings</string>

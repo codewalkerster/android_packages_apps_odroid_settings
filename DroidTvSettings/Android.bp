@@ -54,7 +54,6 @@ android_app {
         "guava",
         "statslog-tvsettings",
         "TwoPanelSettingsLib",
-        "BluetoothServices"
     ],
 
     libs: [
@@ -98,7 +97,6 @@ android_app {
         "guava",
         "statslog-tvsettings",
         "TwoPanelSettingsLib",
-        "BluetoothServices"
     ],
 
     libs: [
@@ -140,7 +138,6 @@ android_app {
         "guava",
         "statslog-tvsettings",
         "TwoPanelSettingsLib",
-        "BluetoothServices"
     ],
 
     libs: [

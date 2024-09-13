@@ -111,7 +111,7 @@ public final class ConnectedDevicesSliceUtils {
 
     public static boolean isFindMyRemoteButtonEnabled(Context context) {
         return Settings.Global.getInt(context.getContentResolver(),
-                FIND_MY_REMOTE_PHYSICAL_BUTTON_ENABLED_SETTING, 1) != 0;
+                FIND_MY_REMOTE_PHYSICAL_BUTTON_ENABLED_SETTING, 0) != 0;
     }
 
     static void setFindMyRemoteButtonEnabled(Context context, boolean enabled) {

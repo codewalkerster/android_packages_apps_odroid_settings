@@ -43,6 +43,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.pm.ResolveInfo;
+import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.ConditionVariable;
@@ -193,13 +195,13 @@ public class ConnectedDevicesSliceProvider extends SliceProvider implements
         if (DEBUG) {
             Log.d(TAG, "onBindSlice: " + sliceUri);
         }
-        /*if (ConnectedDevicesSliceUtils.isGeneralPath(sliceUri)) {
+        if (ConnectedDevicesSliceUtils.isGeneralPath(sliceUri)) {
             return createGeneralSlice(sliceUri);
         } else if (ConnectedDevicesSliceUtils.isBluetoothDevicePath(sliceUri)) {
             return createBluetoothDeviceSlice(sliceUri);
         } else if (ConnectedDevicesSliceUtils.isFindMyRemotePath(sliceUri)) {
             return createFindMyRemoteSlice(sliceUri);
-        }*/
+        }
         return null;
     }
 
@@ -663,7 +665,30 @@ public class ConnectedDevicesSliceProvider extends SliceProvider implements
         List<ResolveInfo> receivers = getContext().getPackageManager().queryBroadcastReceivers(
                 new Intent(ACTION_FIND_MY_REMOTE), 0);
         if (receivers.isEmpty()) {
-            Log.d(TAG, "receivers is null");
+            return;
+        }
+
+        boolean isFmrReceiverEnabled = false;
+        for (ResolveInfo receiver : receivers) {
+            ActivityInfo activityInfo = receiver.activityInfo;
+
+            if (activityInfo != null) {
+                ComponentName componentName =
+                    new ComponentName(activityInfo.packageName, activityInfo.name);
+                int componentEnabledSetting =
+                    getContext().getPackageManager().getComponentEnabledSetting(componentName);
+                isFmrReceiverEnabled =
+                    (componentEnabledSetting == PackageManager.COMPONENT_ENABLED_STATE_ENABLED)
+                        || (activityInfo.isEnabled()
+                        && componentEnabledSetting == PackageManager.COMPONENT_ENABLED_STATE_DEFAULT);
+            }
+
+            if (isFmrReceiverEnabled) {
+                break;
+            }
+        }
+
+        if (!isFmrReceiverEnabled) {
             return;
         }
 

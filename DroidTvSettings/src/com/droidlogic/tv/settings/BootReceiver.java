@@ -21,8 +21,6 @@ import com.droidlogic.tv.settings.sliceprovider.DisplayDensityManagerService;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.os.UserManager;
 import android.util.Log;
 
 import com.droidlogic.tv.settings.sliceprovider.accessories.BluetoothDevicesService;
@@ -39,36 +37,9 @@ public class BootReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         try {
-            UserManager userManager = (UserManager) context.getSystemService(Context.USER_SERVICE);
-            boolean isUnlokced = userManager.isUserUnlocked();
-            Log.d(TAG, "userManager.isUserUnlocked(): " + isUnlokced);
-            if (isUnlokced) {
-                // user Unlokced
-                startBluetoothService(context);
-            } else {
-                // user Unlokced，delay start service
-                IntentFilter filter = new IntentFilter(Intent.ACTION_USER_UNLOCKED);
-                BroadcastReceiver userUnlockedReceiver = new BroadcastReceiver() {
-                    @Override
-                    public void onReceive(Context context, Intent intent) {
-                        // Unlokced, start service
-                        startBluetoothService(context);
-                        context.unregisterReceiver(this);
-                    }
-                };
-                context.registerReceiver(userUnlockedReceiver, filter);
-            }
+            //context.startService(new Intent(context,FrameRateService.class));
         } catch (Exception e) {
             Log.e(TAG, "startFrameRateService error !!", e);
-        }
-    }
-
-    private void startBluetoothService(Context context) {
-        try {
-            Intent BtDeviceServiceIntent = new Intent(context, DefaultBluetoothDeviceService.class);
-            context.startService(BtDeviceServiceIntent);
-        } catch (Exception e) {
-            Log.e(TAG, "startBluetoothService error !!", e);
         }
     }
 }
