@@ -2709,9 +2709,12 @@
     <string name="wifi_hotspot_auto_off_summary">Wi\u2011Fi hotspot will turn off if no devices are connected</string>
     <string name="wifi_hotspot_auto_off_title">Turn off hotspot automatically</string>
     <string name="wifi_hotspot_password_title">Hotspot password</string>
+    <string name="wifi_hotspot_password_toast_text">Password size must be at least 8 and no more than 63</string>
     <string name="summary_placeholder" translatable="false">&#160;</string>
     <string name="wifi_security_none">None</string>
     <string name="wifi_hotspot_name_title">Hotspot name</string>
+    <string name="wifi_hotspot_name_toast_text">SSID size must be at least 1 and no more than 32</string>
+    <string name="soft_ap_status_update">Updating the soft ap status—this will take a few seconds</string>
     <string name="wifi_security_wpa2">WPA2 PSK</string>
     <string name="wifi_security">Security</string>
     <string name="wifi_ap_choose_2G">2.4 GHz Band</string>

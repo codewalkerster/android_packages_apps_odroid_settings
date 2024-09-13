@@ -22,7 +22,9 @@ import androidx.annotation.VisibleForTesting;
 import androidx.preference.EditTextPreference;
 import androidx.preference.Preference;
 import android.util.Log;
-//import com.droidlogic.tv.settings.wifi.WifiTetherBasePreferenceController.OnTetherConfigUpdateListener;
+import android.widget.Toast;
+import com.droidlogic.tv.settings.R;
+
 public class WifiTetherSSIDPreferenceController extends WifiTetherBasePreferenceController
         implements ValidatedEditTextPreference.Validator {
 
@@ -34,11 +36,13 @@ public class WifiTetherSSIDPreferenceController extends WifiTetherBasePreference
     private String mSSID = null;
     private WifiDeviceNameTextValidator mWifiDeviceNameTextValidator;
     EditTextPreference preference = null;
+    private Context mContext;
 
     public WifiTetherSSIDPreferenceController(Context context,
             OnTetherConfigUpdateListener listener) {
         super(context, listener);
         mWifiDeviceNameTextValidator = new WifiDeviceNameTextValidator();
+        mContext = context;
     }
 
     @Override
@@ -49,15 +53,15 @@ public class WifiTetherSSIDPreferenceController extends WifiTetherBasePreference
     @Override
     public void updateDisplay() {
         if (null != preference) {
-        String ssid = preference.getText();
+            String ssid = preference.getText();
             Log.d(TAG, "updateSsidDisplay: ssid:" + ssid);
-            if (!isTextValid(mSSID)) {
-                mSSID = DEFAULT_SSID;
-                mListener.onTetherConfigUpdated();
-            }
-            else if (!ssid.equals(mSSID)) {
-                mSSID = ssid;
-                mListener.onTetherConfigUpdated();
+            if (!isTextValid(ssid)) {
+                Toast.makeText(mContext, R.string.wifi_hotspot_name_toast_text, Toast.LENGTH_SHORT).show();
+            } else {
+                if (!ssid.equals(mSSID)) {
+                    mSSID = ssid;
+                    mListener.onTetherConfigUpdated();
+                }
             }
         }
         if (!isTextValid(mSSID)) {

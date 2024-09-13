@@ -21,6 +21,8 @@ import android.net.wifi.SoftApConfiguration;
 import androidx.preference.EditTextPreference;
 import androidx.preference.Preference;
 import android.text.TextUtils;
+import android.widget.Toast;
+import android.util.Log;
 
 import com.droidlogic.tv.settings.R;
 
@@ -33,6 +35,9 @@ public class WifiTetherPasswordPreferenceController extends WifiTetherBasePrefer
 
     private String mPassword;
     EditTextPreference preference = null;
+    private Context mContext;
+    private static final int PASSWORD_MIN_LENGTH = 8;
+    private static final int PASSWORD_MAX_LENGTH = 63;
 
     public WifiTetherPasswordPreferenceController(Context context,
             OnTetherConfigUpdateListener listener) {
@@ -49,9 +54,13 @@ public class WifiTetherPasswordPreferenceController extends WifiTetherBasePrefer
         if (null != preference) {
 
         String password = preference.getText();
-            if (password != null && !password.equals(mPassword)) {
-                mPassword = password;
-                mListener.onTetherConfigUpdated();
+            if (password != null && !(password.length() >= PASSWORD_MIN_LENGTH && password.length() <= PASSWORD_MAX_LENGTH)) {
+                Toast.makeText(mContext, R.string.wifi_hotspot_password_toast_text, Toast.LENGTH_SHORT).show();
+            } else {
+                if (password != null && !password.equals(mPassword)) {
+                    mPassword = password;
+                    mListener.onTetherConfigUpdated();
+                }
             }
         }
         if (!isTextValid(mPassword)) {
