@@ -57,6 +57,7 @@ import com.droidlogic.app.SystemControlManager;
 
 import com.droidlogic.tv.settings.TvSettingsActivity;
 import com.droidlogic.tv.settings.R;
+import com.droidlogic.tv.settings.SettingsConstant;
 import com.droidlogic.tv.settings.tvoption.SoundParameterSettingManager;
 import static com.droidlogic.tv.settings.util.DroidUtils.logDebug;
 
@@ -77,6 +78,7 @@ public class SoundModeFragment extends SettingsPreferenceFragment implements Pre
     private static final String KEY_TV_SOUND_AUDIO_DEVICE                   = "key_tv_sound_output_device";
     private static final String KEY_COEXIST_SPDIF_OTHER                     = "key_coexist_spdif_other";
     private static final String KEY_VAD_SWITCH                              = "key_tv_vad_switch";
+    private static final String KEY_ADVANCE_SOUND                           = "advanced_sound_settings";
 
     /* index value, refer to array_audio_settings_output_dev_entries in xml*/
     public static final int UI_INDEX_DEVICE_OUT_AUTO                        = 0;
@@ -100,6 +102,7 @@ public class SoundModeFragment extends SettingsPreferenceFragment implements Pre
     private int mAudioDeviceOutputStrategy = DroidAudioManager.OUTPUT_STRATEGY_AUTO;
     private Context mContext = null;
     private HashSet<AudioDeviceInfo> mAudioOutputDevices = new HashSet<AudioDeviceInfo>();
+    private Preference mAdvanced_sound_settings_pref;
 
     private static final int UI_LOAD_TIMEOUT = 50;//100ms
     private static final int LOAD_UI = 0;
@@ -206,6 +209,9 @@ public class SoundModeFragment extends SettingsPreferenceFragment implements Pre
 
         mVadSwitchPref = (TwoStatePreference) findPreference(KEY_VAD_SWITCH);
         mVadSwitchPref.setChecked(mDroidAudioManager.isVadOn());
+
+        mAdvanced_sound_settings_pref = (Preference)findPreference(KEY_ADVANCE_SOUND);
+
     }
 
     private boolean initView() {
@@ -623,6 +629,14 @@ public class SoundModeFragment extends SettingsPreferenceFragment implements Pre
         String strategy = DroidAudioManager.strategyToString(mAudioDeviceOutputStrategy);
         mAudioOutputDevPref.setSummary(getActivity().getResources().getString(indexToStringIndex(uiIndex)) + " (" + strategy +  ")");
         mAudioOutputDevPref.setEnabled(true);
+
+        // if SoundBarModeEnabled is true,hide some UI for SoundBarMode
+        if (SettingsConstant.isSoundbarFeature() && mDroidAudioManager.isSoundBarModeEnabled()) {
+            logDebug(TAG, false, "SoundBarModeEnabled is true, hide some UI for SoundBarMode");
+            mAudioOutputDevPref.setVisible(false);
+            mCoexistSpdifSwitchPref.setVisible(false);
+            mAdvanced_sound_settings_pref.setVisible(false);
+        }
     }
 
     private int convertDevicesToUiDisplay(int[] devices) {
