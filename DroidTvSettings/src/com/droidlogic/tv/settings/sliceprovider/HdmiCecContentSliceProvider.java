@@ -28,8 +28,13 @@ public class HdmiCecContentSliceProvider extends MediaSliceProvider {
     // Only send cec volume keys when it's audio passthrough decoding
     private static final int PASSTHROUGH_MODE_ACCORD_WITH_DECODING = 2;
 
+    private static final String DROIDLOGIC_CEC_SUPPORT = "droidlogic_cec_support";
+    private boolean mHasAutoPatch;
+
     @Override
     public boolean onCreateSliceProvider() {
+        mHasAutoPatch = Settings.Global.getInt(getContext().getContentResolver(),
+                DROIDLOGIC_CEC_SUPPORT, 0) == 1;
         return true;
     }
 
@@ -72,10 +77,11 @@ public class HdmiCecContentSliceProvider extends MediaSliceProvider {
                                         HdmiCecSliceBroadcastReceiver.class),
                                 mHdmiCecContentManager.isHdmiControlEnabled()));
 
+
         int volumePassthroughMode = getContext().getResources().
                                         getInteger(R.integer.config_cec_passthroughMode);
         logDebug(TAG, true, "createHdmiCecSlice volumePassthroughMode:" + volumePassthroughMode);
-        if (PASSTHROUGH_MODE_ADD_WARNING == volumePassthroughMode) {
+        if (mHasAutoPatch && PASSTHROUGH_MODE_ADD_WARNING == volumePassthroughMode) {
             boolean volumeControl = mHdmiCecContentManager.getVolumeControlStatus();
             String title = volumeControl ? getContext().getString(R.string.enabled)
                     : getContext().getString(R.string.disabled);
