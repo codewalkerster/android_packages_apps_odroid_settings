@@ -35,6 +35,8 @@ import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.SystemClock;
+import android.os.Handler;
+import android.os.Looper;
 
 import java.lang.Thread;
 
@@ -47,6 +49,7 @@ public class BluetoothActionActivity extends Activity implements BluetoothAction
     private boolean mBtDeviceServiceBound;
     private BluetoothDevice mDevice;
     private BluetoothDevicesService.LocalBinder mBtDeviceServiceBinder;
+    private static final int NOTIFICATION_DELAY_TIME = 900;
 
     private final ServiceConnection mBtDeviceServiceConnection = new SimplifiedConnection() {
 
@@ -123,10 +126,13 @@ public class BluetoothActionActivity extends Activity implements BluetoothAction
             default:
                 // no-op
         }
-        getContentResolver().notifyChange(ConnectedDevicesSliceUtils.GENERAL_SLICE_URI, null);
         i.setAction(ACTION_BACK_AND_UPDATE_SLICE);
         setResult(RESULT_OK, i);
-        finish();
+        new Handler(Looper.getMainLooper()).postDelayed(() -> {
+            getContentResolver().notifyChange(ConnectedDevicesSliceUtils.GENERAL_SLICE_URI, null);
+            finish();
+        }, NOTIFICATION_DELAY_TIME);
+
     }
 
     @Override
