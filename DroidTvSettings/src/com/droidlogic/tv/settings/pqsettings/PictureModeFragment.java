@@ -67,10 +67,9 @@ public class PictureModeFragment extends SettingsPreferenceFragment implements P
 
         final Preference backlightPref = (Preference) findPreference(PQ_BACKLIGHT);
         backlightPref.setSummary(mPQSettingsManager.getBacklightStatus() + "%");
-
-        if (!mPQSettingsManager.hasPqCaseFunc(SystemControlManager.PqFuncCase.PQ_CASE_FUNC_BACKLIGHT)) {
-            backlightPref.setEnabled(false);
-        }
+        //The set-top box does not contain this menu, but it does not mean
+        // that it can be deleted entirely, and it is a better way to hide it.
+        backlightPref.setVisible(false);
 
         final Preference pictureAllResetPref = (Preference) findPreference(PQ_ALLRESET);
         if (!mPQSettingsManager.hasPqCaseFunc(SystemControlManager.PqFuncCase.PQ_CASE_FUNC_RESET)) {

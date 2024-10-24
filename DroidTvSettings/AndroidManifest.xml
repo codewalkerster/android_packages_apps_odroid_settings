@@ -214,10 +214,16 @@
                   android:name=".tvoption.HdmiCecActivity"
                   android:theme="@style/TvSettingsActivityTheme"/>
         <activity android:configChanges="keyboard|keyboardHidden|navigation"
-             android:name=".pqsettings.PictureModeActivity"
-             android:theme="@style/Theme.Settings.Transparent"
-             android:excludeFromRecents="true"
-             android:exported="true" />
+                  android:name=".pqsettings.PictureModeActivity"
+                  android:theme="@style/Theme.Settings.Transparent"
+                  android:excludeFromRecents="true"
+                  android:exported="true"/>
+        <activity
+                android:name=".pqsettings.PQResetAllActivity"
+                android:configChanges="keyboard|keyboardHidden|navigation"
+                android:excludeFromRecents="true"
+                android:theme="@style/TvSettingsActivityTheme"
+                android:exported="true" />
         <activity
                 android:name=".wifi.HotSpotActivity"
                 android:configChanges="keyboard|keyboardHidden|navigation"

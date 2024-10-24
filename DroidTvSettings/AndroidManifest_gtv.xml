@@ -182,23 +182,29 @@
             android:name=".tvoption.HdmiCecActivity"
             android:theme="@style/TvSettingsActivityTheme"/>
         <activity android:name=".pqsettings.PictureModeActivity"
-                  android:configChanges="keyboard|keyboardHidden|navigation"
-                  android:excludeFromRecents="true"
-                  android:theme="@style/Theme.Settings.Transparent"
-                  android:label="@string/picture_settings_title"
-                  android:exported="true">
+            android:configChanges="keyboard|keyboardHidden|navigation"
+            android:excludeFromRecents="true"
+            android:theme="@style/Theme.Settings.Transparent"
+            android:label="@string/picture_settings_title"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.settings.DISPLAY_SETTINGS" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+        <activity
+             android:name=".pqsettings.PQResetAllActivity"
+             android:configChanges="keyboard|keyboardHidden|navigation"
+             android:excludeFromRecents="true"
+             android:theme="@style/TvSettingsActivityTheme"
+             android:exported="true" />
         <activity android:name=".tvsource.TvSourceActivity"
-                  android:launchMode="singleInstance"
-                  android:theme="@style/TvSettingsActivityTheme"
-                  android:configChanges="keyboard|keyboardHidden|navigation"
-                  android:excludeFromRecents="true"
-                  android:label="@string/settings_app_name_gtv"
-                  android:exported="true">
+             android:launchMode="singleInstance"
+             android:theme="@style/TvSettingsActivityTheme"
+             android:configChanges="keyboard|keyboardHidden|navigation"
+             android:excludeFromRecents="true"
+             android:label="@string/settings_app_name_gtv"
+             android:exported="true">
             <intent-filter>
                 <action android:name="com.android.tv.action.VIEW_INPUTS" />
                 <category android:name="android.intent.category.DEFAULT" />
