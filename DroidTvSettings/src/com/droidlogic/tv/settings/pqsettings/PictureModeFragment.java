@@ -61,7 +61,11 @@ public class PictureModeFragment extends SettingsPreferenceFragment implements P
         }
 
         final Preference aipqPref = (Preference) findPreference(PQ_AI_PQ);
-        if (!mPQSettingsManager.hasAipqFunc() && !mPQSettingsManager.hasAisrFunc()) {
+
+        if (mPQSettingsManager.hasPqCaseFunc(SystemControlManager.PqFuncCase.PQ_CASE_FUNC_AI_PQ)
+                || mPQSettingsManager.hasPqCaseFunc(SystemControlManager.PqFuncCase.PQ_CASE_FUNC_AI_SR)) {
+            aipqPref.setEnabled(true);
+        } else {
             aipqPref.setEnabled(false);
         }
 

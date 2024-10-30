@@ -93,7 +93,7 @@ public class AiPqFragment extends SettingsPreferenceFragment implements Preferen
         }
 
         mAisrLevelPref = (ListPreference) findPreference(KEY_LEVEL_AISR);
-        if (mPQSettingsManager.hasAisrFunc()) {
+        if (mPQSettingsManager.hasPqCaseFunc(SystemControlManager.PqFuncCase.PQ_CASE_FUNC_AI_SR)) {
             mAisrLevelPref.setValueIndex(mPQSettingsManager.getAisrModeLevel());
             mAisrLevelPref.setOnPreferenceChangeListener(this);
         } else {
