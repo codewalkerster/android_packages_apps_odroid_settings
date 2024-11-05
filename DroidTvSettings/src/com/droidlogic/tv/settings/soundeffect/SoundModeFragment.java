@@ -199,12 +199,12 @@ public class SoundModeFragment extends SettingsPreferenceFragment implements Pre
         mAudioOutputDevPref.setOnPreferenceChangeListener(this);
         mAudioDeviceOutputStrategy = mSystemControl.getPropertyInt(DroidAudioManager.PROP_AUDIO_OUTPUT_STRATEGY, DroidAudioManager.OUTPUT_STRATEGY_AUTO);
         if (mAudioDeviceOutputStrategy < DroidAudioManager.OUTPUT_STRATEGY_AUTO || mAudioDeviceOutputStrategy > DroidAudioManager.OUTPUT_STRATEGY_MANUAL) {
-            logDebug(TAG, false, "refreshPref strategy invalid:" + mAudioDeviceOutputStrategy);
+            logDebug(TAG, true, "refreshPref strategy invalid:" + mAudioDeviceOutputStrategy);
             mAudioDeviceOutputStrategy = DroidAudioManager.OUTPUT_STRATEGY_AUTO;
         }
 
         mCoexistSpdifSwitchPref = (TwoStatePreference) findPreference(KEY_COEXIST_SPDIF_OTHER);
-        mCoexistSpdifSwitchPref.setChecked(mSystemControl.getPropertyBoolean("persist.vendor.media.audio.spdif.coexist", true));
+        mCoexistSpdifSwitchPref.setChecked(mSystemControl.getPropertyBoolean(DroidAudioManager.PROP_AUDIO_OUTPUT_SPDIF_COEXIST, true));
 
         mVadSwitchPref = (TwoStatePreference) findPreference(KEY_VAD_SWITCH);
         mVadSwitchPref.setChecked(mDroidAudioManager.isVadOn());
@@ -295,11 +295,6 @@ public class SoundModeFragment extends SettingsPreferenceFragment implements Pre
             mAudioEffectManager.setVirtualSurround(selection);
         } else if (TextUtils.equals(preference.getKey(), KEY_TV_SOUND_AUDIO_DEVICE)) {
             int[] devices = new int[] {indexToAudioDev(selection)};
-            int strategy = DroidAudioManager.OUTPUT_STRATEGY_MANUAL;
-            if (devices.length == 1 && devices[0] == DroidAudioManager.DROID_AUDIO_FORCE_USE_NONE) {
-                strategy = DroidAudioManager.OUTPUT_STRATEGY_AUTO;
-            }
-            mSystemControl.setProperty(DroidAudioManager.PROP_AUDIO_OUTPUT_STRATEGY, strategy + "");
             mDroidAudioManager.setOutputDevices(devices);
             refreshPref();
         }
@@ -666,15 +661,13 @@ public class SoundModeFragment extends SettingsPreferenceFragment implements Pre
 
         mAudioDeviceOutputStrategy = mSystemControl.getPropertyInt(DroidAudioManager.PROP_AUDIO_OUTPUT_STRATEGY, DroidAudioManager.OUTPUT_STRATEGY_AUTO);
         int uiIndex = convertDevicesToUiDisplay(mDroidAudioManager.getOutputDevices());
-        int prefIndex = uiIndex;
-        if (mAudioDeviceOutputStrategy == DroidAudioManager.OUTPUT_STRATEGY_AUTO) {
-            prefIndex = UI_INDEX_DEVICE_OUT_AUTO;
+        mAudioOutputDevPref.setValue(uiIndex + "");
+        mAudioOutputDevPref.setSummary(getActivity().getResources().getString(indexToStringIndex(uiIndex)));
+        boolean isAllowSetOutputDevice = true;
+        if (mAudioDeviceOutputStrategy == DroidAudioManager.OUTPUT_STRATEGY_SEMI_AUTO && !isSemiAutoAllowSetDevice()) {
+            isAllowSetOutputDevice = false;
         }
-        mAudioOutputDevPref.setValue(prefIndex + "");
-
-        String strategy = DroidAudioManager.strategyToString(mAudioDeviceOutputStrategy);
-        mAudioOutputDevPref.setSummary(getActivity().getResources().getString(indexToStringIndex(uiIndex)) + " (" + strategy +  ")");
-        mAudioOutputDevPref.setEnabled(true);
+        mAudioOutputDevPref.setEnabled(isAllowSetOutputDevice);
 
         // if SoundBarModeEnabled is true,hide some UI for SoundBarMode
         if (SettingsConstant.isSoundbarFeature() && mDroidAudioManager.isSoundBarModeEnabled()) {
@@ -723,7 +716,7 @@ public class SoundModeFragment extends SettingsPreferenceFragment implements Pre
             case UI_INDEX_DEVICE_OUT_BLUETOOTH:
                 return R.string.title_tv_sound_output_device_bluetooth;
             default:
-                logDebug(TAG, false, "audioDevToIndex not supported device:" + index);
+                logDebug(TAG, false, "indexToStringIndex not supported device:" + index);
                 return 0;
         }
     }
@@ -736,11 +729,13 @@ public class SoundModeFragment extends SettingsPreferenceFragment implements Pre
                 return UI_INDEX_DEVICE_OUT_HEADPHONE;
             case DroidAudioManager.DROID_AUDIO_FORCE_USE_SPDIF:
                 return UI_INDEX_DEVICE_OUT_SPDIF;
-            case DroidAudioManager.DROID_AUDIO_FORCE_USE_HDMI_OUT:
-                return UI_INDEX_DEVICE_OUT_HDMI_OUT;
-            case DroidAudioManager.DROID_AUDIO_FORCE_USE_HDMI_ARC:
-                return UI_INDEX_DEVICE_OUT_HDMI_ARC;
-            case DroidAudioManager.DROID_AUDIO_FORCE_USE_WIRED_ACCESSORY:
+                case DroidAudioManager.DROID_AUDIO_FORCE_USE_HDMI:
+                if (DroidLogicUtils.isTv()) {
+                    return UI_INDEX_DEVICE_OUT_HDMI_ARC;
+                } else {
+                    return UI_INDEX_DEVICE_OUT_HDMI_OUT;
+                }
+            case DroidAudioManager.DROID_AUDIO_FORCE_USE_USB:
                 return UI_INDEX_DEVICE_OUT_USB;
             case DroidAudioManager.DROID_AUDIO_FORCE_USE_BT_A2DP:
                 return UI_INDEX_DEVICE_OUT_BLUETOOTH;
@@ -758,14 +753,13 @@ public class SoundModeFragment extends SettingsPreferenceFragment implements Pre
                 return DroidAudioManager.DROID_AUDIO_FORCE_USE_SPEAKER;
             case UI_INDEX_DEVICE_OUT_SPDIF:
                 return DroidAudioManager.DROID_AUDIO_FORCE_USE_SPDIF;
-            case UI_INDEX_DEVICE_OUT_HDMI_OUT:
-                return DroidAudioManager.DROID_AUDIO_FORCE_USE_HDMI_OUT;
             case UI_INDEX_DEVICE_OUT_HEADPHONE:
                 return DroidAudioManager.DROID_AUDIO_FORCE_USE_HEADPHONES;
             case UI_INDEX_DEVICE_OUT_HDMI_ARC:
-                return DroidAudioManager.DROID_AUDIO_FORCE_USE_HDMI_ARC;
+            case UI_INDEX_DEVICE_OUT_HDMI_OUT:
+                return DroidAudioManager.DROID_AUDIO_FORCE_USE_HDMI;
             case UI_INDEX_DEVICE_OUT_USB:
-                return DroidAudioManager.DROID_AUDIO_FORCE_USE_WIRED_ACCESSORY;
+                return DroidAudioManager.DROID_AUDIO_FORCE_USE_USB;
             case UI_INDEX_DEVICE_OUT_BLUETOOTH:
                 return DroidAudioManager.DROID_AUDIO_FORCE_USE_BT_A2DP;
             default:
@@ -774,70 +768,74 @@ public class SoundModeFragment extends SettingsPreferenceFragment implements Pre
         }
     }
 
-    private boolean isAllowSetDevice() {
+    private HashSet<Integer> indexToAudioTypes(int index) {
+        HashSet<Integer> sinkDevices = new HashSet<>();
+        switch (index) {
+            case UI_INDEX_DEVICE_OUT_SPEAKER:
+                sinkDevices.add(AudioDeviceInfo.TYPE_BUILTIN_SPEAKER);
+                break;
+            case UI_INDEX_DEVICE_OUT_SPDIF:
+                sinkDevices.add(AudioDeviceInfo.TYPE_LINE_DIGITAL);
+                break;
+            case UI_INDEX_DEVICE_OUT_HDMI_OUT:
+                sinkDevices.add(AudioDeviceInfo.TYPE_HDMI);
+                break;
+            case UI_INDEX_DEVICE_OUT_HEADPHONE:
+                sinkDevices.add(AudioDeviceInfo.TYPE_WIRED_HEADPHONES);
+                sinkDevices.add(AudioDeviceInfo.TYPE_WIRED_HEADSET);
+                break;
+            case UI_INDEX_DEVICE_OUT_HDMI_ARC:
+                sinkDevices.add(AudioDeviceInfo.TYPE_HDMI_ARC);
+                sinkDevices.add(AudioDeviceInfo.TYPE_HDMI_EARC);
+                break;
+            case UI_INDEX_DEVICE_OUT_USB:
+                sinkDevices.add(AudioDeviceInfo.TYPE_USB_ACCESSORY);
+                sinkDevices.add(AudioDeviceInfo.TYPE_USB_DEVICE);
+                sinkDevices.add(AudioDeviceInfo.TYPE_USB_HEADSET);
+                break;
+            case UI_INDEX_DEVICE_OUT_BLUETOOTH:
+                sinkDevices.add(AudioDeviceInfo.TYPE_BLUETOOTH_A2DP);
+                break;
+            default:
+                // logDebug(TAG, false, "indexToAudioTypes not supported ui index:" + index);
+                break;
+        }
+        return sinkDevices;
+    }
+
+    private boolean isSemiAutoAllowSetDevice() {
         AudioDeviceInfo[] outputDevices = mAudioManager.getDevices(AudioManager.GET_DEVICES_OUTPUTS);
-        if (mAudioDeviceOutputStrategy != DroidAudioManager.OUTPUT_STRATEGY_MANUAL) {
-            for (AudioDeviceInfo info : outputDevices) {
-                if (info.getType() == AudioDeviceInfo.TYPE_BLUETOOTH_A2DP ||
-                        info.getType() == AudioDeviceInfo.TYPE_BLUETOOTH_SCO ||
-                        info.getType() == AudioDeviceInfo.TYPE_WIRED_HEADPHONES ||
-                        info.getType() == AudioDeviceInfo.TYPE_WIRED_HEADSET ||
-                        info.getType() == AudioDeviceInfo.TYPE_USB_ACCESSORY ||
-                        info.getType() == AudioDeviceInfo.TYPE_USB_DEVICE ||
-                        info.getType() == AudioDeviceInfo.TYPE_USB_HEADSET) {
-                    return false;
-                }
+        for (AudioDeviceInfo info : outputDevices) {
+            if (info.getType() == AudioDeviceInfo.TYPE_BLUETOOTH_A2DP ||
+                    info.getType() == AudioDeviceInfo.TYPE_BLUETOOTH_SCO ||
+                    info.getType() == AudioDeviceInfo.TYPE_WIRED_HEADPHONES ||
+                    info.getType() == AudioDeviceInfo.TYPE_WIRED_HEADSET ||
+                    info.getType() == AudioDeviceInfo.TYPE_USB_ACCESSORY ||
+                    info.getType() == AudioDeviceInfo.TYPE_USB_DEVICE ||
+                    info.getType() == AudioDeviceInfo.TYPE_USB_HEADSET) {
+                return false;
             }
         }
         return true;
     }
 
     private boolean isConnectedDev(int index) {
-        if (index == UI_INDEX_DEVICE_OUT_SPDIF) {
+        if (mAudioDeviceOutputStrategy == DroidAudioManager.OUTPUT_STRATEGY_AUTO) {
+            HashSet<Integer> audioTypelist = indexToAudioTypes(index);
+            if (audioTypelist.size() == 0) {
+                return false;
+            }
             AudioDeviceInfo[] outputDevices = mAudioManager.getDevices(AudioManager.GET_DEVICES_OUTPUTS);
             for (AudioDeviceInfo info : outputDevices) {
-                if (info.isSink() && info.getType() == AudioDeviceInfo.TYPE_LINE_DIGITAL) {
-                    return true;
+                if (info.isSink()) {
+                    if (audioTypelist.contains(info.getType())) {
+                        return true;
+                    }
                 }
             }
             return false;
-        } else if (index == UI_INDEX_DEVICE_OUT_HDMI_OUT) {
-            return !DroidLogicUtils.isTv();
-        } else if (index == UI_INDEX_DEVICE_OUT_HDMI_ARC || index == UI_INDEX_DEVICE_OUT_HEADPHONE){
-            return DroidLogicUtils.isTv();
         } else {
             return true;
         }
-//        // reserve auto ui code.
-//        if (mAudioDeviceOutputStrategy == DroidAudioManager.OUTPUT_STRATEGY_SEMI_AUTO) {
-//            if (index == UI_INDEX_DEVICE_OUT_SPEAKER  || index == UI_INDEX_DEVICE_OUT_HDMI_ARC || index == UI_INDEX_DEVICE_OUT_SPDIF) {
-//                // Semi-Auto need display SPK/ARC/SPDIF
-//                return true;
-//            }
-//        } else if (mAudioDeviceOutputStrategy == DroidAudioManager.OUTPUT_STRATEGY_MANUAL) {
-//            return true;
-//        } else {
-//            return true;
-//        }
-//        AudioDeviceInfo[] outputDevices = mAudioManager.getDevices(AudioManager.GET_DEVICES_OUTPUTS);
-//        for (AudioDeviceInfo info : outputDevices) {
-//            if (info.isSink()) {
-//                if (index == UI_INDEX_DEVICE_OUT_HEADPHONE) {
-//                    if (info.getType() == AudioDeviceInfo.TYPE_WIRED_HEADPHONES ||
-//                            info.getType() == AudioDeviceInfo.TYPE_WIRED_HEADSET) {
-//                        return true;
-//                    }
-//                } else if (index == UI_INDEX_DEVICE_OUT_USB) {
-//                    if (info.getType() == AudioDeviceInfo.TYPE_USB_ACCESSORY ||
-//                            info.getType() == AudioDeviceInfo.TYPE_USB_DEVICE ||
-//                            info.getType() == AudioDeviceInfo.TYPE_USB_HEADSET) {
-//                        return true;
-//                    }
-//                } else if (info.getType() == indexToAudioDev(index)) {
-//                    return true;
-//                }
-//            }
-//        }
-//        return false;
     }
 }
