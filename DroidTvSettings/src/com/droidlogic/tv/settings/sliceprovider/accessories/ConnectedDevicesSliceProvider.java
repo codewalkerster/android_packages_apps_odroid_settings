@@ -336,10 +336,7 @@ public class ConnectedDevicesSliceProvider extends SliceProvider implements
         if (cachedDevice != null && !cachedDevice.isBusy()) {
             // Whether the device is actually connected from CachedBluetoothDevice's perceptive.
 
-            //boolean isConnected = AccessoryUtils.isConnected(device);
-            boolean isConnected = AccessoryUtils.isConnected(device)
-                    && AccessoryUtils.getCachedBluetoothDevice(context, device) != null
-                    && AccessoryUtils.getCachedBluetoothDevice(context, device).isConnected();
+            boolean isConnected = AccessoryUtils.isConnected(device);
             Log.d(TAG, "createBtDeviceSlicePreference isConnected:" + isConnected);
 
             RowBuilder connectionActionPref = new RowBuilder()
@@ -725,10 +722,7 @@ public class ConnectedDevicesSliceProvider extends SliceProvider implements
             Context context, BluetoothDevice device) {
         PreferenceSliceBuilder.RowBuilder pref = new PreferenceSliceBuilder.RowBuilder();
 
-        //boolean isConnected = AccessoryUtils.isConnected(device);
-        boolean isConnected = AccessoryUtils.isConnected(device)
-                && AccessoryUtils.getCachedBluetoothDevice(context, device) != null
-                && AccessoryUtils.getCachedBluetoothDevice(context, device).isConnected();
+        boolean isConnected = AccessoryUtils.isConnected(device);
         Log.d(TAG, "createBtDeviceSlicePreference isConnected:" + isConnected);
 
         pref.setKey(device.getAddress());

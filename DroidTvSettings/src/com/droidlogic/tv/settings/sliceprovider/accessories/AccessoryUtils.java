@@ -110,7 +110,8 @@ final class AccessoryUtils {
             return false;
         }
         boolean isConnected = device.getBondState() == BluetoothDevice.BOND_BONDED && device.isConnected();
-        Log.i(TAG, "isConnected: " + isConnected);
+        Log.i(TAG, "BluetoothDevice.BondState: " + device.getBondState()
+                + ";BluetoothDevice.isConnected: " + device.isConnected());
         return isConnected;
     }
 
