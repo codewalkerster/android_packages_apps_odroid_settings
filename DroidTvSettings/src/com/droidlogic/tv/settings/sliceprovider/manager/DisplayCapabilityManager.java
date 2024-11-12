@@ -47,6 +47,7 @@ public class DisplayCapabilityManager {
     private static final String DISPLAY_MODE_TRUE = "true";
     private static final String DISPLAY_MODE_FALSE = "false";
     private static final String UBOOTENV_HDR_POLICY = "ubootenv.var.hdr_policy";
+    private static final String UBOOTENV_QMS_EN = "ubootenv.var.qms_en";
     private static final String ENV_IS_BEST_MODE = "ubootenv.var.is.bestmode";
     private static final String ENV_IS_BEST_COLORSPACE = "ubootenv.var.bestcolorspace";
     private static final String ENV_IS_BEST_COLOR_FORMAT_CSC = "ubootenv.var.config_csc_en";
@@ -959,6 +960,20 @@ public class DisplayCapabilityManager {
                         == HdrConversionMode.HDR_CONVERSION_PASSTHROUGH);
 
         return isShowColorFormatConverted;
+    }
+
+    public boolean isShowQmsSwitch() {
+        return mOutputModeManager.getQmsVrrCap();
+    }
+
+    public boolean getQmsState() {
+        return  "1".equals(mSystemControlManager.getBootenv(UBOOTENV_QMS_EN, "0"));
+    }
+
+    public void setQmsState(boolean enabled) {
+        //The system control interface is designed to be the opposite,
+        // which is not a good interface name, so the arguments are reversed.
+        mOutputModeManager.disableQms(!enabled);
     }
 
     public boolean getColorFormatConverter() {

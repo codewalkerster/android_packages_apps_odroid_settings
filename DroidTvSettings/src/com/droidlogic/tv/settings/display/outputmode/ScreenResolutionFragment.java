@@ -50,6 +50,7 @@ public class ScreenResolutionFragment extends SettingsPreferenceFragment impleme
     private static final String KEY_HDR_PRIORITY = "hdr_priority";
     private static final String KEY_HDR_POLICY = "hdr_policy";
     private static final String KEY_DOLBYVISION_PRIORITY = "dolby_vision_graphics_priority";
+    private static final String DEVICE_DISPLAY_QMS_STATE = "device_display_qms_state";
     private static final String DEVICE_DISPLAY_RESET = "device_display_reset";
 
     private Preference mBestResolutionPref;
@@ -60,6 +61,7 @@ public class ScreenResolutionFragment extends SettingsPreferenceFragment impleme
     private Preference mHdrPriorityPref;
     private Preference mHdrPolicyPref;
     private Preference mGraphicsPriorityPref;
+    private SwitchPreference mQmsDisablePref;
 
     private static final String HDMI_OUTPUT_MODE = "dummy_l";
 
@@ -140,6 +142,8 @@ public class ScreenResolutionFragment extends SettingsPreferenceFragment impleme
         mHdrPriorityPref = findPreference(KEY_HDR_PRIORITY);
         mHdrPolicyPref = findPreference(KEY_HDR_POLICY);
         mGraphicsPriorityPref = findPreference(KEY_DOLBYVISION_PRIORITY);
+        mQmsDisablePref = findPreference(DEVICE_DISPLAY_QMS_STATE);
+        mQmsDisablePref.setOnPreferenceChangeListener(this);
         updateScreenResolutionDisplay();
     }
 
@@ -293,6 +297,9 @@ public class ScreenResolutionFragment extends SettingsPreferenceFragment impleme
             getPreferenceScreen().removePreference(mHdrPriorityPref);
             getPreferenceScreen().removePreference(mHdrPolicyPref);
         }
+
+        mQmsDisablePref.setChecked(mDisplayCapabilityManager.getQmsState());
+        mQmsDisablePref.setVisible(mDisplayCapabilityManager.isShowQmsSwitch());
     }
 
     /**
@@ -341,6 +348,8 @@ public class ScreenResolutionFragment extends SettingsPreferenceFragment impleme
             }
 
             mHandler.sendEmptyMessage(MSG_FRESH_UI);
+        } else if (TextUtils.equals(preference.getKey(), DEVICE_DISPLAY_QMS_STATE)) {
+            mDisplayCapabilityManager.setQmsState((boolean) newValue);
         }
         return true;
     }

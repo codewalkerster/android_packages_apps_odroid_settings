@@ -50,6 +50,10 @@
         android:key="hdr_priority"
         android:title="@string/hdr_priority"
         android:fragment="com.droidlogic.tv.settings.display.dolbyvision.HdrPriorityFragment"/>
+    <SwitchPreference
+        android:key="device_display_qms_state"
+        android:persistent="false"
+        android:title="@string/display_qms_switch_title"/>
     <Preference
         android:key="device_display_reset"
         android:title="@string/device_display_reset" />

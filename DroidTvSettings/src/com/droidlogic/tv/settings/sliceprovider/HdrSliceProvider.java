@@ -30,6 +30,7 @@ public class HdrSliceProvider extends MediaSliceProvider {
     private static final boolean DEBUG = true;
     private static final String KEY_RESET = "DISPLAY_RESET";
     private static final String KEY_COLOR_FORMAT_CONVERT  = "COLOR_FORMAT_CONVERT";
+    private static final String KEY_ACTION_QMS_ENABLED  = "ACTION_QMS_ENABLED";
 
     private Handler mHandler = new Handler();
     private DisplayCapabilityManager mDisplayCapabilityManager;
@@ -344,6 +345,9 @@ public class HdrSliceProvider extends MediaSliceProvider {
         if (mDisplayCapabilityManager.isShowColorFormatConverter()) {
             updateColorFormatConvert(psb);
         }
+        if (mDisplayCapabilityManager.isShowQmsSwitch()) {
+            updateQmsDisable(psb);
+        }
         updateDisplayResetButton(psb);
         return psb.build();
     }
@@ -525,6 +529,22 @@ public class HdrSliceProvider extends MediaSliceProvider {
                                         HdrSliceBroadcastReceiver.class
                                 ),
                                 mDisplayCapabilityManager.getColorFormatConverter()
+                        )
+        );
+    }
+
+    private void updateQmsDisable(PreferenceSliceBuilder psb) {
+        psb.addPreference(
+                new RowBuilder()
+                        .setKey(KEY_ACTION_QMS_ENABLED)
+                        .setTitle(getContext().getString(R.string.display_qms_switch_title))
+                        .addSwitch(
+                                generatePendingIntent(
+                                        getContext(),
+                                        MediaSliceConstants.ACTION_QMS_ENABLED,
+                                        HdrSliceBroadcastReceiver.class
+                                ),
+                                mDisplayCapabilityManager.getQmsState()
                         )
         );
     }

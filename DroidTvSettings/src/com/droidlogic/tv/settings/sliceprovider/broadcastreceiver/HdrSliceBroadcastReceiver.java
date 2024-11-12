@@ -69,6 +69,13 @@ public class HdrSliceBroadcastReceiver extends BroadcastReceiver {
                 context.getContentResolver().notifyChange(MediaSliceConstants.RESOLUTION_URI, null);
                 context.getContentResolver().notifyChange(MediaSliceConstants.HDR_AND_COLOR_FORMAT_URI, null);
                 break;
+            case MediaSliceConstants.ACTION_QMS_ENABLED:
+                isChecked = intent.getBooleanExtra(EXTRA_TOGGLE_STATE, true);
+                logDebug(TAG, false, "ACTION_QMS_ENABLED isChecked: " + isChecked);
+                getDisplayCapabilityManager(context).setQmsState(isChecked);
+                context.getContentResolver().notifyChange(MediaSliceConstants.RESOLUTION_URI, null);
+                context.getContentResolver().notifyChange(MediaSliceConstants.HDR_AND_COLOR_FORMAT_URI, null);
+                break;
             default:
                 break;
         }
