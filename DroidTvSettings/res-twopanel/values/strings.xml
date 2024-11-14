@@ -2854,6 +2854,9 @@
     <string name="hdmi_soundbar_mode_key" translatable="false">SOUNDBAR_MODE</string>
     <string name="hdmi_soundbar_mode_title" translatable="false">Enable Soundbar Mode</string>
     <string name="hdmi_soundbar_mode_description" translatable="false">After turning on the sound bar mode, all the sound of the platform is output from its own speaker, and the audio stream is no longer sent to the TV.</string>
+    <string name="hdmi_set_menu_language_key" translatable="false">Set Menu Language</string>
+    <string name="hdmi_set_menu_language_title" translatable="false">Enable Set Menu Language</string>
+    <string name="hdmi_set_menu_language_description" translatable="false">Whether switch to the same language of TV</string>
     <string name="settings_cec_explain">HDMI-CEC allows you to control and automatically turn on/off other HDMI-CEC enabled devices with a single remote control.\n\nNote: Ensure HDMI-CEC is enabled on your TV and other HDMI devices. Manufacturers often have different names for HDMI-CEC, for example:\nSamsung: Anynet+\nLG: SimpLink\nSony: BRAVIA Sync\nPhilips: EasyLink\nSharp: Aquos Link</string>
 
     <!-- Uri to be overlaid by partner to show remote control infrared settings. -->

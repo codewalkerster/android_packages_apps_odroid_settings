@@ -3,6 +3,7 @@ package com.droidlogic.tv.settings.sliceprovider.manager;
 import android.content.Context;
 import android.hardware.hdmi.HdmiControlManager;
 import android.content.ContentResolver;
+import android.provider.Settings;
 
 import com.droidlogic.tv.settings.R;
 import static com.droidlogic.tv.settings.util.DroidUtils.logDebug;
@@ -11,6 +12,12 @@ import com.droidlogic.app.AudioEffectManager;
 
 public class HdmiCecContentManager {
     private static final String TAG = HdmiCecContentManager.class.getSimpleName();
+
+    private static final String HDMI_CONTROL_AUTO_LANGUAGE_CHANGE_ENABLED =
+            "hdmi_control_auto_language_change_enabled";
+
+    private static final int ENABLED = 1;
+    private static final int DISABLED = 0;
 
     private Context mContext;
     private static volatile HdmiCecContentManager mHdmiCecContentManager;
@@ -98,6 +105,16 @@ public class HdmiCecContentManager {
     public void setSoundbarModeStatus(boolean state) {
         mDroidAudioManager.setSoundBarModeEnabled(state);
         mAudioEffectManager.setAudioEffectOn(AudioEffectManager.DEBUG_DAP_2_UI, state);
+    }
+
+    public boolean isSetMenuLanguageEnabled() {
+        return Settings.Global.getInt(mContext.getContentResolver(),
+                HDMI_CONTROL_AUTO_LANGUAGE_CHANGE_ENABLED, DISABLED) == ENABLED;
+    }
+
+    public void setMenuLanguageEnabled(boolean enabled) {
+        Settings.Global.putInt(mContext.getContentResolver(),
+                HDMI_CONTROL_AUTO_LANGUAGE_CHANGE_ENABLED, enabled ? ENABLED : DISABLED);
     }
 
 }

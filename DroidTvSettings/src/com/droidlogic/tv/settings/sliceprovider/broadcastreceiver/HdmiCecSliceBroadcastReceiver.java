@@ -44,13 +44,13 @@ public class HdmiCecSliceBroadcastReceiver extends BroadcastReceiver {
         final String action = intent.getAction();
         logDebug(TAG, true, "onReceive " + intent);
         boolean isChecked = intent.getBooleanExtra(EXTRA_TOGGLE_STATE, true);;
-        mProgress = new ProgressDialog(context);
-        mProgress.setMessage(context.getString(R.string.cec_status_update));
-        mProgress.setIndeterminate(false);
-        mProgress.getWindow().setType(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY);
         switch (action) {
             case MediaSliceConstants.ACTION_HDMI_SWITCH_CEC_CHANGED:
                 getHdmiCecContentManager(context).setHdmiCecEnabled(isChecked);
+                mProgress = new ProgressDialog(context);
+                mProgress.setMessage(context.getString(R.string.cec_status_update));
+                mProgress.setIndeterminate(false);
+                mProgress.getWindow().setType(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY);
                 if (mProgress != null && !mProgress.isShowing()) {
                     mProgress.show();
                 }
@@ -61,6 +61,9 @@ public class HdmiCecSliceBroadcastReceiver extends BroadcastReceiver {
                 break;
             case MediaSliceConstants.ACTION_HDMI_SOUNDBAR_MODE_CONTROL_CHANGED:
                 getHdmiCecContentManager(context).setSoundbarModeStatus(isChecked);
+                break;
+            case MediaSliceConstants.ACTION_SET_MENU_LANGUAGE_CHANGED:
+                getHdmiCecContentManager(context).setMenuLanguageEnabled(isChecked);
                 break;
             default:
                 break;

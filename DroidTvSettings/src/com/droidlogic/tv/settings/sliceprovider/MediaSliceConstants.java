@@ -27,6 +27,8 @@ public class MediaSliceConstants {
           "com.google.android.settings.usage.ACTION_HDMI_SOUNDBAR_MODE_CONTROL_CHANGED";
   public static final String ACTION_DEVICE_POWER_BOOT_RESUME =
           "com.google.android.settings.usage.ACTION_DEVICE_POWER_BOOT_RESUME";
+  public static final String ACTION_SET_MENU_LANGUAGE_CHANGED =
+          "com.google.android.settings.usage.ACTION_SET_MENU_LANGUAGE_CHANGED";
 
   public static final String ACTION_DISPLAY_RESET =
           "android.setting.intent.action.DISPLAY_RESET";

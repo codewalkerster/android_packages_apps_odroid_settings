@@ -113,6 +113,21 @@ public class HdmiCecContentSliceProvider extends MediaSliceProvider {
                                             HdmiCecSliceBroadcastReceiver.class),
                                     mHdmiCecContentManager.getSoundbarModeStatus()));
         }
+        if (!SettingsConstant.isTvFeature() && mHasAutoPatch) {
+            psb.addPreference(
+                    new RowBuilder()
+                            .setKey(getContext().getString(R.string.hdmi_set_menu_language_key))
+                            .setTitle(getContext().getString(R.string.hdmi_set_menu_language_title))
+                            .setInfoSummary(getContext().getString(R.string.hdmi_set_menu_language_description))
+                            .setSubtitle(mHdmiCecContentManager.isSetMenuLanguageEnabled() ?
+                                    getContext().getString(R.string.enabled) : getContext().getString(R.string.disabled))
+                            .addSwitch(
+                                    generatePendingIntent(
+                                            getContext(),
+                                            MediaSliceConstants.ACTION_SET_MENU_LANGUAGE_CHANGED,
+                                            HdmiCecSliceBroadcastReceiver.class),
+                                    mHdmiCecContentManager.isSetMenuLanguageEnabled()));
+        }
         return psb.build();
     }
 }
