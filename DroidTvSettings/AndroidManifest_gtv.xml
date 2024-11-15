@@ -408,6 +408,10 @@
             android:name="androidx.startup.InitializationProvider"
             android:authorities="${applicationId}.androidx-startup"
             tools:node="remove" />
+        <service android:name="com.droidlogic.tv.settings.sliceprovider.accessories.DroidCachedDeviceManageService"
+            android:exported="true"
+            android:singleUser="true" />
+
     </application>
 
     <queries>

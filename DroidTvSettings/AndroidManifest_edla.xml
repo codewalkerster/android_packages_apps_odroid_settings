@@ -384,6 +384,10 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
             </intent-filter>
         </receiver>
+        <service android:name="com.droidlogic.tv.settings.sliceprovider.accessories.DroidCachedDeviceManageService"
+            android:exported="true"
+            android:singleUser="true" />
+
         <provider
             android:name="androidx.startup.InitializationProvider"
             android:authorities="${applicationId}.androidx-startup"

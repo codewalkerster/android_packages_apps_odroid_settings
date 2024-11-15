@@ -24,6 +24,7 @@ import android.content.Intent;
 import android.util.Log;
 
 import com.droidlogic.tv.settings.sliceprovider.accessories.BluetoothDevicesService;
+import com.droidlogic.tv.settings.sliceprovider.accessories.DroidCachedDeviceManageService;
 
 /** The {@BroadcastReceiver} for performing actions upon device boot. */
 public class BootReceiver extends BroadcastReceiver {
@@ -37,9 +38,11 @@ public class BootReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         try {
-            //context.startService(new Intent(context,FrameRateService.class));
+            Intent cachedDevManageIntent = new Intent(context, DroidCachedDeviceManageService.class);
+            context.startService(cachedDevManageIntent);
+
         } catch (Exception e) {
-            Log.e(TAG, "startFrameRateService error !!", e);
+            Log.e(TAG, "start service error !!", e);
         }
     }
 }
