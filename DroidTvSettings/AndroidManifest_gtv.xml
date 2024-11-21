@@ -24,6 +24,7 @@
 
     <uses-sdk android:minSdkVersion="29" />
 
+    <uses-permission android:name="com.amlogic.permission.AP_APP_LAUNCH_REQUEST"/>
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.BACKUP"/>

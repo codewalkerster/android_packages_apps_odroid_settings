@@ -20,6 +20,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -43,6 +44,9 @@ public class TvSourceFragment extends SettingsPreferenceFragment {
 
     private static final String AMATI_FEATURE = "com.google.android.feature.AMATI_EXPERIENCE";
     private static final String INPUT_SOURCE_GOOGLE_HOME_KEY = "home";
+    private static final String INPUT_SOURCE_AIRPLAY_KEY = "airplay";
+
+    private static final String KEY_AIRPLAY_PACKAGE_NAME = "com.amlogic.airplay";
 
     private Context mContext;
 
@@ -78,6 +82,16 @@ public class TvSourceFragment extends SettingsPreferenceFragment {
                 logDebug(TAG, true, "show input add ");
                 screen.addPreference(sourcePreference);
             }
+
+            if (isApkInstalled(KEY_AIRPLAY_PACKAGE_NAME)) {
+                Preference airPlayinputPre = new Preference(themedContext);
+                airPlayinputPre.setKey(INPUT_SOURCE_AIRPLAY_KEY);
+                airPlayinputPre.setPersistent(false);
+                airPlayinputPre.setIcon(R.drawable.air_play);
+                airPlayinputPre.setTitle("AirPlay");
+                screen.addPreference(airPlayinputPre);
+            }
+
         } catch (Exception e) {
             logDebug(TAG, true, "inputList is " + e.getMessage());
         }
@@ -95,6 +109,15 @@ public class TvSourceFragment extends SettingsPreferenceFragment {
             ((Activity) mContext).finish();
             return true;
         }
+
+        if (sourcePreference.getKey().equals(INPUT_SOURCE_AIRPLAY_KEY)) {
+            Intent airplayIntent = new Intent("com.amlogic.tv.AIRPLAY_LAUNCH");
+            airplayIntent.putExtra("bring-to-foreground", true);
+            getContext().sendBroadcast(airplayIntent, "com.amlogic.permission.AP_APP_LAUNCH_REQUEST");
+            ((Activity)mContext).finish();
+            return true;
+        }
+
         return super.onPreferenceTreeClick(preference);
     }
 
@@ -138,4 +161,13 @@ public class TvSourceFragment extends SettingsPreferenceFragment {
         return 0;
     }
 
+    private boolean isApkInstalled(String packageName) {
+        PackageManager packageManager = getPreferenceManager().getContext().getPackageManager();
+        try {
+            packageManager.getPackageInfo(packageName, PackageManager.GET_ACTIVITIES);
+            return true;
+        } catch (PackageManager.NameNotFoundException e) {
+            return false;
+        }
+    }
 }
