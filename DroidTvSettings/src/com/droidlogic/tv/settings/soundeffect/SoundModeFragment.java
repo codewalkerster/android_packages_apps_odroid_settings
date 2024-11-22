@@ -151,7 +151,14 @@ public class SoundModeFragment extends SettingsPreferenceFragment implements Pre
             dpe.setVisible(mAudioEffectManager.isAudioEffectOn(AudioEffectManager.DEBUG_DPE_UI));
             dts_vx.setVisible(mAudioEffectManager.isAudioEffectOn(AudioEffectManager.DEBUG_VIRTUAL_X_UI));
             final Preference dap24Pref = (Preference) findPreference(KEY_DOLBY_DAP_EFFECT_2_4);
-            dap24Pref.setVisible(mAudioEffectManager.isAudioEffectOn(AudioEffectManager.DEBUG_DAP_2_UI));
+            // if SoundBarModeEnabled is true,hide some UI for SoundBarMode
+
+            if (SettingsConstant.isSoundbarFeature() && !mDroidAudioManager.isSoundBarModeEnabled()) {
+                logDebug(TAG, false, "SoundBarModeEnabled is true, hide some UI for SoundBarMode");
+                dap24Pref.setVisible(false);
+            } else {
+                dap24Pref.setVisible(mAudioEffectManager.isAudioEffectOn(AudioEffectManager.DEBUG_DAP_2_UI));
+            }
 
             final Preference audio_latency = (Preference) findPreference(KEY_AUDIO_LATENCY);
             audio_latency.setVisible(mSoundParameterSettingManager.isDebugAudioOn(SoundParameterSettingManager.DEBUG_AUDIO_LATENCY_UI));
@@ -222,6 +229,7 @@ public class SoundModeFragment extends SettingsPreferenceFragment implements Pre
                 }
             });
         }
+
     }
 
     private boolean initView() {
@@ -232,7 +240,13 @@ public class SoundModeFragment extends SettingsPreferenceFragment implements Pre
 
         //final Preference dapPref = (Preference) findPreference(KEY_DOLBY_DAP_EFFECT);
         final Preference dap24Pref = (Preference) findPreference(KEY_DOLBY_DAP_EFFECT_2_4);
-        dap24Pref.setVisible(mAudioEffectManager.isAudioEffectOn(AudioEffectManager.DEBUG_DAP_2_UI));
+        // if SoundBarModeEnabled is true,hide some UI for SoundBarMode
+        if (SettingsConstant.isSoundbarFeature() && !mDroidAudioManager.isSoundBarModeEnabled()) {
+            logDebug(TAG, false, "SoundBarModeEnabled is true, hide some UI for SoundBarMode");
+            dap24Pref.setVisible(false);
+        } else {
+            dap24Pref.setVisible(mAudioEffectManager.isAudioEffectOn(AudioEffectManager.DEBUG_DAP_2_UI));
+        }
 
         final ListPreference virtualsurround = (ListPreference) findPreference(TV_VIRTUAL_SURROUND_SETTINGS);
         virtualsurround.setVisible(mAudioEffectManager.isAudioEffectOn(AudioEffectManager.DEBUG_VIRTUAL_SURROUND_UI));
