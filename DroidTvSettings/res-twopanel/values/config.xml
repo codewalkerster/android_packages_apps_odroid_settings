@@ -50,7 +50,7 @@
         to true would surface a toggle in Remotes & Accessories settings that allows the user to
         turn off Bluetooth. Without an IR remote or some other form of connection, the user may not
         be able to turn it back on and have to perform FDR. -->
-    <bool name="show_bluetooth_toggle">true</bool>
+    <bool name="show_bluetooth_toggle">false</bool>
 
     <!-- power_behavior's sliceProvider will be implemented in Launcher,
     the current Droid adaptation is closed without displaying -->
