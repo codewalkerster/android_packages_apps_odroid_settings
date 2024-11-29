@@ -113,7 +113,7 @@ public class HdmiCecContentSliceProvider extends MediaSliceProvider {
                                             HdmiCecSliceBroadcastReceiver.class),
                                     mHdmiCecContentManager.getSoundbarModeStatus()));
         }
-        if (!SettingsConstant.isTvFeature() && mHasAutoPatch) {
+        if (!mHdmiCecContentManager.isTvDevice() && mHasAutoPatch) {
             psb.addPreference(
                     new RowBuilder()
                             .setKey(getContext().getString(R.string.hdmi_set_menu_language_key))

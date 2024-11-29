@@ -117,4 +117,10 @@ public class HdmiCecContentManager {
                 HDMI_CONTROL_AUTO_LANGUAGE_CHANGE_ENABLED, enabled ? ENABLED : DISABLED);
     }
 
+    public boolean isTvDevice() {
+        if (mHdmiControlManager != null) {
+            return mHdmiControlManager.getTvClient() != null;
+        }
+        return false;
+    }
 }
