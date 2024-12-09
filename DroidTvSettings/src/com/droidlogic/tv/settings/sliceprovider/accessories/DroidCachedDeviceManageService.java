@@ -48,6 +48,7 @@ public class DroidCachedDeviceManageService extends Service {
 
     private CheckBtStatusHandler mHandler = new CheckBtStatusHandler();
     private final int MSG_CONNECT_CACHED_DEVICE = 0;
+    private final int MSG_BIND_SERVICE = 1;
     private ArrayList<String> mBondAudioDevices = new ArrayList<>();
     private boolean mWaitForDisconnct = false;
 
@@ -74,19 +75,24 @@ public class DroidCachedDeviceManageService extends Service {
     @Override
     public void onCreate() {
         mContext = this;
-        if (!mBtDeviceServiceBound) {
-            boolean ret = getApplicationContext().bindService(new Intent(mContext, AccessoryUtils.getBluetoothDeviceServiceClass()),
-            mBtDeviceServiceConnection, Context.BIND_AUTO_CREATE);
-            if (!ret) {
-                String msg = "failed to bind btdeviceservice";
-                Log.w(TAG, msg);
-                throw new IllegalStateException(msg);
-            }
-        }
+        Log.w(TAG, "oncreate");
         IntentFilter filter = new IntentFilter();
         filter.addAction(Intent.ACTION_SCREEN_ON);
         filter.addAction(Intent.ACTION_SCREEN_OFF);
         registerReceiver(receiver, filter, mContext.RECEIVER_EXPORTED);
+    }
+    private void bindBtDeviceService() {
+        Log.d(TAG, "bindBtDeviceService:" + mBtDeviceServiceBound);
+        if (!mBtDeviceServiceBound) {
+            boolean ret = getApplicationContext().bindService(new Intent(mContext, AccessoryUtils.getBluetoothDeviceServiceClass()),
+                    mBtDeviceServiceConnection, Context.BIND_AUTO_CREATE);
+            if (!ret) {
+                String msg = "failed to bind btdeviceservice";
+                Log.w(TAG, msg);
+                mHandler.sendEmptyMessageDelayed(MSG_BIND_SERVICE, 3000);
+                throw new IllegalStateException(msg);
+            }
+        }
     }
 
     private final BroadcastReceiver receiver = new BroadcastReceiver() {
@@ -95,6 +101,7 @@ public class DroidCachedDeviceManageService extends Service {
             mContext = context;
             String action = intent.getAction();
             Log.i(TAG, "onReceive:" + action + ",mWaitForDisconnct:" + mWaitForDisconnct);
+            bindBtDeviceService();
             if (Intent.ACTION_SCREEN_ON.equals(action)) {
                 if (!mWaitForDisconnct) {
                     return;
@@ -125,6 +132,9 @@ public class DroidCachedDeviceManageService extends Service {
                         mBondAudioDevices.remove(0);
                         if (mBondAudioDevices.size() > 0)
                             mHandler.sendEmptyMessageDelayed(MSG_CONNECT_CACHED_DEVICE, 500);
+                    break;
+                case MSG_BIND_SERVICE:
+                        bindBtDeviceService();
                     break;
                 default:
                        Log.d(TAG, "No handler case available for message: " + msg.what);

@@ -38,9 +38,7 @@ public class BootReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         try {
-            Intent cachedDevManageIntent = new Intent(context, DroidCachedDeviceManageService.class);
-            context.startService(cachedDevManageIntent);
-
+            Log.d(TAG, "receive boot complete");
         } catch (Exception e) {
             Log.e(TAG, "start service error !!", e);
         }
