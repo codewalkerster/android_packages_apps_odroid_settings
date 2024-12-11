@@ -44,10 +44,15 @@ public class MediaSliceConstants {
   public static final String SHOW_UNSUPPORTED_FORMAT_CHNAGE_WARNING =
       "com.google.android.chromecast.chromecastservice.sliceprovider.SHOW_UNSUPPORTED_FORMAT_CHNAGE_WARNING";
 
+  public static final String SHOW_AUDIO_AV_SYNC_TUNING_WARNING =
+          "com.google.android.chromecast.chromecastservice.sliceprovider.SHOW_AUDIO_AV_SYNC_TUNING_WARNING";
+  public static final String AUDIO_ADVANCED_DOLBY_MAT = "android.setting.intent.action.AUDIO_ADVANCED_DOLBY_MAT";
+
   public static final String HDR_AUTHORITY = "com.google.android.tv.settings.hdr.sliceprovider";
   public static final String CHANNELS_AND_INPUTS = "com.google.android.tv.settings.vendor.sliceprovider";
   public static final String DEVICE_POWER_BOOT = "com.google.android.tv.settings.powerbehavior.sliceprovider";
   public static final String DISPLAYSOUND_HDMI_AUTHORITY = "com.google.android.tv.settings.displaysound.hdmi.sliceprovider";
+  public static final String AUDIO_EXT = "com.google.android.tv.settings.audioext.sliceprovider";
   public static final String ADVANCED_SOUND_AUTHORITY =
       "com.google.android.tv.settings.advancedsound.sliceprovider";
   public static final String GENERAL_AUTHORITY =
@@ -67,6 +72,8 @@ public class MediaSliceConstants {
       "advanced_sound_settings_format_selection";
   public static final String GENERAL_INFO_PATH = "general_info";
   public static final String HDMI_CEC_PATH = "switch_cec";
+  public static final String AUDIO_EXT_PATH = "audio_ext";
+  public static final String DOLBY_PREFERRED_OUTPUT_PATH = "dolby_preferred_output";
 
   public static final Uri MATCH_CONTENT_URI =
       Uri.parse("content://" + HDR_AUTHORITY + "/" + MATCH_CONTENT_PATH);
@@ -97,6 +104,10 @@ public class MediaSliceConstants {
               + ADVANCED_SOUND_SETTINGS_FORMAT_SELECTION_PATH);
   public static final Uri DISPLAYSOUND_HDMI_CEC_URI =
       Uri.parse("content://" + DISPLAYSOUND_HDMI_AUTHORITY + "/" + HDMI_CEC_PATH);
+  public static final Uri AUDIO_EXT_URI =
+          Uri.parse("content://" + AUDIO_EXT + "/" + AUDIO_EXT_PATH);
+  public static final Uri DOLBY_PREFERRED_OUTPUT_URI =
+          Uri.parse("content://" + AUDIO_EXT + "/" + DOLBY_PREFERRED_OUTPUT_PATH);
   public static final Uri ESN_URI =
       Uri.parse("content://" + GENERAL_AUTHORITY + "/" + GENERAL_INFO_PATH);
   public static final String PREVIOUS_SURROUND_SOUND_GLOBAL_SETTING =

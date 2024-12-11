@@ -231,6 +231,16 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".sliceprovider.dialog.AVSyncTuningActivity"
+                  android:excludeFromRecents="true"
+                  android:exported="true"
+                  android:theme="@style/TvSettingsActivityTheme">
+            <intent-filter>
+                <action android:name="com.google.android.chromecast.chromecastservice.sliceprovider.SHOW_AUDIO_AV_SYNC_TUNING_WARNING"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+
         <activity
             android:name=".sliceprovider.dialog.EnableUnsupportedSoundDialogActivity"
             android:label="Enable Unsupported Sound Dialog Activity"
@@ -354,6 +364,16 @@
             </intent-filter>
         </provider>
 
+        <provider
+                android:authorities="com.google.android.tv.settings.audioext.sliceprovider"
+                android:name="com.droidlogic.tv.settings.sliceprovider.AudioOptionsSliceProvider"
+                android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.app.slice.category.SLICE"/>
+            </intent-filter>
+        </provider>
+
         <activity
              android:theme="@android:style/Theme.NoTitleBar"
              android:name="com.droidlogic.tv.settings.sliceprovider.accessories.BluetoothActionActivity"
@@ -396,6 +416,11 @@
         <receiver
             android:name="com.droidlogic.tv.settings.sliceprovider.broadcastreceiver.HdmiCecSliceBroadcastReceiver"
             android:exported="false">
+        </receiver>
+
+        <receiver
+                android:name="com.droidlogic.tv.settings.sliceprovider.broadcastreceiver.AudioOptionsSliceBroadcastReceiver"
+                android:exported="false">
         </receiver>
 
         <receiver android:name="com.droidlogic.tv.settings.BootReceiver"

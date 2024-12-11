@@ -2819,6 +2819,20 @@
     <string name="adjust_color_format_dialog_ok_msg">OK</string>
     <string description="The word COUNTDOWN_PLACEHOLDER should not be translated. It will be replaced with a countdown message." name="adjust_color_format_dialog_cancel_msg">"Cancel (COUNTDOWN_PLACEHOLDER)"</string>
 
+    <string name="audio_options_title">Audio options</string>
+    <string name="audio_options_dolby_preferred_output_key">audio_options_dolby_preferred_output_key</string>
+    <string name="audio_options_dolby_preferred_output_title">Dolby preferred output</string>
+    <string name="audio_options_dolby_mat_key">audio_options_dolby_mat_key</string>
+    <string name="audio_options_dolby_mat_title">Dolby mat</string>
+    <string name="audio_options_dolby_digital_plus_key">audio_options_dolby_digital_plus_key</string>
+    <string name="audio_options_dolby_digital_plus_title">Dolby digital plus</string>
+    <string name="audio_options_av_sync_key">audio_options_av_sync_key</string>
+    <string name="audio_options_av_sync_title">Audio video sync</string>
+    <string name="av_sync_apply_toast">Your audio delay has been adjusted</string>
+    <string name="av_sync_progress_textview">0ms</string>
+    <string name="av_sync_tuning_operation_description">Use the left and right button to advance or delay \n audio timing to match the video</string>
+    <string name="av_sync_apply">Apply</string>
+
     <string name="surround_sound_switch_title">Surround sound</string>
 
     <string name="surround_sound_format_selection_title">Surround sound format selection</string>

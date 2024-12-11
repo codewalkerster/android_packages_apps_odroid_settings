@@ -195,6 +195,9 @@
 
     <!-- Summary for vendor sample "Display & Sound" settings [CHAR LIMIT=60] -->
     <string name="display_and_sound_vendor_summary">Picture, screen, sound</string>
+    <string name="display_and_sound_vendor_summary"></string>
+    <string name="audio_ext_uri" translatable="false"></string>
+    <string name="display_and_sound_slice_uri" translatable="false">content://com.google.android.tv.settings.display.sliceprovider/display_and_sound</string>
     <!-- Title for "Picture" settings [CHAR LIMIT=60] -->
     <string name="picture_settings_title">Picture</string>
     <!-- Title for "Screen" settings [CHAR LIMIT=60] -->

@@ -168,7 +168,6 @@
 
     <color name="guided_step_text_input_item_background_focused">#FFFFFF</color>
 
-    <!-- DroidLogic start -->
     <color name="quiet">#FF909090</color>
     <color name="unlock_pattern_view_regular_color">@android:color/white</color>
     <color name="unlock_pattern_view_success_color">#ff84ffff</color>
@@ -182,6 +181,9 @@
     <color name="lb_preference_decor_header_background">#0277BD</color>
     <color name="color_text_item">#FF65686F</color>
     <color name="color_text_prompt">#FF808080</color>
-    <!-- DroidLogic end-->
+
+    <color name="av_sync_background">#1a1b1d</color>
+    <color name="av_sync_text_hint_color">#7a8187</color>
+    <color name="av_sync_text_lack_color">#FF000000</color>
 
 </resources>

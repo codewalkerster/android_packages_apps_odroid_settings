@@ -25,6 +25,8 @@ public class MediaSliceUtil {
             case MediaSliceConstants.ADVANCED_SOUND_SETTINGS_PATH:
             case MediaSliceConstants.ADVANCED_SOUND_SETTINGS_FORMAT_SELECTION_PATH:
                 return "content://" + MediaSliceConstants.ADVANCED_SOUND_AUTHORITY + "/" + path;
+            case MediaSliceConstants.DOLBY_PREFERRED_OUTPUT_PATH:
+                return "content://" + MediaSliceConstants.AUDIO_EXT + "/" + path;
             default:
                 throw new IllegalStateException("Unexpected value: " + path);
         }
