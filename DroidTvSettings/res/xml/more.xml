@@ -38,11 +38,6 @@
         android:fragment="com.droidlogic.tv.settings.soundeffect.SoundModeFragment"
         android:icon="@drawable/ic_volume_up"
         android:key="key_sound_effects"
-        android:title="@string/tv_sound" />
-    <Preference
-        android:fragment="com.droidlogic.tv.settings.SoundFragment"
-        android:icon="@drawable/ic_volume_up"
-        android:key="mbox_sound"
         android:title="@string/device_sound" />
     <Preference
         android:fragment="com.droidlogic.tv.settings.wifi.HotSpotFragment"

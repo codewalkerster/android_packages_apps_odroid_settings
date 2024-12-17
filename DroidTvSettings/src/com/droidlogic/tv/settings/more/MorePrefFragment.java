@@ -65,7 +65,6 @@ public class MorePrefFragment extends SettingsPreferenceFragment implements Pref
     private static final String KEY_MAIN_MENU = "moresettings";
     private static final String KEY_DISPLAY = "display";
     private static final String KEY_WIFI_HOSTSPOT = "wifi_hotspot";
-    private static final String KEY_MBOX_SOUNDS = "mbox_sound";
     private static final String KEY_POWERKEY = "powerkey_action";
     private static final String KEY_POWERONMODE = "poweronmode_action";
     private static final String KEY_UPGRADE_BLUETOOTH_REMOTE = "upgrade_bluetooth_remote";
@@ -139,7 +138,9 @@ public class MorePrefFragment extends SettingsPreferenceFragment implements Pref
         final Preference hdmicecPref = findPreference(KEY_HDMI_CEC_CONTROL);
         final Preference playbackPref = findPreference(KEY_PLAYBACK_SETTINGS);
         mSoundsPref = findPreference(KEY_SOUNDS);
-        final Preference mboxSoundsPref = findPreference(KEY_MBOX_SOUNDS);
+        mSoundsPref.setIcon(SoundParameterSettingManager.getSoundEffectsEnabled(getContext().getContentResolver())
+                ? R.drawable.ic_volume_up : R.drawable.ic_volume_off);
+
         final Preference powerKeyPref = findPreference(KEY_POWERKEY);
         final Preference powerKeyOnModePref = findPreference(KEY_POWERONMODE);
         final Preference keyStone = findPreference(KEY_KEYSTONE);
@@ -194,16 +195,11 @@ public class MorePrefFragment extends SettingsPreferenceFragment implements Pref
             morePref.setTitle(R.string.settings_menu);
             displayPref.setVisible(false);
             wifiHotspotPref.setVisible(false);
-            mboxSoundsPref.setVisible(false);
             powerKeyPref.setVisible(false);
             powerKeyOnModePref.setVisible(false);
             keyStone.setVisible(false);
-            if (!SettingsConstant.needDroidlogicTvFeature(getContext())) {
-                mSoundsPref.setVisible(false);//mbox doesn't support sound effect
-            }
         } else {
             wifiHotspotPref.setVisible(!isHandheld());  //Tablet devices do not display.
-            mSoundsPref.setVisible(false);
             if (!DroidLogicUtils.isTv()) {
                 powerKeyOnModePref.setVisible(false);
             }
@@ -225,11 +221,6 @@ public class MorePrefFragment extends SettingsPreferenceFragment implements Pref
         if (DroidUtils.hasGtvsUiMode()) {
             Log.i(TAG, "hide powerkey_action");
             powerKeyPref.setVisible(false);
-        }
-
-        if (0 == Settings.Global.getInt(getContext().getContentResolver(), DEBUG_GLOBAL_SETTING, 0)) {
-            advanced_sound_settings_pref.setVisible(false);
-            mboxSoundsPref.setVisible(false);
         }
     }
 
@@ -277,7 +268,6 @@ public class MorePrefFragment extends SettingsPreferenceFragment implements Pref
     @Override
     public void onResume() {
         super.onResume();
-        updateSounds();
         IntentFilter esnIntentFilter = new IntentFilter("com.netflix.ninja.intent.action.ESN_RESPONSE");
         getActivity().getApplicationContext().registerReceiver(esnReceiver, esnIntentFilter, Context.RECEIVER_EXPORTED);
         Intent esnQueryIntent = new Intent("com.netflix.ninja.intent.action.ESN");
@@ -292,15 +282,6 @@ public class MorePrefFragment extends SettingsPreferenceFragment implements Pref
         if (esnReceiver != null) {
             getActivity().getApplicationContext().unregisterReceiver(esnReceiver);
         }
-    }
-
-    private void updateSounds() {
-        if (mSoundsPref == null) {
-            return;
-        }
-
-        mSoundsPref.setIcon(SoundParameterSettingManager.getSoundEffectsEnabled(getContext().getContentResolver())
-                ? R.drawable.ic_volume_up : R.drawable.ic_volume_off);
     }
 
     private boolean isHandheld() {
