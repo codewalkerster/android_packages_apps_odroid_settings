@@ -104,7 +104,7 @@ public class ConnectedDevicesSliceBroadcastReceiver extends BroadcastReceiver {
                         AccessoryUtils.setActiveAudioOutput(enable ? device : null);
                         // refresh device
                     notifyDeviceChanged(context, device);
-                } else if (FIND_MY_REMOTE_PHYSICAL_BUTTON_ENABLED_SETTING.equals(EXTRA_TOGGLE_TYPE)) {
+                } else if (FIND_MY_REMOTE_PHYSICAL_BUTTON_ENABLED_SETTING.equals(intent.getStringExtra(EXTRA_TOGGLE_TYPE))) {
                     setFindMyRemoteButtonEnabled(context, isChecked);
                     context.getContentResolver().notifyChange(
                             ConnectedDevicesSliceUtils.FIND_MY_REMOTE_SLICE_URI, null);
