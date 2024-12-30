@@ -64,17 +64,10 @@ public class AudioOptionsManager {
     }
 
     public boolean isDolbyMATEnabled() {
-        return (Settings.Global.getInt(mContext.getContentResolver(),
-                FORCE_DDP_SWITCH, 1) != 1);
+        return !mDroidAudioManager.getForceDDPEnable();
     }
 
     public void setDolbyMATEnabled(boolean enabled) {
-        if (enabled) {
-            mAudioManager.setParameters("hal_param_force_ddp=0");
-        } else {
-            mAudioManager.setParameters("hal_param_force_ddp=1");
-        }
-        Settings.Global.putInt(mContext.getContentResolver(),
-                FORCE_DDP_SWITCH, enabled ? 0 : 1);
+        mDroidAudioManager.setForceDDPEnable(!enabled);
     }
 }
