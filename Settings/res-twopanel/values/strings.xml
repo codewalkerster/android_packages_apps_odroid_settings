@@ -16,10 +16,10 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <!-- DroidLogic start -->
     <!-- Main app title [CHAR LIMIT=40] -->
-    <string name="settings_app_name">More Settings</string>
+    <string name="settings_app_name">Odroid Settings</string>
     <string name="settings_app_name_gtv">Inputs</string>
     <!-- Leanback Launcher App Title for main Settings app [CHAR LIMIT=40] -->
-    <string name="launcher_settings_app_name">More Settings</string>
+    <string name="launcher_settings_app_name">Odroid Settings</string>
     <string name="channels_vendor_title">Channels Vendor</string>
     <string name="energy_saver_vendor_title">Energy Saver Vendor</string>
     <string name="external_inputs_vendor_title">External Inputs Vendor</string>
@@ -2044,7 +2044,7 @@
     <!-- DroidLogic start -->
     <!-- Preference which manages more settings. [CHAR LIMIT=50] -->
     <string name="device_displayandsound_audiooutput">Audio Output</string>
-    <string name="more_pref_category_title">More Settings</string>
+    <string name="more_pref_category_title">Odroid Settings</string>
     <string name="system_more_setting">More settings</string>
     <string name="system_setting">Settings</string>
     <string name="upgrade_bluetooth_remote">Upgrade bluetoothremote</string>

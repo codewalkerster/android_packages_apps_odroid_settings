@@ -22,6 +22,10 @@
             android:title="@string/device_outputmode"
             android:fragment="hardkernel.odroid.settings.display.outputmode.ScreenResolutionFragment"/>
         <Preference
+            android:key="rotation"
+            android:title="@string/rotation_title"
+            android:fragment="hardkernel.odroid.settings.display.rotation.RotationFragment" />
+        <Preference
             android:key="position"
             android:title="@string/device_position"
             android:fragment="hardkernel.odroid.settings.display.position.DisplayPositionFragment"/>

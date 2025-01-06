@@ -17,10 +17,10 @@
 
     <!-- DroidLogic start -->
     <!-- Main app title [CHAR LIMIT=40] -->
-    <string name="settings_app_name">OdroidSettings</string>
+    <string name="settings_app_name">Odroid Settings</string>
 
     <!-- Leanback Launcher App Title for main Settings app [CHAR LIMIT=40] -->
-    <string name="launcher_settings_app_name">OdroidSettings</string>
+    <string name="launcher_settings_app_name">Odroid Settings</string>
 
     <string name="channels_vendor_title">Channels Vendor</string>
     <string name="energy_saver_vendor_title">Energy Saver Vendor</string>
@@ -2049,7 +2049,7 @@
     <!-- DroidLogic start -->
     <!-- Preference which manages more settings. [CHAR LIMIT=50] -->
     <string name="device_displayandsound_audiooutput">Audio Output</string>
-    <string name="more_pref_category_title">More Settings</string>
+    <string name="more_pref_category_title">Odroid Settings</string>
     <string name="system_more_setting">More settings</string>
     <string name="system_setting">Settings</string>
     <string name="upgrade_bluetooth_remote">Upgrade bluetoothremote</string>
@@ -2926,6 +2926,12 @@
 	<string name="wake_on_lan_enable" translatable="false">Wake On Lan</string>
 	<string name="wake_on_lan_description">Allow TV waked by ethernel</string>
     <!-- DroidLogic end -->
+
+    <string name="rotation_title">Display Rotation</string>
+    <string name="rotate_0">0</string>
+    <string name="rotate_90">90</string>
+    <string name="rotate_180">180</string>
+    <string name="rotate_270">270</string>
 
     <!-- Title for find my remote preference -->
     <string name="settings_find_my_remote_title">Find my remote</string>

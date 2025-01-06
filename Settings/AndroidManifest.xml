@@ -359,6 +359,13 @@
                 android:name="hardkernel.odroid.settings.sliceprovider.accessories.BluetoothActionActivity"
                 android:exported="false"/>
 
+        <activity
+                android:configChanges="keyboard|keyboardHidden|navigation"
+                android:name=".display.rotation.RotationActivity"
+                android:theme="@style/Theme.Settings.Transparent"
+                android:excludeFromRecents="true"
+                android:exported="true" />
+
         <service
             android:name="hardkernel.odroid.settings.sliceprovider.accessories.BluetoothDevicesService"
             android:exported="false" />

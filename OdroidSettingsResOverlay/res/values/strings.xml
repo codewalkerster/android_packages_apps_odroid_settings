@@ -222,7 +222,6 @@
     <!-- Title for HDMI-CEC settings entry. [CHAR LIMIT=20] -->
     <string name="hdmi_cec_settings_title">HDMI-CEC</string>
     <string name="droidtvsetings_channels_class">HDMI-CEC</string>
-    <string name="droidtvsetings_package">HDMI-CEC</string>
     <!-- Title for preference which when clicked lets the user configure advanced display settings. [CHAR LIMIT=50] -->
     <string name="advanced_display_settings_title">Advanced display settings</string>
     <!-- Amlogic add end -->
@@ -240,5 +239,20 @@
     <string name="tv_source">Signal Source</string>
     <!-- Title of channels and inputs page [CHAR LIMIT=60] -->
     <string name="channels_and_inputs">Channels &amp; Inputs</string>
+    <string name="match_content_dynamic_range_title">Match content dynamic range</string>
 
+    <!-- Title for preference for HDR format selection. [CHAR LIMIT=50] -->
+    <string name="hdr_format_selection_title">Format selection</string>
+    <!-- Title for preference to allow game mode for display. [CHAR LIMIT=50] -->
+    <string name="game_mode_title">Allow game mode</string>
+    <!-- Title for preference for HDR conversion. [CHAR LIMIT=120] -->
+    <string name="preferred_dynamic_range_title">Preferred dynamic range</string>
+
+    <string name="display_rotation_title">Display Rotation</string>
+
+    <string name="odroidsettings_package">hardkernel.odroid.settings</string>
+    <string name="odroidsettings_display_rotation">hardkernel.odroid.settings.display.rotation.RotationActivity</string>
+    <string name="odroidsettings_picture_class">hardkernel.odroid.settings.pqsettings.PictureModeActivity</string>
+    <string name="odroidsettings_screen_class">hardkernel.odroid.settings.pqsettings.PictureModeActivity</string>
+    <string name="odroidsettings_sound_class">hardkernel.odroid.settings.SoundActivity</string>
 </resources>
