@@ -2380,7 +2380,6 @@
     <string name="power_action_force_suspend">force suspend</string>
     <string name="power_action_restart">restart</string>
     <string name="power_action_shutdown">shutdown</string>
-    <string name="netflix_esn">Netflix ESN</string>
     <string name="crypt_keeper_encrypt_title">Encrypt MBOX</string>
     <string name="crypt_keeper_settings_title">Encryption</string>
     <string name="crypt_keeper_encrypted_summary">Encrypted</string>
@@ -2717,7 +2716,6 @@
     <string name="hdmi_audio_latency">HDMI Audio Latency</string>
     <string name="arc_hdmi_audio_latency">HDMI ARC Audio Latency</string>
     <string name="force_ddp">Force DDP</string>
-    <string name="hailstorm_ver">Hailstorm Version</string>
     <string name="tether_settings_title_wifi" translatable="false">HotSpot</string>
     <string name="hotspot_settings_enable" translatable="false">Portable HotSpot Enabled</string>
     <string name="wifi_hotspot_ap_band_title">AP Band</string>
@@ -2867,8 +2865,6 @@
 
     <!-- Category header of GTV remote control settings. [CHAR LIMIT=50] -->
     <string name="settings_official_remote_category">GTV Voice Remote</string>
-
-    <string translatable="false" name="netflix_esn_title">Netflix ESN</string>
 
     <string description="A speech triggered when factory data reset is canceled by releasing the button on the device" name="abort_msg">abort</string>
     <string description="A speech triggered when factory data reset had been interrupted by other operations" name="abort_due_to_interruption_msg">"abort due to interruption"</string>

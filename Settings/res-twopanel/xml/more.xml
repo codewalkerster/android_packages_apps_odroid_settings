@@ -78,14 +78,6 @@
             android:targetPackage="com.android.BluetoothRemote" />
     </Preference>
     <Preference
-        android:icon="@drawable/ic_info_outline"
-        android:key="netflix_esn"
-        android:title="@string/netflix_esn"/>
-    <Preference
-        android:icon="@drawable/ic_info_outline"
-        android:key="hailstorm_ver"
-        android:title="@string/hailstorm_ver"/>
-    <Preference
         android:icon="@drawable/ic_settings_display"
         android:key="keyStone"
         android:title="@string/keystone" />

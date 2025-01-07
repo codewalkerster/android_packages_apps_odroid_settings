@@ -189,7 +189,6 @@ public class ScreenResolutionFragment extends SettingsPreferenceFragment impleme
                 (!SettingsConstant.needDroidlogicTvFeature(getPreferenceManager().getContext()) || SystemProperties.getBoolean("vendor.tv.soc.as.mbox", false));
         boolean platformSupportDv = mDolbyVisionSettingManager.isMboxSupportDolbyVision();
         boolean displayConfig = SettingsConstant.needDroidlogicBestDolbyVision(getPreferenceManager().getContext());
-        boolean customConfig = mOutputModeManager.isSupportNetflix();
         boolean debugConfig = mOutputModeManager.isSupportDisplayDebug();
 
         boolean isOnDolbyVisionMode = mDisplayCapabilityManager.isDolbyVisionPreference();
@@ -197,7 +196,6 @@ public class ScreenResolutionFragment extends SettingsPreferenceFragment impleme
         Log.i(TAG, "platformSupportDv " + platformSupportDv);
         Log.i(TAG, "socSupportDv " + socSupportDv);
         Log.i(TAG, "displayConfig " + displayConfig);
-        Log.i(TAG, "customConfig " + customConfig);
         Log.i(TAG, "debugConfig " + debugConfig);
         Log.i(TAG, "isOnDolbyVisionMode  " + isOnDolbyVisionMode);
 
@@ -274,7 +272,7 @@ public class ScreenResolutionFragment extends SettingsPreferenceFragment impleme
             }
 
             //for custom design
-            if (!debugConfig && customConfig) {
+            if (!debugConfig) {
                 mGraphicsPriorityPref.setEnabled(false);
             }
 

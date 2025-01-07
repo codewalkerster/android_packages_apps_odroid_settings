@@ -85,10 +85,8 @@ public class HdrPriorityFragment extends SettingsPreferenceFragment {
 
     private ArrayList<Action> getActions() {
         int mode = mOutputModeManager.getHdrPriority();
-        boolean customConfig       = mOutputModeManager.isSupportNetflix();
         boolean displaydebugConfig = mOutputModeManager.isSupportDisplayDebug();
         Log.d(TAG,"Current Hdr Priority: " + mode);
-        Log.d(TAG,"customConfig "+ customConfig);
         Log.d(TAG,"displaydebugConfig "+ displaydebugConfig);
 
         ArrayList<Action> actions = new ArrayList<Action>();

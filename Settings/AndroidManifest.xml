@@ -80,8 +80,6 @@
     <uses-permission android:name="android.permission.DELETE_PACKAGES"/>
     <uses-permission android:name="android.permission.INTERACT_ACROSS_USERS_FULL"/>
     <uses-permission android:name="com.google.android.permission.GLOBAL_BUTTON"/>
-    <uses-permission android:name="com.netflix.ninja.permission.ESN"/>
-    <uses-permission android:name="com.netflix.ninja.permission.ESN_RESPONSE"/>
     <uses-permission android:name="android.permission.DEVICE_POWER"/>
     <!-- OdroidSettings end -->
 
@@ -327,16 +325,6 @@
         <provider
                 android:authorities="com.google.android.tv.settings.advancedsound.sliceprovider"
                 android:name="hardkernel.odroid.settings.sliceprovider.AdvancedSoundSliceProvider"
-                android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
-                <category android:name="android.app.slice.category.SLICE"/>
-            </intent-filter>
-        </provider>
-
-        <provider
-                android:authorities="com.google.android.tv.settings.general.sliceprovider"
-                android:name="hardkernel.odroid.settings.sliceprovider.GeneralContentSliceProvider"
                 android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>

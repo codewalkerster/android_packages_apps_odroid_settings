@@ -62,16 +62,6 @@
         <intent android:action="android.settings.SHOW_MANUAL" />
     </Preference>
 
-    <!-- DroidLogic start -->
-    <!-- Device Netflix ESN -->
-    <Preference android:key="netflix_esn"
-        android:title="@string/netflix_esn"/>
-
-    <!-- Device Netflix Hailstorm version -->
-    <Preference android:key="hailstorm_ver"
-        android:title="@string/hailstorm_ver"/>
-    <!-- DroidLogic end -->
-
     <!-- Legal Information -->
     <Preference
         android:key="container"

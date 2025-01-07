@@ -71,8 +71,6 @@ public class MorePrefFragment extends SettingsPreferenceFragment implements Pref
     private static final String KEY_PLAYBACK_SETTINGS = "playback_settings";
     private static final String KEY_SOUNDS = "key_sound_effects";
     private static final String KEY_KEYSTONE = "keyStone";
-    private static final String KEY_NETFLIX_ESN = "netflix_esn";
-    private static final String KEY_VERSION = "hailstorm_ver";
     private static final String KEY_HDMI_CEC_CONTROL = "hdmicec";
     private static final String KEY_ADVANCE_SOUND = "advanced_sound_settings";
     private static final String KEY_DEVELOP_OPTION = "amlogic_developer_options";
@@ -80,14 +78,12 @@ public class MorePrefFragment extends SettingsPreferenceFragment implements Pref
     private static final String KEY_TV_EXTRAS = "tv_extras";
 
 
-    private static final String HAILSTORM_VERSION_PROP = "ro.vendor.hailstorm.version";
     private static final String FRAME_RATE_PROP = "persist.vendor.sys.framerate.feature";
     private static final String DEBUG_GLOBAL_SETTING = "droidsetting_debug";
 
     public static final String WATCH_FEATURE = "android.hardware.type.watch";
     public static final String TV_FEATURE = "android.hardware.type.television";
     public static final String AUTOMOTIVE_FEATURE = "android.hardware.type.automotive";
-    public static final String FEATURE_SOFTWARE_NETFLIX = "droidlogic.software.netflix";
     private static final String KEY_PICTURE = "picture_mode";
     public static final String KEY_ENABLE_OSD_SHARPNESS = "pq_osd_sharpness_enabled";
     public static final String FEATURE_HDMI_CEC = "android.hardware.hdmi.cec";
@@ -97,14 +93,6 @@ public class MorePrefFragment extends SettingsPreferenceFragment implements Pref
     private String mEsnText;
     private SystemControlManager mSystemControlManager;
     private PQSettingsManager mPQSettingsManager;
-
-    private BroadcastReceiver esnReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            mEsnText = intent.getStringExtra("ESNValue");
-            findPreference(KEY_NETFLIX_ESN).setSummary(mEsnText);
-        }
-    };
 
     public static MorePrefFragment newInstance() {
         return new MorePrefFragment();
@@ -129,7 +117,6 @@ public class MorePrefFragment extends SettingsPreferenceFragment implements Pref
                 && (SystemProperties.getBoolean("vendor.tv.soc.as.mbox", false) == false);
         mSystemControlManager = SystemControlManager.getInstance();
 
-        boolean isSupportNetflix = isSupportFeature(FEATURE_SOFTWARE_NETFLIX);
         boolean isShowFrameRate = mSystemControlManager.getPropertyBoolean(FRAME_RATE_PROP, false);
 
         final Preference morePref = findPreference(KEY_MAIN_MENU);
@@ -146,8 +133,6 @@ public class MorePrefFragment extends SettingsPreferenceFragment implements Pref
         final Preference keyStone = findPreference(KEY_KEYSTONE);
         //BluetoothRemote/HDMI cec/Playback Settings display only in Mbox
         final Preference mUpgradeBluetoothRemote = findPreference(KEY_UPGRADE_BLUETOOTH_REMOTE);
-        final Preference netflixesnPref = findPreference(KEY_NETFLIX_ESN);
-        final Preference versionPref = findPreference(KEY_VERSION);
         final Preference picturePref = findPreference(KEY_PICTURE);
         final Preference advanced_sound_settings_pref = findPreference(KEY_ADVANCE_SOUND);
         final Preference frameRatePref = findPreference(KEY_FRAME_RATE);
@@ -165,23 +150,6 @@ public class MorePrefFragment extends SettingsPreferenceFragment implements Pref
                     && SettingsConstant.needDroidlogicHdmicecFeature(getContext())) && !is_from_live_tv);
         }
         playbackPref.setVisible(false);
-        if (netflixesnPref != null) {
-            if (is_from_live_tv) {
-                netflixesnPref.setVisible(false);
-                versionPref.setVisible(false);
-            } else if (isSupportNetflix) {
-                netflixesnPref.setVisible(true);
-                netflixesnPref.setSummary(mEsnText);
-                versionPref.setVisible(true);
-                versionPref.setSummary(mSystemControlManager.getPropertyString(HAILSTORM_VERSION_PROP, "no"));
-                powerKeyPref.setVisible(false);
-                keyStone.setVisible(false);
-
-            } else {
-                netflixesnPref.setVisible(false);
-                versionPref.setVisible(false);
-            }
-        }
 
         final Preference developPref = findPreference(KEY_DEVELOP_OPTION);
         if ((1 == Settings.Global.getInt(getContext().getContentResolver(), Settings.Global.DEVELOPMENT_SETTINGS_ENABLED, 0))
@@ -257,25 +225,6 @@ public class MorePrefFragment extends SettingsPreferenceFragment implements Pref
         } catch (ActivityNotFoundException e) {
             Log.d(TAG, "start Activity Error not found: " + activityName);
             return;
-        }
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        IntentFilter esnIntentFilter = new IntentFilter("com.netflix.ninja.intent.action.ESN_RESPONSE");
-        getActivity().getApplicationContext().registerReceiver(esnReceiver, esnIntentFilter, Context.RECEIVER_EXPORTED);
-        Intent esnQueryIntent = new Intent("com.netflix.ninja.intent.action.ESN");
-        esnQueryIntent.setPackage("com.netflix.ninja");
-        esnQueryIntent.addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
-        getActivity().getApplicationContext().sendBroadcast(esnQueryIntent);
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        if (esnReceiver != null) {
-            getActivity().getApplicationContext().unregisterReceiver(esnReceiver);
         }
     }
 

@@ -1196,10 +1196,6 @@
         <item>3</item>
     </string-array>
 
-  <string-array translatable="false" name="power_saver_auto_whitelist_apps">
-    <item>com.netflix.ninja</item>
-  </string-array>
-
     <!-- DroidLogic end -->
 
 </resources>
