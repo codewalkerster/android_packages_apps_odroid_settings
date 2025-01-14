@@ -17,32 +17,17 @@
 package hardkernel.odroid.settings.display.rotation;
 
 import android.os.Bundle;
-import android.os.Handler;
-import hardkernel.odroid.settings.SettingsPreferenceFragment;
 import androidx.preference.Preference;
-import androidx.preference.PreferenceCategory;
 import androidx.preference.PreferenceScreen;
-import androidx.preference.ListPreference;
-import androidx.preference.TwoStatePreference;
 
 import android.content.Context;
-import android.util.Log;
-import android.os.SystemProperties;
-import android.provider.Settings;
-import android.provider.Settings.SettingNotFoundException;
-import android.text.TextUtils;
 import hardkernel.odroid.settings.SettingsPreferenceFragment;
-import hardkernel.odroid.settings.util.DroidUtils;
-import hardkernel.odroid.settings.SettingsConstant;
 import hardkernel.odroid.settings.R;
-import android.view.Display;
 import hardkernel.odroid.settings.RadioPreference;
 
 public class RotationFragment extends SettingsPreferenceFragment {
 
     private static final String TAG = "RotationFragment";
-
-    private static int degree;
 
     public static RotationFragment newInstance() {
         return new RotationFragment();
@@ -55,8 +40,6 @@ public class RotationFragment extends SettingsPreferenceFragment {
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-        Display display = getActivity().getWindowManager().getDefaultDisplay();
-        degree = display.getRotation();
         updatePreferenceFragment();
     }
 
@@ -65,28 +48,9 @@ public class RotationFragment extends SettingsPreferenceFragment {
         final RadioPreference radioPreference = (RadioPreference)preference;
         radioPreference.clearOtherRadioPreferences(getPreferenceScreen());
 
-        String getDegree = radioPreference.getKey();
+        Rotation.setOrientation(Integer.valueOf(radioPreference.getKey()),
+                getPreferenceManager().getContext());
 
-        Log.e(TAG, "set rotation : " + getDegree);
-
-        switch (Integer.valueOf(getDegree)) {
-            case 0:
-                degree = 0;
-                break;
-            case 90:
-                degree = 1;
-                break;
-            case 180:
-                degree = 2;
-                break;
-            case 270:
-                degree = 3;
-                break;
-        }
-        final Context context = getPreferenceManager().getContext();
-
-        android.provider.Settings.System.putInt(context.getContentResolver(), Settings.System.ACCELEROMETER_ROTATION, 0);
-        android.provider.Settings.System.putInt(context.getContentResolver(), Settings.System.USER_ROTATION, degree);
         updatePreferenceFragment();
 
         return super.onPreferenceTreeClick(preference);
@@ -128,17 +92,17 @@ public class RotationFragment extends SettingsPreferenceFragment {
         rotate_270.setTitle(R.string.rotate_270);
         rotate_270.setLayoutResource(R.layout.preference_reversed_widget);
 
-        switch (degree) {
+        switch (Rotation.getOrientation()) {
             case 0:
                 rotate_0.setChecked(true);
                 break;
-            case 1:
+            case 90:
                 rotate_90.setChecked(true);
                 break;
-            case 2:
+            case 180:
                 rotate_180.setChecked(true);
                 break;
-            case 3:
+            case 270:
                 rotate_270.setChecked(true);
                 break;
         }

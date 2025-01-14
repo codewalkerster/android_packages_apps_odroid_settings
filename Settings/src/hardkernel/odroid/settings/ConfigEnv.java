@@ -34,6 +34,10 @@ public class ConfigEnv {
         return getValue("gpu_governor");
     }
 
+    public static String getOrientation() {
+        return getValue("display_orientation");
+    }
+
     private static String getValue(String keyWord) {
         return _getValue(keyWord + "=");
     }
@@ -75,6 +79,10 @@ public class ConfigEnv {
 
     public static void setGpuGovernor(String governor) {
         setValue("gpu_governor", governor);
+    }
+
+    public static void setOrientation(String degree) {
+        setValue("display_orientation", degree);
     }
 
     private static void setValue (String keyWord, String val) {
