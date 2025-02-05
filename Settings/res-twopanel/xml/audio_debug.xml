@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright (C) 2015 The Android Open Source Project
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+  -->
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+        android:title="@string/title_debug_audio_ui">
+
+    <SwitchPreference
+        android:key="key_dolby_drc_debug"
+        android:persistent="false"
+        android:title="@string/title_key_dolby_drc_debug" />
+    <SwitchPreference
+        android:key="key_dts_drc_debug"
+        android:persistent="false"
+        android:title="@string/title_key_dts_drc_debug" />
+    <SwitchPreference
+        android:key="key_force_ddp_debug"
+        android:persistent="false"
+        android:title="@string/title_key_force_ddp_debug" />
+    <SwitchPreference
+        android:key="key_audio_latency_debug"
+        android:persistent="false"
+        android:title="@string/title_key_audio_latency_debug" />
+    <Preference
+        android:fragment="hardkernel.odroid.settings.SoundFragment"
+        android:icon="@drawable/ic_volume_up"
+        android:key="mbox_sound"
+        android:title="@string/device_sound" />
+    <PreferenceCategory
+        android:title="@string/title_key_audio_effect_ui_debug">
+        <SwitchPreference
+            android:key="key_hpeq_debug"
+            android:persistent="false"
+            android:title="@string/title_key_hpeq_debug" />
+        <ListPreference
+            android:key="key_hpeq_band_num_debug"
+            android:persistent="false"
+            android:entries="@array/key_hpeq_band_num_debug_entries"
+            android:entryValues="@array/key_hpeq_band_num_debug_entry_values"
+            android:title="@string/title_key_hpeq_band_num_debug"
+            android:summary="%s" />
+        <SwitchPreference
+            android:key="key_balance_debug"
+            android:persistent="false"
+            android:title="@string/title_key_balance_debug" />
+        <SwitchPreference
+            android:key="key_treblebass_debug"
+            android:persistent="false"
+            android:title="@string/title_key_treblebass_debug" />
+        <SwitchPreference
+            android:key="key_virtual_surround_debug"
+            android:persistent="false"
+            android:title="@string/title_key_virtual_surround_debug" />
+        <SwitchPreference
+            android:key="key_virtual_x_debug"
+            android:persistent="false"
+            android:title="@string/title_key_virtual_x_debug" />
+        <SwitchPreference
+            android:key="key_dpe_debug"
+            android:persistent="false"
+            android:title="@string/title_key_dpe_debug" />
+        <ListPreference
+            android:key="key_dap_2_debug"
+            android:persistent="false"
+            android:entries="@array/tv_offon_entries"
+            android:entryValues="@array/tv_offon_entry_values"
+            android:title="@string/title_key_dap_2_debug"
+            android:summary="%s" />
+    </PreferenceCategory>
+</PreferenceScreen>
