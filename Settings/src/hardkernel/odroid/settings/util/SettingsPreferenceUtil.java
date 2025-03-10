@@ -20,9 +20,10 @@ import android.view.View;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.leanback.preference.LeanbackPreferenceFragmentCompat;
 import androidx.leanback.preference.R;
 import androidx.preference.Preference;
+
+import hardkernel.odroid.settings.LeanbackAddBackPreferenceFragment;
 
 public class SettingsPreferenceUtil {
     private static final String DELIMITER = ":";
@@ -33,7 +34,7 @@ public class SettingsPreferenceUtil {
      * @param fragment fragment which preference belongs to.
      * @return compound key of the preference
      */
-    public static String getCompoundKey(@NonNull LeanbackPreferenceFragmentCompat fragment,
+    public static String getCompoundKey(@NonNull LeanbackAddBackPreferenceFragment fragment,
             @NonNull Preference preference) {
         String title = "";
         View fragmentView = fragment.getView();
