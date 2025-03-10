@@ -16,7 +16,7 @@
   -->
 <resources>
     <!-- Flavor of TvSettings. -->
-    <string name="config_tvSettingsFlavor" translatable="false">X</string>
+    <string name="config_tvSettingsFlavor" translatable="false">Classic</string>
     <!-- Determines whether the entire "Quick Settings" section is available or not. -->
     <bool name="config_quick_settings_enabled" translatable="false">false</bool>
     <string name="additional_system_update" translatable="false"></string>
