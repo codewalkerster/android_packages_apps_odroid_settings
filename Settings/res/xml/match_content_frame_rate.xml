@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2020 The Android Open Source Project
-  ~
+  ~ Copyright 2020 The Android Open Source Project
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
   ~ You may obtain a copy of the License at
@@ -16,24 +15,25 @@
   -->
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-                  xmlns:app="http://schemas.android.com/apk/res-auto"
-                  android:title="@string/surround_sound_select_formats">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:title="@string/match_content_frame_rate_title">
+
     <PreferenceCategory
-        android:key="advanced_sound_settings_option">
+        android:key="match_content_frame_rate_option">
         <hardkernel.odroid.settings.RadioPreference
-            android:key="surround_sound_auto"
+            android:key="match_content_frame_rate_seamless"
             android:persistent="true"
-            app:radioGroup="advanced_sound_settings_option"
-            android:title="@string/surround_sound_auto_title"/>
+            app:radioGroup="match_content_frame_rate_option"
+            android:title="@string/match_content_frame_rate_seamless"/>
         <hardkernel.odroid.settings.RadioPreference
-            android:key="surround_sound_none"
+            android:key="match_content_frame_rate_non_seamless"
             android:persistent="true"
-            app:radioGroup="advanced_sound_settings_option"
-            android:title="@string/surround_sound_none_title"/>
+            app:radioGroup="match_content_frame_rate_option"
+            android:title="@string/match_content_frame_rate_non_seamless"/>
         <hardkernel.odroid.settings.RadioPreference
-            android:key="surround_sound_manual"
+            android:key="match_content_frame_rate_never"
             android:persistent="true"
-            app:radioGroup="advanced_sound_settings_option"
-            android:title="@string/surround_sound_manual_title"/>
+            app:radioGroup="match_content_frame_rate_option"
+            android:title="@string/match_content_frame_rate_never"/>
     </PreferenceCategory>
 </PreferenceScreen>

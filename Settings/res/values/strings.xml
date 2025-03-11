@@ -265,6 +265,8 @@
     <string name="surround_sound_format_dts">DTS</string>
     <!-- Name of the DTS-HD surround sound format that is displayed to the user [CHAR LIMIT=50] -->
     <string name="surround_sound_format_dts_hd">DTS-HD</string>
+    <!-- Name of the DTS ultra HD surround sound format that is displayed to the user [CHAR LIMIT=50] -->
+    <string name="surround_sound_format_dts_uhd">DTS:X</string>
     <!-- Name of the DOLBY_MAT surround sound format that is displayed to the user
         [CHAR LIMIT=50] -->
     <string name="surround_sound_format_dolby_mat">Dolby Atmos with Dolby TrueHD</string>
@@ -274,21 +276,40 @@
     <!-- Name of the E_AC3_JOC surround sound format that is displayed to the user
         [CHAR LIMIT=50] -->
     <string name="surround_sound_format_e_ac3_joc">Dolby Atmos with Dolby Digital Plus</string>
+    <!-- Name of the Dynamic Resolution Adaption sound format that is displayed to the user [CHAR LIMIT=50] -->
+    <string name="surround_sound_format_dra">DRA</string>
 
     <!-- An informational message displayed in the surround sound settings, explaining to the
         user that the auto setting may sometimes cause issues. [CHAR LIMIT=135]-->
     <string name="surround_sound_auto_info">Note: The Automatic option may not work if your device
         does not report its supported formats correctly.</string>
-    <!-- Text for a radio button that if selected will cause the device to automatically select
-        an appropriate surround sound format. [CHAR LIMIT=65] -->
-    <string name="surround_sound_auto_summary">Automatic: Use device reported formats</string>
+    <!-- Title for a radio button that if selected will cause the device to automatically select
+        an appropriate surround sound format. [CHAR LIMIT=165] -->
+    <string name="surround_sound_auto_title">Automatic: Enable only the formats that are supported
+        by your audio output device
+        "</string>
+    <!-- Summary for a radio button that if selected will cause the device to automatically select
+        an appropriate surround sound format. [CHAR LIMIT=300] -->
+    <string name="surround_sound_auto_summary">When selected, the system will allow apps to select
+        any sound format that is supported by your device chain. Apps may choose a format that is
+        not the highest-quality format.</string>
     <!-- Text for a radio button that if selected will cause the device to never use a surround
        sound format. [CHAR LIMIT=50] -->
     <string name="surround_sound_none_summary">None: Never use surround sound</string>
-    <!-- Text for a radio button that if selected will allow the user to manually select surround
-        sound formats. [CHAR LIMIT=87] -->
-    <string name="surround_sound_manual_summary">Manual: Choose formats manually from available
-        formats</string>
+    <!-- Title for a radio button that if selected will cause the device to never use a surround
+       sound format. [CHAR LIMIT=50] -->
+    <string name="surround_sound_none_title">None: Never use surround sound</string>
+    <!-- Title for a radio button that if selected will allow the user to manually select surround
+        sound formats. [CHAR LIMIT=187] -->
+    <string name="surround_sound_manual_title">Manual: Selectively enable or disable each format
+        supported by this device, regardless of what is supported by your audio output
+        device.</string>
+    <!-- Summary for a radio button that if selected will allow the user to manually select surround
+        sound formats. [CHAR LIMIT=300] -->
+    <string name="surround_sound_manual_summary">When selected, you can manually disable sound
+        formats that are supported by your device chain that cause problems with playback. Sound
+        formats not supported by your device chain can be enabled. In some cases apps may choose a
+        format that is not the highest-quality format.</string>
     <!-- Title for warning dialog that is shown when user enables an unsupported surround sound
         format. [CHAR LIMIT=70]-->
     <string name="surround_sound_enable_unsupported_dialog_title">Enabling unsupported sound
@@ -308,6 +329,24 @@
     <string name="surround_sound_supported_title">SUPPORTED FORMATS</string>
     <!-- Title for unsupported surround sound section [CHAR LIMIT=50]-->
     <string name="surround_sound_unsupported_title">UNSUPPORTED FORMATS</string>
+    <!-- Title for surround sound format info section [CHAR LIMIT=50]-->
+    <string name="surround_sound_format_info">FORMAT INFO</string>
+    <!-- Title for surround sound show format section [CHAR LIMIT=50]-->
+    <string name="surround_sound_show_formats">Show formats</string>
+    <!-- Title for surround sound hide format section [CHAR LIMIT=50]-->
+    <string name="surround_sound_hide_formats">Hide formats</string>
+    <!-- Title for surround sound enabled format section [CHAR LIMIT=50]-->
+    <string name="surround_sound_enabled_formats">ENABLED FORMATS</string>
+    <!-- Title for surround sound disabled format section [CHAR LIMIT=50]-->
+    <string name="surround_sound_disabled_formats">DISABLED FORMATS</string>
+    <!-- Summary for toast shown on clicking the disabled format preference in Automatic mode
+        [CHAR LIMIT=250]-->
+    <string name="surround_sound_disabled_format_info_clicked">To enable, change the
+        format selection to Manual.</string>
+    <!-- Summary for toast shown on clicking the enabled format preference in Automatic mode
+        [CHAR LIMIT=250]-->
+    <string name="surround_sound_enabled_format_info_clicked">To disable, change the
+        format selection to Manual.</string>
 
     <string name="match_content_slice_uri" translatable="false" />
     <!-- A category title for the settings related to display. [CHAR LIMIT=50] -->
@@ -321,11 +360,249 @@
     <string name="advanced_sound_settings_title">Advanced sound settings</string>
     <!-- Title for preference to allow game mode for display. [CHAR LIMIT=50] -->
     <string name="game_mode_title">Allow game mode</string>
+    <!-- Title for preference for disabling/enabling HDR conversion. [CHAR LIMIT=120] -->
+    <string name="match_content_dynamic_range_title">Match content dynamic range</string>
+    <!-- Summary for preference for disabling/enabling HDR conversion. [CHAR LIMIT=500] -->
+    <string name="match_content_dynamic_range_summary">When enabling this option, the system will
+        switch between different dynamic range formats to match the content. This may cause a black
+        screen during a format switch.\n\nClick Advanced Display settings for more dynamic range
+        options.
+    </string>
+    <!-- Title for preference for HDR conversion. [CHAR LIMIT=120] -->
+    <string name="preferred_dynamic_range_title">Preferred dynamic range</string>
+    <!-- Title for preference for HDR conversion - System-Preferred/Auto. [CHAR LIMIT=120] -->
+    <string name="preferred_dynamic_range_selection_system_title">System-preferred conversion
+            </string>
+    <!-- Description for preference for HDR conversion - System-Preferred/Auto. [CHAR LIMIT=300] -->
+    <string name="preferred_dynamic_range_selection_system_desc">Let\'s the system manage the format
+        conversion
+    </string>
+    <!-- Summary for preference for HDR conversion - System-Preferred/Auto. [CHAR LIMIT=500] -->
+    <string name="preferred_dynamic_range_selection_system_summary">When this option is selected,
+        the system will determine a suitable dynamic range to be sent to your display and convert
+        content to this dynamic range as needed.
+    </string>
+    <!-- Description for preference for HDR conversion - Passthrough/No conversion. [CHAR LIMIT=300] -->
+    <string name="preferred_dynamic_range_selection_passthrough_desc">Always matches content\'s
+        format</string>
+    <!-- Title for preference for HDR conversion - Force/Manual. [CHAR LIMIT=120] -->
+    <string name="preferred_dynamic_range_selection_force_title">Force conversion</string>
+    <!-- Description for preference for HDR conversion - Force/Manual. [CHAR LIMIT=300] -->
+    <string name="preferred_dynamic_range_selection_force_desc">Forces conversion to preferred
+        format</string>
+    <!-- Summary for preference for HDR conversion - Force/Manual. [CHAR LIMIT=500] -->
+    <string name="preferred_dynamic_range_selection_force_summary">Force conversion to
+        a preferred format. Forcing conversion may affect other settings in Display Mode or HDR
+        Format.
+    </string>
+    <!-- Title for preference for SDR conversion in case of force dynamic range. [CHAR LIMIT=120] -->
+    <string name="preferred_dynamic_range_selection_force_sdr_title">Always to SDR</string>
+    <!-- Title for preference for an HDR conversion in case of force dynamic range. [CHAR LIMIT=120] -->
+    <string name="preferred_dynamic_range_selection_force_hdr_title">Always to
+        <xliff:g id="hdr_type" example="Dolby Vision">%s</xliff:g></string>
+    <!-- Dialog title for HDR conversion in case of force dynamic range. [CHAR LIMIT=120] -->
+    <string name="preferred_dynamic_range_force_dialog_title">Do you want to force the HDR
+        output?</string>
+    <!-- Dialog description for HDR conversion in case of force dynamic range. [CHAR LIMIT=300] -->
+    <string name="preferred_dynamic_range_force_dialog_desc">By default the conversion will be
+        forced to <xliff:g id="hdr_type" example="Dolby Vision">%s</xliff:g>.</string>
+    <!-- Dialog description for HDR conversion in case of force dynamic range. [CHAR LIMIT=300] -->
+    <string name="preferred_dynamic_range_force_dialog_desc_4k30_issue">Your display will run at
+        1080p 60Hz resolution. This option is not compatible with your display when running at the
+        4k 60Hz resolution.</string>
+    <!-- Sidebar description indicating that Dolby Vision selection is not allowed because current display mode[CHAR LIMIT=300] -->
+    <string name="selection_dolby_vision_not_supported_sidebar">Dolby Vision is not supported at the current
+        resolution. If you enable Dolby Vision manually, the resolution of your display will
+        be changed to 1080p 60Hz</string>
+    <!-- Dialog title for manually enabling Dolby Vision when display does not support it[CHAR LIMIT=300] -->
+    <string name="manual_dolby_vision_format_on_4k60_title">Change resolution to 1080p 60Hz?</string>
+    <!-- Title for preference for HDR conversion force [CHAR LIMIT=200] -->
+    <string name="dynamic_range_selection_force_dv_title">Always force conversion to Dolby Vision
+    </string>
+    <!-- Summary for preference for HDR conversion force - DV [CHAR LIMIT=500] -->
+    <string name="dynamic_range_selection_force_dv_summary">If Dolby Vision is disabled in HDR
+        Formats in the Advanced Display Settings, forcing conversion to Dolby Vision will re-enable
+        it.
+    </string>
+    <!-- Title for preference for HDR conversion force - HDR 10[CHAR LIMIT=200] -->
+    <string name="dynamic_range_selection_force_hdr10_title">Always force conversion to HDR10
+    </string>
+    <!-- Summary for preference for HDR conversion force - HDR 10 [CHAR LIMIT=500] -->
+    <string name="dynamic_range_selection_force_hdr10_summary">If HDR10 is disabled in HDR
+        Formats in the Advanced Display Settings, forcing conversion to HDR10 will re-enable it.
+    </string>
+    <!-- Title for preference for HDR conversion force - HLG [CHAR LIMIT=200] -->
+    <string name="dynamic_range_selection_force_hlg_title">Always force conversion to HLG
+    </string>
+    <!-- Summary for preference for HDR conversion force - HLG [CHAR LIMIT=500] -->
+    <string name="dynamic_range_selection_force_hlg_summary">If HLG is disabled in HDR
+        Formats in the Advanced Display Settings, forcing conversion to HLG will re-enable it.
+    </string>
+    <!-- Title for preference for HDR conversion force - HDR10+ [CHAR LIMIT=200] -->
+    <string name="dynamic_range_selection_force_hdr10plus_title">Always force conversion to HDR10+
+    </string>
+    <!-- Summary for preference for HDR conversion force - DV [CHAR LIMIT=500] -->
+    <string name="dynamic_range_selection_force_hdr10plus_summary">If HDR10+ is disabled in HDR
+        Formats in the Advanced Display Settings, forcing conversion to HDR10+ will re-enable it.
+    </string>
+    <!-- Title for preference for HDR conversion force - SDR [CHAR LIMIT=200] -->
+    <string name="dynamic_range_selection_force_sdr_title">Always force conversion to SDR
+    </string>
+    <!-- Summary for preference for HDR conversion force - SRD [CHAR LIMIT=500] -->
+    <string name="dynamic_range_selection_force_sdr_summary">Forcing conversion to SDR will disable all
+        formats in the HDR Formats in Advanced Display Settings.
+    </string>
+
+    <!-- Title for preference for forcing a display's frame
+    rate to match the content's frame rate. [CHAR LIMIT=60] -->
+    <string name="match_content_frame_rate_title">Match content frame rate</string>
+    <!-- Default preference for a display's frame rate to match the content's frame rate. [CHAR LIMIT=80] -->
+    <string name="match_content_frame_rate_seamless">Seamless-only</string>
+    <!-- Summary for default preference for a display's frame rate to match the content's frame rate. [CHAR LIMIT=250] -->
+    <string name="match_content_frame_rate_seamless_summary">If the app requests it, your device
+        will match its output to the original frame rate of the content you’re watching,
+        ONLY if your TV can perform a seamless transition.  </string>
+    <!-- Summary is seamless frame rate switching is not supported on connected display [CHAR LIMIT=250] -->
+    <string name="match_content_frame_rate_seamless_not_supported_summary">Your connected display
+        does not support seamless refresh rate transitions. This option will have no effect unless
+        you change to a display that supports it.</string>
+    <!-- Preference to force a display's frame rate to always match the content's frame rate. [CHAR LIMIT=80] -->
+    <string name="match_content_frame_rate_non_seamless">Always</string>
+    <!-- Summary for preference to force a display's frame rate to always match the content's frame rate. [CHAR LIMIT=250] -->
+    <string name="match_content_frame_rate_non_seamless_summary">If the app requests it, your
+        device will match its output to the original frame rate of the content you’re watching.
+        This may cause your screen to go blank for a second when exiting or entering a video
+        playback.</string>
+    <!-- Preference to force a display's frame rate to never match the content's frame rate. [CHAR LIMIT=50] -->
+    <string name="match_content_frame_rate_never">Never</string>
+    <!-- Summary for preference to force a display's frame rate to never match the content's frame rate. [CHAR LIMIT=250] -->
+    <string name="match_content_frame_rate_never_summary">Even if the app requests it, your device
+        will never try to match its output to the original frame rate of the content you’re
+        watching.</string>
+    <!-- Title for preference which when clicked lets the user configure text scaling. [CHAR LIMIT=50] -->
+    <string name="font_scale_settings_title">Text scaling</string>
+    <!-- A title for the section showing the text scaling preview. [CHAR LIMIT=50] -->
+    <string name="font_scale_item_detail">Scale to <xliff:g id="scale">%1$d</xliff:g>%%</string>
+    <!-- A title for the section showing the text scaling preview. [CHAR LIMIT=50] -->
+    <string name="font_scale_sample_text_title">Sample text</string>
+    <!-- Title text in sample text used to illustrate how the currently selected font scale will appear to the user. [CHAR LIMIT=50] -->
+    <string name="font_scale_preview_text_title"
+            translation_description="Translate manually. No not adopt any copyrighted material for translation.">
+        The Wonderful Wizard of Oz
+    </string>
+    <!-- Subtitle for sample text shown in the text scaling preview. [CHAR LIMIT=100] -->
+    <string name="font_scale_preview_text_subtitle">Chapter 11: The Wonderful Emerald City of Oz</string>
+    <!-- Sample text shown in the text scaling preview. [CHAR LIMIT=NONE] -->
+    <string name="font_scale_preview_text_body">
+        Even with eyes protected by the green spectacles Dorothy and her friends were at first dazzled by the brilliancy of the wonderful City.
+        The streets were lined with beautiful houses all built of green marble and studded everywhere with sparkling emeralds.
+        They walked over a pavement of the same green marble, and where the blocks were joined together were rows of emeralds, set closely, and glittering in the brightness of the sun.
+        The window panes were of green glass; even the sky above the City had a green tint, and the rays of the sun were green.
+        \n\nThere were many people, men, women and children, walking about, and these were all dressed in green clothes and had greenish skins.
+        They looked at Dorothy and her strangely assorted company with wondering eyes, and the children all ran away and hid behind their mothers when they saw the Lion; but no one spoke to them.
+        Many shops stood in the street, and Dorothy saw that everything in them was green.
+        Green candy and green pop-corn were offered for sale, as well as green shoes, green hats and green clothes of all sorts.
+        At one place a man was selling green lemonade, and when the children bought it Dorothy could see that they paid for it with green pennies.
+        \n\nThere seemed to be no horses nor animals of any kind; the men carried things around in little green carts, which they pushed before them.
+        Everyone seeemed happy and contented and prosperous.
+    </string>
+
+    <!-- Title for preference for HDR format selection. [CHAR LIMIT=50] -->
+    <string name="hdr_format_selection_title">Format selection</string>
+    <!-- Title for Automatic preference for HDR format selection. [CHAR LIMIT=50] -->
+    <string name="hdr_format_selection_auto_title">Automatic</string>
+    <!-- Title for Manual preference for HDR format selection. [CHAR LIMIT=50] -->
+    <string name="hdr_format_selection_manual_title">Manual</string>
+    <!-- Desc for Automatic preference for HDR format selection. [CHAR LIMIT=100] -->
+    <string name="hdr_format_selection_auto_desc">Use device reported formats</string>
+    <!-- Desc for Manual preference for HDR format selection. [CHAR LIMIT=100] -->
+    <string name="hdr_format_selection_manual_desc">Choose formats manually from available
+        formats</string>
+    <!-- Title for supported HDR format section [CHAR LIMIT=50]-->
+    <string name="hdr_format_supported_title">SUPPORTED FORMATS</string>
+    <!-- Title for unsupported HDR format [CHAR LIMIT=50]-->
+    <string name="hdr_format_unsupported_title">UNSUPPORTED FORMATS</string>
+    <!-- Title for HDR format type SDR [CHAR LIMIT=50]-->
+    <string name="hdr_format_sdr">SDR</string>
+    <!-- Title for HDR format type HDR10 [CHAR LIMIT=50]-->
+    <string name="hdr_format_hdr10">HDR10</string>
+    <!-- Title for HDR format type HLG [CHAR LIMIT=50]-->
+    <string name="hdr_format_hlg">HLG</string>
+    <!-- Title for HDR format type HDR10+ [CHAR LIMIT=50]-->
+    <string name="hdr_format_hdr10plus">HDR10+</string>
+    <!-- Title for HDR format type Dolby Vision [CHAR LIMIT=50]-->
+    <string name="hdr_format_dolby_vision">Dolby Vision</string>
+    <!-- Summary for a radio button that if selected will cause the device to automatically select
+            appropriate HDR formats. [CHAR LIMIT=300] -->
+    <string name="hdr_format_selection_auto_summary">When selected, the system will allow apps to
+        select any HDR format that is supported by your device chain. Apps may choose a format that
+        is not the highest-quality format.</string>
+    <!-- Summary for a radio button that if selected will allow the user to manually select HDR
+            formats. [CHAR LIMIT=300] -->
+    <string name="hdr_format_selection_manual_summary">When selected, you can manually disable HDR
+        formats that are supported by your device chain that cause problems with playback. HDR
+        formats not supported by your device chain cannot be forcibly enabled. Apps may choose a
+        format that is not the highest-quality format.</string>
+
+    <!-- Title for HDR format info section [CHAR LIMIT=50]-->
+    <string name="hdr_format_info">FORMAT INFO</string>
+    <!-- Title for HDR show format section [CHAR LIMIT=50]-->
+    <string name="hdr_show_formats">Show formats</string>
+    <!-- Title for HDR hide format section [CHAR LIMIT=50]-->
+    <string name="hdr_hide_formats">Hide formats</string>
+    <!-- Title for HDR enabled format section [CHAR LIMIT=50]-->
+    <string name="hdr_enabled_formats">ENABLED FORMATS</string>
+    <!-- Title for HDR disabled format section [CHAR LIMIT=50]-->
+    <string name="hdr_disabled_formats">DISABLED FORMATS</string>
+    <!-- Summary for toast shown on clicking the enabled format preference in Automatic mode
+        [CHAR LIMIT=250]-->
+    <string name="hdr_enabled_format_info_clicked">To disable, change the
+        format selection to Manual.</string>
+
+    <!-- Title for preference for Resolution selection. [CHAR LIMIT=50] -->
+    <string name="resolution_selection_title">Resolution</string>
+    <!-- Title for Automatic preference for Resolution selection. [CHAR LIMIT=50] -->
+    <string name="resolution_selection_auto_title">Automatic</string>
+    <!-- Title for dialog that is shown when user changes the resolution. [CHAR LIMIT=150]-->
+    <string name="resolution_selection_dialog_title">Resolution has been changed</string>
+    <!-- Title for dialog that is shown when user changes the resolution and Dolby Vision is not
+    supported. [CHAR LIMIT=150]-->
+    <string name="resolution_selection_with_mode_dialog_title">Change resolution to %1$s?</string>
+    <!-- Description for dialog that is shown when user changes the resolution.
+        [CHAR LIMIT=300]-->
+    <string name="resolution_selection_dialog_desc">Select OK to use %1$s from now on.</string>
+    <!-- Description for dialog that is shown when user changes the resolution to a mode that doesn't
+        support Dolby Vision.[CHAR LIMIT=300]-->
+    <string name="resolution_selection_disabled_dolby_vision_dialog_desc">Dolby Vision is not
+        supported at %1$s and will be disabled in \"Advanced Display Settings\"
+        </string>
+    <!-- Description of resolution mode that is shown on the side panel when user is scrolling
+        through resolution modes. It lists all HDR types that this mode supports.
+        [CHAR LIMIT=300]-->
+    <string name="resolution_hdr_description_info">This mode supports: %1$s\nOn some TVs, you may
+        need to turn on Enhanced HDMI to enable more HDR formats. Check your TV settings to see if
+        this is supported.</string>
+    <!-- Cancel button title for dialog that is shown when user changes the resolution.
+        [CHAR LIMIT=30]-->
+    <string name="resolution_selection_dialog_cancel">Cancel</string>
+    <!-- Ok button title for dialog that is shown when user changes the resolution.
+     [CHAR LIMIT=50]-->
+    <string name="resolution_selection_dialog_ok">OK</string>
+    <!-- Unit of refresh rate Hz. [CHAR LIMIT=15]-->
+    <string name="resolution_selection_hz">Hz</string>
+    <!-- String for display mode. Example after substitution: 4k (60 Hz) [CHAR LIMIT=100]-->
+    <string name="resolution_display_mode">
+        <xliff:g id="resolution" example="1080p, 4k etc">%1$s</xliff:g>
+        (<xliff:g id="refresh-rate" example="60, 59.94 etc">%2$s</xliff:g> Hz)</string>
 
     <!-- Title of dialog asking user to confirm before clearing all caches. [CHAR LIMIT=48] -->
     <string name="device_storage_clear_cache_title">Clear cached data?</string>
     <!-- Message of dialog asking user to confirm before clearing all caches. [CHAR LIMIT=48] -->
     <string name="device_storage_clear_cache_message">This will clear cached data for all apps.</string>
+
+    <!-- Title of settings entry for default audio output settings. -->
+    <string name="default_audio_output_settings_title" translatable="true"/>
+    <string name="default_audio_output_settings_slice_uri" translatable="false"/>
 
     <!-- Remote and Accessories -->
     <skip />
@@ -1011,6 +1288,8 @@
     <!-- Error message shown when trying to move device administrators to external disks, such as SD card [CHAR_LIMIT=none] -->
     <string name="move_error_device_admin">Device Administrator can\u2019t be installed on external media.</string>
 
+    <!-- An HDR capability[CHAR LIMIT=NONE] -->
+    <string name="hdr_capability">- %1$s</string>
     <!-- Learn more action title [CHAR_LIMIT=50] -->
     <string name="learn_more_action">Learn more</string>
 
@@ -2911,10 +3190,6 @@
     <string name="tv_extras" translatable="true">Panel TV</string>
 
     <!-- Processing Dialog -->
-    <string name="resolution_selection_dialog_desc">Select OK to use %1$s from now on.</string>
-    <string name="resolution_selection_dialog_title">New Settings has been applied</string>
-    <string name="resolution_selection_dialog_ok">OK</string>
-    <string name="resolution_selection_dialog_cancel">Cancel</string>
     <string name="start_activity">Start Activity</string>
 
 	<!-- wol -->

@@ -40,6 +40,11 @@
         android:key="shortcut"
         android:title="@string/app_shortcut" />
     <Preference
+        android:fragment="hardkernel.odroid.settings.device.displaysound.DisplaySoundFragment"
+        android:icon="@drawable/ic_display_sound"
+        android:key="sound_effects"
+        android:title="@string/device_display_sound" />
+    <Preference
         android:fragment="hardkernel.odroid.settings.display.DisplayFragment"
         android:icon="@drawable/ic_settings_display"
         android:key="display"

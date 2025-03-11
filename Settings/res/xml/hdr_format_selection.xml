@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2020 The Android Open Source Project
+  ~ Copyright (C) 2021 The Android Open Source Project
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -12,28 +12,27 @@
   ~ distributed under the License is distributed on an "AS IS" BASIS,
   ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   ~ See the License for the specific language governing permissions and
-  ~ limitations under the License
+  ~ limitations under the License.
   -->
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
                   xmlns:app="http://schemas.android.com/apk/res-auto"
-                  android:title="@string/surround_sound_select_formats">
+                  android:title="@string/hdr_format_selection_title"
+                  android:key="hdr_format_selection_screen" >
+
     <PreferenceCategory
-        android:key="advanced_sound_settings_option">
+        android:key="hdr_format_selection_option">
         <hardkernel.odroid.settings.RadioPreference
-            android:key="surround_sound_auto"
+            android:key="hdr_format_selection_auto"
             android:persistent="true"
-            app:radioGroup="advanced_sound_settings_option"
-            android:title="@string/surround_sound_auto_title"/>
+            app:radioGroup="hdr_format_selection_option"
+            android:title="@string/hdr_format_selection_auto_title"
+            android:summary="@string/hdr_format_selection_auto_desc" />
         <hardkernel.odroid.settings.RadioPreference
-            android:key="surround_sound_none"
+            android:key="hdr_format_selection_manual"
             android:persistent="true"
-            app:radioGroup="advanced_sound_settings_option"
-            android:title="@string/surround_sound_none_title"/>
-        <hardkernel.odroid.settings.RadioPreference
-            android:key="surround_sound_manual"
-            android:persistent="true"
-            app:radioGroup="advanced_sound_settings_option"
-            android:title="@string/surround_sound_manual_title"/>
+            app:radioGroup="hdr_format_selection_option"
+            android:title="@string/hdr_format_selection_manual_title"
+            android:summary="@string/hdr_format_selection_manual_desc" />
     </PreferenceCategory>
 </PreferenceScreen>

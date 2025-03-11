@@ -231,6 +231,22 @@
         <item>FFFFFFFF</item>
     </string-array>
 
+    <!-- Titles for font scale preference. [CHAR LIMIT=35] -->
+    <string-array name="font_scale_entries">
+        <item>Small</item>
+        <item>Default</item>
+        <item>Large</item>
+        <item>Largest</item>
+    </string-array>
+
+    <!-- Values for font scale preference. [CHAR LIMIT=35] -->
+    <string-array name="font_scale_entry_values" translatable="false">
+        <item>0.85</item>
+        <item>1.0</item>
+        <item>1.15</item>
+        <item>1.30</item>
+    </string-array>
+
     <!-- List entries for controlling surround sound passthrough setting -->
     <!-- DroidLogic modify, add passthrough feature and remove manual feature. -->
     <string-array name="surround_sound_entries" translatable="false">

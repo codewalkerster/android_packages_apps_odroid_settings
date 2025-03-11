@@ -84,6 +84,7 @@
     <!-- OdroidSettings end -->
 
     <application
+            android:name=".OdroidSettingsApplication"
             android:allowClearUserData="false"
             android:banner="@drawable/ic_launcher_banner_settings"
             android:defaultToDeviceProtectedStorage="true"
@@ -120,6 +121,24 @@
             android:excludeFromRecents="true"
             android:exported="true">
         </activity>
+
+        <activity
+            android:name=".device.displaysound.DisplaySoundActivity"
+            android:configChanges="keyboard|keyboardHidden|navigation"
+            android:excludeFromRecents="true"
+            android:exported="true"
+            android:theme="@style/OdroidSettingsActivityTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="com.android.settings.SOUND_SETTINGS"/>
+                <action android:name="android.settings.SOUND_SETTINGS"/>
+                <action android:name="android.settings.panel.action.VOLUME"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.VOICE_LAUNCH"/>
+                <category android:name="com.android.settings.SHORTCUT"/>
+            </intent-filter>
+        </activity>
+
         <activity
                 android:name=".sliceprovider.dialog.DisplayResetActivity"
                 android:configChanges="keyboard|keyboardHidden|navigation"
