@@ -82,10 +82,6 @@
         android:key="key_force_ddp"
         android:persistent="false"
         android:title="@string/force_ddp" />
-    <Preference
-        android:key="advanced_sound_settings"
-        android:title="@string/advanced_sound_settings_title"
-        android:fragment="hardkernel.odroid.settings.soundeffect.AdvancedVolumeFragment"/>
     <SwitchPreference
         android:key="key_sound_tv_output_device_hdmi_out"
         android:persistent="false"

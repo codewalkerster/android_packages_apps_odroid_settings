@@ -37,10 +37,6 @@
         android:title="@string/title_audio_settings_audio_output_dev"
         android:fragment="hardkernel.odroid.settings.soundeffect.AudioDeviceRoutingFragment" />
     <Preference
-        android:key="advanced_sound_settings"
-        android:title="@string/advanced_sound_settings_title"
-        android:fragment="hardkernel.odroid.settings.soundeffect.AdvancedVolumeFragment" />
-    <Preference
         android:key="key_audio_reset"
         android:title="Reset"
         android:summary="Reset all audio settings" />

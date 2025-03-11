@@ -111,7 +111,6 @@ public class AdvancedVolumeFragment extends PreferenceControllerFragment {
         setPreferencesFromResource(R.xml.advanced_sound, null /* key */);
 
         String surroundSoundSettingKey = getSurroundPassthroughSetting(getContext());
-		Log.d("advancedvolume", "surroudn - " + surroundSoundSettingKey);
         selectRadioPreference(findPreference(surroundSoundSettingKey));
 
         // Do not show sidebar info texts in case of 1 panel settings.
