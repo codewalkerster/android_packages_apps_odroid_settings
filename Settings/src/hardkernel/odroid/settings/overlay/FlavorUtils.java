@@ -49,7 +49,7 @@ public final class FlavorUtils {
             Log.w(TAG, "Trying to get flavor from null context. Returning undefined flavor.");
             return FLAVOR_UNDEFINED;
         }
-        String flavor = context.getString(R.string.config_tvSettingsFlavor);
+        String flavor = context.getString(R.string.config_OdroidSettingsFlavor);
         if (TextUtils.isEmpty(flavor)) {
             return FLAVOR_CLASSIC;
         }

@@ -37,8 +37,8 @@
     <!-- Determines whether the "Take bug report" option is shown in quick settings. -->
     <bool name="config_quick_settings_show_take_bugreport" translatable="false">true</bool>
 
-    <!-- Flavor of TvSettings. -->
-    <string name="config_tvSettingsFlavor" translatable="false">TwoPanel</string>
+    <!-- Flavor of Odroid Settings. -->
+    <string name="config_OdroidSettingsFlavor" translatable="false">TwoPanel</string>
 
     <!-- Allow overlay to specify known/official device names using the return value of
         BluetoothDevice # getName() so that it is hidden from the generic bluetooth accessories

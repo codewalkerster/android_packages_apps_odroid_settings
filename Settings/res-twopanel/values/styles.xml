@@ -39,7 +39,7 @@
     </style>
 
     <!-- Override the Theme.Settings.Transparent to TwoPanel style. -->
-    <style name="TvSettingsActivityTheme" parent="Theme.Settings.Transparent" />
+    <style name="OdroidSettingsActivityTheme" parent="Theme.Settings.Transparent" />
     <style name="Theme.Settings.TwoPanel">
         <item name="android:windowBackground">@color/settings_background</item>
         <item name="android:windowIsTranslucent">false</item>
