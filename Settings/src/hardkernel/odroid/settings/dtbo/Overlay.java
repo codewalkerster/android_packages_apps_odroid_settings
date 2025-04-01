@@ -11,10 +11,12 @@ public class Overlay {
     private static final String Path = "/fat/rockchip/overlays/";
 
     private static String getPath() {
-        if(OdroidUtils.isOdroidM1()) {
+        if (OdroidUtils.isOdroidM1()) {
             return Path + "odroidm1/";
-        } else {
+        } else if (OdroidUtils.isOdroidM1S()) {
             return Path + "odroidm1s/";
+        } else {
+            return Path + "odroidm2/";
         }
     }
     private static ArrayList<String> overlaysList = null;
