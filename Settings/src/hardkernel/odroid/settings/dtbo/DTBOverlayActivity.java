@@ -12,20 +12,4 @@ public class DTBOverlayActivity extends TvSettingsActivity {
         return FlavorUtils.getFeatureFactory(this).getSettingsFragmentProvider()
             .newSettingsFragment(DTBOverlayFragment.class.getName(), null);
     }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode,resultCode, data);
-    }
-
-    public static class SettingsFragment extends BaseSettingsFragment {
-
-        public static SettingsFragment newInstance() { return new SettingsFragment(); }
-
-        @Override
-        public void onPreferenceStartInitialScreen() {
-            final DTBOverlayFragment fragment = DTBOverlayFragment.newInstance();
-            startPreferenceFragment(fragment);
-        }
-    }
 }
