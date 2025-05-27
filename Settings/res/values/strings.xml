@@ -2815,7 +2815,8 @@
     <string name="pq_color_temperature">Color Temperature</string>
     <string name="pq_aspect_ratio">Aspect Ratio</string>
     <string name="pq_ai_pq">AI PQ</string>
-    <string name="pq_ai_pq_sr">AI-PQ/AI-SR</string>
+		<!--<string name="pq_ai_pq_sr">AI-PQ/AI-SR</string> -->
+    <string name="ai_sr">AI-SR</string>
     <string name="ai_sr_enable" translatable="false">Enable AI SR</string>
     <string name="pq_dnr">DNR</string>
     <string name="pq_hdmi_color">Hdmi Color Range Mode</string>

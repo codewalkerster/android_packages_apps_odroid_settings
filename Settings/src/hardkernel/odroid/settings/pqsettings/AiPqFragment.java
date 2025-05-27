@@ -78,13 +78,13 @@ public class AiPqFragment extends SettingsPreferenceFragment implements Preferen
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         setPreferencesFromResource(R.xml.aipq, null);
 
-        mAipqLevelPref = (ListPreference) findPreference(KEY_LEVEL_AIPQ);
-        if (mPQSettingsManager.hasAipqFunc()) {
-            mAipqLevelPref.setValueIndex(mPQSettingsManager.getAipqModeLevel());
-            mAipqLevelPref.setOnPreferenceChangeListener(this);
-        } else {
-            mAipqLevelPref.setEnabled(false);
-        }
+        //mAipqLevelPref = (ListPreference) findPreference(KEY_LEVEL_AIPQ);
+        //if (mPQSettingsManager.hasAipqFunc()) {
+        //    mAipqLevelPref.setValueIndex(mPQSettingsManager.getAipqModeLevel());
+        //    mAipqLevelPref.setOnPreferenceChangeListener(this);
+        //} else {
+        //    mAipqLevelPref.setEnabled(false);
+        //}
 
         mAisrLevelPref = (ListPreference) findPreference(KEY_LEVEL_AISR);
         if (mPQSettingsManager.hasPqCaseFunc(SystemControlManager.PqFuncCase.PQ_CASE_FUNC_AI_SR)) {
@@ -94,26 +94,26 @@ public class AiPqFragment extends SettingsPreferenceFragment implements Preferen
             mAisrLevelPref.setEnabled(false);
         }
 
-        mEnableAipqInfoPref = (TwoStatePreference) findPreference(KEY_ENABLE_AIPQ_INFO);
-        mEnableAipqInfoPref.setOnPreferenceChangeListener(this);
-        Log.i(TAG, "init Aipqinfo: " + mPQSettingsManager.getAipqInfo(PROP_AIPQ_ENABLE));
-        mEnableAipqInfoPref.setChecked(mPQSettingsManager.getAipqInfo(PROP_AIPQ_ENABLE));
-        if (!mPQSettingsManager.hasPqCaseFunc(SystemControlManager.PqFuncCase.PQ_CASE_FUNC_AI_PQ)) {
-            mAipqLevelPref.setEnabled(false);
-            mEnableAipqInfoPref.setEnabled(false);
-        }
+        //mEnableAipqInfoPref = (TwoStatePreference) findPreference(KEY_ENABLE_AIPQ_INFO);
+        //mEnableAipqInfoPref.setOnPreferenceChangeListener(this);
+        //Log.i(TAG, "init Aipqinfo: " + mPQSettingsManager.getAipqInfo(PROP_AIPQ_ENABLE));
+        //mEnableAipqInfoPref.setChecked(mPQSettingsManager.getAipqInfo(PROP_AIPQ_ENABLE));
+        //if (!mPQSettingsManager.hasPqCaseFunc(SystemControlManager.PqFuncCase.PQ_CASE_FUNC_AI_PQ)) {
+        //    mAipqLevelPref.setEnabled(false);
+        //    mEnableAipqInfoPref.setEnabled(false);
+        //}
 
-        mEnableAiColorPref = (ListPreference) findPreference(KEY_ENABLE_AI_COLOR);
-        if (mPQSettingsManager.hasAiColorFunc()) {
-            mEnableAiColorPref.setOnPreferenceChangeListener(this);
-            mEnableAiColorPref.setValueIndex(mPQSettingsManager.getAiColor());
-        } else {
-            mEnableAiColorPref.setEnabled(false);
-        }
+        //mEnableAiColorPref = (ListPreference) findPreference(KEY_ENABLE_AI_COLOR);
+        //if (mPQSettingsManager.hasAiColorFunc()) {
+        //    mEnableAiColorPref.setOnPreferenceChangeListener(this);
+        //    mEnableAiColorPref.setValueIndex(mPQSettingsManager.getAiColor());
+        //} else {
+        //    mEnableAiColorPref.setEnabled(false);
+        //}
 
-        if (!mPQSettingsManager.hasPqCaseFunc(SystemControlManager.PqFuncCase.PQ_CASE_FUNC_AI_COLOR)) {
-            mEnableAiColorPref.setEnabled(false);
-        }
+        //if (!mPQSettingsManager.hasPqCaseFunc(SystemControlManager.PqFuncCase.PQ_CASE_FUNC_AI_COLOR)) {
+        //    mEnableAiColorPref.setEnabled(false);
+        //}
 
         mEnableAisrDemoPref = (Preference) findPreference(KEY_ENABLE_AISR_DEMO);
 

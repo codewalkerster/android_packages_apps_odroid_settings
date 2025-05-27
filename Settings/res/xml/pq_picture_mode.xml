@@ -18,32 +18,32 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
         android:title="@string/pq_picture">
 
-    <Preference
+<Preference
         android:fragment="hardkernel.odroid.settings.pqsettings.AdjustValueFragment"
         android:key="pq_custom"
         android:title="@string/pq_custom" />
-    <ListPreference
+<!--<ListPreference
         android:key="pq_aspect_ratio"
         android:persistent="false"
         android:entries="@array/pq_aspect_ratio_entries"
         android:entryValues="@array/pq_aspect_ratio_entry_values"
         android:title="@string/pq_aspect_ratio"
-        android:summary="%s" />
+android:summary="%s" /> -->
     <Preference
         android:key="ai_pq"
-        android:title="@string/pq_ai_pq_sr"
-        android:fragment="hardkernel.odroid.settings.pqsettings.AiPqFragment"/>
-    <Preference
+		android:title="@string/ai_sr"
+        android:fragment="hardkernel.odroid.settings.pqsettings.AiPqFragment"/><!-- "String/pq_ai_pq_sr" -->
+	<Preference
         android:fragment="hardkernel.odroid.settings.pqsettings.AdjustBaclLightFragment"
         android:key="pq_backlight"
         android:persistent="false"
         android:title="@string/pq_backlight"
         android:summary="%s" />
-    <Preference
+	<!--<Preference
         android:fragment="hardkernel.odroid.settings.pqsettings.advanced.PQAdvancedFragment"
         android:key="pq_picture_advanced"
         android:persistent="false"
-        android:title="@string/pq_picture_advanced"/>
+	android:title="@string/pq_picture_advanced"/> -->
     <Preference
         android:key="pq_allreset"
         android:title="@string/pq_allreset" />

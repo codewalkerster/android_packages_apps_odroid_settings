@@ -17,8 +17,8 @@
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:settings="http://schemas.android.com/apk/res-auto"
-        android:title="@string/pq_ai_pq_sr">
-      <ListPreference
+        android:title="@string/ai_sr"> <!--android:title="@string/pq_ai_pq_sr"-->
+<!--<ListPreference
           android:key="ai_pq_level"
           android:persistent="false"
           android:entries="@array/pq_ai_pq_entries"
@@ -28,7 +28,7 @@
       <SwitchPreference
           android:key="ai_pq_info_enable"
           android:persistent="true"
-          android:title="@string/ai_pq_info_enable" />
+android:title="@string/ai_pq_info_enable" /> -->
       <ListPreference
           android:key="ai_sr_level"
           android:persistent="false"
@@ -36,13 +36,13 @@
           android:entryValues="@array/pq_ai_sr_entry_values"
           android:title="@string/ai_sr_enable"
           android:summary="%s" />
-      <ListPreference
+      <!--<ListPreference
           android:key="ai_color_enable"
           android:persistent="true"
           android:entries="@array/pq_ai_color_entries"
           android:entryValues="@array/pq_ai_color_entry_values"
           android:title="@string/ai_color_enable"
-          android:summary="%s"/>
+      android:summary="%s"/> -->
       <Preference
           android:key="ai_pq_aisr_demo_switch"
           android:title="@string/ai_pq_aisr_demo_switch"
