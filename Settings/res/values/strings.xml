@@ -3243,6 +3243,11 @@
     <string name="big_core_clock">Big Core Clocks</string>
     <string name="big_core_governor">Big Core Governors</string>
 
+    <!-- Bluetooth -->
+    <string name="bluetooth">Bluetooth</string>
+    <string name="bluetooth_service">Bluetooth Service</string>
+    <string name="bluetooth_service_state">Bluetooth Service status will be applied after reboot</string>
+
     <!-- DTBO -->
     <string name="overlays">DTB Overlay List</string>
     <string name="overlay_size">DTBO Size Resize</string>

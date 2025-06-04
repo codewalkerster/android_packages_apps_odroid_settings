@@ -379,6 +379,12 @@
             android.exported="true" />
 
         <activity
+            android:name=".bluetooth.BluetoothActivity"
+            android:configChanges="keyboard|keyboardHidden|navigation"
+            android:excludeFromRecents="true"
+            android.exported="true" />
+
+        <activity
                 android:configChanges="keyboard|keyboardHidden|navigation"
                 android:name=".display.rotation.RotationActivity"
                 android:theme="@style/Theme.Settings.Transparent"
