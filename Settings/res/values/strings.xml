@@ -2782,6 +2782,9 @@
     <!-- Bluetooth settings: The sub heading for devices which have already been paired with this device. [CHAR LIMIT=40] -->
     <string name="bluetooth_preference_paired_devices">Paired devices</string>
     <string name="device_picker">Choose Bluetooth device</string>
+    <!-- Bluetooth Service -->
+    <string name="bluetooth_service">Bluetooth Service</string>
+    <string name="bluetooth_service_state">Bluetooth Service status will be applied after reboot</string>
 
     <!-- VPN interface -->
     <string name="vpn" >VPN</string>
