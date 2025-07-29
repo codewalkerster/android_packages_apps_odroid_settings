@@ -10,7 +10,7 @@ public class Overlay {
     private static final String Path = "/fat/amlogic/overlays/";
 
     private static String getPath() {
-        return Path + "odroidc5/";
+        return Path + "ODROID-C5/";
     }
     private static ArrayList<String> overlaysList = null;
 
