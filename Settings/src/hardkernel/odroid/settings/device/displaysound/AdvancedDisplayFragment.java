@@ -55,6 +55,7 @@ public class AdvancedDisplayFragment extends SettingsPreferenceFragment {
         native_ui = EnvProperty.getBoolean(PERSIST_NATIVE_UI, false);
         SwitchPreference nativeUiPreference = findPreference(KEY_NATIVE_UI);
         nativeUiPreference.setChecked(native_ui);
+        nativeUiPreference.setVisible(false);
     }
 
     @Override
