@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceScreen;
+import com.android.internal.logging.nano.MetricsProto;
 import hardkernel.odroid.settings.R;
 import hardkernel.odroid.settings.SettingsPreferenceFragment;
 import hardkernel.odroid.settings.RadioPreference;
@@ -66,4 +67,10 @@ public class DTBOSelectFragment extends SettingsPreferenceFragment {
         Overlay.set(radio.getKey(), radio.isChecked());
         return true;
     }
+
+    @Override
+    public int getMetricsCategory() {
+        return MetricsProto.MetricsEvent.SOUND;
+    }
+
 }

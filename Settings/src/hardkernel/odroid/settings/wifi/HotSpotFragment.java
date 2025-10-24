@@ -228,4 +228,9 @@ public class HotSpotFragment extends HotSpotBaseFragment implements
         }
     }
 
+    @Override
+    public int getMetricsCategory() {
+        return 0;
+    }
+
 }

@@ -27,7 +27,7 @@ import android.util.Log;
 
 import hardkernel.odroid.settings.R;
 import hardkernel.odroid.settings.SettingsPreferenceFragment;
-import com.droidlogic.app.AudioEffectManager;
+import com.droidlogic.app.DroidAudioEffect;
 
 public class DolbyAudioEffectFragment extends SettingsPreferenceFragment implements Preference.OnPreferenceChangeListener {
 
@@ -67,7 +67,7 @@ public class DolbyAudioEffectFragment extends SettingsPreferenceFragment impleme
     private Preference mDeInfoPref;
     private Preference mGeqInfoPref;
 
-    private AudioEffectManager mAudioEffectManager;
+    private DroidAudioEffect mDroidAudioEffect;
 
     public static DolbyAudioEffectFragment newInstance() {
         return new DolbyAudioEffectFragment();
@@ -75,8 +75,8 @@ public class DolbyAudioEffectFragment extends SettingsPreferenceFragment impleme
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        if (mAudioEffectManager == null) {
-            mAudioEffectManager = AudioEffectManager.getInstance(getActivity());
+        if (mDroidAudioEffect == null) {
+            mDroidAudioEffect = DroidAudioEffect.getInstance(getActivity());
         }
         super.onCreate(savedInstanceState);
     }
@@ -111,7 +111,7 @@ public class DolbyAudioEffectFragment extends SettingsPreferenceFragment impleme
         mDeInfoPref = (Preference) findPreference(KEY_DE_INFO);
         mGeqInfoPref = (Preference) findPreference(KEY_GEQ_INFO);
 
-        progress = mAudioEffectManager.getDapParam(AudioEffectManager.CMD_DAP_EFFECT_MODE);
+        progress = mDroidAudioEffect.getDapParam(DroidAudioEffect.DAP_CMD_EFFECT_MODE);
         dapPref.setValueIndex(progress);
         dapPref.setOnPreferenceChangeListener(this);
 
@@ -139,25 +139,25 @@ public class DolbyAudioEffectFragment extends SettingsPreferenceFragment impleme
     }
 
     private void updateGeq(int mode) {
-        if (mode == AudioEffectManager.DAP_GEQ_OFF) {
+        if (mode == DroidAudioEffect.DAP_GEQ_EFFECT_MODE_OFF) {
             mSeekbar1.setVisible(false);
             mSeekbar2.setVisible(false);
             mSeekbar3.setVisible(false);
             mSeekbar4.setVisible(false);
             mSeekbar5.setVisible(false);
         } else {
-            mSeekbar1.setValue(mAudioEffectManager.getDapParam(AudioEffectManager.SUBCMD_DAP_GEQ_BAND1));
-            mSeekbar2.setValue(mAudioEffectManager.getDapParam(AudioEffectManager.SUBCMD_DAP_GEQ_BAND2));
-            mSeekbar3.setValue(mAudioEffectManager.getDapParam(AudioEffectManager.SUBCMD_DAP_GEQ_BAND3));
-            mSeekbar4.setValue(mAudioEffectManager.getDapParam(AudioEffectManager.SUBCMD_DAP_GEQ_BAND4));
-            mSeekbar5.setValue(mAudioEffectManager.getDapParam(AudioEffectManager.SUBCMD_DAP_GEQ_BAND5));
+            mSeekbar1.setValue(mDroidAudioEffect.getDapParam(DroidAudioEffect.DAP_SUBCMD_GEQ_BAND1));
+            mSeekbar2.setValue(mDroidAudioEffect.getDapParam(DroidAudioEffect.DAP_SUBCMD_GEQ_BAND2));
+            mSeekbar3.setValue(mDroidAudioEffect.getDapParam(DroidAudioEffect.DAP_SUBCMD_GEQ_BAND3));
+            mSeekbar4.setValue(mDroidAudioEffect.getDapParam(DroidAudioEffect.DAP_SUBCMD_GEQ_BAND4));
+            mSeekbar5.setValue(mDroidAudioEffect.getDapParam(DroidAudioEffect.DAP_SUBCMD_GEQ_BAND5));
             mSeekbar1.setVisible(true);
             mSeekbar2.setVisible(true);
             mSeekbar3.setVisible(true);
             mSeekbar4.setVisible(true);
             mSeekbar5.setVisible(true);
-            int val = mAudioEffectManager.getDapParam(AudioEffectManager.CMD_DAP_EFFECT_MODE);
-            if ((mode == AudioEffectManager.DAP_GEQ_USER) && (val == AudioEffectManager.DAP_MODE_USER)) {
+            int val = mDroidAudioEffect.getDapParam(DroidAudioEffect.DAP_CMD_EFFECT_MODE);
+            if ((mode == DroidAudioEffect.DAP_GEQ_EFFECT_MODE_USER) && (val == DroidAudioEffect.DAP_EFFECT_MODE_USER)) {
                 mSeekbar1.setAdjustable(true);
                 mSeekbar2.setAdjustable(true);
                 mSeekbar3.setAdjustable(true);
@@ -183,8 +183,8 @@ public class DolbyAudioEffectFragment extends SettingsPreferenceFragment impleme
         int val = 0, progress = 0;
         int mode = 0;
 
-        mode = mAudioEffectManager.getDapParam(AudioEffectManager.CMD_DAP_EFFECT_MODE);
-        if (mode == AudioEffectManager.DAP_MODE_OFF) {
+        mode = mDroidAudioEffect.getDapParam(DroidAudioEffect.DAP_CMD_EFFECT_MODE);
+        if (mode == DroidAudioEffect.DAP_EFFECT_MODE_OFF) {
             mVlPref.setVisible(false);
             mVlAmountPref.setVisible(false);
             mVlInfoPref.setVisible(false);
@@ -201,14 +201,14 @@ public class DolbyAudioEffectFragment extends SettingsPreferenceFragment impleme
             mSeekbar5.setVisible(false);
             mDapDetailPref.setTitle("");
             return;
-        } else if (mode == AudioEffectManager.DAP_MODE_USER) {
+        } else if (mode == DroidAudioEffect.DAP_EFFECT_MODE_USER) {
             isUserMode = true;
         } else
             isUserMode = false;
 
 
-        enable = (mAudioEffectManager.getDapParam(AudioEffectManager.CMD_DAP_VL_ENABLE) != AudioEffectManager.DAP_OFF);
-        val = mAudioEffectManager.getDapParam(AudioEffectManager.CMD_DAP_VL_AMOUNT);
+        enable = (mDroidAudioEffect.getDapParam(DroidAudioEffect.DAP_CMD_VL_ENABLE) != DroidAudioEffect.EFFECT_CONFIG_OFF);
+        val = mDroidAudioEffect.getDapParam(DroidAudioEffect.DAP_CMD_VL_AMOUNT);
         mVlPref.setChecked(enable);
         mVlAmountPref.setValue(val);
         mVlAmountPref.setAdjustable(isUserMode);
@@ -217,8 +217,8 @@ public class DolbyAudioEffectFragment extends SettingsPreferenceFragment impleme
         mVlPref.setVisible(isUserMode);
         mVlAmountPref.setVisible(enable);
 
-        enable = (mAudioEffectManager.getDapParam(AudioEffectManager.CMD_DAP_DE_ENABLE) != AudioEffectManager.DAP_OFF);
-        val = mAudioEffectManager.getDapParam(AudioEffectManager.CMD_DAP_DE_AMOUNT);
+        enable = (mDroidAudioEffect.getDapParam(DroidAudioEffect.DAP_CMD_DE_ENABLE) != DroidAudioEffect.EFFECT_CONFIG_OFF);
+        val = mDroidAudioEffect.getDapParam(DroidAudioEffect.DAP_CMD_DE_AMOUNT);
         mDePref.setChecked(enable);
         mDeAmountPref.setValue(val);
         mDeAmountPref.setAdjustable(isUserMode);
@@ -227,12 +227,12 @@ public class DolbyAudioEffectFragment extends SettingsPreferenceFragment impleme
         mDePref.setVisible(isUserMode);
         mDeAmountPref.setVisible(enable);
 
-        val = mAudioEffectManager.getDapParam(AudioEffectManager.CMD_DAP_SURROUND_BOOST);
+        val = mDroidAudioEffect.getDapParam(DroidAudioEffect.DAP_CMD_SURROUND_BOOST);
         mSurroundBoostPref.setValue(val);
         mSurroundBoostPref.setAdjustable(isUserMode);
         mSurroundBoostPref.setVisible(true);
 
-        val = mAudioEffectManager.getDapParam(AudioEffectManager.CMD_DAP_GEQ_ENABLE);
+        val = mDroidAudioEffect.getDapParam(DroidAudioEffect.DAP_CMD_GEQ_ENABLE);
         mGeqPref.setValueIndex(val);
         mGeqInfoPref.setSummary(mGeqPref.getEntry());
         mGeqInfoPref.setVisible(!isUserMode);
@@ -248,12 +248,12 @@ public class DolbyAudioEffectFragment extends SettingsPreferenceFragment impleme
         switch (preference.getKey()) {
             case KEY_VOLUME_LEVELER:
                 isChecked = mVlPref.isChecked();
-                mAudioEffectManager.setDapParam(AudioEffectManager.CMD_DAP_VL_ENABLE, isChecked?1:0);
+                mDroidAudioEffect.setDapParam(DroidAudioEffect.DAP_CMD_VL_ENABLE, isChecked?1:0);
                 mVlAmountPref.setVisible(isChecked);
                 break;
             case KEY_DIALOG_ENHANCER:
                 isChecked = mDePref.isChecked();
-                mAudioEffectManager.setDapParam(AudioEffectManager.CMD_DAP_DE_ENABLE, isChecked?1:0);
+                mDroidAudioEffect.setDapParam(DroidAudioEffect.DAP_CMD_DE_ENABLE, isChecked?1:0);
                 mDeAmountPref.setVisible(isChecked);
                 break;
         }
@@ -265,38 +265,44 @@ public class DolbyAudioEffectFragment extends SettingsPreferenceFragment impleme
         switch (preference.getKey()) {
             case KEY_DAP_MODE:
                 final int selection = Integer.parseInt((String)newValue);
-                mAudioEffectManager.setDapParam(AudioEffectManager.CMD_DAP_EFFECT_MODE, selection);
+                mDroidAudioEffect.setDapParam(DroidAudioEffect.DAP_CMD_EFFECT_MODE, selection);
                 break;
             case KEY_VOLUME_LEVELER_AMOUNT:
-                mAudioEffectManager.setDapParam(AudioEffectManager.CMD_DAP_VL_AMOUNT, (int)newValue);
+                mDroidAudioEffect.setDapParam(DroidAudioEffect.DAP_CMD_VL_AMOUNT, (int)newValue);
                 break;
             case KEY_DIALOG_ENHANCER_AMOUNT:
-                mAudioEffectManager.setDapParam(AudioEffectManager.CMD_DAP_DE_AMOUNT, (int)newValue);
+                mDroidAudioEffect.setDapParam(DroidAudioEffect.DAP_CMD_DE_AMOUNT, (int)newValue);
                 break;
             case KEY_SURROUND_BOOST:
-                mAudioEffectManager.setDapParam(AudioEffectManager.CMD_DAP_SURROUND_BOOST, (int)newValue);
+                mDroidAudioEffect.setDapParam(DroidAudioEffect.DAP_CMD_SURROUND_BOOST, (int)newValue);
                 break;
             case KEY_GEQ_MODE:
                 final int progress = Integer.parseInt((String)newValue);
-                mAudioEffectManager.setDapParam(AudioEffectManager.CMD_DAP_GEQ_ENABLE, progress);
+                mDroidAudioEffect.setDapParam(DroidAudioEffect.DAP_CMD_GEQ_ENABLE, progress);
                 updateGeq(progress);
                 break;
             case KEY_GEQ_BAND1:
-                mAudioEffectManager.setDapParam(AudioEffectManager.SUBCMD_DAP_GEQ_BAND1, (int)newValue);
+                mDroidAudioEffect.setDapParam(DroidAudioEffect.DAP_SUBCMD_GEQ_BAND1, (int)newValue);
                 break;
             case KEY_GEQ_BAND2:
-                mAudioEffectManager.setDapParam(AudioEffectManager.SUBCMD_DAP_GEQ_BAND2, (int)newValue);
+                mDroidAudioEffect.setDapParam(DroidAudioEffect.DAP_SUBCMD_GEQ_BAND2, (int)newValue);
                 break;
             case KEY_GEQ_BAND3:
-                mAudioEffectManager.setDapParam(AudioEffectManager.SUBCMD_DAP_GEQ_BAND3, (int)newValue);
+                mDroidAudioEffect.setDapParam(DroidAudioEffect.DAP_SUBCMD_GEQ_BAND3, (int)newValue);
                 break;
             case KEY_GEQ_BAND4:
-                mAudioEffectManager.setDapParam(AudioEffectManager.SUBCMD_DAP_GEQ_BAND4, (int)newValue);
+                mDroidAudioEffect.setDapParam(DroidAudioEffect.DAP_SUBCMD_GEQ_BAND4, (int)newValue);
                 break;
             case KEY_GEQ_BAND5:
-                mAudioEffectManager.setDapParam(AudioEffectManager.SUBCMD_DAP_GEQ_BAND5, (int)newValue);
+                mDroidAudioEffect.setDapParam(DroidAudioEffect.DAP_SUBCMD_GEQ_BAND5, (int)newValue);
                 break;
         }
         return true;
     }
+
+    @Override
+    public int getMetricsCategory() {
+        return 0;
+    }
+
 }

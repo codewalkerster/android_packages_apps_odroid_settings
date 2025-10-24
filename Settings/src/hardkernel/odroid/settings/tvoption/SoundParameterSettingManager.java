@@ -35,7 +35,7 @@ import com.droidlogic.app.DroidLogicUtils;
 import com.droidlogic.app.DroidAudioManager;
 import com.droidlogic.app.SystemControlManager;
 import static hardkernel.odroid.settings.util.DroidUtils.logDebug;
-import com.droidlogic.app.AudioEffectManager;
+import com.droidlogic.app.DroidAudioEffect;
 
 import java.util.Arrays;
 import java.util.ArrayList;
@@ -54,10 +54,10 @@ public class SoundParameterSettingManager {
     public static final String DIGITAL_SOUND_PASSTHROUGH        = "passthrough";
     public static final String TV_KEY_AD_SWITCH                 = "ad_switch";
 
-    public static final int DEBUG_DOLBY_DRC_UI                  = AudioEffectManager.DOLBY_DRC_UI_ID;
-    public static final int DEBUG_DTS_DRC_UI_ID                 = AudioEffectManager.DTS_DRC_UI_ID;
-    public static final int DEBUG_FORCE_DDP_UI                  = AudioEffectManager.FORCE_DDP_UI_ID;
-    public static final int DEBUG_AUDIO_LATENCY_UI              = AudioEffectManager.AUDIO_LATENCY_UI_ID;
+    public static final int DEBUG_DOLBY_DRC_UI                  = DroidAudioEffect.EFFECT_CONFIG_DOLBY_DRC;
+    public static final int DEBUG_DTS_DRC_UI_ID                 = DroidAudioEffect.EFFECT_CONFIG_DTS_DRC;
+    public static final int DEBUG_FORCE_DDP_UI                  = DroidAudioEffect.EFFECT_CONFIG_FORCE_DDP;
+    public static final int DEBUG_AUDIO_LATENCY_UI              = DroidAudioEffect.EFFECT_CONFIG_AUDIO_LATENCY;
 
     public static final int DEBUG_AUDIO_UI_ON                   = 1;
     public static final int DEBUG_AUDIO_UI_OFF                  = 0;
@@ -70,13 +70,13 @@ public class SoundParameterSettingManager {
     private Resources mResources;
     private Context mContext;
     private DroidAudioManager mDroidAudioManager;
-    private AudioEffectManager mAudioEffectManager;
+    private DroidAudioEffect mDroidAudioEffect;
 
     public SoundParameterSettingManager (Context context) {
         mContext = context;
         mResources = mContext.getResources();
         mDroidAudioManager = DroidAudioManager.getInstance(context);
-        mAudioEffectManager = AudioEffectManager.getInstance(context);
+        mDroidAudioEffect = DroidAudioEffect.getInstance(context);
     }
 
     public void setDebugAudioOn (int id, boolean dbSwitch) {
@@ -96,17 +96,17 @@ public class SoundParameterSettingManager {
     public boolean isDebugAudioOn(int id) {
         boolean value = false;
         switch (id) {
-            case AudioEffectManager.DOLBY_DRC_UI_ID:
-                value = mAudioEffectManager.getEffectFunctionConfig(AudioEffectManager.DOLBY_DRC_UI_ID) == DEBUG_AUDIO_UI_ON;
+            case DroidAudioEffect.EFFECT_CONFIG_DOLBY_DRC:
+                value = mDroidAudioEffect.getEffectFunctionConfig(DroidAudioEffect.EFFECT_CONFIG_DOLBY_DRC) == DEBUG_AUDIO_UI_ON;
                 break;
-            case AudioEffectManager.DTS_DRC_UI_ID:
-                value =  mAudioEffectManager.getEffectFunctionConfig(AudioEffectManager.DTS_DRC_UI_ID) == DEBUG_AUDIO_UI_ON;
+            case DroidAudioEffect.EFFECT_CONFIG_DTS_DRC:
+                value =  mDroidAudioEffect.getEffectFunctionConfig(DroidAudioEffect.EFFECT_CONFIG_DTS_DRC) == DEBUG_AUDIO_UI_ON;
                 break;
             case DEBUG_FORCE_DDP_UI:
-                value = mAudioEffectManager.getEffectFunctionConfig(AudioEffectManager.FORCE_DDP_UI_ID) == DEBUG_AUDIO_UI_ON;
+                value = mDroidAudioEffect.getEffectFunctionConfig(DroidAudioEffect.EFFECT_CONFIG_FORCE_DDP) == DEBUG_AUDIO_UI_ON;
                 break;
             case DEBUG_AUDIO_LATENCY_UI:
-                value = mAudioEffectManager.getEffectFunctionConfig(AudioEffectManager.AUDIO_LATENCY_UI_ID) == DEBUG_AUDIO_UI_ON;
+                value = mDroidAudioEffect.getEffectFunctionConfig(DroidAudioEffect.EFFECT_CONFIG_AUDIO_LATENCY) == DEBUG_AUDIO_UI_ON;
                 break;
             default:
                 break;
@@ -120,37 +120,37 @@ public class SoundParameterSettingManager {
         logDebug(TAG, false, "setDigitalAudioFormat = " + mode);
         switch (mode) {
             case DIGITAL_SOUND_PCM:
-                mDroidAudioManager.setDigitalAudioFormatOut(DroidAudioManager.DIGITAL_AUDIO_FORMAT_PCM);
+                mDroidAudioManager.setDigitalAudioMode(DroidAudioManager.DIGITAL_AUDIO_MODE_PCM);
                 break;
             case DIGITAL_SOUND_MANUAL:
-                mDroidAudioManager.setDigitalAudioFormatOut(DroidAudioManager.DIGITAL_AUDIO_FORMAT_MANUAL,
+                mDroidAudioManager.setDigitalAudioMode(DroidAudioManager.DIGITAL_AUDIO_MODE_MANUAL,
                         mDroidAudioManager.getAudioManualFormats());
                 break;
             case DIGITAL_SOUND_PASSTHROUGH:
-                mDroidAudioManager.setDigitalAudioFormatOut(DroidAudioManager.DIGITAL_AUDIO_FORMAT_PASSTHROUGH);
+                mDroidAudioManager.setDigitalAudioMode(DroidAudioManager.DIGITAL_AUDIO_MODE_PASSTHROUGH);
                 break;
             case DIGITAL_SOUND_AUTO:
             default:
-                mDroidAudioManager.setDigitalAudioFormatOut(DroidAudioManager.DIGITAL_AUDIO_FORMAT_AUTO);
+                mDroidAudioManager.setDigitalAudioMode(DroidAudioManager.DIGITAL_AUDIO_MODE_AUTO);
                 break;
         }
     }
 
     public String getDigitalAudioFormat() {
-        int surround = mDroidAudioManager.getDigitalAudioFormatOut();
-        logDebug(TAG, false, "getDigitalAudioFormat surround: " + DroidAudioManager.audioFormatOutputToString(surround));
+        int mode = mDroidAudioManager.getDigitalAudioMode();
+        logDebug(TAG, false, "getDigitalAudioFormat mode: " + DroidAudioManager.digitalModeToString(mode));
         String format = "";
-        switch (surround) {
-        case DroidAudioManager.DIGITAL_AUDIO_FORMAT_PCM:
+        switch (mode) {
+        case DroidAudioManager.DIGITAL_AUDIO_MODE_PCM:
             format = DIGITAL_SOUND_PCM;
             break;
-        case DroidAudioManager.DIGITAL_AUDIO_FORMAT_MANUAL:
+        case DroidAudioManager.DIGITAL_AUDIO_MODE_MANUAL:
             format = DIGITAL_SOUND_MANUAL;
             break;
-        case DroidAudioManager.DIGITAL_AUDIO_FORMAT_AUTO:
+        case DroidAudioManager.DIGITAL_AUDIO_MODE_AUTO:
             format = DIGITAL_SOUND_AUTO;
             break;
-        case DroidAudioManager.DIGITAL_AUDIO_FORMAT_PASSTHROUGH:
+        case DroidAudioManager.DIGITAL_AUDIO_MODE_PASSTHROUGH:
             format = DIGITAL_SOUND_PASSTHROUGH;
             break;
         default:

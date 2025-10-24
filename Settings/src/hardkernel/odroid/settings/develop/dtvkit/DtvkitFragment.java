@@ -196,4 +196,9 @@ public class DtvkitFragment extends SettingsPreferenceFragment implements Prefer
         }
         return false;
     }
+
+    @Override
+    public int getMetricsCategory() {
+        return 0;
+    }
 }

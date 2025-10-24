@@ -90,7 +90,6 @@ public class MorePrefFragment extends SettingsPreferenceFragment implements Pref
 
     private Preference mSoundsPref;
 
-    private String mEsnText;
     private SystemControlManager mSystemControlManager;
     private PQSettingsManager mPQSettingsManager;
 
@@ -212,6 +211,11 @@ public class MorePrefFragment extends SettingsPreferenceFragment implements Pref
             startExportedActivity(SettingsConstant.PACKAGE_NAME_TV_EXTRAS, SettingsConstant.ACTIVITY_NAME_TV_EXTRAS);
         }
         return false;
+    }
+
+    @Override
+    public int getMetricsCategory() {
+        return 0;
     }
 
     private void startExportedActivity(String packageName, String activityName) {

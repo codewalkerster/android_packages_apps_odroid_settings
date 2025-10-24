@@ -52,13 +52,13 @@ public class PictureModeFragment extends SettingsPreferenceFragment implements P
             mPQSettingsManager = new PQSettingsManager(getActivity());
         }
 
-        //final ListPreference aspectratioPref = (ListPreference) findPreference(PQ_ASPECT_RATIO);
-        //if (mPQSettingsManager.hasPqCaseFunc(SystemControlManager.PqFuncCase.PQ_CASE_FUNC_ASPECT_RATIO)) {
-        //    aspectratioPref.setValueIndex(mPQSettingsManager.getAspectRatioStatus());
-        //    aspectratioPref.setOnPreferenceChangeListener(this);
-        //} else {
-        //    aspectratioPref.setEnabled(false);
-        //}
+        final ListPreference aspectratioPref = (ListPreference) findPreference(PQ_ASPECT_RATIO);
+        if (mPQSettingsManager.hasPqCaseFunc(SystemControlManager.PqFuncCase.PQ_CASE_FUNC_ASPECT_RATIO)) {
+            aspectratioPref.setValueIndex(mPQSettingsManager.getAspectRatioStatus());
+            aspectratioPref.setOnPreferenceChangeListener(this);
+        } else {
+            aspectratioPref.setEnabled(false);
+        }
 
         final Preference aipqPref = (Preference) findPreference(PQ_AI_PQ);
 
@@ -108,6 +108,11 @@ public class PictureModeFragment extends SettingsPreferenceFragment implements P
             mPQSettingsManager.setAspectRatio(selection);
         }
         return true;
+    }
+
+    @Override
+    public int getMetricsCategory() {
+        return 0;
     }
 
     private boolean curPictureModeShow() {

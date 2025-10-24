@@ -31,6 +31,8 @@ import androidx.annotation.VisibleForTesting;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceGroup;
 
+import com.android.internal.logging.nano.MetricsProto;
+
 import hardkernel.odroid.settings.R;
 import hardkernel.odroid.settings.RadioPreference;
 import hardkernel.odroid.settings.SettingsPreferenceFragment;
@@ -232,4 +234,10 @@ public class MatchContentFrameRateFragment extends SettingsPreferenceFragment {
             getPreferenceGroup().removePreference(seamlessPreference);
         }
     }
+
+    @Override
+    public int getMetricsCategory() {
+        return MetricsProto.MetricsEvent.SOUND;
+    }
+
 }

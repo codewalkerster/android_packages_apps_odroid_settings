@@ -11,6 +11,8 @@ import hardkernel.odroid.settings.R;
 import hardkernel.odroid.settings.SettingsPreferenceFragment;
 import hardkernel.odroid.settings.EnvProperty;
 
+import com.android.internal.logging.nano.MetricsProto;
+
 @Keep
 public class BluetoothFragment extends SettingsPreferenceFragment {
     private static final String TAG = "BluetoothFragment";
@@ -46,4 +48,10 @@ public class BluetoothFragment extends SettingsPreferenceFragment {
 
         return super.onPreferenceTreeClick(preference);
     }
+
+    @Override
+    public int getMetricsCategory() {
+        return MetricsProto.MetricsEvent.SOUND;
+    }
+
 }

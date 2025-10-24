@@ -21,6 +21,8 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceScreen;
 
 import android.content.Context;
+
+import com.android.internal.logging.nano.MetricsProto;
 import hardkernel.odroid.settings.SettingsPreferenceFragment;
 import hardkernel.odroid.settings.R;
 import hardkernel.odroid.settings.RadioPreference;
@@ -112,4 +114,10 @@ public class RotationFragment extends SettingsPreferenceFragment {
         screen.addPreference(rotate_180);
         screen.addPreference(rotate_270);
     }
+
+    @Override
+    public int getMetricsCategory() {
+        return MetricsProto.MetricsEvent.SOUND;
+    }
+
 }

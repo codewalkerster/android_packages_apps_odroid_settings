@@ -127,6 +127,11 @@ public class PowerKeyActionDefinitionFragment extends SettingsPreferenceFragment
         return super.onPreferenceTreeClick(preference);
     }
 
+    @Override
+    public int getMetricsCategory() {
+        return 0;
+    }
+
     private int whichPowerKeyDefinition() {
         return DataProviderManager.getIntValue(mContext, POWER_KEY_DEFINITION, SUSPEND);
     }

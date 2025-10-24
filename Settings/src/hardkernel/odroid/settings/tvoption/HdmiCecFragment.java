@@ -41,6 +41,7 @@ import android.os.SystemProperties;
 import java.util.*;
 
 import com.droidlogic.app.HdmiCecManager;
+import com.droidlogic.app.DroidAudioEffect;
 import com.droidlogic.app.DroidAudioManager;
 import hardkernel.odroid.settings.R;
 import hardkernel.odroid.settings.RadioPreference;
@@ -195,7 +196,8 @@ public class HdmiCecFragment extends SettingsPreferenceFragment implements Prefe
         mDigitalSoundPref.setValue(mSoundParameterSettingManager.getDigitalAudioFormat());
         if (tvFlag) {
             /* not support passthrough when ms12 so are not included.*/
-            if (!mDroidAudioManager.isAudioSupportMs12System()) {
+            if (DroidAudioEffect.getInstance(getContext()).getEffectFunctionConfig(DroidAudioEffect.EFFECT_CONFIG_DAP)
+                    == DroidAudioEffect.EFFECT_CONFIG_DAP_MS12_N) {
                 String[] entry = getArrayString(R.array.digital_sounds_tv_entries);
                 String[] entryValue = getArrayString(R.array.digital_sounds_tv_entry_values);
                 List<String> entryList = new ArrayList<String>(Arrays.asList(entry));
@@ -372,6 +374,11 @@ public class HdmiCecFragment extends SettingsPreferenceFragment implements Prefe
             mSoundParameterSettingManager.setDigitalAudioFormat((String) newValue);
         }
         return true;
+    }
+
+    @Override
+    public int getMetricsCategory() {
+        return 0;
     }
 
     private void updateVolumeControl(boolean enabled) {

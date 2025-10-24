@@ -52,7 +52,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
-import com.droidlogic.app.AudioEffectManager;
+import com.droidlogic.app.DroidAudioEffect;
 import com.droidlogic.app.DroidLogicUtils;
 import com.droidlogic.app.DroidAudioManager;
 import com.droidlogic.app.SystemControlManager;
@@ -88,7 +88,7 @@ public class SoundProcessingFragment extends SettingsPreferenceFragment implemen
     private Preference mDap24Pref;
     private Preference mVirtualxPref;
 
-    private AudioEffectManager mAudioEffectManager;
+    private DroidAudioEffect mDroidAudioEffect;
     private SoundParameterSettingManager mSoundParameterSettingManager;
     private DroidAudioManager mDroidAudioManager = null;
     private AudioManager mAudioManager;
@@ -118,7 +118,7 @@ public class SoundProcessingFragment extends SettingsPreferenceFragment implemen
 
     private void init() {
         mDroidAudioManager = DroidAudioManager.getInstance(getActivity());
-        mAudioEffectManager = ((TvSettingsActivity)getActivity()).getAudioEffectManager();
+        mDroidAudioEffect = DroidAudioEffect.getInstance(getActivity());
         mSoundParameterSettingManager = ((TvSettingsActivity)getActivity()).getSoundParameterSettingManager();
     }
 
@@ -168,14 +168,13 @@ public class SoundProcessingFragment extends SettingsPreferenceFragment implemen
             checkDualEffectProcessing(isDualEffectChecked);
             refreshDualEffectPref();
             if (isDualEffectChecked && isBasicEffectChecked) { //Turn off BASIC
-                mAudioEffectManager.setBasicEffectMode(AudioEffectManager.BASIC_EFFECT_MODE_OFF);
+                mDroidAudioEffect.setBasicEffectEnabled(false);
                 refreshBasicEffectPref();
             }
         } else if (TextUtils.equals(key, KEY_BASIC_EFFECT_PROCESSING)) {
             boolean isDualEffectChecked =  mDualEffectProcessing.isChecked();
             boolean isBasicEffectChecked = mBasicProcessingPref.isChecked();
-            int mode = isBasicEffectChecked ? AudioEffectManager.BASIC_EFFECT_MODE_ON : AudioEffectManager.BASIC_EFFECT_MODE_OFF;
-            mAudioEffectManager.setBasicEffectMode(mode);
+            mDroidAudioEffect.setBasicEffectEnabled(isBasicEffectChecked);
             refreshBasicEffectPref();
             if (isDualEffectChecked && isBasicEffectChecked) { //Turn off Dual Effect
                 checkDualEffectProcessing(false);
@@ -183,7 +182,7 @@ public class SoundProcessingFragment extends SettingsPreferenceFragment implemen
             }
         } else if (TextUtils.equals(preference.getKey(), TV_VIRTUAL_SURROUND_SETTINGS)) {
             final SwitchPreference virtualSurroundPref = (SwitchPreference) findPreference(TV_VIRTUAL_SURROUND_SETTINGS);
-            mAudioEffectManager.setVirtualSurround(virtualSurroundPref.isChecked()? 1 : 0);
+            mDroidAudioEffect.setVirtualSurroundEnabled(virtualSurroundPref.isChecked());
         }
         return super.onPreferenceTreeClick(preference);
     }
@@ -194,10 +193,15 @@ public class SoundProcessingFragment extends SettingsPreferenceFragment implemen
                 + ", newValue = " + newValue);
         final int selection = Integer.parseInt((String)newValue);
         if (TextUtils.equals(preference.getKey(), KEY_DUAL_EFFECT)) {
-            mAudioEffectManager.setDualEffectMode(selection);
+            mDroidAudioEffect.setDualEffectMode(selection);
             refreshDualEffectPref();
         }
         return true;
+    }
+
+    @Override
+    public int getMetricsCategory() {
+        return 0;
     }
 
     private String getShowString(int resid, int value) {
@@ -225,49 +229,48 @@ public class SoundProcessingFragment extends SettingsPreferenceFragment implemen
 
     private void refreshBasicEffectPref() {
         int onBasicEffectsCount = getOnBasicAudioEffectsCount();
-        int mode = mAudioEffectManager.getBasicEffectMode();
-        boolean isBasicProcessingOn = (mode == AudioEffectManager.BASIC_EFFECT_MODE_ON ? true : false);
+        boolean isBasicProcessingOn = mDroidAudioEffect.isBasicEffectEnabled();
         mBasicProcessingPref = (TwoStatePreference) findPreference(KEY_BASIC_EFFECT_PROCESSING);
         mBasicProcessingPref.setChecked(isBasicProcessingOn);
 
         final Preference eqSetting = (Preference) findPreference(KEY_EQUALIZER_SETTINGS);
-        if (isBasicProcessingOn && mAudioEffectManager.isAudioEffectOn(AudioEffectManager.EFFECT_HPEQ_UI_ID)) {
+        if (isBasicProcessingOn && mDroidAudioEffect.isAudioEffectEnabled(DroidAudioEffect.EFFECT_ID_HPEQ)) {
             eqSetting.setVisible(true);
         } else {
             eqSetting.setVisible(false);
         }
 
         final Preference treblebass = (Preference) findPreference(TV_TREBLE_BASS_SETTINGS);
-        if (isBasicProcessingOn && mAudioEffectManager.isAudioEffectOn(AudioEffectManager.EFFECT_TREBLEBASS_UI_ID)) {
+        if (isBasicProcessingOn && mDroidAudioEffect.isAudioEffectEnabled(DroidAudioEffect.EFFECT_ID_TREBLEBASS)) {
             treblebass.setVisible(true);
-            String treblebass_summary = getShowString(R.string.tv_treble, mAudioEffectManager.getTrebleStatus()) + " " +
-            getShowString(R.string.tv_bass, mAudioEffectManager.getBassStatus());
+            String treblebass_summary = getShowString(R.string.tv_treble, mDroidAudioEffect.getTreble()) + " " +
+            getShowString(R.string.tv_bass, mDroidAudioEffect.getBass());
             treblebass.setSummary(treblebass_summary);
         } else {
             treblebass.setVisible(false);
         }
 
         final SwitchPreference virtualsurround = (SwitchPreference) findPreference(TV_VIRTUAL_SURROUND_SETTINGS);
-        if (isBasicProcessingOn && mAudioEffectManager.isAudioEffectOn(AudioEffectManager.EFFECT_VIRTUAL_SURROUND_UI_ID)) {
-            int status = mAudioEffectManager.getVirtualSurroundStatus();
-            virtualsurround.setChecked(status == 1 ? true : false);
+        if (isBasicProcessingOn && mDroidAudioEffect.isAudioEffectEnabled(DroidAudioEffect.EFFECT_ID_VIRTUALSURROUND)) {
+            boolean enable = mDroidAudioEffect.isVirtualSurroundEnabled();
+            virtualsurround.setChecked(enable);
             virtualsurround.setVisible(true);
-            logDebug(TAG, true, "virtualsurround status:" + status);
+            logDebug(TAG, true, "virtualsurround enable:" + enable);
         } else {
             virtualsurround.setVisible(false);
         }
 
         final Preference dpe = (Preference) findPreference(KEY_DPE);
-        if (isBasicProcessingOn && mAudioEffectManager.isAudioEffectOn(AudioEffectManager.EFFECT_DPE_UI_ID)) {
+        if (isBasicProcessingOn && mDroidAudioEffect.isAudioEffectEnabled(DroidAudioEffect.EFFECT_ID_DPE)) {
             dpe.setVisible(true);
         } else {
             dpe.setVisible(false);
         }
 
         final Preference balance = (Preference) findPreference(TV_BALANCE_SETTINGS);
-        if (mAudioEffectManager.isAudioEffectOn(AudioEffectManager.EFFECT_BALANCE_UI_ID)) {
+        if (mDroidAudioEffect.isAudioEffectEnabled(DroidAudioEffect.EFFECT_ID_BALANCE)) {
             balance.setVisible(true);
-            balance.setSummary(getShowString(R.string.tv_balance_effect, mAudioEffectManager.getBalanceStatus()));
+            balance.setSummary(getShowString(R.string.tv_balance_effect, mDroidAudioEffect.getBalance()));
         } else {
             balance.setVisible(false);
         }
@@ -277,7 +280,7 @@ public class SoundProcessingFragment extends SettingsPreferenceFragment implemen
         } else {
             mBasicEffectsCategoryPref.setVisible(true);
         }
-        logDebug(TAG, true, "refreshBasicEffectPref() mode:" + mode + " onBasicEffects:" + onBasicEffectsCount);
+        logDebug(TAG, true, "refreshBasicEffectPref() isBasicProcessingOn:" + isBasicProcessingOn + " onBasicEffects:" + onBasicEffectsCount);
     }
 
     private void initDualEffectPref() {
@@ -288,27 +291,27 @@ public class SoundProcessingFragment extends SettingsPreferenceFragment implemen
         mDualEffectPref = (ListPreference) findPreference(KEY_DUAL_EFFECT);
         mDualEffectPref.setOnPreferenceChangeListener(this);
 
-        mAudioEffectManager.initDualEffectMode();
+        mDroidAudioEffect.initDualEffectMode();
         logDebug(TAG, true, "initDualEffectPref()");
     }
 
     private void checkDualEffectProcessing(boolean isChecked) {
-        boolean isVXOn = mAudioEffectManager.isAudioEffectOn(AudioEffectManager.EFFECT_VIRTUALX_UI_ID);
-        boolean isDapOn = mAudioEffectManager.isAudioEffectOn(AudioEffectManager.EFFECT_DAP2_UI_ID);
-        int curMode = mAudioEffectManager.getDualEffectMode();
-        int newMode = AudioEffectManager.EFFECT_MODE_OFF;
+        boolean isVXOn = mDroidAudioEffect.isAudioEffectEnabled(DroidAudioEffect.EFFECT_ID_VIRTUALX);
+        boolean isDapOn = mDroidAudioEffect.isAudioEffectEnabled(DroidAudioEffect.EFFECT_ID_DAP);
+        int curMode = mDroidAudioEffect.getDualEffectMode();
+        int newMode = DroidAudioEffect.DUAL_EFFECT_MODE_OFF;
 
         if (isVXOn && isDapOn) {
-            newMode = isChecked ?  AudioEffectManager.EFFECT_MODE_AUTO : AudioEffectManager.EFFECT_MODE_OFF;
+            newMode = isChecked ?  DroidAudioEffect.DUAL_EFFECT_MODE_AUTO : DroidAudioEffect.DUAL_EFFECT_MODE_OFF;
         } else if (isVXOn) {
-            newMode = isChecked ? AudioEffectManager.EFFECT_MODE_DTS : AudioEffectManager.EFFECT_MODE_OFF;
+            newMode = isChecked ? DroidAudioEffect.DUAL_EFFECT_MODE_DTS : DroidAudioEffect.DUAL_EFFECT_MODE_OFF;
         } else if (isDapOn) {
-            newMode = isChecked ? AudioEffectManager.EFFECT_MODE_DOLBY : AudioEffectManager.EFFECT_MODE_OFF;
+            newMode = isChecked ? DroidAudioEffect.DUAL_EFFECT_MODE_DOLBY : DroidAudioEffect.DUAL_EFFECT_MODE_OFF;
         }  else {
-            newMode = AudioEffectManager.EFFECT_MODE_OFF;
+            newMode = DroidAudioEffect.DUAL_EFFECT_MODE_OFF;
         }
 
-        mAudioEffectManager.setDualEffectMode(newMode);
+        mDroidAudioEffect.setDualEffectMode(newMode);
 
         logDebug(TAG, true,"checkDualEffectProcessing() newMode: " + newMode + " oldMode:" + curMode);
     }
@@ -318,20 +321,20 @@ public class SoundProcessingFragment extends SettingsPreferenceFragment implemen
         String[] entryValue = getArrayString(R.array.sound_dual_effect_entry_values);
         List<String> entryList = new ArrayList<String>(Arrays.asList(entry));
         List<String> entryValueList = new ArrayList<String>(Arrays.asList(entryValue));
-        boolean isVXOn = mAudioEffectManager.isAudioEffectOn(AudioEffectManager.EFFECT_VIRTUALX_UI_ID);
-        boolean isDapOn = mAudioEffectManager.isAudioEffectOn(AudioEffectManager.EFFECT_DAP2_UI_ID);
+        boolean isVXOn = mDroidAudioEffect.isAudioEffectEnabled(DroidAudioEffect.EFFECT_ID_VIRTUALX);
+        boolean isDapOn = mDroidAudioEffect.isAudioEffectEnabled(DroidAudioEffect.EFFECT_ID_DAP);
         boolean isDualEffectVisible = true;
         //check dual effect change and refresh the setting when UI fresh
 
-        int mode = mAudioEffectManager.getDualEffectMode();
+        int mode = mDroidAudioEffect.getDualEffectMode();
 
         if (!isVXOn && !isDapOn) {
-            entryList.remove(entry[AudioEffectManager.EFFECT_MODE_AUTO]);
-            entryList.remove(entry[AudioEffectManager.EFFECT_MODE_DTS]);
-            entryList.remove(entry[AudioEffectManager.EFFECT_MODE_DOLBY]);
-            entryValueList.remove(entryValue[AudioEffectManager.EFFECT_MODE_AUTO]);
-            entryValueList.remove(entryValue[AudioEffectManager.EFFECT_MODE_DTS]);
-            entryValueList.remove(entryValue[AudioEffectManager.EFFECT_MODE_DOLBY]);
+            entryList.remove(entry[DroidAudioEffect.DUAL_EFFECT_MODE_AUTO]);
+            entryList.remove(entry[DroidAudioEffect.DUAL_EFFECT_MODE_DTS]);
+            entryList.remove(entry[DroidAudioEffect.DUAL_EFFECT_MODE_DOLBY]);
+            entryValueList.remove(entryValue[DroidAudioEffect.DUAL_EFFECT_MODE_AUTO]);
+            entryValueList.remove(entryValue[DroidAudioEffect.DUAL_EFFECT_MODE_DTS]);
+            entryValueList.remove(entryValue[DroidAudioEffect.DUAL_EFFECT_MODE_DOLBY]);
             isDualEffectVisible = false;
             //DAP & DTS both off
             mDap24Pref.setVisible(false);
@@ -341,10 +344,10 @@ public class SoundProcessingFragment extends SettingsPreferenceFragment implemen
             mDualEffectPref.setVisible(isDualEffectVisible);
             mDualEffectsCategoryPref.setVisible(false);
         } else if (!isVXOn) {
-            entryList.remove(entry[AudioEffectManager.EFFECT_MODE_AUTO]);
-            entryList.remove(entry[AudioEffectManager.EFFECT_MODE_DTS]);
-            entryValueList.remove(entryValue[AudioEffectManager.EFFECT_MODE_AUTO]);
-            entryValueList.remove(entryValue[AudioEffectManager.EFFECT_MODE_DTS]);
+            entryList.remove(entry[DroidAudioEffect.DUAL_EFFECT_MODE_AUTO]);
+            entryList.remove(entry[DroidAudioEffect.DUAL_EFFECT_MODE_DTS]);
+            entryValueList.remove(entryValue[DroidAudioEffect.DUAL_EFFECT_MODE_AUTO]);
+            entryValueList.remove(entryValue[DroidAudioEffect.DUAL_EFFECT_MODE_DTS]);
             isDualEffectVisible = false;
             mDualEffectPref.setTitle("Dolby Audio Processing");
             //Only DTS sound on, Using DualEffectProcessing UI to replace DualEffect UI
@@ -354,16 +357,16 @@ public class SoundProcessingFragment extends SettingsPreferenceFragment implemen
             mDualEffectPref.setVisible(isDualEffectVisible);
             mDualEffectsCategoryPref.setTitle("Dolby");
             mDualEffectsCategoryPref.setVisible(true);
-            if (mode == AudioEffectManager.EFFECT_MODE_OFF) {
+            if (mode == DroidAudioEffect.DUAL_EFFECT_MODE_OFF) {
                 mDap24Pref.setVisible(false);
             } else {
                 mDap24Pref.setVisible(true);
             }
         } else if (!isDapOn) {
-            entryList.remove(entry[AudioEffectManager.EFFECT_MODE_DOLBY]);
-            entryList.remove(entry[AudioEffectManager.EFFECT_MODE_AUTO]);
-            entryValueList.remove(entryValue[AudioEffectManager.EFFECT_MODE_DOLBY]);
-            entryValueList.remove(entryValue[AudioEffectManager.EFFECT_MODE_AUTO]);
+            entryList.remove(entry[DroidAudioEffect.DUAL_EFFECT_MODE_DOLBY]);
+            entryList.remove(entry[DroidAudioEffect.DUAL_EFFECT_MODE_AUTO]);
+            entryValueList.remove(entryValue[DroidAudioEffect.DUAL_EFFECT_MODE_DOLBY]);
+            entryValueList.remove(entryValue[DroidAudioEffect.DUAL_EFFECT_MODE_AUTO]);
             isDualEffectVisible = false;
             mDualEffectPref.setTitle("DTS Audio Processing");
             //if DAP Off mean MS12 config with Y then disable dolby setting UI
@@ -374,7 +377,7 @@ public class SoundProcessingFragment extends SettingsPreferenceFragment implemen
             mDualEffectPref.setVisible(isDualEffectVisible);
             mDualEffectsCategoryPref.setTitle("DTS");
             mDualEffectsCategoryPref.setVisible(true);
-            if (mode == AudioEffectManager.EFFECT_MODE_OFF) {
+            if (mode == DroidAudioEffect.DUAL_EFFECT_MODE_OFF) {
                 mVirtualxPref.setVisible(false);
             } else {
                 mVirtualxPref.setVisible(true);
@@ -382,12 +385,12 @@ public class SoundProcessingFragment extends SettingsPreferenceFragment implemen
         } else {
             //DAP and Virtualx both on, then using DualEffectProcessing to control OFF
             //DualEffect to control mode switch
-            entryList.remove(entry[AudioEffectManager.EFFECT_MODE_OFF]);
-            entryValueList.remove(entryValue[AudioEffectManager.EFFECT_MODE_OFF]);
+            entryList.remove(entry[DroidAudioEffect.DUAL_EFFECT_MODE_OFF]);
+            entryValueList.remove(entryValue[DroidAudioEffect.DUAL_EFFECT_MODE_OFF]);
 
             mDualEffectProcessing.setTitle(R.string.title_dual_effect_processing);
             mDualEffectProcessing.setVisible(true);
-            if (mode == AudioEffectManager.EFFECT_MODE_OFF) {
+            if (mode == DroidAudioEffect.DUAL_EFFECT_MODE_OFF) {
                 mDualEffectPref.setVisible(false);
                 mDap24Pref.setVisible(false);
                 mVirtualxPref.setVisible(false);
@@ -406,7 +409,7 @@ public class SoundProcessingFragment extends SettingsPreferenceFragment implemen
         mDualEffectPref.setSummary(dualEffectSummary);
         mDualEffectPref.setEnabled(true);
 
-        if (mode == AudioEffectManager.EFFECT_MODE_OFF) {
+        if (mode == DroidAudioEffect.DUAL_EFFECT_MODE_OFF) {
             isDualEffectVisible = false;
             mDualEffectProcessing.setChecked(false);
         } else {
@@ -418,8 +421,8 @@ public class SoundProcessingFragment extends SettingsPreferenceFragment implemen
 
     private int getOnBasicAudioEffectsCount() {
         int count = 0;
-        for (int id = AudioEffectManager.EFFECT_HPEQ_UI_ID; id <= AudioEffectManager.EFFECT_DPE_UI_ID; id++) {
-            if (mAudioEffectManager.isAudioEffectOn(id)) {
+        for (int id = DroidAudioEffect.EFFECT_ID_HPEQ; id <= DroidAudioEffect.EFFECT_ID_DPE; id++) {
+            if (mDroidAudioEffect.isAudioEffectEnabled(id)) {
                 count++;
             }
         }

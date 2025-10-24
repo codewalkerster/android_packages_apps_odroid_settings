@@ -32,7 +32,7 @@ import android.widget.TextView;
 
 import hardkernel.odroid.settings.TvSettingsActivity;
 import hardkernel.odroid.settings.R;
-import com.droidlogic.app.AudioEffectManager;
+import com.droidlogic.app.DroidAudioEffect;
 
 public class BalanceSeekBarFragment extends SettingsPreferenceFragment implements SeekBar.OnSeekBarChangeListener {
 
@@ -41,7 +41,7 @@ public class BalanceSeekBarFragment extends SettingsPreferenceFragment implement
     private SeekBar seekbar_balance;
     private TextView text_balance;
 
-    private AudioEffectManager mAudioEffectManager;
+    private DroidAudioEffect mDroidAudioEffect;
     private boolean isSeekBarInited = false;
 
     public static BalanceSeekBarFragment newInstance() {
@@ -50,8 +50,8 @@ public class BalanceSeekBarFragment extends SettingsPreferenceFragment implement
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        if (mAudioEffectManager == null) {
-            mAudioEffectManager = ((TvSettingsActivity)getActivity()).getAudioEffectManager();
+        if (mDroidAudioEffect == null) {
+            mDroidAudioEffect = DroidAudioEffect.getInstance(getActivity());
         }
         super.onCreate(savedInstanceState);
     }
@@ -71,13 +71,18 @@ public class BalanceSeekBarFragment extends SettingsPreferenceFragment implement
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
     }
 
+    @Override
+    public int getMetricsCategory() {
+        return 0;
+    }
+
     private void initSeekBar(View view) {
         int status = -1;
         boolean hasfocused = false;
         seekbar_balance= (SeekBar) view.findViewById(R.id.seekbar_tv_balance);
         text_balance = (TextView) view.findViewById(R.id.text_tv_balance);
         if (true) {
-            status = mAudioEffectManager.getBalanceStatus();
+            status = mDroidAudioEffect.getBalance();
             seekbar_balance.setOnSeekBarChangeListener(this);
             seekbar_balance.setProgress(status);
             setShow(R.id.seekbar_tv_balance, status);
@@ -100,7 +105,7 @@ public class BalanceSeekBarFragment extends SettingsPreferenceFragment implement
         switch (seekBar.getId()) {
             case R.id.seekbar_tv_balance:{
                 setShow(R.id.seekbar_tv_balance, progress);
-                mAudioEffectManager.setBalance(progress/* - mTvOptionSettingManager.getBalanceStatus()*/);
+                mDroidAudioEffect.setBalance(progress/* - mTvOptionSettingManager.getBalance()*/);
                 break;
             }
             default:

@@ -45,8 +45,9 @@ import android.content.IntentFilter;
 import hardkernel.odroid.settings.overlay.FlavorUtils;
 import hardkernel.odroid.settings.tvoption.SoundParameterSettingManager;
 import hardkernel.odroid.settings.soundeffect.OptionParameterManager;
-import com.droidlogic.app.AudioEffectManager;
-import com.droidlogic.app.DroidAudioManager;
+
+import com.android.settingslib.core.instrumentation.MetricsFeatureProvider;
+import com.android.settingslib.core.instrumentation.SharedPreferencesLogger;
 
 public abstract class TvSettingsActivity extends FragmentActivity {
     private static final String TAG = "TvSettingsActivity";
@@ -230,14 +231,7 @@ public abstract class TvSettingsActivity extends FragmentActivity {
     private void init(Context context) {
         mSoundParameterSettingManager = new SoundParameterSettingManager(context);
         mOptionParameterManager = new OptionParameterManager(context);
-        getAudioEffectManager();
-        getDroidAudioManager();
-    }
-    public AudioEffectManager getAudioEffectManager() {
-        return AudioEffectManager.getInstance(getApplicationContext());
-    }
-    public DroidAudioManager getDroidAudioManager() {
-        return DroidAudioManager.getInstance(getApplicationContext());
+
     }
     public SoundParameterSettingManager getSoundParameterSettingManager() {
         if (mSoundParameterSettingManager == null) {
@@ -299,6 +293,23 @@ public abstract class TvSettingsActivity extends FragmentActivity {
                 finish();
             }
         }
+    }
+
+    private String getMetricsTag() {
+        String tag = getClass().getName();
+        if (tag.startsWith("com.droidlogic.tv.settings.")) {
+            tag = tag.replace("com.droidlogic.tv.settings.", "");
+        }
+        return tag;
+    }
+
+    @Override
+    public SharedPreferences getSharedPreferences(String name, int mode) {
+        if (name.equals(getPackageName() + "_preferences")) {
+            return new SharedPreferencesLogger(this, getMetricsTag(),
+                    new MetricsFeatureProvider());
+        }
+        return super.getSharedPreferences(name, mode);
     }
 
     @Override

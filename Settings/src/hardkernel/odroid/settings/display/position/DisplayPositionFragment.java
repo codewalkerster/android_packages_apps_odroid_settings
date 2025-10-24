@@ -81,6 +81,11 @@ public class DisplayPositionFragment extends SettingsPreferenceFragment {
         return true;
     }
 
+    @Override
+    public int getMetricsCategory() {
+        return 0;
+    }
+
     private void updateMainScreen() {
         int percent = mDisplayPositionManager.getCurrentRateValue();
         mPref.setTitle("current scaling is " + percent +"%");

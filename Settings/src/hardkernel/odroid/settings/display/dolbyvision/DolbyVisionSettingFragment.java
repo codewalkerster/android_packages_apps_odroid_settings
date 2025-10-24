@@ -179,6 +179,11 @@ public class DolbyVisionSettingFragment extends SettingsPreferenceFragment {
         return super.onPreferenceTreeClick(preference);
     }
 
+    @Override
+    public int getMetricsCategory() {
+        return 0;
+    }
+
     private void updatePreferenceFragment(Bundle savedInstanceState) {
         Log.d(TAG, "updatePreferenceFragment: updateUI!!");
         final PreferenceScreen screen = getPreferenceManager().createPreferenceScreen(themedContext);

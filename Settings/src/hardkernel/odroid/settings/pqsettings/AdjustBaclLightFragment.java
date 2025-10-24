@@ -114,6 +114,11 @@ public class AdjustBaclLightFragment extends SettingsPreferenceFragment implemen
 
     }
 
+    @Override
+    public int getMetricsCategory() {
+        return 0;
+    }
+
     private void setShow(int id, int value) {
         switch (id) {
             case R.id.seekbar_backlight: {

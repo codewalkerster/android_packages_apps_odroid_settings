@@ -8,7 +8,7 @@ import android.provider.Settings;
 import hardkernel.odroid.settings.R;
 import static hardkernel.odroid.settings.util.DroidUtils.logDebug;
 import com.droidlogic.app.DroidAudioManager;
-import com.droidlogic.app.AudioEffectManager;
+import com.droidlogic.app.DroidAudioEffect;
 
 public class HdmiCecContentManager {
     private static final String TAG = HdmiCecContentManager.class.getSimpleName();
@@ -22,7 +22,7 @@ public class HdmiCecContentManager {
     private Context mContext;
     private static volatile HdmiCecContentManager mHdmiCecContentManager;
     private DroidAudioManager mDroidAudioManager;
-    private static AudioEffectManager mAudioEffectManager;
+    private static DroidAudioEffect mDroidAudioEffect;
     private HdmiControlManager mHdmiControlManager;
 
     public static boolean isInit() {
@@ -56,8 +56,8 @@ public class HdmiCecContentManager {
         if (mDroidAudioManager == null) {
             mDroidAudioManager = DroidAudioManager.getInstance(mContext);
         }
-        if (mAudioEffectManager == null) {
-           mAudioEffectManager = AudioEffectManager.getInstance(context);
+        if (mDroidAudioEffect == null) {
+           mDroidAudioEffect = DroidAudioEffect.getInstance(context);
         }
     }
 
@@ -104,7 +104,6 @@ public class HdmiCecContentManager {
 
     public void setSoundbarModeStatus(boolean state) {
         mDroidAudioManager.setSoundBarModeEnabled(state);
-        mAudioEffectManager.setAudioEffectOn(AudioEffectManager.EFFECT_DAP2_UI_ID, state);
     }
 
     public boolean isSetMenuLanguageEnabled() {

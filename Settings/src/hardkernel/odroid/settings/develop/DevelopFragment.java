@@ -101,4 +101,8 @@ public class DevelopFragment extends SettingsPreferenceFragment implements Prefe
         }
         return true;
     }
+    @Override
+    public int getMetricsCategory() {
+        return 0;
+    }
 }

@@ -32,7 +32,7 @@
 
  import hardkernel.odroid.settings.TvSettingsActivity;
  import hardkernel.odroid.settings.R;
- import com.droidlogic.app.AudioEffectManager;
+ import com.droidlogic.app.DroidAudioEffect;
 
  public class EqualizerUIFragment extends SettingsPreferenceFragment implements SeekBar.OnSeekBarChangeListener {
     private static final String TAG = "EqualizerUIFragment";
@@ -62,7 +62,7 @@
 
     private int mSelectedBandNum = 0;
 
-    private AudioEffectManager mAudioEffectManager;
+    private DroidAudioEffect mDroidAudioEffect;
 
     public static EqualizerUIFragment newInstance() {
          return new EqualizerUIFragment();
@@ -70,8 +70,8 @@
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        if (mAudioEffectManager == null) {
-            mAudioEffectManager = ((TvSettingsActivity)getActivity()).getAudioEffectManager();
+        if (mDroidAudioEffect == null) {
+            mDroidAudioEffect = DroidAudioEffect.getInstance(getActivity());
         }
         super.onCreate(savedInstanceState);
     }
@@ -92,88 +92,93 @@
 
     }
 
+    @Override
+    public int getMetricsCategory() {
+        return 0;
+    }
+
     private void initSeekBar(View view) {
        int status = -1;
        boolean hasfocused = false;
-       mSelectedBandNum = mAudioEffectManager.getHpeqBandNum(AudioEffectManager.EFFECT_HPEQ_BAND_UI_ID);
+       mSelectedBandNum = mDroidAudioEffect.getHpeqBandNum();
 
        int value = -1;
        int unMapVal = 0;
        mBand1Seekbar = (SeekBar) view.findViewById(R.id.seekbar_tv_audio_effect_band1);
        mBand1Text = (TextView) view.findViewById(R.id.text_tv_audio_effect_band1);
-       value = mAudioEffectManager.getUserSoundModeParam(AudioEffectManager.EQ_SOUND_MODE_EFFECT_BAND1);
+       value = mDroidAudioEffect.getUserSoundModeParam(DroidAudioEffect.HPEQ_MODE_EFFECT_BAND1);
        unMapVal = unMappingLine(value, false);
        mBand1Seekbar.setOnSeekBarChangeListener(this);
        mBand1Seekbar.setProgress(unMapVal);
-       setShow(AudioEffectManager.EQ_SOUND_MODE_EFFECT_BAND1, unMapVal);
+       setShow(DroidAudioEffect.HPEQ_MODE_EFFECT_BAND1, unMapVal);
        mBand1Seekbar.requestFocus();
 
        mBand2Seekbar = (SeekBar) view.findViewById(R.id.seekbar_tv_audio_effect_band2);
        mBand2Text = (TextView) view.findViewById(R.id.text_tv_audio_effect_band2);
-       value = mAudioEffectManager.getUserSoundModeParam(AudioEffectManager.EQ_SOUND_MODE_EFFECT_BAND2);
+       value = mDroidAudioEffect.getUserSoundModeParam(DroidAudioEffect.HPEQ_MODE_EFFECT_BAND2);
        unMapVal = unMappingLine(value, false);
        mBand2Seekbar.setOnSeekBarChangeListener(this);
        mBand2Seekbar.setProgress(unMapVal);
-       setShow(AudioEffectManager.EQ_SOUND_MODE_EFFECT_BAND2, unMapVal);
+       setShow(DroidAudioEffect.HPEQ_MODE_EFFECT_BAND2, unMapVal);
 
        mBand3Seekbar = (SeekBar) view.findViewById(R.id.seekbar_tv_audio_effect_band3);
        mBand3Text = (TextView) view.findViewById(R.id.text_tv_audio_effect_band3);
-       value = mAudioEffectManager.getUserSoundModeParam(AudioEffectManager.EQ_SOUND_MODE_EFFECT_BAND3);
+       value = mDroidAudioEffect.getUserSoundModeParam(DroidAudioEffect.HPEQ_MODE_EFFECT_BAND3);
        unMapVal = unMappingLine(value, false);
        mBand3Seekbar.setOnSeekBarChangeListener(this);
        mBand3Seekbar.setProgress(unMapVal);
-       setShow(AudioEffectManager.EQ_SOUND_MODE_EFFECT_BAND3, unMapVal);
+       setShow(DroidAudioEffect.HPEQ_MODE_EFFECT_BAND3, unMapVal);
 
        mBand4Seekbar = (SeekBar) view.findViewById(R.id.seekbar_tv_audio_effect_band4);
        mBand4Text = (TextView) view.findViewById(R.id.text_tv_audio_effect_band4);
-       value = mAudioEffectManager.getUserSoundModeParam(AudioEffectManager.EQ_SOUND_MODE_EFFECT_BAND4);
+       value = mDroidAudioEffect.getUserSoundModeParam(DroidAudioEffect.HPEQ_MODE_EFFECT_BAND4);
        unMapVal = unMappingLine(value, false);
        mBand4Seekbar.setOnSeekBarChangeListener(this);
        mBand4Seekbar.setProgress(unMapVal);
-       setShow(AudioEffectManager.EQ_SOUND_MODE_EFFECT_BAND4, unMapVal);
+       setShow(DroidAudioEffect.HPEQ_MODE_EFFECT_BAND4, unMapVal);
 
        mBand5Seekbar = (SeekBar) view.findViewById(R.id.seekbar_tv_audio_effect_band5);
        mBand5Text = (TextView) view.findViewById(R.id.text_tv_audio_effect_band5);
-       value = mAudioEffectManager.getUserSoundModeParam(AudioEffectManager.EQ_SOUND_MODE_EFFECT_BAND5);
+       value = mDroidAudioEffect.getUserSoundModeParam(DroidAudioEffect.HPEQ_MODE_EFFECT_BAND5);
        unMapVal = unMappingLine(value, false);
        mBand5Seekbar.setOnSeekBarChangeListener(this);
        mBand5Seekbar.setProgress(unMapVal);
-       setShow(AudioEffectManager.EQ_SOUND_MODE_EFFECT_BAND5, unMapVal);
+       setShow(DroidAudioEffect.HPEQ_MODE_EFFECT_BAND5, unMapVal);
 
        if (mSelectedBandNum > 5) {
             mBand6Seekbar = (SeekBar) view.findViewById(R.id.seekbar_tv_audio_effect_band6);
             mBand6Text = (TextView) view.findViewById(R.id.text_tv_audio_effect_band6);
-            value = mAudioEffectManager.getUserSoundModeParam(AudioEffectManager.EQ_SOUND_MODE_EFFECT_BAND6);
+            value = mDroidAudioEffect.getUserSoundModeParam(DroidAudioEffect.HPEQ_MODE_EFFECT_BAND6);
             unMapVal = unMappingLine(value, false);
             mBand6Seekbar.setOnSeekBarChangeListener(this);
             mBand6Seekbar.setProgress(unMapVal);
-            setShow(AudioEffectManager.EQ_SOUND_MODE_EFFECT_BAND6, unMapVal);
+            setShow(DroidAudioEffect.HPEQ_MODE_EFFECT_BAND6, unMapVal);
 
             mBand7Seekbar = (SeekBar) view.findViewById(R.id.seekbar_tv_audio_effect_band7);
             mBand7Text = (TextView) view.findViewById(R.id.text_tv_audio_effect_band7);
-            value = mAudioEffectManager.getUserSoundModeParam(AudioEffectManager.EQ_SOUND_MODE_EFFECT_BAND7);
+            value = mDroidAudioEffect.getUserSoundModeParam(DroidAudioEffect.HPEQ_MODE_EFFECT_BAND7);
             unMapVal = unMappingLine(value, false);
             mBand7Seekbar.setOnSeekBarChangeListener(this);
             mBand7Seekbar.setProgress(unMapVal);
-            setShow(AudioEffectManager.EQ_SOUND_MODE_EFFECT_BAND7, unMapVal);
+            setShow(DroidAudioEffect.HPEQ_MODE_EFFECT_BAND7, unMapVal);
       }
 
       if (mSelectedBandNum > 7) {
             mBand8Seekbar = (SeekBar) view.findViewById(R.id.seekbar_tv_audio_effect_band8);
             mBand8Text = (TextView) view.findViewById(R.id.text_tv_audio_effect_band8);
-            value = mAudioEffectManager.getUserSoundModeParam(AudioEffectManager.EQ_SOUND_MODE_EFFECT_BAND8);
+            value = mDroidAudioEffect.getUserSoundModeParam(DroidAudioEffect.HPEQ_MODE_EFFECT_BAND8);
             unMapVal = unMappingLine(value, false);
             mBand8Seekbar.setOnSeekBarChangeListener(this);
             mBand8Seekbar.setProgress(unMappingLine(value, false));
-            setShow(AudioEffectManager.EQ_SOUND_MODE_EFFECT_BAND8, unMapVal);
+            setShow(DroidAudioEffect.HPEQ_MODE_EFFECT_BAND8, unMapVal);
 
             mBand9Seekbar = (SeekBar) view.findViewById(R.id.seekbar_tv_audio_effect_band9);
             mBand9Text = (TextView) view.findViewById(R.id.text_tv_audio_effect_band9);
-            value = mAudioEffectManager.getUserSoundModeParam(AudioEffectManager.EQ_SOUND_MODE_EFFECT_BAND9);
+            value = mDroidAudioEffect.getUserSoundModeParam(DroidAudioEffect.HPEQ_MODE_EFFECT_BAND9);
             unMapVal = unMappingLine(value, false);
             mBand9Seekbar.setOnSeekBarChangeListener(this);
             mBand9Seekbar.setProgress(unMapVal);
-            setShow(AudioEffectManager.EQ_SOUND_MODE_EFFECT_BAND9, unMapVal);
+            setShow(DroidAudioEffect.HPEQ_MODE_EFFECT_BAND9, unMapVal);
       }
 
        if (mSelectedBandNum == 5 || mSelectedBandNum == 7) {
@@ -218,65 +223,57 @@
             return;
         }
         boolean isNeedRefresh = true;
-        int hpeq_band_num = mAudioEffectManager.getHpeqBandNum(AudioEffectManager.EFFECT_HPEQ_BAND_UI_ID);
+        int hpeq_band_num = mDroidAudioEffect.getHpeqBandNum();
         switch (seekBar.getId()) {
             case R.id.seekbar_tv_audio_effect_band1:{
-                setShow(AudioEffectManager.EQ_SOUND_MODE_EFFECT_BAND1, progress);
-                mAudioEffectManager.setUserSoundModeParam(AudioEffectManager.EQ_SOUND_MODE_EFFECT_BAND1, MappingLine(progress, false), hpeq_band_num);
+                setShow(DroidAudioEffect.HPEQ_MODE_EFFECT_BAND1, progress);
+                mDroidAudioEffect.setUserSoundModeParam(DroidAudioEffect.HPEQ_MODE_EFFECT_BAND1, MappingLine(progress, false), hpeq_band_num);
                 break;
             }
             case R.id.seekbar_tv_audio_effect_band2:{
-                setShow(AudioEffectManager.EQ_SOUND_MODE_EFFECT_BAND2, progress);
-                mAudioEffectManager.setUserSoundModeParam(AudioEffectManager.EQ_SOUND_MODE_EFFECT_BAND2, MappingLine(progress, false), hpeq_band_num);
+                setShow(DroidAudioEffect.HPEQ_MODE_EFFECT_BAND2, progress);
+                mDroidAudioEffect.setUserSoundModeParam(DroidAudioEffect.HPEQ_MODE_EFFECT_BAND2, MappingLine(progress, false), hpeq_band_num);
                 break;
             }
             case R.id.seekbar_tv_audio_effect_band3:{
-                setShow(AudioEffectManager.EQ_SOUND_MODE_EFFECT_BAND3, progress);
-                mAudioEffectManager.setUserSoundModeParam(AudioEffectManager.EQ_SOUND_MODE_EFFECT_BAND3, MappingLine(progress, false), hpeq_band_num);
+                setShow(DroidAudioEffect.HPEQ_MODE_EFFECT_BAND3, progress);
+                mDroidAudioEffect.setUserSoundModeParam(DroidAudioEffect.HPEQ_MODE_EFFECT_BAND3, MappingLine(progress, false), hpeq_band_num);
                 break;
             }
             case R.id.seekbar_tv_audio_effect_band4:{
-                setShow(AudioEffectManager.EQ_SOUND_MODE_EFFECT_BAND4, progress);
-                mAudioEffectManager.setUserSoundModeParam(AudioEffectManager.EQ_SOUND_MODE_EFFECT_BAND4, MappingLine(progress, false), hpeq_band_num);
+                setShow(DroidAudioEffect.HPEQ_MODE_EFFECT_BAND4, progress);
+                mDroidAudioEffect.setUserSoundModeParam(DroidAudioEffect.HPEQ_MODE_EFFECT_BAND4, MappingLine(progress, false), hpeq_band_num);
                 break;
             }
             case R.id.seekbar_tv_audio_effect_band5:{
-                setShow(AudioEffectManager.EQ_SOUND_MODE_EFFECT_BAND5, progress);
-                mAudioEffectManager.setUserSoundModeParam(AudioEffectManager.EQ_SOUND_MODE_EFFECT_BAND5, MappingLine(progress, false), hpeq_band_num);
+                setShow(DroidAudioEffect.HPEQ_MODE_EFFECT_BAND5, progress);
+                mDroidAudioEffect.setUserSoundModeParam(DroidAudioEffect.HPEQ_MODE_EFFECT_BAND5, MappingLine(progress, false), hpeq_band_num);
                 break;
             }
 
             case R.id.seekbar_tv_audio_effect_band6:{
-                setShow(AudioEffectManager.EQ_SOUND_MODE_EFFECT_BAND6, progress);
-                mAudioEffectManager.setUserSoundModeParam(AudioEffectManager.EQ_SOUND_MODE_EFFECT_BAND6, MappingLine(progress, false), hpeq_band_num);
+                setShow(DroidAudioEffect.HPEQ_MODE_EFFECT_BAND6, progress);
+                mDroidAudioEffect.setUserSoundModeParam(DroidAudioEffect.HPEQ_MODE_EFFECT_BAND6, MappingLine(progress, false), hpeq_band_num);
                 break;
             }
             case R.id.seekbar_tv_audio_effect_band7:{
-                setShow(AudioEffectManager.EQ_SOUND_MODE_EFFECT_BAND7, progress);
-                mAudioEffectManager.setUserSoundModeParam(AudioEffectManager.EQ_SOUND_MODE_EFFECT_BAND7, MappingLine(progress, false), hpeq_band_num);
+                setShow(DroidAudioEffect.HPEQ_MODE_EFFECT_BAND7, progress);
+                mDroidAudioEffect.setUserSoundModeParam(DroidAudioEffect.HPEQ_MODE_EFFECT_BAND7, MappingLine(progress, false), hpeq_band_num);
                 break;
             }
             case R.id.seekbar_tv_audio_effect_band8:{
-                setShow(AudioEffectManager.EQ_SOUND_MODE_EFFECT_BAND8, progress);
-                mAudioEffectManager.setUserSoundModeParam(AudioEffectManager.EQ_SOUND_MODE_EFFECT_BAND8, MappingLine(progress, false), hpeq_band_num);
+                setShow(DroidAudioEffect.HPEQ_MODE_EFFECT_BAND8, progress);
+                mDroidAudioEffect.setUserSoundModeParam(DroidAudioEffect.HPEQ_MODE_EFFECT_BAND8, MappingLine(progress, false), hpeq_band_num);
                 break;
             }
             case R.id.seekbar_tv_audio_effect_band9:{
-                setShow(AudioEffectManager.EQ_SOUND_MODE_EFFECT_BAND9, progress);
-                mAudioEffectManager.setUserSoundModeParam(AudioEffectManager.EQ_SOUND_MODE_EFFECT_BAND9, MappingLine(progress, false), hpeq_band_num);
+                setShow(DroidAudioEffect.HPEQ_MODE_EFFECT_BAND9, progress);
+                mDroidAudioEffect.setUserSoundModeParam(DroidAudioEffect.HPEQ_MODE_EFFECT_BAND9, MappingLine(progress, false), hpeq_band_num);
                 break;
             }
 
             default:
-               isNeedRefresh = false;
-               Log.d(TAG, "onProgressChanged unsupported seekbar id:" + seekBar.getId());
                break;
-        }
-
-        int soundMode = mAudioEffectManager.getSoundModeStatus();
-        if (isNeedRefresh && (soundMode != AudioEffectManager.COMMON_SOUND_MODE_CUSTOM)) {
-            mAudioEffectManager.setSoundMode(AudioEffectManager.COMMON_SOUND_MODE_CUSTOM);
-            Log.d(TAG, "Change sound mode to CUSTOM! because user adjust Customized UI");
         }
     }
 
@@ -321,46 +318,46 @@
 
     private void setShow(int id, int value) {
         switch (id) {
-            case AudioEffectManager.EQ_SOUND_MODE_EFFECT_BAND1:{
+            case DroidAudioEffect.HPEQ_MODE_EFFECT_BAND1:{
                 mBand1Text.setText(getBandTitle(id, value));
                 break;
             }
-            case AudioEffectManager.EQ_SOUND_MODE_EFFECT_BAND2:{
+            case DroidAudioEffect.HPEQ_MODE_EFFECT_BAND2:{
                 mBand2Text.setText(getBandTitle(id, value));
                 break;
             }
-            case AudioEffectManager.EQ_SOUND_MODE_EFFECT_BAND3:{
+            case DroidAudioEffect.HPEQ_MODE_EFFECT_BAND3:{
                 mBand3Text.setText(getBandTitle(id, value));
                 break;
             }
-            case AudioEffectManager.EQ_SOUND_MODE_EFFECT_BAND4:{
+            case DroidAudioEffect.HPEQ_MODE_EFFECT_BAND4:{
                 mBand4Text.setText(getBandTitle(id, value));
                 break;
             }
-            case AudioEffectManager.EQ_SOUND_MODE_EFFECT_BAND5:{
+            case DroidAudioEffect.HPEQ_MODE_EFFECT_BAND5:{
                 mBand5Text.setText(getBandTitle(id, value));
                 break;
             }
 
-            case AudioEffectManager.EQ_SOUND_MODE_EFFECT_BAND6:{
+            case DroidAudioEffect.HPEQ_MODE_EFFECT_BAND6:{
                 mBand6Text.setText(getBandTitle(id, value));
                 break;
             }
-            case AudioEffectManager.EQ_SOUND_MODE_EFFECT_BAND7:{
+            case DroidAudioEffect.HPEQ_MODE_EFFECT_BAND7:{
                 mBand7Text.setText(getBandTitle(id, value));
                 break;
             }
-            case AudioEffectManager.EQ_SOUND_MODE_EFFECT_BAND8:{
+            case DroidAudioEffect.HPEQ_MODE_EFFECT_BAND8:{
                 mBand8Text.setText(getBandTitle(id, value));
                 break;
             }
-            case AudioEffectManager.EQ_SOUND_MODE_EFFECT_BAND9:{
+            case DroidAudioEffect.HPEQ_MODE_EFFECT_BAND9:{
                 mBand9Text.setText(getBandTitle(id, value));
                 break;
             }
 
             default:
-                break;
+            break;
         }
     }
 

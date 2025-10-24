@@ -118,8 +118,8 @@ public class AudioLatencyFragment extends SettingsPreferenceFragment
 
         final SeekBarPreference audioOutputLatencyPref = (SeekBarPreference) findPreference(SoundFragment.KEY_AUDIO_OUTPUT_LATENCY);
         audioOutputLatencyPref.setOnPreferenceChangeListener(this);
-        audioOutputLatencyPref.setMax(DroidAudioManager.HAL_AUDIO_OUT_DEV_DELAY_MAX);
-        audioOutputLatencyPref.setMin(DroidAudioManager.HAL_AUDIO_OUT_DEV_DELAY_MIN);
+        audioOutputLatencyPref.setMax(DroidAudioManager.AUDIO_OUTPUT_DELAY_SOURCE_MAX);
+        audioOutputLatencyPref.setMin(DroidAudioManager.AUDIO_OUTPUT_DELAY_SOURCE_MIN);
         audioOutputLatencyPref.setSeekBarIncrement(SoundFragment.KEY_AUDIO_OUTPUT_LATENCY_STEP);
         audioOutputLatencyPref.setValue(mDroidAudioManager.getAudioOutputAllDelay());
         audioOutputLatencyPref.setVisible(tvFlag);
@@ -163,6 +163,11 @@ public class AudioLatencyFragment extends SettingsPreferenceFragment
         return true;
     }
 
+    @Override
+    public int getMetricsCategory() {
+        return 0;
+    }
+
     private void createOutputDelayAndPrescaleUiDialog() {
         Context context = (Context) (getActivity());
         LayoutInflater inflater = context.getSystemService(LayoutInflater.class);
@@ -185,7 +190,7 @@ public class AudioLatencyFragment extends SettingsPreferenceFragment
 
         mSeekBarAudioOutputDelaySpeaker = (SeekBar) view.findViewById(R.id.id_seek_bar_audio_delay_speaker);
         mTextAudioOutputDelaySpeaker = (TextView) view.findViewById(R.id.id_text_view_audio_delay_speaker);
-        delayMs = mDroidAudioManager.getAudioOutputSpeakerDelay(mCurrentSettingSourceId);
+        delayMs = mDroidAudioManager.getOutputDeviceDelay(mCurrentSettingSourceId, DroidAudioManager.AUDIO_OUT_DELAY_DEV_HAL_SPEAKER);
         mSeekBarAudioOutputDelaySpeaker.setOnSeekBarChangeListener(this);
         mSeekBarAudioOutputDelaySpeaker.setProgress(delayMs);
         setShow(R.id.id_seek_bar_audio_delay_speaker, delayMs);
@@ -193,14 +198,14 @@ public class AudioLatencyFragment extends SettingsPreferenceFragment
 
         mSeekBarAudioOutputDelaySpdif = (SeekBar) view.findViewById(R.id.id_seek_bar_audio_delay_spdif);
         mTextAudioOutputDelaySpdif = (TextView) view.findViewById(R.id.id_text_view_audio_delay_spdif);
-        delayMs = mDroidAudioManager.getAudioOutputSpdifDelay(mCurrentSettingSourceId);
+        delayMs = mDroidAudioManager.getOutputDeviceDelay(mCurrentSettingSourceId, DroidAudioManager.AUDIO_OUT_DELAY_DEV_HAL_SPDIF);
         mSeekBarAudioOutputDelaySpdif.setOnSeekBarChangeListener(this);
         mSeekBarAudioOutputDelaySpdif.setProgress(delayMs);
         setShow(R.id.id_seek_bar_audio_delay_spdif, delayMs);
 
         mSeekBarAudioOutputDelayHeadphone = (SeekBar) view.findViewById(R.id.id_seek_bar_audio_delay_headphone);
         mTextAudioOutputDelayHeadphone = (TextView) view.findViewById(R.id.id_text_view_audio_delay_headphone);
-        delayMs = mDroidAudioManager.getAudioOutputHeadphoneDelay(mCurrentSettingSourceId);
+        delayMs = mDroidAudioManager.getOutputDeviceDelay(mCurrentSettingSourceId, DroidAudioManager.AUDIO_OUT_DELAY_DEV_HAL_HEADPHONE);
         mSeekBarAudioOutputDelayHeadphone.setOnSeekBarChangeListener(this);
         mSeekBarAudioOutputDelayHeadphone.setProgress(delayMs);
         setShow(R.id.id_seek_bar_audio_delay_headphone, delayMs);
@@ -217,20 +222,17 @@ public class AudioLatencyFragment extends SettingsPreferenceFragment
         switch (seekBar.getId()) {
             case R.id.id_seek_bar_audio_delay_speaker:{
                 setShow(R.id.id_seek_bar_audio_delay_speaker, progress);
-                mDroidAudioManager.setAudioOutputSpeakerDelay(mCurrentSettingSourceId, progress);
-                setDelayEnabled();
+                mDroidAudioManager.setOutputDeviceDelay(mCurrentSettingSourceId, DroidAudioManager.AUDIO_OUT_DELAY_DEV_HAL_SPEAKER, progress);
                 break;
             }
             case R.id.id_seek_bar_audio_delay_spdif:{
                 setShow(R.id.id_seek_bar_audio_delay_spdif, progress);
-                mDroidAudioManager.setAudioOutputSpdifDelay(mCurrentSettingSourceId, progress);
-                setDelayEnabled();
+                mDroidAudioManager.setOutputDeviceDelay(mCurrentSettingSourceId, DroidAudioManager.AUDIO_OUT_DELAY_DEV_HAL_SPDIF, progress);
                 break;
             }
             case R.id.id_seek_bar_audio_delay_headphone:{
                 setShow(R.id.id_seek_bar_audio_delay_headphone, progress);
-                mDroidAudioManager.setAudioOutputHeadphoneDelay(mCurrentSettingSourceId, progress);
-                setDelayEnabled();
+                mDroidAudioManager.setOutputDeviceDelay(mCurrentSettingSourceId, DroidAudioManager.AUDIO_OUT_DELAY_DEV_HAL_HEADPHONE, progress);
                 break;
             }
             default:
@@ -270,10 +272,6 @@ public class AudioLatencyFragment extends SettingsPreferenceFragment
 
     private String getAudioDelayShowString(int resid, int value) {
         return getActivity().getResources().getString(resid) + ": " + value + " ms";
-    }
-
-    private void setDelayEnabled () {
-        SystemControlManager.getInstance().setProperty(DroidAudioManager.PROP_AUDIO_DELAY_ENABLED, "true");
     }
 
     private String getShowString(int resid, int value) {

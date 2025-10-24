@@ -21,6 +21,8 @@ import android.widget.Toast;
 import androidx.preference.Preference;
 import androidx.preference.TwoStatePreference;
 
+import com.android.internal.logging.nano.MetricsProto;
+
 import hardkernel.odroid.settings.R;
 import hardkernel.odroid.settings.SettingsPreferenceFragment;
 import hardkernel.odroid.settings.EnvProperty;
@@ -79,4 +81,10 @@ public class KioskFragment extends SettingsPreferenceFragment {
         }
         return super.onPreferenceTreeClick(preference);
     };
+
+    @Override
+    public int getMetricsCategory() {
+        return MetricsProto.MetricsEvent.SOUND;
+    }
+
 }

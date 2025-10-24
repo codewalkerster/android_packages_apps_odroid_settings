@@ -28,7 +28,7 @@ import android.util.Log;
 import hardkernel.odroid.settings.R;
 import hardkernel.odroid.settings.SettingsPreferenceFragment;
 import hardkernel.odroid.settings.tvoption.SoundParameterSettingManager;
-import com.droidlogic.app.AudioEffectManager;
+import com.droidlogic.app.DroidAudioEffect;
 import com.droidlogic.app.OutputModeManager;
 import com.droidlogic.app.DroidLogicUtils;
 
@@ -62,7 +62,7 @@ public class DebugAudioUIFragment extends SettingsPreferenceFragment implements 
     private TwoStatePreference mForceDDPDebug;
     private TwoStatePreference mAudioLatencyDebug;
 
-    private AudioEffectManager mAudioEffectManager;
+    private DroidAudioEffect mDroidAudioEffect;
     private SoundParameterSettingManager mSoundParameterSettingManager;
     private OutputModeManager mOutputModeManager;
 
@@ -73,8 +73,8 @@ public class DebugAudioUIFragment extends SettingsPreferenceFragment implements 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         Log.d(TAG, "onCreate");
-        if (mAudioEffectManager == null) {
-            mAudioEffectManager = AudioEffectManager.getInstance(getActivity());
+        if (mDroidAudioEffect == null) {
+            mDroidAudioEffect = DroidAudioEffect.getInstance(getActivity());
         }
         super.onCreate(savedInstanceState);
     }
@@ -156,26 +156,26 @@ public class DebugAudioUIFragment extends SettingsPreferenceFragment implements 
         boolean enable = false;
         int value = 0;
 
-        enable = mAudioEffectManager.isAudioEffectOn(AudioEffectManager.EFFECT_HPEQ_UI_ID);
+        enable = mDroidAudioEffect.isAudioEffectEnabled(DroidAudioEffect.EFFECT_ID_HPEQ);
         mHpeqDebug.setChecked(enable);
         mHpeqBandNumDebug.setVisible(enable);
 
-        value = mAudioEffectManager.getHpeqBandNum(AudioEffectManager.EFFECT_HPEQ_BAND_UI_ID);
+        value = mDroidAudioEffect.getHpeqBandNum();
         String hpeqBandIndex = Integer.toString(value);
         mHpeqBandNumDebug.setValueIndex(mHpeqBandNumDebug.findIndexOfValue(hpeqBandIndex));
 
-        enable = mAudioEffectManager.isAudioEffectOn(AudioEffectManager.EFFECT_BALANCE_UI_ID);
+        enable = mDroidAudioEffect.isAudioEffectEnabled(DroidAudioEffect.EFFECT_ID_BALANCE);
         mBalanceDebug.setChecked(enable);
 
-        enable = mAudioEffectManager.isAudioEffectOn(AudioEffectManager.EFFECT_TREBLEBASS_UI_ID);
+        enable = mDroidAudioEffect.isAudioEffectEnabled(DroidAudioEffect.EFFECT_ID_TREBLEBASS);
         mTreblebassDebug.setChecked(enable);
 
-        enable = mAudioEffectManager.isAudioEffectOn(AudioEffectManager.EFFECT_VIRTUAL_SURROUND_UI_ID);
+        enable = mDroidAudioEffect.isAudioEffectEnabled(DroidAudioEffect.EFFECT_ID_VIRTUALSURROUND);
         mVirtualSDebug.setChecked(enable);
 
-        enable = mAudioEffectManager.isAudioEffectOn(AudioEffectManager.EFFECT_DPE_UI_ID);
+        enable = mDroidAudioEffect.isAudioEffectEnabled(DroidAudioEffect.EFFECT_ID_DPE);
         mDpeDebug.setChecked(enable);
-        enable = mAudioEffectManager.isAudioEffectOn(AudioEffectManager.EFFECT_VIRTUALX_UI_ID);
+        enable = mDroidAudioEffect.isAudioEffectEnabled(DroidAudioEffect.EFFECT_ID_VIRTUALX);
         mVirtualXDebug.setChecked(enable);
 
         enable = mSoundParameterSettingManager.isDebugAudioOn(SoundParameterSettingManager.DEBUG_DOLBY_DRC_UI);
@@ -195,14 +195,14 @@ public class DebugAudioUIFragment extends SettingsPreferenceFragment implements 
 
     private void updateDap2Status() {
         String[] entry = getArrayString(R.array.tv_offon_entries);
-        boolean isDapOn = mAudioEffectManager.isAudioEffectOn(AudioEffectManager.EFFECT_DAP2_UI_ID);
-        int dolbyConfig = mAudioEffectManager.getDolbyMS12AudioConfig();
+        boolean isDapOn = mDroidAudioEffect.isAudioEffectEnabled(DroidAudioEffect.EFFECT_ID_DAP);
+        int dolbyConfig = mDroidAudioEffect.getEffectFunctionConfig(DroidAudioEffect.EFFECT_CONFIG_DAP);
         int state = (isDapOn ? 1 : 0);
 
         String summary = entry[state];
-        if (dolbyConfig == AudioEffectManager.DOLBY_MS12_AUDIO_CONFIG_Z) {
+        if (dolbyConfig == DroidAudioEffect.EFFECT_CONFIG_DAP_MS12_Z) {
             summary += " (DolbyConfig: Z)";
-        } else if (dolbyConfig == AudioEffectManager.DOLBY_MS12_AUDIO_CONFIG_X) {
+        } else if (dolbyConfig == DroidAudioEffect.EFFECT_CONFIG_DAP_MS12_X) {
             summary += " (DolbyConfig: X)";
         } else {
             summary += " (DolbyConfig: Y)";
@@ -218,24 +218,24 @@ public class DebugAudioUIFragment extends SettingsPreferenceFragment implements 
         switch (preference.getKey()) {
             case KEY_HPEQ_DEBUG:
                 isChecked = mHpeqDebug.isChecked();
-                mAudioEffectManager.setAudioEffectOn(AudioEffectManager.EFFECT_HPEQ_UI_ID, isChecked);
+                mDroidAudioEffect.setAudioEffectEnabled(DroidAudioEffect.EFFECT_ID_HPEQ, isChecked);
                 mHpeqBandNumDebug.setVisible(isChecked);
                 break;
             case KEY_BALANCE_DEBUG:
                 isChecked = mBalanceDebug.isChecked();
-                mAudioEffectManager.setAudioEffectOn(AudioEffectManager.EFFECT_BALANCE_UI_ID, isChecked);
+                mDroidAudioEffect.setAudioEffectEnabled(DroidAudioEffect.EFFECT_ID_BALANCE, isChecked);
                 break;
             case KEY_TREBLEBASS_DEBUG:
                 isChecked = mTreblebassDebug.isChecked();
-                mAudioEffectManager.setAudioEffectOn(AudioEffectManager.EFFECT_TREBLEBASS_UI_ID, isChecked);
+                mDroidAudioEffect.setAudioEffectEnabled(DroidAudioEffect.EFFECT_ID_TREBLEBASS, isChecked);
                 break;
             case KEY_VIRTUAL_SURROUND_DEBUG:
                 isChecked = mVirtualSDebug.isChecked();
-                mAudioEffectManager.setAudioEffectOn(AudioEffectManager.EFFECT_VIRTUAL_SURROUND_UI_ID, isChecked);
+                mDroidAudioEffect.setAudioEffectEnabled(DroidAudioEffect.EFFECT_ID_VIRTUALSURROUND, isChecked);
                 break;
             case KEY_DPE_DEBUG:
                 isChecked = mDpeDebug.isChecked();
-                mAudioEffectManager.setAudioEffectOn(AudioEffectManager.EFFECT_DPE_UI_ID, isChecked);
+                mDroidAudioEffect.setAudioEffectEnabled(DroidAudioEffect.EFFECT_ID_DPE, isChecked);
                 break;
             case KEY_FORCE_DDP_DEBUG:
                 isChecked = mForceDDPDebug.isChecked();
@@ -254,15 +254,15 @@ public class DebugAudioUIFragment extends SettingsPreferenceFragment implements 
         switch (preference.getKey()) {
             case KEY_HPEQ_BAND_NUM_DEBUG:
                 final int selection = Integer.parseInt((String)newValue);
-                mAudioEffectManager.setHpeqBandNum(AudioEffectManager.EFFECT_HPEQ_BAND_UI_ID, selection);
+                mDroidAudioEffect.setHpeqBandNum(selection);
                 break;
             case KEY_DAP_2_DEBUG:
                 int curSelectionInt = Integer.parseInt((String)newValue);
                 Log.d(TAG, "+onPreferenceChange() selection:" + curSelectionInt);
                 if (curSelectionInt == 0) {
-                    mAudioEffectManager.setAudioEffectOn(AudioEffectManager.EFFECT_DAP2_UI_ID, false);
+                    mDroidAudioEffect.setAudioEffectEnabled(DroidAudioEffect.EFFECT_ID_DAP, false);
                 } else {
-                    mAudioEffectManager.setAudioEffectOn(AudioEffectManager.EFFECT_DAP2_UI_ID, true);
+                    mDroidAudioEffect.setAudioEffectEnabled(DroidAudioEffect.EFFECT_ID_DAP, true);
                 }
                 updateDap2Status();
                 Log.d(TAG, "-onPreferenceChange() selection:" + curSelectionInt);
@@ -270,4 +270,10 @@ public class DebugAudioUIFragment extends SettingsPreferenceFragment implements 
         }
         return true;
     }
+
+    @Override
+    public int getMetricsCategory() {
+        return 0;
+    }
+
 }

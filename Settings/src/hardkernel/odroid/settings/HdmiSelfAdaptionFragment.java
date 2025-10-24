@@ -128,4 +128,10 @@ public class HdmiSelfAdaptionFragment extends SettingsPreferenceFragment {
         }
         return super.onPreferenceTreeClick(preference);
     }
+
+    @Override
+    public int getMetricsCategory() {
+        return 0;
+    }
+
 }

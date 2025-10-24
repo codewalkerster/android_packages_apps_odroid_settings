@@ -22,7 +22,7 @@ import hardkernel.odroid.settings.SettingsPreferenceFragment;
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
 import androidx.preference.TwoStatePreference;
-import com.droidlogic.app.AudioEffectManager;
+import com.droidlogic.app.DroidAudioEffect;
 import static hardkernel.odroid.settings.util.DroidUtils.logDebug;
 
 import hardkernel.odroid.settings.TvSettingsActivity;
@@ -35,7 +35,7 @@ public class DtsVirualXSettingFragment extends SettingsPreferenceFragment implem
     private static final String KEY_DTS_TRU_VOLUME                    = "key_tv_dts_tru_volume";
     private static final String KEY_DTS_BASS_ENHANCEMENT              = "key_tv_dts_bass_enhancement";
 
-    private AudioEffectManager mAudioEffectManager;
+    private DroidAudioEffect mDroidAudioEffect;
 
     private ListPreference mDialogEnhancePref;
     private ListPreference mTruVolumePref;
@@ -48,22 +48,22 @@ public class DtsVirualXSettingFragment extends SettingsPreferenceFragment implem
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        mAudioEffectManager = AudioEffectManager.getInstance(getActivity().getApplicationContext());
+        mDroidAudioEffect = DroidAudioEffect.getInstance(getActivity().getApplicationContext());
         super.onCreate(savedInstanceState);
     }
 
     @Override
     public void onResume() {
         if (mNeedFreshUI) {
-            int truVolumeStatus = mAudioEffectManager.getDtsVirtualSurround();
+            int truVolumeStatus = mDroidAudioEffect.isDtsVirtualSurroundEnabled() ? 1 : 0;
             mTruVolumePref.setValue(truVolumeStatus + "");
             mTruVolumePref.setSummary(mTruVolumePref.getEntries()[truVolumeStatus]);
 
-            int dialogEnhanceIndex = mAudioEffectManager.getDtsDialogClarityMode();
+            int dialogEnhanceIndex = mDroidAudioEffect.getDtsDialogClarityMode();
             mDialogEnhancePref.setValue(dialogEnhanceIndex + "");
             mDialogEnhancePref.setSummary(mDialogEnhancePref.getEntries()[dialogEnhanceIndex]);
 
-            int bassEnhancerMode = mAudioEffectManager.getDtsBassEnhancement();
+            int bassEnhancerMode = mDroidAudioEffect.isDtsBassEnhancementEnabled() ? 1 : 0;
             mBassEnhancePref.setValue(bassEnhancerMode + "");
             mBassEnhancePref.setSummary(mBassEnhancePref.getEntries()[bassEnhancerMode]);
         }
@@ -77,23 +77,23 @@ public class DtsVirualXSettingFragment extends SettingsPreferenceFragment implem
 
         mTruVolumePref = (ListPreference) findPreference(KEY_DTS_TRU_VOLUME);
         mTruVolumePref.setOnPreferenceChangeListener(this);
-        int truVolumeStatus = mAudioEffectManager.getDtsVirtualSurround();
+        int truVolumeStatus = mDroidAudioEffect.isDtsVirtualSurroundEnabled() ? 1 : 0;
         mTruVolumePref.setValue(truVolumeStatus + "");
         mTruVolumePref.setSummary(mTruVolumePref.getEntries()[truVolumeStatus]);
 
         mDialogEnhancePref = (ListPreference) findPreference(KEY_DTS_DIALOG_ENHANCEMENT);
         mDialogEnhancePref.setOnPreferenceChangeListener(this);
-        int dialogEnhanceIndex = mAudioEffectManager.getDtsDialogClarityMode();
+        int dialogEnhanceIndex = mDroidAudioEffect.getDtsDialogClarityMode();
         mDialogEnhancePref.setValue(dialogEnhanceIndex + "");
         mDialogEnhancePref.setSummary(mDialogEnhancePref.getEntries()[dialogEnhanceIndex]);
 
         mBassEnhancePref =  (ListPreference) findPreference(KEY_DTS_BASS_ENHANCEMENT);
         mBassEnhancePref.setOnPreferenceChangeListener(this);
-        int bassEnhancerMode = mAudioEffectManager.getDtsBassEnhancement();
+        int bassEnhancerMode = mDroidAudioEffect.isDtsBassEnhancementEnabled() ? 1 : 0;
         mBassEnhancePref.setValue(bassEnhancerMode + "");
         mBassEnhancePref.setSummary(mBassEnhancePref.getEntries()[bassEnhancerMode]);
         mNeedFreshUI = false;
-        logDebug(TAG, false, "isSupportVirtualX:" + mAudioEffectManager.isSupportVirtualX());
+        logDebug(TAG, false, "VirtualX enable:" + mDroidAudioEffect.isAudioEffectEnabled(DroidAudioEffect.EFFECT_ID_VIRTUALX));
     }
 
     @Override
@@ -102,11 +102,11 @@ public class DtsVirualXSettingFragment extends SettingsPreferenceFragment implem
                 + ", newValue = " + newValue);
         final int selection = Integer.parseInt((String)newValue);
         if (TextUtils.equals(preference.getKey(), KEY_DTS_DIALOG_ENHANCEMENT)) {
-            mAudioEffectManager.setDtsDialogClarityMode(selection);
+            mDroidAudioEffect.setDtsDialogClarityMode(selection);
         } else if (TextUtils.equals(preference.getKey(), KEY_DTS_TRU_VOLUME)) {
-            mAudioEffectManager.setDtsVirtualSurround(selection);
+            mDroidAudioEffect.setDtsVirtualSurroundEnabled(selection != 0);
         } else if (TextUtils.equals(preference.getKey(), KEY_DTS_BASS_ENHANCEMENT)) {
-            mAudioEffectManager.setDtsBassEnhancement(selection==1? true : false);
+            mDroidAudioEffect.setDtsBassEnhancementEnabled(selection==1? true : false);
         }
 
         return true;
@@ -118,11 +118,17 @@ public class DtsVirualXSettingFragment extends SettingsPreferenceFragment implem
         /*if (key != null) {
             switch (key) {
                 case KEY_TV_DTS_TRUVOLUMEHD_EFFECT:
-                    mAudioEffectManager.setDtsTruVolumeHdEnable(mTruVolumeHdPref.isChecked());
-                    mTruVolumeHdPref.setChecked(mAudioEffectManager.getDtsTruVolumeHdEnable());
+                    mDroidAudioEffect.setDtsTruVolumeHdEnabled(mTruVolumeHdPref.isChecked());
+                    mTruVolumeHdPref.setChecked(mDroidAudioEffect.isDtsTruVolumeHdEnabled());
                     break;
             }
         }*/
         return super.onPreferenceTreeClick(preference);
     }
+
+    @Override
+    public int getMetricsCategory() {
+        return 0;
+    }
+
 }

@@ -19,6 +19,9 @@ import android.content.Context;
 import android.os.Bundle;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceScreen;
+
+import com.android.internal.logging.nano.MetricsProto;
+
 import hardkernel.odroid.settings.R;
 
 import hardkernel.odroid.settings.RadioPreference;
@@ -81,4 +84,10 @@ public class GovernorFragment extends SettingsPreferenceFragment {
     private void saveGovernor(String governor) {
             ConfigEnv.setGpuGovernor(governor);
     }
+
+    @Override
+    public int getMetricsCategory() {
+        return MetricsProto.MetricsEvent.SOUND;
+    }
+
 }

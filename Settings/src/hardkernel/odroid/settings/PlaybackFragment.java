@@ -59,6 +59,11 @@ public class PlaybackFragment extends SettingsPreferenceFragment {
         refreshStatus();
     }
 
+    @Override
+    public int getMetricsCategory() {
+        return 0;
+    }
+
     private String getHdmiSelfAdaptionStatus() {
         int mode = mPlayBackManager.getHdmiSelfAdaptionMode();
         switch (mode) {

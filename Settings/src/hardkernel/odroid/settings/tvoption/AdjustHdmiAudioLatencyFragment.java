@@ -33,6 +33,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.provider.Settings;
 
+import com.android.internal.logging.nano.MetricsProto;
+
 import hardkernel.odroid.settings.util.DroidUtils;
 import hardkernel.odroid.settings.SettingsConstant;
 import hardkernel.odroid.settings.R;
@@ -193,4 +195,10 @@ public class AdjustHdmiAudioLatencyFragment extends SettingsPreferenceFragment i
         Log.d(TAG, "setHdmiAudioLatency = " + value);
         mSystemControlManager.setProperty(AUDIO_LATENCY, value);
     }
+
+    @Override
+    public int getMetricsCategory() {
+        return MetricsProto.MetricsEvent.SOUND;
+    }
+
 }

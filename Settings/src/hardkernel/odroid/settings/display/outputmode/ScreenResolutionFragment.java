@@ -367,6 +367,11 @@ public class ScreenResolutionFragment extends SettingsPreferenceFragment impleme
         return super.onPreferenceTreeClick(preference);
     }
 
+    @Override
+    public int getMetricsCategory() {
+        return 0;
+    }
+
     private boolean isBestResolution() {
         return mDisplayCapabilityManager.isBestResolution();
     }

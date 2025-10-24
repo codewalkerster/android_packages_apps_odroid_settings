@@ -22,6 +22,8 @@ import androidx.preference.Preference;
 import hardkernel.odroid.settings.R;
 import hardkernel.odroid.settings.SettingsPreferenceFragment;
 
+import com.android.internal.logging.nano.MetricsProto;
+
 public class CpuFragment extends SettingsPreferenceFragment {
     private static final String TAG = "CpuFragment";
 
@@ -68,4 +70,10 @@ public class CpuFragment extends SettingsPreferenceFragment {
         littleCoreClockPref.setSummary(currentClock);
         littleCoreGovernorPref.setSummary(currentGovernor);
     }
+
+    @Override
+    public int getMetricsCategory() {
+        return MetricsProto.MetricsEvent.SOUND;
+    }
+
 }

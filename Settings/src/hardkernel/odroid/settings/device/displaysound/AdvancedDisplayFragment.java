@@ -34,6 +34,8 @@ import androidx.preference.SwitchPreference;
 import hardkernel.odroid.settings.R;
 import hardkernel.odroid.settings.SettingsPreferenceFragment;
 
+import com.android.internal.logging.nano.MetricsProto;
+
 /**
  * The "Advanced display settings" screen in TV Settings.
  */
@@ -92,4 +94,10 @@ public class AdvancedDisplayFragment extends SettingsPreferenceFragment {
             getPreferenceScreen().removePreference(preference);
         }
     }
+
+    @Override
+    public int getMetricsCategory() {
+        return MetricsProto.MetricsEvent.SOUND;
+    }
+
 }

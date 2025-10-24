@@ -551,6 +551,15 @@
         <item>4</item>
     </string-array>
 
+    <string-array name="tv_karamic_source_entries">
+        <item>LineIn</item>
+        <item>USB</item>
+    </string-array>
+    <string-array name="tv_karamic_source_entry_values" translatable="false">
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+
     <string-array name="pq_picture_mode_entries">
         <item>standard</item>
         <item>vivid</item>
@@ -932,6 +941,7 @@
     </string-array>
 
     <string-array name="tv_sound_mode_entries">
+        <item>Dynamic</item>
         <item>Standard</item>
         <item>Music</item>
         <item>News</item>
@@ -949,6 +959,7 @@
         <item>4</item>
         <item>5</item>
         <item>6</item>
+        <item>7</item>
     </string-array>
 
     <string-array name="tv_sound_mode_extend_entries">
@@ -1195,6 +1206,10 @@
         <item>2</item>
         <item>3</item>
     </string-array>
+
+  <string-array translatable="false" name="power_saver_auto_whitelist_apps">
+    <item>com.netflix.ninja</item>
+  </string-array>
 
     <!-- DroidLogic end -->
 

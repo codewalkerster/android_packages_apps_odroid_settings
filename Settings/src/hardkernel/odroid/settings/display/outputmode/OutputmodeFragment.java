@@ -161,6 +161,11 @@ public class OutputmodeFragment extends SettingsPreferenceFragment {
         return super.onPreferenceTreeClick(preference);
     }
 
+    @Override
+    public int getMetricsCategory() {
+        return 0;
+    }
+
     private void showWarningDialogOnResolutionChange(String UserPreferredDisplayMode) {
         final CountDownTimer[] timerTask = {null};
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.CustomAlertDialogBackground);

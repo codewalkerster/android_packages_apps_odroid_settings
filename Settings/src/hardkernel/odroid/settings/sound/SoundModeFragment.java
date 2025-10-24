@@ -52,7 +52,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
-import com.droidlogic.app.AudioEffectManager;
+import com.droidlogic.app.DroidAudioEffect;
 import com.droidlogic.app.DroidLogicUtils;
 import com.droidlogic.app.DroidAudioManager;
 import com.droidlogic.app.SystemControlManager;
@@ -73,7 +73,7 @@ public class SoundModeFragment extends SettingsPreferenceFragment implements Pre
     private static final String KEY_ADVANCE_SOUND                           = "advanced_sound_settings";
     private static final String KEY_AUDIO_DEVICES_ROUTING                   = "audio_devices_routing";
 
-    private AudioEffectManager mAudioEffectManager;
+    private DroidAudioEffect mDroidAudioEffect;
     private SoundParameterSettingManager mSoundParameterSettingManager;
     private DroidAudioManager mDroidAudioManager = null;
     private AudioManager mAudioManager;
@@ -85,6 +85,7 @@ public class SoundModeFragment extends SettingsPreferenceFragment implements Pre
     SharedPreferences mSharedPreferences;
     SharedPreferences.Editor mEditor;
 
+    private boolean mNeedFreshUI                                            = false;
     public static final int DIALOG_UI_RESET                                 = 0xF1;
 
     public static SoundModeFragment newInstance() {
@@ -96,10 +97,8 @@ public class SoundModeFragment extends SettingsPreferenceFragment implements Pre
         public void handleMessage(Message msg) {
             switch (msg.what) {
             case MESSAGE_AUDIO_SETTING_RESET:
-                mSystemControl.setProperty(DroidAudioManager.PROP_AUDIO_OUTPUT_STRATEGY, DroidAudioManager.OUTPUT_STRATEGY_AUTO + "");
                 mDroidAudioManager.reset();
-                mAudioEffectManager.reset();
-                int soundMode = mAudioEffectManager.getSoundModeStatus();
+                int soundMode = mDroidAudioEffect.getSoundMode();
                 final ListPreference soundModePref = (ListPreference) findPreference(TV_SOUND_MODE_STYLE);
                 soundModePref.setValue(soundMode + "");
                 Log.d(TAG, "-Reset Audio Setting done!");
@@ -113,21 +112,44 @@ public class SoundModeFragment extends SettingsPreferenceFragment implements Pre
 
     @Override
     public void onResume() {
-        /*If the user adjusts the customized parameters, update the current sound mode UI
-          If all effect of then switch sound to STANDARD
-        */
-        int mode = mAudioEffectManager.getBasicEffectMode();
-        boolean isBasicProcessingOff = (mode == AudioEffectManager.BASIC_EFFECT_MODE_OFF ? true : false);
-        mode = mAudioEffectManager.getDualEffectMode();
-        boolean isDualEffectOff = (mode == AudioEffectManager.EFFECT_MODE_OFF ? true : false);
-        final ListPreference soundModePref = (ListPreference) findPreference(TV_SOUND_MODE_STYLE);
-        int soundMode = mAudioEffectManager.getSoundModeStatus();
-        if (isBasicProcessingOff && isDualEffectOff && (soundMode != AudioEffectManager.COMMON_SOUND_MODE_STANDARD)) {
-            mAudioEffectManager.setSoundMode(AudioEffectManager.COMMON_SOUND_MODE_STANDARD);
-            soundMode = AudioEffectManager.COMMON_SOUND_MODE_STANDARD;
-        }
-        soundModePref.setValue(soundMode + "");
+        if (mNeedFreshUI) {
+            /*If the user adjusts the customized parameters, update the current sound mode UI
+            If all effect of then switch sound to STANDARD
+            */
+            boolean isBasicProcessingOff = !mDroidAudioEffect.isBasicEffectEnabled();
+            int mode = mDroidAudioEffect.getDualEffectMode();
+            boolean isDualEffectOff = (mode == DroidAudioEffect.DUAL_EFFECT_MODE_OFF ? true : false);
+            final ListPreference soundModePref = (ListPreference) findPreference(TV_SOUND_MODE_STYLE);
+            int soundMode = mDroidAudioEffect.getSoundMode();
+            if (isBasicProcessingOff && isDualEffectOff && (soundMode != DroidAudioEffect.COMMON_SOUND_MODE_STANDARD)) {
+                mDroidAudioEffect.setSoundMode(DroidAudioEffect.COMMON_SOUND_MODE_STANDARD);
+                soundMode = DroidAudioEffect.COMMON_SOUND_MODE_STANDARD;
+            }
+            soundModePref.setValue(soundMode + "");
 
+            final Preference soundProcessingPref = (Preference)findPreference(TV_SOUND_MODE_PROCESSING);
+
+            if (getOnAudioEffectsCount() == 0) {
+                soundModePref.setVisible(false);
+                soundProcessingPref.setVisible(false);
+                Log.d(TAG, "onResume() All Effects is off, hide Sound Mode and Sound Processing!");
+            } else if (SettingsConstant.isSoundbarFeature() && !mDroidAudioManager.isSoundBarModeEnabled()) {
+                //hide "Sound Mode" & "Sound Processing" when SoundBar Mode is disable
+                soundModePref.setVisible(false);
+                soundProcessingPref.setVisible(false);
+                Log.d(TAG, "onResume() hide [Sound Mode] if SoundBarMode is disable");
+            } else if (!mDroidAudioEffect.isBasicEffectEnabled() &&
+                       mDroidAudioEffect.getDualEffectMode() == DroidAudioEffect.DUAL_EFFECT_MODE_OFF) {
+                //hide "Sound Mode" & "Sound Processing" if all effects are disabled
+                soundModePref.setVisible(false);
+                Log.d(TAG, "onResume() All Effects are disabled, hide [Sound Mode]");
+            } else {
+                soundModePref.setVisible(true);
+                Log.d(TAG, "onResume: show sound mode");
+            }
+        }
+
+        mNeedFreshUI = true;
         mSharedPreferences = getActivity().getSharedPreferences("menu_time_count", Context.MODE_PRIVATE);
         mEditor = mSharedPreferences.edit();
         mEditor.putInt("isCountStop", 0);
@@ -140,7 +162,7 @@ public class SoundModeFragment extends SettingsPreferenceFragment implements Pre
         mContext = getActivity();
         mSystemControl = SystemControlManager.getInstance();
         mDroidAudioManager = DroidAudioManager.getInstance(getActivity());
-        mAudioEffectManager = ((TvSettingsActivity)getActivity()).getAudioEffectManager();
+        mDroidAudioEffect = DroidAudioEffect.getInstance(getActivity());
         mSoundParameterSettingManager = ((TvSettingsActivity)getActivity()).getSoundParameterSettingManager();
         mAudioManager = (AudioManager) getActivity().getSystemService(Context.AUDIO_SERVICE);
         super.onCreate(savedInstanceState);
@@ -168,25 +190,36 @@ public class SoundModeFragment extends SettingsPreferenceFragment implements Pre
         //if all effect is off, then hide sound mode and sound processing UI
         final TwoStatePreference autoSoundModePref = (TwoStatePreference) findPreference(TV_AUTO_SOUND_MODE);
         final ListPreference soundModePref = (ListPreference) findPreference(TV_SOUND_MODE_STYLE);
-        soundModePref.setValueIndex(mAudioEffectManager.getSoundModeStatus());
+        int mode = mDroidAudioEffect.getSoundMode();
+        if (mode < 0) {
+            Log.e(TAG, "onCreatePreferences getSoundMode invalid mode:" + mode);
+        } else {
+            soundModePref.setValueIndex(mode);
+        }
         soundModePref.setOnPreferenceChangeListener(this);
         final Preference soundProcessingPref = (Preference)findPreference(TV_SOUND_MODE_PROCESSING);
 
         if (getOnAudioEffectsCount() == 0) {
             soundModePref.setVisible(false);
             soundProcessingPref.setVisible(false);
-            Log.d(TAG, "onCreatePreferences() All Effects is off, hide Sound Mode and Sound Processing!");
-        } else if (SettingsConstant.isSoundbarFeature() && !mDroidAudioManager.isSoundBarModeEnabled()) {
+             Log.d(TAG, "onCreatePreferences() All Effects is off, hide Sound Mode and Sound Processing!");
+        }  else if (SettingsConstant.isSoundbarFeature() && !mDroidAudioManager.isSoundBarModeEnabled()) {
             //hide "Sound Mode" & "Sound Processing" when SoundBar Mode is disable
             soundModePref.setVisible(false);
             soundProcessingPref.setVisible(false);
             Log.d(TAG, "onCreatePreferences() hide [Sound Mode] if SoundBarMode is disable");
+        } else if (!mDroidAudioEffect.isBasicEffectEnabled() &&
+                   mDroidAudioEffect.getDualEffectMode() == DroidAudioEffect.DUAL_EFFECT_MODE_OFF) {
+            //hide "Sound Mode" & "Sound Processing" if all effects are disabled
+            soundModePref.setVisible(false);
+            Log.d(TAG, "onCreatePreferences() All Effects are disabled, hide [Sound Mode]");
         }
 
-        //TBD: AI AQ control, engineer mode UI, currently hide it's UI
-        autoSoundModePref.setVisible(false);
+        //TBD: engineer mode UI, currently hide it's UI
         final Preference engineerPref = (Preference) findPreference(KEY_ENGINEER_MODE);
         engineerPref.setVisible(false);
+
+        autoSoundModePref.setVisible(false);
 
         mAdvanced_sound_settings_pref = (Preference)findPreference(KEY_ADVANCE_SOUND);
 
@@ -201,17 +234,21 @@ public class SoundModeFragment extends SettingsPreferenceFragment implements Pre
             });
         }
 
+
+        mAdvanced_sound_settings_pref = (Preference)findPreference(KEY_ADVANCE_SOUND);
         // if SoundBarModeEnabled is true,hide some UI for SoundBarMode
         if (SettingsConstant.isSoundbarFeature() && mDroidAudioManager.isSoundBarModeEnabled()) {
             logDebug(TAG, true, "SoundBarMode is true, hide Audio Output Device for SoundBarMode");
             final Preference audioOutputDevPref = (Preference)findPreference(KEY_AUDIO_DEVICES_ROUTING);
             audioOutputDevPref.setVisible(false);
         }
+
+        mNeedFreshUI = false;
     }
 
     @Override
     public boolean onPreferenceTreeClick(Preference preference) {
-        Log.d(TAG, "[onPreferenceTreeClick] preference.getKey() = " + preference.getKey());
+        Log.i(TAG, "[onPreferenceTreeClick] preference.getKey() = " + preference.getKey());
            String key = preference.getKey();
         if (TextUtils.equals(key, TV_AUTO_SOUND_MODE)) {
             final TwoStatePreference autoSoundModePref = (TwoStatePreference) findPreference(TV_AUTO_SOUND_MODE);
@@ -220,9 +257,11 @@ public class SoundModeFragment extends SettingsPreferenceFragment implements Pre
             if (autoSoundModePref.isChecked()) {
                 soundModePref.setVisible(false);
                 soundProcessingPref.setVisible(false);
+                mDroidAudioEffect.setAISoundModeEnable(true);
             } else {
                 soundModePref.setVisible(true);
                 soundProcessingPref.setVisible(true);
+                mDroidAudioEffect.setAISoundModeEnable(false);
             }
         }
         return super.onPreferenceTreeClick(preference);
@@ -234,15 +273,25 @@ public class SoundModeFragment extends SettingsPreferenceFragment implements Pre
                 + ", newValue = " + newValue);
         final int selection = Integer.parseInt((String)newValue);
         if (TextUtils.equals(preference.getKey(), TV_SOUND_MODE_STYLE)) {
-            mAudioEffectManager.setSoundMode(selection);
+            if (selection == DroidAudioEffect.COMMON_SOUND_MODE_DYNAMIC) {
+                mDroidAudioEffect.setAISoundModeEnable(true);
+            } else {
+                mDroidAudioEffect.setAISoundModeEnable(false);
+                mDroidAudioEffect.setSoundMode(selection);
+            }
         }
         return true;
     }
 
+    @Override
+    public int getMetricsCategory() {
+        return 0;
+    }
+
     private int getOnAudioEffectsCount() {
         int count = 0;
-        for (int id = AudioEffectManager.EFFECT_HPEQ_UI_ID; id <= AudioEffectManager.EFFECT_DAP2_UI_ID; id++) {
-            if (mAudioEffectManager.isAudioEffectOn(id)) {
+        for (int id = DroidAudioEffect.EFFECT_CONFIG_HPEQ; id <= DroidAudioEffect.EFFECT_CONFIG_VIRTUALX; id++) {
+            if (mDroidAudioEffect.isAudioEffectEnabled(id)) {
                 count++;
             }
         }

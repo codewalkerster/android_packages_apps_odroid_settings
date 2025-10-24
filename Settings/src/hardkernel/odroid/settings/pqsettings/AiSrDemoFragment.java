@@ -59,6 +59,12 @@ public class AiSrDemoFragment extends SettingsPreferenceFragment implements Pref
         super.onCreate(savedInstanceState);
     }
 
+
+    @Override
+    public int getMetricsCategory() {
+        return 0;
+    }
+
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         setPreferencesFromResource(R.xml.aisr_demo, null);

@@ -45,6 +45,11 @@ public class FrameRateFragment extends SettingsPreferenceFragment implements Pre
     }
 
     @Override
+    public int getMetricsCategory() {
+        return 0;
+    }
+
+    @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         setPreferencesFromResource(R.xml.framerate, null);
         final TwoStatePreference mEnableFrameRatePref = (TwoStatePreference) findPreference(KEY_ENABLE_FRAME_RATE);

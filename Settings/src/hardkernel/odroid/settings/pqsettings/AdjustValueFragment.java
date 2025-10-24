@@ -210,6 +210,11 @@ public class AdjustValueFragment extends SettingsPreferenceFragment implements S
 
     }
 
+    @Override
+    public int getMetricsCategory() {
+        return 0;
+    }
+
     private void setShow(int id, int value) {
         switch (id) {
             case R.id.seekbar_brightness:{

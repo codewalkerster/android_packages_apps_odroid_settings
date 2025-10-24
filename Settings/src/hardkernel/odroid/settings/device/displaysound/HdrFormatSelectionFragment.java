@@ -57,6 +57,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import com.android.internal.logging.nano.MetricsProto;
+
 /**
  * This Fragment is responsible for allowing the user enable or disable the Hdr types which are
  * supported by device.
@@ -429,4 +431,10 @@ public class HdrFormatSelectionFragment extends PreferenceControllerFragment {
         Preference manualPreference = findPreference(KEY_HDR_FORMAT_SELECTION_MANUAL);
         manualPreference.setFragment(ManualInfoFragment.class.getName());
     }
+
+    @Override
+    public int getMetricsCategory() {
+        return MetricsProto.MetricsEvent.SOUND;
+    }
+
 }

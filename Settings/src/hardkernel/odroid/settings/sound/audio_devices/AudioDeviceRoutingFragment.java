@@ -52,7 +52,6 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
-import com.droidlogic.app.AudioEffectManager;
 import com.droidlogic.app.DroidLogicUtils;
 import com.droidlogic.app.DroidAudioManager;
 import com.droidlogic.app.SystemControlManager;
@@ -150,7 +149,7 @@ public class AudioDeviceRoutingFragment extends SettingsPreferenceFragment imple
         }  else if (TextUtils.equals(key, KEY_SPEAKER_MUTE)) {
             mDroidAudioManager.setSpeakerEnabled(!mSpeakerMutePref.isChecked());
         } else if (TextUtils.equals(key, KEY_COEXIST_SPDIF_OTHER)) {
-            mDroidAudioManager.setCoexistSpdifOther(mCoexistSpdifSwitchPref.isChecked());
+            mDroidAudioManager.setCoexistSpdifOtherEnabled(mCoexistSpdifSwitchPref.isChecked());
         }
         return super.onPreferenceTreeClick(preference);
     }
@@ -166,6 +165,11 @@ public class AudioDeviceRoutingFragment extends SettingsPreferenceFragment imple
             refreshDevicesPref();
         }
         return true;
+    }
+
+    @Override
+    public int getMetricsCategory() {
+        return 0;
     }
 
     private AudioDeviceCallback mAudioDeviceCallback = new AudioDeviceCallback() {

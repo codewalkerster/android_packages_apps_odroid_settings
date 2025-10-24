@@ -54,6 +54,9 @@ import android.hardware.hdmi.HdmiSwitchClient;
 import android.hardware.hdmi.HdmiSwitchClient.OnSelectListener;
 import android.os.SystemProperties;
 import android.sysprop.HdmiProperties;
+
+import com.android.internal.logging.nano.MetricsProto;
+
 import hardkernel.odroid.settings.SettingsConstant;
 import androidx.preference.Preference;
 import hardkernel.odroid.settings.R;
@@ -192,4 +195,10 @@ public class HdmiCecDeviceSelectFragment extends SettingsPreferenceFragment impl
         intent.putExtra(TvInputInfo.EXTRA_INPUT_ID, input.getId());
         getActivity().sendBroadcast(intent);
     }
+
+    @Override
+    public int getMetricsCategory() {
+        return MetricsProto.MetricsEvent.SOUND;
+    }
+
 }

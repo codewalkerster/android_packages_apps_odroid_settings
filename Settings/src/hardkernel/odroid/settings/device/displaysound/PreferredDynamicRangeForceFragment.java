@@ -21,6 +21,8 @@ import static android.view.Display.HdrCapabilities.HDR_TYPE_HDR10;
 import static android.view.Display.HdrCapabilities.HDR_TYPE_HDR10_PLUS;
 import static android.view.Display.HdrCapabilities.HDR_TYPE_HLG;
 
+import com.android.internal.logging.nano.MetricsProto;
+
 import static hardkernel.odroid.settings.device.displaysound.DisplaySoundUtils.createAlertDialog;
 import static hardkernel.odroid.settings.device.displaysound.DisplaySoundUtils.doesCurrentModeNotSupportDvBecauseLimitedTo4k30;
 import static hardkernel.odroid.settings.device.displaysound.DisplaySoundUtils.enableHdrType;
@@ -249,4 +251,10 @@ public class PreferredDynamicRangeForceFragment extends SettingsPreferenceFragme
             }
         }
     }
+
+    @Override
+    public int getMetricsCategory() {
+        return MetricsProto.MetricsEvent.SOUND;
+    }
+
 }

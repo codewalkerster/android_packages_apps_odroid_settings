@@ -43,7 +43,7 @@ import java.lang.reflect.Method;
 
 import com.droidlogic.app.OutputModeManager;
 import com.droidlogic.app.SystemControlManager;
-import com.droidlogic.app.AudioEffectManager;
+import com.droidlogic.app.DroidAudioEffect;
 import com.droidlogic.app.DroidAudioManager;
 import hardkernel.odroid.settings.SettingsConstant;
 import hardkernel.odroid.settings.SettingsPreferenceFragment;
@@ -79,7 +79,7 @@ public class SoundFragment extends SettingsPreferenceFragment implements Prefere
 
     private OutputModeManager mOutputModeManager;
     private SystemControlManager mSystemControlManager;
-    private AudioEffectManager mAudioEffectManager;
+    private DroidAudioEffect mDroidAudioEffect;
     private DroidAudioManager mDroidAudioManager = null;
     private SoundParameterSettingManager mSoundParameterSettingManager;
     private PreferenceCategory mCategoryPref;
@@ -128,8 +128,8 @@ public class SoundFragment extends SettingsPreferenceFragment implements Prefere
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         setPreferencesFromResource(R.xml.sound, null);
-        if (mAudioEffectManager == null) {
-            mAudioEffectManager = AudioEffectManager.getInstance(getActivity().getApplicationContext());
+        if (mDroidAudioEffect == null) {
+            mDroidAudioEffect = DroidAudioEffect.getInstance(getActivity().getApplicationContext());
         }
 
         final ListPreference dolbyDrcModePref = (ListPreference) findPreference(KEY_DOLBY_DRCMODE_PASSTHROUGH);
@@ -149,8 +149,9 @@ public class SoundFragment extends SettingsPreferenceFragment implements Prefere
         mSystemControlManager = SystemControlManager.getInstance();
 
         mOutputModeManager = OutputModeManager.getInstance(getActivity());
-        forcedDpPref.setChecked(mDroidAudioManager.getForceDDPEnable());
-        if (!mDroidAudioManager.isAudioSupportMs12System()) {
+        forcedDpPref.setChecked(mDroidAudioManager.isForceDDPEnabled());
+        if (mDroidAudioEffect.getEffectFunctionConfig(DroidAudioEffect.EFFECT_CONFIG_DAP)
+            == DroidAudioEffect.EFFECT_CONFIG_DAP_MS12_N) {
             //dapPref.setVisible(false);
             dap24Pref.setVisible(false);
             forcedDpPref.setVisible(false);
@@ -160,13 +161,13 @@ public class SoundFragment extends SettingsPreferenceFragment implements Prefere
         dolbyDrcModePref.setVisible(mSoundParameterSettingManager.isDebugAudioOn(SoundParameterSettingManager.DEBUG_DOLBY_DRC_UI));
         String drcModeStr = "";
         switch (mDroidAudioManager.getDolbyDrcMode()) {
-            case DroidAudioManager.IS_DRC_OFF:
+            case DroidAudioManager.DOLBY_DRC_MODE_OFF:
                 drcModeStr = DRC_OFF;
                 break;
-            case DroidAudioManager.IS_DRC_LINE:
+            case DroidAudioManager.DOLBY_DRC_MODE_LINE:
                 drcModeStr = DRC_LINE;
                 break;
-            case DroidAudioManager.IS_DRC_RF:
+            case DroidAudioManager.DOLBY_DRC_MODE_RF:
                 drcModeStr = DRC_RF;
                 break;
         }
@@ -180,16 +181,16 @@ public class SoundFragment extends SettingsPreferenceFragment implements Prefere
 
         adSupportPref.setVisible(false);
         arcPref.setOnPreferenceChangeListener(this);
-        arcPref.setMax(DroidAudioManager.TV_ARC_LATENCY_MAX);
-        arcPref.setMin(DroidAudioManager.TV_ARC_LATENCY_MIN);
+        // arcPref.setMax(DroidAudioManager.TV_ARC_LATENCY_MAX);
+        // arcPref.setMin(DroidAudioManager.TV_ARC_LATENCY_MIN);
         arcPref.setSeekBarIncrement(10);
-        arcPref.setValue(mDroidAudioManager.getARCLatency());
+        arcPref.setValue(0);
         /* Temporary unused "HDMI/ARC latency" */
         arcPref.setVisible(false);
 
         audioOutputLatencyPref.setOnPreferenceChangeListener(this);
-        audioOutputLatencyPref.setMax(DroidAudioManager.HAL_AUDIO_OUT_DEV_DELAY_MIN);
-        audioOutputLatencyPref.setMin(DroidAudioManager.HAL_AUDIO_OUT_DEV_DELAY_MAX);
+        audioOutputLatencyPref.setMax(DroidAudioManager.AUDIO_OUTPUT_DELAY_SOURCE_MIN);
+        audioOutputLatencyPref.setMin(DroidAudioManager.AUDIO_OUTPUT_DELAY_SOURCE_MAX);
         audioOutputLatencyPref.setSeekBarIncrement(KEY_AUDIO_OUTPUT_LATENCY_STEP);
         audioOutputLatencyPref.setValue(mDroidAudioManager.getAudioOutputAllDelay());
 
@@ -217,7 +218,8 @@ public class SoundFragment extends SettingsPreferenceFragment implements Prefere
         digitalSoundPref.setValue(mSoundParameterSettingManager.getDigitalAudioFormat());
         if (tvFlag) {
             /* not support passthrough when ms12 so are not included.*/
-            if (!mDroidAudioManager.isAudioSupportMs12System()) {
+            if (mDroidAudioEffect.getEffectFunctionConfig(DroidAudioEffect.EFFECT_CONFIG_DAP)
+                == DroidAudioEffect.EFFECT_CONFIG_DAP_MS12_N) {
                 String[] entry = getArrayString(R.array.digital_sounds_tv_entries);
                 String[] entryValue = getArrayString(R.array.digital_sounds_tv_entry_values);
                 List<String> entryList = new ArrayList<String>(Arrays.asList(entry));
@@ -239,12 +241,12 @@ public class SoundFragment extends SettingsPreferenceFragment implements Prefere
         mCategoryPref = (PreferenceCategory) findPreference(KEY_DIGITALSOUND_CATEGORY);
         digitalSoundPref.setVisible(false);
 
-        mDtsVirtualxSettingsPref.setEnabled(mAudioEffectManager.isSupportVirtualX());
-        mDtsVirtualxSettingsPref.setVisible(mAudioEffectManager.isSupportVirtualX());
+        mDtsVirtualxSettingsPref.setEnabled(mDroidAudioEffect.isAudioEffectEnabled(DroidAudioEffect.EFFECT_ID_VIRTUALX));
+        mDtsVirtualxSettingsPref.setVisible(mDroidAudioEffect.isAudioEffectEnabled(DroidAudioEffect.EFFECT_ID_VIRTUALX));
 
-        mTruVolumeHdPref.setChecked(mAudioEffectManager.getDtsTruVolumeHdEnable());
-        mTruVolumeHdPref.setEnabled(mAudioEffectManager.isSupportVirtualX());
-        mTruVolumeHdPref.setVisible(mAudioEffectManager.isSupportVirtualX());
+        mTruVolumeHdPref.setChecked(mDroidAudioEffect.isDtsTruVolumeHdEnabled());
+        mTruVolumeHdPref.setEnabled(mDroidAudioEffect.isAudioEffectEnabled(DroidAudioEffect.EFFECT_ID_VIRTUALX));
+        mTruVolumeHdPref.setVisible(mDroidAudioEffect.isAudioEffectEnabled(DroidAudioEffect.EFFECT_ID_VIRTUALX));
 
         //remove unuse setting
         createFormatPreferences();
@@ -347,19 +349,24 @@ public class SoundFragment extends SettingsPreferenceFragment implements Prefere
                     Integer.parseInt(key.substring(KEY_DIGITALSOUND_PREFIX.length())),
                     ((SwitchPreference) preference).isChecked());
         } else if (KEY_SOUND_AD_MIXING.equals(key)) {
-            final TwoStatePreference adSupportPref = (TwoStatePreference) findPreference(KEY_SOUND_AD_MIXING);
-            mDroidAudioManager.setAdSupportEnable(adSupportPref.isChecked());
+            // final TwoStatePreference adSupportPref = (TwoStatePreference) findPreference(KEY_SOUND_AD_MIXING);
+            // mDroidAudioManager.setAdSupportEnable(adSupportPref.isChecked());
         } else if(KEY_FORCE_DDP.equals(key)) {
             TwoStatePreference pref = (TwoStatePreference)preference;
-            mDroidAudioManager.setForceDDPEnable(pref.isChecked());
+            mDroidAudioManager.setForceDDPEnabled(pref.isChecked());
         } else if (KEY_SOUND_TV_OUTPUT_DEVICE_HDMI_OUT.equals(key)) {
             final TwoStatePreference hdmiOut = (TwoStatePreference) findPreference(KEY_SOUND_TV_OUTPUT_DEVICE_HDMI_OUT);
             // mDroidAudioManager.setTvAudioHdmiOutOn(hdmiOut.isChecked());
         } else if (KEY_TV_DTS_VIRTUALX_EFFECT.equals(key)) {
             final TwoStatePreference truVolumeHd = (TwoStatePreference) findPreference(KEY_TV_DTS_VIRTUALX_EFFECT);
-            mAudioEffectManager.setDtsTruVolumeHdEnable(truVolumeHd.isChecked());
+            mDroidAudioEffect.setDtsTruVolumeHdEnabled(truVolumeHd.isChecked());
         }
         return super.onPreferenceTreeClick(preference);
+    }
+
+    @Override
+    public int getMetricsCategory() {
+        return 0;
     }
 
     @Override
@@ -369,13 +376,13 @@ public class SoundFragment extends SettingsPreferenceFragment implements Prefere
             int drcMode = 0;
             switch (selection) {
                 case DRC_OFF:
-                    drcMode = DroidAudioManager.IS_DRC_OFF;
+                    drcMode = DroidAudioManager.DOLBY_DRC_MODE_OFF;
                     break;
                 case DRC_LINE:
-                    drcMode = DroidAudioManager.IS_DRC_LINE;
+                    drcMode = DroidAudioManager.DOLBY_DRC_MODE_LINE;
                     break;
                 case DRC_RF:
-                    drcMode = DroidAudioManager.IS_DRC_RF;
+                    drcMode = DroidAudioManager.DOLBY_DRC_MODE_RF;
                     break;
                 default:
                     throw new IllegalArgumentException("Unknown drc mode pref value");
@@ -389,11 +396,11 @@ public class SoundFragment extends SettingsPreferenceFragment implements Prefere
             final String selection = (String) newValue;
             mOutputModeManager.setDtsDrcScale(selection);
         } else if (TextUtils.equals(preference.getKey(), KEY_ARC_LATENCY)) {
-            mDroidAudioManager.setARCLatency((int)newValue);
+            // mDroidAudioManager.setARCLatency((int)newValue);
         } else if (TextUtils.equals(preference.getKey(), KEY_AUDIO_OUTPUT_LATENCY)) {
             mDroidAudioManager.setAudioOutputAllDelay((int)newValue);
         } else if (TextUtils.equals(preference.getKey(), KEY_TV_DTS_VIRTUALX_EFFECT)) {
-            mAudioEffectManager.setDtsVirtualXMode((int)newValue);
+            mDroidAudioEffect.setDtsVirtualXMode((int)newValue);
         }
         return true;
     }

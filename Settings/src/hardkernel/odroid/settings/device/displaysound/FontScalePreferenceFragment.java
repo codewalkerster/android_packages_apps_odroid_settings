@@ -33,6 +33,8 @@ import hardkernel.odroid.settings.RadioPreference;
 import hardkernel.odroid.settings.SettingsPreferenceFragment;
 import hardkernel.odroid.settings.overlay.FlavorUtils;
 
+import com.android.internal.logging.nano.MetricsProto;
+
 /**
  * The "Text scaling" screen in TV Settings.
  */
@@ -130,4 +132,10 @@ public class FontScalePreferenceFragment extends SettingsPreferenceFragment impl
     protected int getPageId() {
         return TvSettingsEnums.DISPLAY_SOUND_TEXT_SCALING;
     }
+
+    @Override
+    public int getMetricsCategory() {
+        return MetricsProto.MetricsEvent.SOUND;
+    }
+
 }

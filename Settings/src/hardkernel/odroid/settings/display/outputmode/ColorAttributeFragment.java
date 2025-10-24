@@ -201,6 +201,11 @@ public class ColorAttributeFragment extends SettingsPreferenceFragment {
       return super.onPreferenceTreeClick(preference);
     }
 
+    @Override
+    public int getMetricsCategory() {
+        return 0;
+    }
+
     public boolean onClickHandle(String key) {
         curValue = key;
         saveValue= mDisplayCapabilityManager.getCurrentColorAttribute();

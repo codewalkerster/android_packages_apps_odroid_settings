@@ -29,7 +29,7 @@ import android.util.Log;
 
 import hardkernel.odroid.settings.R;
 import hardkernel.odroid.settings.SettingsPreferenceFragment;
-import com.droidlogic.app.AudioEffectManager;
+import com.droidlogic.app.DroidAudioEffect;
 import hardkernel.odroid.settings.SettingsConstant;
 import com.droidlogic.app.DroidAudioManager;
 import android.util.Log;
@@ -61,7 +61,7 @@ public class Dap_2_4_Fragment extends SettingsPreferenceFragment implements Pref
     private SeekBarPreference mLeAmountPref;
 
     private DroidAudioManager mDroidAudioManager;
-    private AudioEffectManager mAudioEffectManager;
+    private DroidAudioEffect mDroidAudioEffect;
     private int mDolbyMS12AudioConfig;
     private int mSoundMode;
     private boolean mIsTv;
@@ -73,8 +73,8 @@ public class Dap_2_4_Fragment extends SettingsPreferenceFragment implements Pref
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        if (mAudioEffectManager == null) {
-            mAudioEffectManager = AudioEffectManager.getInstance(getActivity());
+        if (mDroidAudioEffect == null) {
+            mDroidAudioEffect = DroidAudioEffect.getInstance(getActivity());
         }
         super.onCreate(savedInstanceState);
     }
@@ -101,8 +101,8 @@ public class Dap_2_4_Fragment extends SettingsPreferenceFragment implements Pref
         setPreferencesFromResource(R.xml.dolby_audioeffect_2_4, null);
 
         mIsTv = SettingsConstant.needDroidlogicTvFeature(getActivity());
-        mDolbyMS12AudioConfig = mAudioEffectManager.getDolbyMS12AudioConfig();
-        mSoundMode = mAudioEffectManager.getDapParam(AudioEffectManager.CMD_DAP_2_4_PROFILE);
+        mDolbyMS12AudioConfig = mDroidAudioEffect.getEffectFunctionConfig(DroidAudioEffect.EFFECT_CONFIG_DAP);
+        mSoundMode = mDroidAudioEffect.getDapParam(DroidAudioEffect.DAP_CMD_2_4_PROFILE);
 
         init();
         mNeedFreshUI = false;
@@ -129,8 +129,8 @@ public class Dap_2_4_Fragment extends SettingsPreferenceFragment implements Pref
         mSdePref = (TwoStatePreference) findPreference(KEY_DAP_2_4_SURROUND_DECODER_ENABLE);
         mSdePref.setOnPreferenceChangeListener(this);
 
-        if (mDolbyMS12AudioConfig == AudioEffectManager.DOLBY_MS12_AUDIO_CONFIG_Z) {
-            suvMode = mAudioEffectManager.getDapParam(AudioEffectManager.CMD_DAP_2_4_SURROUND_VIRTUALIZER);
+        if (mDolbyMS12AudioConfig == DroidAudioEffect.EFFECT_CONFIG_DAP_MS12_Z) {
+            suvMode = mDroidAudioEffect.getDapParam(DroidAudioEffect.DAP_CMD_2_4_SURROUND_VIRTUALIZER);
             if (suvMode == 0) {
                 mSuvPref.setSummary("OFF");
             } else if (suvMode == 1) {
@@ -142,7 +142,7 @@ public class Dap_2_4_Fragment extends SettingsPreferenceFragment implements Pref
             mSuvPref.setValueIndex(suvMode);
             mSuvPref.setVisible(true);
 
-            int val = mAudioEffectManager.getDapParam(AudioEffectManager.SUBCMD_DAP_2_4_SURROUND_VIRTUALIZER_BOOST);
+            int val = mDroidAudioEffect.getDapParam(DroidAudioEffect.DAP_SUBCMD_2_4_SURROUND_VIRTUALIZER_BOOST);
             mSuvBoostPref.setValue(val);
             mSuvBoostPref.setAdjustable(true);
             mSuvBoostPref.setMin(0);
@@ -168,18 +168,22 @@ public class Dap_2_4_Fragment extends SettingsPreferenceFragment implements Pref
         mLePref = (ListPreference) findPreference(KEY_DAP_2_4_LEVELER_SETTING);
         mLeAmountPref = (SeekBarPreference) findPreference(KEY_DAP_2_4_LEVELER_AMOUNT);
 
-        if (mDolbyMS12AudioConfig == AudioEffectManager.DOLBY_MS12_AUDIO_CONFIG_Y) {
+        if (mDolbyMS12AudioConfig == DroidAudioEffect.EFFECT_CONFIG_DAP_MS12_Y) {
             mLePref.setVisible(false);
             mLeAmountPref.setVisible(false);
         } else {
-            progressLe = mAudioEffectManager.getDapParam(AudioEffectManager.CMD_DAP_2_4_LEVELER);
+            progressLe = mDroidAudioEffect.getDapParam(DroidAudioEffect.DAP_CMD_2_4_LEVELER);
             mLePref.setValueIndex(progressLe);
             mLePref.setOnPreferenceChangeListener(this);
             mLeAmountPref.setMin(0);
             mLeAmountPref.setMax(10);
             mLeAmountPref.setOnPreferenceChangeListener(this);
+            mLeAmountPref.setTitle(getShowString(R.string.title_dap_2_4_leveler_amount));
             mLePref.setVisible(true);
-            if (progressLe != AudioEffectManager.SOUND_EFFECT_DAP_2_4_LEVELER_OFF) {
+
+            if (progressLe != DroidAudioEffect.DAP_2_4_LEVELER_OFF) {
+                int val = mDroidAudioEffect.getDapParam(mDroidAudioEffect.DAP_SUBCMD_2_4_LEVELER_AMOUNT);
+                mLeAmountPref.setValue(val);
                 mLeAmountPref.setVisible(true);
             } else {
                 mLeAmountPref.setVisible(false);
@@ -195,10 +199,10 @@ public class Dap_2_4_Fragment extends SettingsPreferenceFragment implements Pref
 
         mAc4DialogEnhancerPref = findPreference(KEY_AC4_OUTPUT_SWITCH);
 
-        if (mDolbyMS12AudioConfig == AudioEffectManager.DOLBY_MS12_AUDIO_CONFIG_Y) {  //Y: No DAP instance
+        if (mDolbyMS12AudioConfig == DroidAudioEffect.EFFECT_CONFIG_DAP_MS12_Y) {  //Y: No DAP instance
             uiIndex = mDroidAudioManager.getDialogEnhancerLevel();
         } else { //X, Z with DAP
-            val = mAudioEffectManager.getDapParam(AudioEffectManager.CMD_DAP_2_4_DIALOGUE_ENHANCER);
+            val = mDroidAudioEffect.getDapParam(DroidAudioEffect.DAP_CMD_2_4_DIALOGUE_ENHANCER);
             if (val == 0) {
                 uiIndex = 0;
             } else {
@@ -212,16 +216,16 @@ public class Dap_2_4_Fragment extends SettingsPreferenceFragment implements Pref
     private void update_preference_all(boolean doSetting) {
         int soundMode = mSoundMode;
         switch (mDolbyMS12AudioConfig) {
-            case AudioEffectManager.DOLBY_MS12_AUDIO_CONFIG_Z:
+            case DroidAudioEffect.EFFECT_CONFIG_DAP_MS12_Z:
                 update_preference_z(soundMode, doSetting);
                 update_preference_x(soundMode, doSetting);
                 update_preference_y(soundMode, doSetting);
                 break;
-            case AudioEffectManager.DOLBY_MS12_AUDIO_CONFIG_X:
+            case DroidAudioEffect.EFFECT_CONFIG_DAP_MS12_X:
                 update_preference_x(soundMode, doSetting);
                 update_preference_y(soundMode, doSetting);
                 break;
-            case AudioEffectManager.DOLBY_MS12_AUDIO_CONFIG_Y:
+            case DroidAudioEffect.EFFECT_CONFIG_DAP_MS12_Y:
                 update_preference_y(soundMode, doSetting);
                 break;
         }
@@ -233,36 +237,36 @@ public class Dap_2_4_Fragment extends SettingsPreferenceFragment implements Pref
     private void update_preference_z(int soundMode, boolean doSetting) {
         int suvMode = 0;
         int val = 0;
-        suvMode = mAudioEffectManager.getDapParam(AudioEffectManager.CMD_DAP_2_4_SURROUND_VIRTUALIZER);
-        val = mAudioEffectManager.getDapParam(AudioEffectManager.SUBCMD_DAP_2_4_SURROUND_VIRTUALIZER_BOOST);
+        suvMode = mDroidAudioEffect.getDapParam(DroidAudioEffect.DAP_CMD_2_4_SURROUND_VIRTUALIZER);
+        val = mDroidAudioEffect.getDapParam(DroidAudioEffect.DAP_SUBCMD_2_4_SURROUND_VIRTUALIZER_BOOST);
         mSuvBoostPref.setValue(val);
         mSuvBoostPref.setAdjustable(true);
         mSuvPref.setVisible(true);
-        if (suvMode != AudioEffectManager.SOUND_EFFECT_DAP_2_4_SURROUND_VIRTUALIZER_OFF) {
+        if (suvMode != DroidAudioEffect.DAP_2_4_SURROUND_VIRTUALIZER_OFF) {
             mSuvBoostPref.setVisible(true);
             if (doSetting) {
-                mAudioEffectManager.setDapParam(AudioEffectManager.SUBCMD_DAP_2_4_SURROUND_VIRTUALIZER_BOOST, (int)val);
+                mDroidAudioEffect.setDapParam(DroidAudioEffect.DAP_SUBCMD_2_4_SURROUND_VIRTUALIZER_BOOST, (int)val);
             }
         } else {
             mSuvBoostPref.setVisible(false);
         }
 
-        boolean enable = (mAudioEffectManager.getDapParam(AudioEffectManager.CMD_DAP_2_4_SURROUND_DECODER_ENABLE) != AudioEffectManager.DAP_OFF);
+        boolean enable = (mDroidAudioEffect.getDapParam(DroidAudioEffect.DAP_CMD_2_4_SURROUND_DECODER_ENABLE) != DroidAudioEffect.EFFECT_CONFIG_OFF);
         //mSdePref.setChecked(enable);
         mSdePref.setVisible(false);
     }
 
     private void update_preference_x(int soundMode, boolean doSetting) {
-        int progress_le = mAudioEffectManager.getDapParam(AudioEffectManager.CMD_DAP_2_4_LEVELER);
-        int val = mAudioEffectManager.getDapParam(AudioEffectManager.SUBCMD_DAP_2_4_LEVELER_AMOUNT);
+        int progress_le = mDroidAudioEffect.getDapParam(DroidAudioEffect.DAP_CMD_2_4_LEVELER);
+        int val = mDroidAudioEffect.getDapParam(DroidAudioEffect.DAP_SUBCMD_2_4_LEVELER_AMOUNT);
         mLeAmountPref.setValue(val);
         mLeAmountPref.setAdjustable(true);
         mLeAmountPref.setTitle(getShowString(R.string.title_dap_2_4_leveler_amount));
         mLePref.setVisible(true);
-        if (progress_le != AudioEffectManager.SOUND_EFFECT_DAP_2_4_LEVELER_OFF) {
+        if (progress_le != DroidAudioEffect.DAP_2_4_LEVELER_OFF) {
             mLeAmountPref.setVisible(true);
             if (doSetting) {
-                mAudioEffectManager.setDapParam(AudioEffectManager.SUBCMD_DAP_2_4_LEVELER_AMOUNT, val);
+                mDroidAudioEffect.setDapParam(DroidAudioEffect.DAP_SUBCMD_2_4_LEVELER_AMOUNT, val);
             }
         } else {
             mLeAmountPref.setVisible(false);
@@ -273,11 +277,11 @@ public class Dap_2_4_Fragment extends SettingsPreferenceFragment implements Pref
         int uiIndex = 0;
         int val = 0;
         boolean enable;
-        if (mDolbyMS12AudioConfig == AudioEffectManager.DOLBY_MS12_AUDIO_CONFIG_Y) {
+        if (mDolbyMS12AudioConfig == DroidAudioEffect.EFFECT_CONFIG_DAP_MS12_Y) {
             uiIndex = mDroidAudioManager.getDialogEnhancerLevel();
             enable = (uiIndex == 0 ? false : true);
         } else {
-            val = mAudioEffectManager.getDapParam(AudioEffectManager.CMD_DAP_2_4_DIALOGUE_ENHANCER);
+            val = mDroidAudioEffect.getDapParam(DroidAudioEffect.DAP_CMD_2_4_DIALOGUE_ENHANCER);
             if (val == 0) {
                 uiIndex = 0;
             } else {
@@ -295,31 +299,17 @@ public class Dap_2_4_Fragment extends SettingsPreferenceFragment implements Pref
 
     /*
     * Call DroidAudioManager API if Config with Y
-    * Call AudioEffectManager API if Config with X/Z
+    * Call DroidAudioEffect API if Config with X/Z
     */
     private void setDialogEnhancer(int selection) {
         int value = 0;
-        if (mDolbyMS12AudioConfig == AudioEffectManager.DOLBY_MS12_AUDIO_CONFIG_Y) {
+        if (mDolbyMS12AudioConfig == DroidAudioEffect.EFFECT_CONFIG_DAP_MS12_Y) {
             switch (selection) {
-                case DroidAudioManager.DIALOGUE_ENHANCEMENT_OFF:
-                    if (mDroidAudioManager.isAudioSupportMs12System()) {
-                        mDroidAudioManager.setDialogEnhancerLevel(0);
-                    }
-                    break;
-                case DroidAudioManager.DIALOGUE_ENHANCEMENT_LOW:
-                    if (mDroidAudioManager.isAudioSupportMs12System()) {
-                        mDroidAudioManager.setDialogEnhancerLevel(1);
-                    }
-                    break;
-                case DroidAudioManager.DIALOGUE_ENHANCEMENT_MEDIUM:
-                    if (mDroidAudioManager.isAudioSupportMs12System()) {
-                        mDroidAudioManager.setDialogEnhancerLevel(2);
-                    }
-                    break;
-                case DroidAudioManager.DIALOGUE_ENHANCEMENT_HIGH:
-                    if (mDroidAudioManager.isAudioSupportMs12System()) {
-                        mDroidAudioManager.setDialogEnhancerLevel(3);
-                    }
+                case DroidAudioManager.DIALOGUE_ENHANCEMENT_LEVEL_OFF:
+                case DroidAudioManager.DIALOGUE_ENHANCEMENT_LEVEL_LOW:
+                case DroidAudioManager.DIALOGUE_ENHANCEMENT_LEVEL_MEDIUM:
+                case DroidAudioManager.DIALOGUE_ENHANCEMENT_LEVEL_HIGH:
+                    mDroidAudioManager.setDialogEnhancerLevel(selection);
                     break;
                 default:
                     throw new IllegalArgumentException("Unknown ac4 pref value: "
@@ -327,7 +317,7 @@ public class Dap_2_4_Fragment extends SettingsPreferenceFragment implements Pref
             }
         } else {
             value = selection;
-            mAudioEffectManager.setDapParam(AudioEffectManager.CMD_DAP_2_4_DIALOGUE_ENHANCER, value);
+            mDroidAudioEffect.setDapParam(DroidAudioEffect.DAP_CMD_2_4_DIALOGUE_ENHANCER, value);
             Log.i(TAG, "setDialogEnhancer() mDolbyMS12AudioConfig:" + mDolbyMS12AudioConfig + ", value:" + value);
         }
     }
@@ -340,7 +330,7 @@ public class Dap_2_4_Fragment extends SettingsPreferenceFragment implements Pref
             case KEY_DAP_2_4_SURROUND_DECODER_ENABLE:
                 updateSoundModeOnUser();
                 isChecked = mSdePref.isChecked();
-                mAudioEffectManager.setDapParam(AudioEffectManager.CMD_DAP_2_4_SURROUND_DECODER_ENABLE, isChecked?1:0);
+                mDroidAudioEffect.setDapParam(DroidAudioEffect.DAP_CMD_2_4_SURROUND_DECODER_ENABLE, isChecked?1:0);
                 break;
         }
 
@@ -357,7 +347,7 @@ public class Dap_2_4_Fragment extends SettingsPreferenceFragment implements Pref
             case KEY_DAP_2_4_SURROUND_VIRTUALIZER_MODE:
                 final int mode = Integer.parseInt((String)newValue);
                 updateSoundModeOnUser();
-                mAudioEffectManager.setDapParam(AudioEffectManager.CMD_DAP_2_4_SURROUND_VIRTUALIZER, mode);
+                mDroidAudioEffect.setDapParam(DroidAudioEffect.DAP_CMD_2_4_SURROUND_VIRTUALIZER, mode);
                 if (mode == 0) {
                     mSuvPref.setSummary("OFF");
                 } else if (mode == 1) {
@@ -369,7 +359,7 @@ public class Dap_2_4_Fragment extends SettingsPreferenceFragment implements Pref
                 break;
             case KEY_DAP_2_4_SURROUND_VIRTUALIZER_BOOST:
                 updateSoundModeOnUser();
-                mAudioEffectManager.setDapParam(AudioEffectManager.SUBCMD_DAP_2_4_SURROUND_VIRTUALIZER_BOOST, (int)newValue);
+                mDroidAudioEffect.setDapParam(DroidAudioEffect.DAP_SUBCMD_2_4_SURROUND_VIRTUALIZER_BOOST, (int)newValue);
                 isNeedRefresh = true;
                 break;
             case KEY_AC4_OUTPUT_SWITCH:
@@ -381,15 +371,12 @@ public class Dap_2_4_Fragment extends SettingsPreferenceFragment implements Pref
             case KEY_DAP_2_4_LEVELER_SETTING:
                 final int setting = Integer.parseInt((String)newValue);
                 updateSoundModeOnUser();
-                mAudioEffectManager.setDapParam(AudioEffectManager.CMD_DAP_2_4_LEVELER, setting);
-                if (setting == 0) {
-                    mAudioEffectManager.setDapParam(AudioEffectManager.SUBCMD_DAP_2_4_LEVELER_AMOUNT, 0);
-                }
+                mDroidAudioEffect.setDapParam(DroidAudioEffect.DAP_CMD_2_4_LEVELER, setting);
                 isNeedRefresh = true;
                 break;
             case KEY_DAP_2_4_LEVELER_AMOUNT:
                 updateSoundModeOnUser();
-                mAudioEffectManager.setDapParam(AudioEffectManager.SUBCMD_DAP_2_4_LEVELER_AMOUNT, (int)newValue);
+                mDroidAudioEffect.setDapParam(DroidAudioEffect.DAP_SUBCMD_2_4_LEVELER_AMOUNT, (int)newValue);
                 isNeedRefresh = true;
                 break;
         }
@@ -401,9 +388,9 @@ public class Dap_2_4_Fragment extends SettingsPreferenceFragment implements Pref
     }
 
     private void updateSoundModeOnUser() {
-        mSoundMode = mAudioEffectManager.getDapParam(AudioEffectManager.CMD_DAP_2_4_PROFILE);
-        if (mSoundMode != AudioEffectManager.SOUND_EFFECT_DAP_2_4_PROFILE_USER_SELECTABLE) {
-            mAudioEffectManager.setSoundMode(AudioEffectManager.COMMON_SOUND_MODE_CUSTOM);
+        mSoundMode = mDroidAudioEffect.getDapParam(DroidAudioEffect.DAP_CMD_2_4_PROFILE);
+        if (mSoundMode != DroidAudioEffect.DAP_2_4_PROFILE_USER_SELECTABLE) {
+            mDroidAudioEffect.setSoundMode(DroidAudioEffect.COMMON_SOUND_MODE_CUSTOM);
             Log.d(TAG, "Change sound mode to CUSTOM! because user adjust Customized UI");
         }
     }
@@ -412,4 +399,10 @@ public class Dap_2_4_Fragment extends SettingsPreferenceFragment implements Pref
     {
         update_preference_all(true);
     }
+
+    @Override
+    public int getMetricsCategory() {
+        return 0;
+    }
+
 }

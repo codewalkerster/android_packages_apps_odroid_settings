@@ -133,4 +133,10 @@ public class PQAdvancedFragment extends SettingsPreferenceFragment implements Pr
         }
         return true;
     }
+
+    @Override
+    public int getMetricsCategory() {
+        return 0;
+    }
+
 }

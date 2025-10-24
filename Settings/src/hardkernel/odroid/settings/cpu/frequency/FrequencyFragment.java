@@ -28,6 +28,8 @@ import hardkernel.odroid.settings.RadioPreference;
 import hardkernel.odroid.settings.ConfigEnv;
 import hardkernel.odroid.settings.cpu.CPU;
 
+import com.android.internal.logging.nano.MetricsProto;
+
 public class FrequencyFragment extends SettingsPreferenceFragment {
     private static final String TAG = "FrequencyFragment";
     public static CPU cpu = null;
@@ -107,4 +109,10 @@ public class FrequencyFragment extends SettingsPreferenceFragment {
                 break;
         }
     }
+
+    @Override
+    public int getMetricsCategory() {
+        return MetricsProto.MetricsEvent.SOUND;
+    }
+
 }

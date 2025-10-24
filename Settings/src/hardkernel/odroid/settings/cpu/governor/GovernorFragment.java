@@ -26,6 +26,8 @@ import hardkernel.odroid.settings.RadioPreference;
 import hardkernel.odroid.settings.ConfigEnv;
 import hardkernel.odroid.settings.cpu.CPU;
 
+import com.android.internal.logging.nano.MetricsProto;
+
 public class GovernorFragment extends SettingsPreferenceFragment {
     private static final String TAG = "GovernorFragment";
     public static CPU cpu = null;
@@ -95,4 +97,10 @@ public class GovernorFragment extends SettingsPreferenceFragment {
                 break;
         }
     }
+
+    @Override
+    public int getMetricsCategory() {
+        return MetricsProto.MetricsEvent.SOUND;
+    }
+
 }

@@ -27,7 +27,7 @@ import android.util.Log;
 
 import hardkernel.odroid.settings.R;
 import hardkernel.odroid.settings.SettingsPreferenceFragment;
-import com.droidlogic.app.AudioEffectManager;
+import com.droidlogic.app.DroidAudioEffect;
 
 public class DpeModeFragment extends SettingsPreferenceFragment implements Preference.OnPreferenceChangeListener {
 
@@ -190,8 +190,7 @@ public class DpeModeFragment extends SettingsPreferenceFragment implements Prefe
     private SeekBarPreference mSeekBarLimiterThreshold;
     private SeekBarPreference mSeekBarLimiterPostGain;
 
-    private AudioEffectManager mAudioEffectManager;
-
+    private DroidAudioEffect mDroidAudioEffect;
     private boolean mNeedFreshUI = false;
 
     public static DpeModeFragment newInstance() {
@@ -200,8 +199,8 @@ public class DpeModeFragment extends SettingsPreferenceFragment implements Prefe
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        if (mAudioEffectManager == null) {
-            mAudioEffectManager = AudioEffectManager.getInstance(getActivity());
+        if (mDroidAudioEffect == null) {
+            mDroidAudioEffect = DroidAudioEffect.getInstance(getActivity());
 		}
         super.onCreate(savedInstanceState);
     }
@@ -578,8 +577,8 @@ public class DpeModeFragment extends SettingsPreferenceFragment implements Prefe
     private void updatePreEqBand0Param(boolean param, boolean enable) {
         boolean isVisible = false;
         isVisible = param && enable;
-        mSeekBarPreEqBand0CutoffFrequency.setValue(mAudioEffectManager.getDpeParam(AudioEffectManager.SUBCMD_DPE_PRE_EQ_BAND0_CUTOFFFREQUENCY));
-        mSeekBarPreEqBand0Gain.setValue(mAudioEffectManager.getDpeParam(AudioEffectManager.SUBCMD_DPE_PRE_EQ_BAND0_GAIN));
+        mSeekBarPreEqBand0CutoffFrequency.setValue(mDroidAudioEffect.getDpeParam(DroidAudioEffect.DPE_SUBCMD_PRE_EQ_BAND0_CUTOFFFREQUENCY));
+        mSeekBarPreEqBand0Gain.setValue(mDroidAudioEffect.getDpeParam(DroidAudioEffect.DPE_SUBCMD_PRE_EQ_BAND0_GAIN));
         mSeekBarPreEqBand0CutoffFrequency.setAdjustable(enable);
         mSeekBarPreEqBand0Gain.setAdjustable(enable);
         mSeekBarPreEqBand0CutoffFrequency.setVisible(isVisible);
@@ -591,8 +590,8 @@ public class DpeModeFragment extends SettingsPreferenceFragment implements Prefe
     private void updatePreEqBand1Param(boolean param, boolean enable) {
         boolean isVisible = false;
         isVisible = param && enable;
-        mSeekBarPreEqBand1CutoffFrequency.setValue(mAudioEffectManager.getDpeParam(AudioEffectManager.SUBCMD_DPE_PRE_EQ_BAND1_CUTOFFFREQUENCY));
-        mSeekBarPreEqBand1Gain.setValue(mAudioEffectManager.getDpeParam(AudioEffectManager.SUBCMD_DPE_PRE_EQ_BAND1_GAIN));
+        mSeekBarPreEqBand1CutoffFrequency.setValue(mDroidAudioEffect.getDpeParam(DroidAudioEffect.DPE_SUBCMD_PRE_EQ_BAND1_CUTOFFFREQUENCY));
+        mSeekBarPreEqBand1Gain.setValue(mDroidAudioEffect.getDpeParam(DroidAudioEffect.DPE_SUBCMD_PRE_EQ_BAND1_GAIN));
         mSeekBarPreEqBand1CutoffFrequency.setAdjustable(enable);
         mSeekBarPreEqBand1Gain.setAdjustable(enable);
         mSeekBarPreEqBand1CutoffFrequency.setVisible(isVisible);
@@ -604,8 +603,8 @@ public class DpeModeFragment extends SettingsPreferenceFragment implements Prefe
     private void updatePreEqBand2Param(boolean param, boolean enable) {
         boolean isVisible = false;
         isVisible = param && enable;
-        mSeekBarPreEqBand2CutoffFrequency.setValue(mAudioEffectManager.getDpeParam(AudioEffectManager.SUBCMD_DPE_PRE_EQ_BAND2_CUTOFFFREQUENCY));
-        mSeekBarPreEqBand2Gain.setValue(mAudioEffectManager.getDpeParam(AudioEffectManager.SUBCMD_DPE_PRE_EQ_BAND2_GAIN));
+        mSeekBarPreEqBand2CutoffFrequency.setValue(mDroidAudioEffect.getDpeParam(DroidAudioEffect.DPE_SUBCMD_PRE_EQ_BAND2_CUTOFFFREQUENCY));
+        mSeekBarPreEqBand2Gain.setValue(mDroidAudioEffect.getDpeParam(DroidAudioEffect.DPE_SUBCMD_PRE_EQ_BAND2_GAIN));
         mSeekBarPreEqBand2CutoffFrequency.setAdjustable(enable);
         mSeekBarPreEqBand2Gain.setAdjustable(enable);
         mSeekBarPreEqBand2CutoffFrequency.setVisible(isVisible);
@@ -619,8 +618,8 @@ public class DpeModeFragment extends SettingsPreferenceFragment implements Prefe
     private void updatePostEqBand0Param(boolean param, boolean enable) {
         boolean isVisible = false;
         isVisible = param && enable;
-        mSeekBarPostEqBand0CutoffFrequency.setValue(mAudioEffectManager.getDpeParam(AudioEffectManager.SUBCMD_DPE_POST_EQ_BAND0_CUTOFFFREQUENCY));
-        mSeekBarPostEqBand0Gain.setValue(mAudioEffectManager.getDpeParam(AudioEffectManager.SUBCMD_DPE_POST_EQ_BAND0_GAIN));
+        mSeekBarPostEqBand0CutoffFrequency.setValue(mDroidAudioEffect.getDpeParam(DroidAudioEffect.DPE_SUBCMD_POST_EQ_BAND0_CUTOFFFREQUENCY));
+        mSeekBarPostEqBand0Gain.setValue(mDroidAudioEffect.getDpeParam(DroidAudioEffect.DPE_SUBCMD_POST_EQ_BAND0_GAIN));
         mSeekBarPostEqBand0CutoffFrequency.setAdjustable(enable);
         mSeekBarPostEqBand0Gain.setAdjustable(enable);
         mSeekBarPostEqBand0CutoffFrequency.setVisible(isVisible);
@@ -632,8 +631,8 @@ public class DpeModeFragment extends SettingsPreferenceFragment implements Prefe
     private void updatePostEqBand1Param(boolean param, boolean enable) {
         boolean isVisible = false;
         isVisible = param && enable;
-        mSeekBarPostEqBand1CutoffFrequency.setValue(mAudioEffectManager.getDpeParam(AudioEffectManager.SUBCMD_DPE_POST_EQ_BAND1_CUTOFFFREQUENCY));
-        mSeekBarPostEqBand1Gain.setValue(mAudioEffectManager.getDpeParam(AudioEffectManager.SUBCMD_DPE_POST_EQ_BAND1_GAIN));
+        mSeekBarPostEqBand1CutoffFrequency.setValue(mDroidAudioEffect.getDpeParam(DroidAudioEffect.DPE_SUBCMD_POST_EQ_BAND1_CUTOFFFREQUENCY));
+        mSeekBarPostEqBand1Gain.setValue(mDroidAudioEffect.getDpeParam(DroidAudioEffect.DPE_SUBCMD_POST_EQ_BAND1_GAIN));
         mSeekBarPostEqBand1CutoffFrequency.setAdjustable(enable);
         mSeekBarPostEqBand1Gain.setAdjustable(enable);
         mSeekBarPostEqBand1CutoffFrequency.setVisible(isVisible);
@@ -645,8 +644,8 @@ public class DpeModeFragment extends SettingsPreferenceFragment implements Prefe
     private void updatePostEqBand2Param(boolean param, boolean enable) {
         boolean isVisible = false;
         isVisible = param && enable;
-        mSeekBarPostEqBand2CutoffFrequency.setValue(mAudioEffectManager.getDpeParam(AudioEffectManager.SUBCMD_DPE_POST_EQ_BAND2_CUTOFFFREQUENCY));
-        mSeekBarPostEqBand2Gain.setValue(mAudioEffectManager.getDpeParam(AudioEffectManager.SUBCMD_DPE_POST_EQ_BAND2_GAIN));
+        mSeekBarPostEqBand2CutoffFrequency.setValue(mDroidAudioEffect.getDpeParam(DroidAudioEffect.DPE_SUBCMD_POST_EQ_BAND2_CUTOFFFREQUENCY));
+        mSeekBarPostEqBand2Gain.setValue(mDroidAudioEffect.getDpeParam(DroidAudioEffect.DPE_SUBCMD_POST_EQ_BAND2_GAIN));
         mSeekBarPostEqBand2CutoffFrequency.setAdjustable(enable);
         mSeekBarPostEqBand2Gain.setAdjustable(enable);
         mSeekBarPostEqBand2CutoffFrequency.setVisible(isVisible);
@@ -693,16 +692,16 @@ public class DpeModeFragment extends SettingsPreferenceFragment implements Prefe
         mSeekBarMbcBand0PreGain.setAdjustable(enable);
         mSeekBarMbcBand0PostGain.setAdjustable(enable);
 
-        mSeekBarMbcBand0CutoffFrequency.setValue(mAudioEffectManager.getDpeParam(AudioEffectManager.SUBCMD_DPE_MBC_BAND0_CUTOFFFREQUENCY));
-        mSeekBarMbcBand0AttackTime.setValue(mAudioEffectManager.getDpeParam(AudioEffectManager.SUBCMD_DPE_MBC_BAND0_ATTACKTIME));
-        mSeekBarMbcBand0ReleaseTime.setValue(mAudioEffectManager.getDpeParam(AudioEffectManager.SUBCMD_DPE_MBC_BAND0_RELEASETIME));
-        mSeekBarMbcBand0Ratio.setValue(mAudioEffectManager.getDpeParam(AudioEffectManager.SUBCMD_DPE_MBC_BAND0_RATIO));
-        mSeekBarMbcBand0Threshold.setValue(mAudioEffectManager.getDpeParam(AudioEffectManager.SUBCMD_DPE_MBC_BAND0_THRESHOLD));
-        mSeekBarMbcBand0KneeWidth.setValue(mAudioEffectManager.getDpeParam(AudioEffectManager.SUBCMD_DPE_MBC_BAND0_KNEEWIDTH));
-        mSeekBarMbcBand0NoiseGateThreshold.setValue(mAudioEffectManager.getDpeParam(AudioEffectManager.SUBCMD_DPE_MBC_BAND0_NOISEGATETHRESHOLD));
-        mSeekBarMbcBand0ExpanderRatio.setValue(mAudioEffectManager.getDpeParam(AudioEffectManager.SUBCMD_DPE_MBC_BAND0_EXPANDERRATIO));
-        mSeekBarMbcBand0PreGain.setValue(mAudioEffectManager.getDpeParam(AudioEffectManager.SUBCMD_DPE_MBC_BAND0_PREGAIN));
-        mSeekBarMbcBand0PostGain.setValue(mAudioEffectManager.getDpeParam(AudioEffectManager.SUBCMD_DPE_MBC_BAND0_POSTGAIN));
+        mSeekBarMbcBand0CutoffFrequency.setValue(mDroidAudioEffect.getDpeParam(DroidAudioEffect.DPE_SUBCMD_MBC_BAND0_CUTOFFFREQUENCY));
+        mSeekBarMbcBand0AttackTime.setValue(mDroidAudioEffect.getDpeParam(DroidAudioEffect.DPE_SUBCMD_MBC_BAND0_ATTACKTIME));
+        mSeekBarMbcBand0ReleaseTime.setValue(mDroidAudioEffect.getDpeParam(DroidAudioEffect.DPE_SUBCMD_MBC_BAND0_RELEASETIME));
+        mSeekBarMbcBand0Ratio.setValue(mDroidAudioEffect.getDpeParam(DroidAudioEffect.DPE_SUBCMD_MBC_BAND0_RATIO));
+        mSeekBarMbcBand0Threshold.setValue(mDroidAudioEffect.getDpeParam(DroidAudioEffect.DPE_SUBCMD_MBC_BAND0_THRESHOLD));
+        mSeekBarMbcBand0KneeWidth.setValue(mDroidAudioEffect.getDpeParam(DroidAudioEffect.DPE_SUBCMD_MBC_BAND0_KNEEWIDTH));
+        mSeekBarMbcBand0NoiseGateThreshold.setValue(mDroidAudioEffect.getDpeParam(DroidAudioEffect.DPE_SUBCMD_MBC_BAND0_NOISEGATETHRESHOLD));
+        mSeekBarMbcBand0ExpanderRatio.setValue(mDroidAudioEffect.getDpeParam(DroidAudioEffect.DPE_SUBCMD_MBC_BAND0_EXPANDERRATIO));
+        mSeekBarMbcBand0PreGain.setValue(mDroidAudioEffect.getDpeParam(DroidAudioEffect.DPE_SUBCMD_MBC_BAND0_PREGAIN));
+        mSeekBarMbcBand0PostGain.setValue(mDroidAudioEffect.getDpeParam(DroidAudioEffect.DPE_SUBCMD_MBC_BAND0_POSTGAIN));
     }
 
     private void updateMbcBand1Param(boolean param, boolean enable) {
@@ -742,16 +741,16 @@ public class DpeModeFragment extends SettingsPreferenceFragment implements Prefe
         mSeekBarMbcBand1PreGain.setTitle(enable ? getShowString(R.string.title_dpe_mbc_band_1_pregain) : "");
         mSeekBarMbcBand1PostGain.setTitle(enable ? getShowString(R.string.title_dpe_mbc_band_1_postgain) : "");
 
-        mSeekBarMbcBand1CutoffFrequency.setValue(mAudioEffectManager.getDpeParam(AudioEffectManager.SUBCMD_DPE_MBC_BAND1_CUTOFFFREQUENCY));
-        mSeekBarMbcBand1AttackTime.setValue(mAudioEffectManager.getDpeParam(AudioEffectManager.SUBCMD_DPE_MBC_BAND1_ATTACKTIME));
-        mSeekBarMbcBand1ReleaseTime.setValue(mAudioEffectManager.getDpeParam(AudioEffectManager.SUBCMD_DPE_MBC_BAND1_RELEASETIME));
-        mSeekBarMbcBand1Ratio.setValue(mAudioEffectManager.getDpeParam(AudioEffectManager.SUBCMD_DPE_MBC_BAND1_RATIO));
-        mSeekBarMbcBand1Threshold.setValue(mAudioEffectManager.getDpeParam(AudioEffectManager.SUBCMD_DPE_MBC_BAND1_THRESHOLD));
-        mSeekBarMbcBand1KneeWidth.setValue(mAudioEffectManager.getDpeParam(AudioEffectManager.SUBCMD_DPE_MBC_BAND1_KNEEWIDTH));
-        mSeekBarMbcBand1NoiseGateThreshold.setValue(mAudioEffectManager.getDpeParam(AudioEffectManager.SUBCMD_DPE_MBC_BAND1_NOISEGATETHRESHOLD));
-        mSeekBarMbcBand1ExpanderRatio.setValue(mAudioEffectManager.getDpeParam(AudioEffectManager.SUBCMD_DPE_MBC_BAND1_EXPANDERRATIO));
-        mSeekBarMbcBand1PreGain.setValue(mAudioEffectManager.getDpeParam(AudioEffectManager.SUBCMD_DPE_MBC_BAND1_PREGAIN));
-        mSeekBarMbcBand1PostGain.setValue(mAudioEffectManager.getDpeParam(AudioEffectManager.SUBCMD_DPE_MBC_BAND1_POSTGAIN));
+        mSeekBarMbcBand1CutoffFrequency.setValue(mDroidAudioEffect.getDpeParam(DroidAudioEffect.DPE_SUBCMD_MBC_BAND1_CUTOFFFREQUENCY));
+        mSeekBarMbcBand1AttackTime.setValue(mDroidAudioEffect.getDpeParam(DroidAudioEffect.DPE_SUBCMD_MBC_BAND1_ATTACKTIME));
+        mSeekBarMbcBand1ReleaseTime.setValue(mDroidAudioEffect.getDpeParam(DroidAudioEffect.DPE_SUBCMD_MBC_BAND1_RELEASETIME));
+        mSeekBarMbcBand1Ratio.setValue(mDroidAudioEffect.getDpeParam(DroidAudioEffect.DPE_SUBCMD_MBC_BAND1_RATIO));
+        mSeekBarMbcBand1Threshold.setValue(mDroidAudioEffect.getDpeParam(DroidAudioEffect.DPE_SUBCMD_MBC_BAND1_THRESHOLD));
+        mSeekBarMbcBand1KneeWidth.setValue(mDroidAudioEffect.getDpeParam(DroidAudioEffect.DPE_SUBCMD_MBC_BAND1_KNEEWIDTH));
+        mSeekBarMbcBand1NoiseGateThreshold.setValue(mDroidAudioEffect.getDpeParam(DroidAudioEffect.DPE_SUBCMD_MBC_BAND1_NOISEGATETHRESHOLD));
+        mSeekBarMbcBand1ExpanderRatio.setValue(mDroidAudioEffect.getDpeParam(DroidAudioEffect.DPE_SUBCMD_MBC_BAND1_EXPANDERRATIO));
+        mSeekBarMbcBand1PreGain.setValue(mDroidAudioEffect.getDpeParam(DroidAudioEffect.DPE_SUBCMD_MBC_BAND1_PREGAIN));
+        mSeekBarMbcBand1PostGain.setValue(mDroidAudioEffect.getDpeParam(DroidAudioEffect.DPE_SUBCMD_MBC_BAND1_POSTGAIN));
     }
 
     private void updateMbcBand2Param(boolean param, boolean enable) {
@@ -791,16 +790,16 @@ public class DpeModeFragment extends SettingsPreferenceFragment implements Prefe
         mSeekBarMbcBand2PreGain.setTitle(enable ? getShowString(R.string.title_dpe_mbc_band_2_pregain) : "");
         mSeekBarMbcBand2PostGain.setTitle(enable ? getShowString(R.string.title_dpe_mbc_band_2_postgain) : "");
 
-        mSeekBarMbcBand2CutoffFrequency.setValue(mAudioEffectManager.getDpeParam(AudioEffectManager.SUBCMD_DPE_MBC_BAND2_CUTOFFFREQUENCY));
-        mSeekBarMbcBand2AttackTime.setValue(mAudioEffectManager.getDpeParam(AudioEffectManager.SUBCMD_DPE_MBC_BAND2_ATTACKTIME));
-        mSeekBarMbcBand2ReleaseTime.setValue(mAudioEffectManager.getDpeParam(AudioEffectManager.SUBCMD_DPE_MBC_BAND2_RELEASETIME));
-        mSeekBarMbcBand2Ratio.setValue(mAudioEffectManager.getDpeParam(AudioEffectManager.SUBCMD_DPE_MBC_BAND2_RATIO));
-        mSeekBarMbcBand2Threshold.setValue(mAudioEffectManager.getDpeParam(AudioEffectManager.SUBCMD_DPE_MBC_BAND2_THRESHOLD));
-        mSeekBarMbcBand2KneeWidth.setValue(mAudioEffectManager.getDpeParam(AudioEffectManager.SUBCMD_DPE_MBC_BAND2_KNEEWIDTH));
-        mSeekBarMbcBand2NoiseGateThreshold.setValue(mAudioEffectManager.getDpeParam(AudioEffectManager.SUBCMD_DPE_MBC_BAND2_NOISEGATETHRESHOLD));
-        mSeekBarMbcBand2ExpanderRatio.setValue(mAudioEffectManager.getDpeParam(AudioEffectManager.SUBCMD_DPE_MBC_BAND2_EXPANDERRATIO));
-        mSeekBarMbcBand2PreGain.setValue(mAudioEffectManager.getDpeParam(AudioEffectManager.SUBCMD_DPE_MBC_BAND2_PREGAIN));
-        mSeekBarMbcBand2PostGain.setValue(mAudioEffectManager.getDpeParam(AudioEffectManager.SUBCMD_DPE_MBC_BAND2_POSTGAIN));
+        mSeekBarMbcBand2CutoffFrequency.setValue(mDroidAudioEffect.getDpeParam(DroidAudioEffect.DPE_SUBCMD_MBC_BAND2_CUTOFFFREQUENCY));
+        mSeekBarMbcBand2AttackTime.setValue(mDroidAudioEffect.getDpeParam(DroidAudioEffect.DPE_SUBCMD_MBC_BAND2_ATTACKTIME));
+        mSeekBarMbcBand2ReleaseTime.setValue(mDroidAudioEffect.getDpeParam(DroidAudioEffect.DPE_SUBCMD_MBC_BAND2_RELEASETIME));
+        mSeekBarMbcBand2Ratio.setValue(mDroidAudioEffect.getDpeParam(DroidAudioEffect.DPE_SUBCMD_MBC_BAND2_RATIO));
+        mSeekBarMbcBand2Threshold.setValue(mDroidAudioEffect.getDpeParam(DroidAudioEffect.DPE_SUBCMD_MBC_BAND2_THRESHOLD));
+        mSeekBarMbcBand2KneeWidth.setValue(mDroidAudioEffect.getDpeParam(DroidAudioEffect.DPE_SUBCMD_MBC_BAND2_KNEEWIDTH));
+        mSeekBarMbcBand2NoiseGateThreshold.setValue(mDroidAudioEffect.getDpeParam(DroidAudioEffect.DPE_SUBCMD_MBC_BAND2_NOISEGATETHRESHOLD));
+        mSeekBarMbcBand2ExpanderRatio.setValue(mDroidAudioEffect.getDpeParam(DroidAudioEffect.DPE_SUBCMD_MBC_BAND2_EXPANDERRATIO));
+        mSeekBarMbcBand2PreGain.setValue(mDroidAudioEffect.getDpeParam(DroidAudioEffect.DPE_SUBCMD_MBC_BAND2_PREGAIN));
+        mSeekBarMbcBand2PostGain.setValue(mDroidAudioEffect.getDpeParam(DroidAudioEffect.DPE_SUBCMD_MBC_BAND2_POSTGAIN));
     }
 
 
@@ -825,11 +824,11 @@ public class DpeModeFragment extends SettingsPreferenceFragment implements Prefe
         mSeekBarLimiterThreshold.setTitle(enable ? getShowString(R.string.title_dpe_limiter_threshold) : "");
         mSeekBarLimiterPostGain.setTitle(enable ? getShowString(R.string.title_dpe_limiter_postgain) : "");
 
-        mSeekBarLimiterAttackTime.setValue(mAudioEffectManager.getDpeParam(AudioEffectManager.SUBCMD_DPE_LIMITER_ATTACKTIME));
-        mSeekBarLimiterReleaseTime.setValue(mAudioEffectManager.getDpeParam(AudioEffectManager.SUBCMD_DPE_LIMITER_RELEASETIME));
-        mSeekBarLimiterRatio.setValue(mAudioEffectManager.getDpeParam(AudioEffectManager.SUBCMD_DPE_LIMITER_RATIO));
-        mSeekBarLimiterThreshold.setValue(mAudioEffectManager.getDpeParam(AudioEffectManager.SUBCMD_DPE_LIMITER_THRESHOLD));
-        mSeekBarLimiterPostGain.setValue(mAudioEffectManager.getDpeParam(AudioEffectManager.SUBCMD_DPE_LIMITER_POSTGAIN));
+        mSeekBarLimiterAttackTime.setValue(mDroidAudioEffect.getDpeParam(DroidAudioEffect.DPE_SUBCMD_LIMITER_ATTACKTIME));
+        mSeekBarLimiterReleaseTime.setValue(mDroidAudioEffect.getDpeParam(DroidAudioEffect.DPE_SUBCMD_LIMITER_RELEASETIME));
+        mSeekBarLimiterRatio.setValue(mDroidAudioEffect.getDpeParam(DroidAudioEffect.DPE_SUBCMD_LIMITER_RATIO));
+        mSeekBarLimiterThreshold.setValue(mDroidAudioEffect.getDpeParam(DroidAudioEffect.DPE_SUBCMD_LIMITER_THRESHOLD));
+        mSeekBarLimiterPostGain.setValue(mDroidAudioEffect.getDpeParam(DroidAudioEffect.DPE_SUBCMD_LIMITER_POSTGAIN));
     }
 
 
@@ -847,8 +846,8 @@ public class DpeModeFragment extends SettingsPreferenceFragment implements Prefe
         int val = 0, progress = 0;
         int mode = 0;
 
-        mode = mAudioEffectManager.getDpeParam(AudioEffectManager.CMD_DPE_ENABLED);
-        if (mode == AudioEffectManager.DPE_OFF) {
+        mode = mDroidAudioEffect.getDpeParam(DroidAudioEffect.DPE_CMD_ENABLED);
+        if (mode == DroidAudioEffect.EFFECT_CONFIG_OFF) {
             mDpeEnabledPref.setChecked(false);
             mInputgainPref.setVisible(false);
 
@@ -923,78 +922,78 @@ public class DpeModeFragment extends SettingsPreferenceFragment implements Prefe
             mSeekBarLimiterPostGain.setVisible(false);
             //mDpeDetailPref.setTitle("");
             return;
-        } else if (mode != AudioEffectManager.DPE_OFF) {
+        } else if (mode != DroidAudioEffect.EFFECT_CONFIG_OFF) {
             mDpeEnabledPref.setChecked(true);
             isVisible = true;
         }
 
-        val = mAudioEffectManager.getDpeParam(AudioEffectManager.CMD_DPE_INPUTGAIN);
+        val = mDroidAudioEffect.getDpeParam(DroidAudioEffect.DPE_CMD_INPUTGAIN);
         mInputgainPref.setValue(val);
         mInputgainPref.setAdjustable(true);
         mInputgainPref.setVisible(isVisible);
         mInputgainPref.setTitle(isVisible ? getShowString(R.string.title_dpe_inputgain) : "");
 
-        enable = (mAudioEffectManager.getDpeParam(AudioEffectManager.CMD_DPE_PRE_EQ) != AudioEffectManager.DPE_PRE_EQ_OFF);
+        enable = (mDroidAudioEffect.getDpeParam(DroidAudioEffect.DPE_CMD_PRE_EQ) != DroidAudioEffect.EFFECT_CONFIG_OFF);
         mPreEqPref.setChecked(enable);
         mPreEqPref.setVisible(isVisible);
 
         mPreEqBand0Pref.setVisible(enable);
-        enablePreEqBand0 = (mAudioEffectManager.getDpeParam(AudioEffectManager.SUBCMD_DPE_PRE_EQ_BAND0) == 1);
+        enablePreEqBand0 = (mDroidAudioEffect.getDpeParam(DroidAudioEffect.DPE_SUBCMD_PRE_EQ_BAND0) == 1);
         mPreEqBand0Pref.setChecked(enablePreEqBand0);
         updatePreEqBand0Param(enablePreEqBand0, enable);
 
         mPreEqBand1Pref.setVisible(enable);
-        enablePreEqBand1 = (mAudioEffectManager.getDpeParam(AudioEffectManager.SUBCMD_DPE_PRE_EQ_BAND1) == 1);
+        enablePreEqBand1 = (mDroidAudioEffect.getDpeParam(DroidAudioEffect.DPE_SUBCMD_PRE_EQ_BAND1) == 1);
         mPreEqBand1Pref.setChecked(enablePreEqBand1);
         updatePreEqBand1Param(enablePreEqBand1, enable);
 
         mPreEqBand2Pref.setVisible(enable);
-        enablePreEqBand2 = (mAudioEffectManager.getDpeParam(AudioEffectManager.SUBCMD_DPE_PRE_EQ_BAND2) == 1);
+        enablePreEqBand2 = (mDroidAudioEffect.getDpeParam(DroidAudioEffect.DPE_SUBCMD_PRE_EQ_BAND2) == 1);
         mPreEqBand2Pref.setChecked(enablePreEqBand2);
         updatePreEqBand2Param(enablePreEqBand2, enable);
 
-        enable = (mAudioEffectManager.getDpeParam(AudioEffectManager.CMD_DPE_MBC) != AudioEffectManager.DPE_MBC_OFF);
+        enable = (mDroidAudioEffect.getDpeParam(DroidAudioEffect.DPE_CMD_MBC) != DroidAudioEffect.EFFECT_CONFIG_OFF);
         mMbcPref.setChecked(enable);
         mMbcPref.setVisible(isVisible);
 
         mMbcBand0Pref.setVisible(enable);
-        enableMbcBand0 = (mAudioEffectManager.getDpeParam(AudioEffectManager.SUBCMD_DPE_MBC_BAND0) == 1);
+        enableMbcBand0 = (mDroidAudioEffect.getDpeParam(DroidAudioEffect.DPE_SUBCMD_MBC_BAND0) == 1);
         mMbcBand0Pref.setChecked(enableMbcBand0);
         updateMbcBand0Param(enableMbcBand0, enable);
 
         mMbcBand1Pref.setVisible(enable);
-        enableMbcBand1 = (mAudioEffectManager.getDpeParam(AudioEffectManager.SUBCMD_DPE_MBC_BAND1) == 1);
+        enableMbcBand1 = (mDroidAudioEffect.getDpeParam(DroidAudioEffect.DPE_SUBCMD_MBC_BAND1) == 1);
         mMbcBand1Pref.setChecked(enableMbcBand1);
         updateMbcBand1Param(enableMbcBand1, enable);
 
         mMbcBand2Pref.setVisible(enable);
-        enableMbcBand2 = (mAudioEffectManager.getDpeParam(AudioEffectManager.SUBCMD_DPE_MBC_BAND2) == 1);
+        enableMbcBand2 = (mDroidAudioEffect.getDpeParam(DroidAudioEffect.DPE_SUBCMD_MBC_BAND2) == 1);
         mMbcBand2Pref.setChecked(enableMbcBand2);
         updateMbcBand2Param(enableMbcBand2, enable);
 
-        enable = (mAudioEffectManager.getDpeParam(AudioEffectManager.CMD_DPE_POST_EQ) != AudioEffectManager.DPE_POST_EQ_OFF);
+        enable = (mDroidAudioEffect.getDpeParam(DroidAudioEffect.DPE_CMD_POST_EQ) != DroidAudioEffect.EFFECT_CONFIG_OFF);
         mPostEqPref.setChecked(enable);
         mPostEqPref.setVisible(isVisible);
 
         mPostEqBand0Pref.setVisible(enable);
-        enablePostEqBand0 = (mAudioEffectManager.getDpeParam(AudioEffectManager.SUBCMD_DPE_POST_EQ_BAND0) == 1);
+        enablePostEqBand0 = (mDroidAudioEffect.getDpeParam(DroidAudioEffect.DPE_SUBCMD_POST_EQ_BAND0) == 1);
         mPostEqBand0Pref.setChecked(enablePostEqBand0);
         updatePostEqBand0Param(enablePostEqBand0, enable);
 
         mPostEqBand1Pref.setVisible(enable);
-        enablePostEqBand1 = (mAudioEffectManager.getDpeParam(AudioEffectManager.SUBCMD_DPE_POST_EQ_BAND1) == 1);
+        enablePostEqBand1 = (mDroidAudioEffect.getDpeParam(DroidAudioEffect.DPE_SUBCMD_POST_EQ_BAND1) == 1);
         mPostEqBand1Pref.setChecked(enablePostEqBand1);
         updatePostEqBand1Param(enablePostEqBand1, enable);
 
         mPostEqBand2Pref.setVisible(enable);
-        enablePostEqBand2 = (mAudioEffectManager.getDpeParam(AudioEffectManager.SUBCMD_DPE_POST_EQ_BAND2) == 1);
+        enablePostEqBand2 = (mDroidAudioEffect.getDpeParam(DroidAudioEffect.DPE_SUBCMD_POST_EQ_BAND2) == 1);
         mPostEqBand2Pref.setChecked(enablePostEqBand2);
         updatePostEqBand2Param(enablePostEqBand2, enable);
 
-        enable = (mAudioEffectManager.getDpeParam(AudioEffectManager.CMD_DPE_LIMITER) != AudioEffectManager.DPE_LIMITER_OFF);
+        enable = (mDroidAudioEffect.getDpeParam(DroidAudioEffect.DPE_CMD_LIMITER) != DroidAudioEffect.EFFECT_CONFIG_OFF);
         mLimiterPref.setChecked(enable);
         mLimiterPref.setVisible(isVisible);
-        enableLimiter = (mAudioEffectManager.getDpeParam(AudioEffectManager.CMD_DPE_LIMITER) == 1);
+        enableLimiter = (mDroidAudioEffect.getDpeParam(DroidAudioEffect.DPE_CMD_LIMITER) == 1);
         mLimiterPref.setChecked(enableLimiter);
         updateLimiterParam(enableLimiter);
     }
@@ -1005,14 +1004,14 @@ public class DpeModeFragment extends SettingsPreferenceFragment implements Prefe
         switch (preference.getKey()) {
             case KEY_DPE_ENABLED:
                 isChecked = mDpeEnabledPref.isChecked();
-                mAudioEffectManager.setDpeParam(AudioEffectManager.CMD_DPE_ENABLED, isChecked ? 1 : 0);
+                mDroidAudioEffect.setDpeParam(DroidAudioEffect.DPE_CMD_ENABLED, isChecked ? 1 : 0);
                 mInputgainPref.setVisible(isChecked);
                 mInputgainPref.setTitle(isChecked ? getShowString(R.string.title_dpe_inputgain) : "");
 
                 //pre eq
                 mPreEqPref.setVisible(isChecked);
                 mPreEqPref.setChecked(false);
-                mAudioEffectManager.setDpeParam(AudioEffectManager.CMD_DPE_PRE_EQ, 0);
+                mDroidAudioEffect.setDpeParam(DroidAudioEffect.DPE_CMD_PRE_EQ, 0);
                 if (isChecked == false) {
                     mPreEqBand0Pref.setVisible(false);
                     mSeekBarPreEqBand0CutoffFrequency.setVisible(false);
@@ -1030,7 +1029,7 @@ public class DpeModeFragment extends SettingsPreferenceFragment implements Prefe
                 //post eq
                 mPostEqPref.setVisible(isChecked);
                 mPostEqPref.setChecked(false);
-                mAudioEffectManager.setDpeParam(AudioEffectManager.CMD_DPE_POST_EQ, 0);
+                mDroidAudioEffect.setDpeParam(DroidAudioEffect.DPE_CMD_POST_EQ, 0);
                 if (isChecked == false) {
                     mPostEqBand0Pref.setVisible(false);
                     mSeekBarPostEqBand0CutoffFrequency.setVisible(false);
@@ -1048,7 +1047,7 @@ public class DpeModeFragment extends SettingsPreferenceFragment implements Prefe
                 //mbc
                 mMbcPref.setVisible(isChecked);
                 mMbcPref.setChecked(false);
-                mAudioEffectManager.setDpeParam(AudioEffectManager.CMD_DPE_MBC, 0);
+                mDroidAudioEffect.setDpeParam(DroidAudioEffect.DPE_CMD_MBC, 0);
                 if (isChecked == false) {
                     mMbcBand0Pref.setVisible(false);
                     mSeekBarMbcBand0CutoffFrequency.setVisible(false);
@@ -1088,18 +1087,18 @@ public class DpeModeFragment extends SettingsPreferenceFragment implements Prefe
                 }
 
                 //limiter
-                int limiterStatus = mAudioEffectManager.getDpeParam(AudioEffectManager.CMD_DPE_LIMITER);
+                int limiterStatus = mDroidAudioEffect.getDpeParam(DroidAudioEffect.DPE_CMD_LIMITER);
                 mLimiterPref.setVisible(isChecked);
                 mLimiterPref.setChecked(isChecked);
                 if (isChecked) {
-                    mAudioEffectManager.setDpeParam(AudioEffectManager.CMD_DPE_LIMITER, AudioEffectManager.DPE_LIMITER_ON);
+                    mDroidAudioEffect.setDpeParam(DroidAudioEffect.DPE_CMD_LIMITER, DroidAudioEffect.EFFECT_CONFIG_ON);
                     mSeekBarLimiterAttackTime.setVisible(true);
                     mSeekBarLimiterReleaseTime.setVisible(true);
                     mSeekBarLimiterRatio.setVisible(true);
                     mSeekBarLimiterThreshold.setVisible(true);
                     mSeekBarLimiterPostGain.setVisible(true);
                 } else {
-                    mAudioEffectManager.setDpeParam(AudioEffectManager.CMD_DPE_LIMITER, AudioEffectManager.DPE_LIMITER_OFF);
+                    mDroidAudioEffect.setDpeParam(DroidAudioEffect.DPE_CMD_LIMITER, DroidAudioEffect.EFFECT_CONFIG_OFF);
                     mSeekBarLimiterAttackTime.setVisible(false);
                     mSeekBarLimiterReleaseTime.setVisible(false);
                     mSeekBarLimiterRatio.setVisible(false);
@@ -1109,100 +1108,100 @@ public class DpeModeFragment extends SettingsPreferenceFragment implements Prefe
                 break;
             case KEY_PRE_EQ:
                 isChecked = mPreEqPref.isChecked();
-                mAudioEffectManager.setDpeParam(AudioEffectManager.CMD_DPE_PRE_EQ, isChecked ? 1 : 0);
+                mDroidAudioEffect.setDpeParam(DroidAudioEffect.DPE_CMD_PRE_EQ, isChecked ? 1 : 0);
 
                 mPreEqBand0Pref.setVisible(isChecked);
-                boolean enablePreEqBand0 = (mAudioEffectManager.getDpeParam(AudioEffectManager.SUBCMD_DPE_PRE_EQ_BAND0) == 1);
+                boolean enablePreEqBand0 = (mDroidAudioEffect.getDpeParam(DroidAudioEffect.DPE_SUBCMD_PRE_EQ_BAND0) == 1);
                 mPreEqBand0Pref.setChecked(enablePreEqBand0);
                 updatePreEqBand0Param(enablePreEqBand0, isChecked);
 
                 mPreEqBand1Pref.setVisible(isChecked);
-                boolean enablePreEqBand1 = (mAudioEffectManager.getDpeParam(AudioEffectManager.SUBCMD_DPE_PRE_EQ_BAND1) == 1);
+                boolean enablePreEqBand1 = (mDroidAudioEffect.getDpeParam(DroidAudioEffect.DPE_SUBCMD_PRE_EQ_BAND1) == 1);
                 mPreEqBand1Pref.setChecked(enablePreEqBand1);
                 updatePreEqBand1Param(enablePreEqBand1, isChecked);
 
                 mPreEqBand2Pref.setVisible(isChecked);
-                boolean enablePreEqBand2 = (mAudioEffectManager.getDpeParam(AudioEffectManager.SUBCMD_DPE_PRE_EQ_BAND2) == 1);
+                boolean enablePreEqBand2 = (mDroidAudioEffect.getDpeParam(DroidAudioEffect.DPE_SUBCMD_PRE_EQ_BAND2) == 1);
                 mPreEqBand2Pref.setChecked(enablePreEqBand2);
                 updatePreEqBand2Param(enablePreEqBand2, isChecked);
                 break;
             case KEY_PRE_EQ_BAND_0:
                 isChecked = mPreEqBand0Pref.isChecked();
-                mAudioEffectManager.setDpeParam(AudioEffectManager.SUBCMD_DPE_PRE_EQ_BAND0, isChecked ? 1 : 0);
+                mDroidAudioEffect.setDpeParam(DroidAudioEffect.DPE_SUBCMD_PRE_EQ_BAND0, isChecked ? 1 : 0);
                 mSeekBarPreEqBand0CutoffFrequency.setVisible(isChecked);
                 mSeekBarPreEqBand0Gain.setVisible(isChecked);
                 break;
             case KEY_PRE_EQ_BAND_1:
                 isChecked = mPreEqBand1Pref.isChecked();
-                mAudioEffectManager.setDpeParam(AudioEffectManager.SUBCMD_DPE_PRE_EQ_BAND1, isChecked ? 1 : 0);
+                mDroidAudioEffect.setDpeParam(DroidAudioEffect.DPE_SUBCMD_PRE_EQ_BAND1, isChecked ? 1 : 0);
                 mSeekBarPreEqBand1CutoffFrequency.setVisible(isChecked);
                 mSeekBarPreEqBand1Gain.setVisible(isChecked);
                 break;
             case KEY_PRE_EQ_BAND_2:
                 isChecked = mPreEqBand2Pref.isChecked();
-                mAudioEffectManager.setDpeParam(AudioEffectManager.SUBCMD_DPE_PRE_EQ_BAND2, isChecked ? 1 : 0);
+                mDroidAudioEffect.setDpeParam(DroidAudioEffect.DPE_SUBCMD_PRE_EQ_BAND2, isChecked ? 1 : 0);
                 mSeekBarPreEqBand2CutoffFrequency.setVisible(isChecked);
                 mSeekBarPreEqBand2Gain.setVisible(isChecked);
                 break;
             case KEY_POST_EQ:
                 isChecked = mPostEqPref.isChecked();
-                mAudioEffectManager.setDpeParam(AudioEffectManager.CMD_DPE_POST_EQ, isChecked ? 1 : 0);
+                mDroidAudioEffect.setDpeParam(DroidAudioEffect.DPE_CMD_POST_EQ, isChecked ? 1 : 0);
 
                 mPostEqBand0Pref.setVisible(isChecked);
-                boolean enablePostEqBand0 = (mAudioEffectManager.getDpeParam(AudioEffectManager.SUBCMD_DPE_POST_EQ_BAND0) == 1);
+                boolean enablePostEqBand0 = (mDroidAudioEffect.getDpeParam(DroidAudioEffect.DPE_SUBCMD_POST_EQ_BAND0) == 1);
                 mPostEqBand0Pref.setChecked(enablePostEqBand0);
                 updatePostEqBand0Param(enablePostEqBand0, isChecked);
 
                 mPostEqBand1Pref.setVisible(isChecked);
-                boolean enablePostEqBand1 = (mAudioEffectManager.getDpeParam(AudioEffectManager.SUBCMD_DPE_POST_EQ_BAND1) == 1);
+                boolean enablePostEqBand1 = (mDroidAudioEffect.getDpeParam(DroidAudioEffect.DPE_SUBCMD_POST_EQ_BAND1) == 1);
                 mPostEqBand1Pref.setChecked(enablePostEqBand1);
                 updatePostEqBand1Param(enablePostEqBand1, isChecked);
 
                 mPostEqBand2Pref.setVisible(isChecked);
-                boolean enablePostEqBand2 = (mAudioEffectManager.getDpeParam(AudioEffectManager.SUBCMD_DPE_POST_EQ_BAND2) == 1);
+                boolean enablePostEqBand2 = (mDroidAudioEffect.getDpeParam(DroidAudioEffect.DPE_SUBCMD_POST_EQ_BAND2) == 1);
                 mPostEqBand2Pref.setChecked(enablePostEqBand2);
                 updatePostEqBand2Param(enablePostEqBand2, isChecked);
                 break;
             case KEY_POST_EQ_BAND_0:
                 isChecked = mPostEqBand0Pref.isChecked();
-                mAudioEffectManager.setDpeParam(AudioEffectManager.SUBCMD_DPE_POST_EQ_BAND0, isChecked ? 1 : 0);
+                mDroidAudioEffect.setDpeParam(DroidAudioEffect.DPE_SUBCMD_POST_EQ_BAND0, isChecked ? 1 : 0);
                 mSeekBarPostEqBand0CutoffFrequency.setVisible(isChecked);
                 mSeekBarPostEqBand0Gain.setVisible(isChecked);
                 break;
             case KEY_POST_EQ_BAND_1:
                 isChecked = mPostEqBand1Pref.isChecked();
-                mAudioEffectManager.setDpeParam(AudioEffectManager.SUBCMD_DPE_POST_EQ_BAND1, isChecked ? 1 : 0);
+                mDroidAudioEffect.setDpeParam(DroidAudioEffect.DPE_SUBCMD_POST_EQ_BAND1, isChecked ? 1 : 0);
                 mSeekBarPostEqBand1CutoffFrequency.setVisible(isChecked);
                 mSeekBarPostEqBand1Gain.setVisible(isChecked);
                 break;
             case KEY_POST_EQ_BAND_2:
                 isChecked = mPostEqBand2Pref.isChecked();
-                mAudioEffectManager.setDpeParam(AudioEffectManager.SUBCMD_DPE_POST_EQ_BAND2, isChecked ? 1 : 0);
+                mDroidAudioEffect.setDpeParam(DroidAudioEffect.DPE_SUBCMD_POST_EQ_BAND2, isChecked ? 1 : 0);
                 mSeekBarPostEqBand2CutoffFrequency.setVisible(isChecked);
                 mSeekBarPostEqBand2Gain.setVisible(isChecked);
                 break;
             case KEY_MBC:
                 isChecked = mMbcPref.isChecked();
-                mAudioEffectManager.setDpeParam(AudioEffectManager.CMD_DPE_MBC, isChecked ? 1 : 0);
+                mDroidAudioEffect.setDpeParam(DroidAudioEffect.DPE_CMD_MBC, isChecked ? 1 : 0);
 
                 mMbcBand0Pref.setVisible(isChecked);
-                boolean enableMbcBand0 = (mAudioEffectManager.getDpeParam(AudioEffectManager.SUBCMD_DPE_MBC_BAND0) == 1);
+                boolean enableMbcBand0 = (mDroidAudioEffect.getDpeParam(DroidAudioEffect.DPE_SUBCMD_MBC_BAND0) == 1);
                 mMbcBand0Pref.setChecked(enableMbcBand0);
                 updateMbcBand0Param(enableMbcBand0, isChecked);
 
                 mMbcBand1Pref.setVisible(isChecked);
-                boolean enableMbcBand1 = (mAudioEffectManager.getDpeParam(AudioEffectManager.SUBCMD_DPE_MBC_BAND1) == 1);
+                boolean enableMbcBand1 = (mDroidAudioEffect.getDpeParam(DroidAudioEffect.DPE_SUBCMD_MBC_BAND1) == 1);
                 mMbcBand1Pref.setChecked(enableMbcBand1);
                 updateMbcBand1Param(enableMbcBand1, isChecked);
 
                 mMbcBand2Pref.setVisible(isChecked);
-                boolean enableMbcBand2 = (mAudioEffectManager.getDpeParam(AudioEffectManager.SUBCMD_DPE_MBC_BAND2) == 1);
+                boolean enableMbcBand2 = (mDroidAudioEffect.getDpeParam(DroidAudioEffect.DPE_SUBCMD_MBC_BAND2) == 1);
                 mMbcBand2Pref.setChecked(enableMbcBand2);
                 updateMbcBand2Param(enableMbcBand2, isChecked);
                 break;
             case KEY_MBC_BAND_0:
                 isChecked = mMbcBand0Pref.isChecked();
-                mAudioEffectManager.setDpeParam(AudioEffectManager.SUBCMD_DPE_MBC_BAND0, isChecked ? 1 : 0);
+                mDroidAudioEffect.setDpeParam(DroidAudioEffect.DPE_SUBCMD_MBC_BAND0, isChecked ? 1 : 0);
                 mSeekBarMbcBand0CutoffFrequency.setVisible(isChecked);
                 mSeekBarMbcBand0AttackTime.setVisible(isChecked);
                 mSeekBarMbcBand0ReleaseTime.setVisible(isChecked);
@@ -1216,7 +1215,7 @@ public class DpeModeFragment extends SettingsPreferenceFragment implements Prefe
                 break;
             case KEY_MBC_BAND_1:
                 isChecked = mMbcBand1Pref.isChecked();
-                mAudioEffectManager.setDpeParam(AudioEffectManager.SUBCMD_DPE_MBC_BAND1, isChecked ? 1 : 0);
+                mDroidAudioEffect.setDpeParam(DroidAudioEffect.DPE_SUBCMD_MBC_BAND1, isChecked ? 1 : 0);
                 mSeekBarMbcBand1CutoffFrequency.setVisible(isChecked);
                 mSeekBarMbcBand1AttackTime.setVisible(isChecked);
                 mSeekBarMbcBand1ReleaseTime.setVisible(isChecked);
@@ -1230,7 +1229,7 @@ public class DpeModeFragment extends SettingsPreferenceFragment implements Prefe
                 break;
             case KEY_MBC_BAND_2:
                 isChecked = mMbcBand2Pref.isChecked();
-                mAudioEffectManager.setDpeParam(AudioEffectManager.SUBCMD_DPE_MBC_BAND2, isChecked ? 1 : 0);
+                mDroidAudioEffect.setDpeParam(DroidAudioEffect.DPE_SUBCMD_MBC_BAND2, isChecked ? 1 : 0);
                 mSeekBarMbcBand2CutoffFrequency.setVisible(isChecked);
                 mSeekBarMbcBand2AttackTime.setVisible(isChecked);
                 mSeekBarMbcBand2ReleaseTime.setVisible(isChecked);
@@ -1244,8 +1243,8 @@ public class DpeModeFragment extends SettingsPreferenceFragment implements Prefe
                 break;
             case KEY_LIMITER:
                 isChecked = mLimiterPref.isChecked();
-                mAudioEffectManager.setDpeParam(AudioEffectManager.CMD_DPE_LIMITER, isChecked ? 1 : 0);
-                boolean enableLimiter = (mAudioEffectManager.getDpeParam(AudioEffectManager.CMD_DPE_LIMITER) == 1);
+                mDroidAudioEffect.setDpeParam(DroidAudioEffect.DPE_CMD_LIMITER, isChecked ? 1 : 0);
+                boolean enableLimiter = (mDroidAudioEffect.getDpeParam(DroidAudioEffect.DPE_CMD_LIMITER) == 1);
                 mLimiterPref.setChecked(enableLimiter);
                 updateLimiterParam(enableLimiter);
                 break;
@@ -1257,162 +1256,168 @@ public class DpeModeFragment extends SettingsPreferenceFragment implements Prefe
     public boolean onPreferenceChange(Preference preference, Object newValue) {
         switch (preference.getKey()) {
             case KEY_INPUTGAIN:
-                mAudioEffectManager.setDpeParam(AudioEffectManager.CMD_DPE_INPUTGAIN, (int)newValue);
+                mDroidAudioEffect.setDpeParam(DroidAudioEffect.DPE_CMD_INPUTGAIN, (int)newValue);
                 break;
 
             //pre eq
             case KEY_PRE_EQ_BAND_0_CUTOFFFREQUENCY:
-                mAudioEffectManager.setDpeParam(AudioEffectManager.SUBCMD_DPE_PRE_EQ_BAND0_CUTOFFFREQUENCY, (int)newValue);
+                mDroidAudioEffect.setDpeParam(DroidAudioEffect.DPE_SUBCMD_PRE_EQ_BAND0_CUTOFFFREQUENCY, (int)newValue);
                 break;
             case KEY_PRE_EQ_BAND_0_GAIN:
-                mAudioEffectManager.setDpeParam(AudioEffectManager.SUBCMD_DPE_PRE_EQ_BAND0_GAIN, (int)newValue);
+                mDroidAudioEffect.setDpeParam(DroidAudioEffect.DPE_SUBCMD_PRE_EQ_BAND0_GAIN, (int)newValue);
                 break;
             case KEY_PRE_EQ_BAND_1_CUTOFFFREQUENCY:
-                mAudioEffectManager.setDpeParam(AudioEffectManager.SUBCMD_DPE_PRE_EQ_BAND1_CUTOFFFREQUENCY, (int)newValue);
+                mDroidAudioEffect.setDpeParam(DroidAudioEffect.DPE_SUBCMD_PRE_EQ_BAND1_CUTOFFFREQUENCY, (int)newValue);
                 break;
             case KEY_PRE_EQ_BAND_1_GAIN:
-                mAudioEffectManager.setDpeParam(AudioEffectManager.SUBCMD_DPE_PRE_EQ_BAND1_GAIN, (int)newValue);
+                mDroidAudioEffect.setDpeParam(DroidAudioEffect.DPE_SUBCMD_PRE_EQ_BAND1_GAIN, (int)newValue);
                 break;
             case KEY_PRE_EQ_BAND_2_CUTOFFFREQUENCY:
-                mAudioEffectManager.setDpeParam(AudioEffectManager.SUBCMD_DPE_PRE_EQ_BAND2_CUTOFFFREQUENCY, (int)newValue);
+                mDroidAudioEffect.setDpeParam(DroidAudioEffect.DPE_SUBCMD_PRE_EQ_BAND2_CUTOFFFREQUENCY, (int)newValue);
                 break;
             case KEY_PRE_EQ_BAND_2_GAIN:
-                mAudioEffectManager.setDpeParam(AudioEffectManager.SUBCMD_DPE_PRE_EQ_BAND2_GAIN, (int)newValue);
+                mDroidAudioEffect.setDpeParam(DroidAudioEffect.DPE_SUBCMD_PRE_EQ_BAND2_GAIN, (int)newValue);
                 break;
 
             //post eq
             case KEY_POST_EQ_BAND_0_CUTOFFFREQUENCY:
-                mAudioEffectManager.setDpeParam(AudioEffectManager.SUBCMD_DPE_POST_EQ_BAND0_CUTOFFFREQUENCY, (int)newValue);
+                mDroidAudioEffect.setDpeParam(DroidAudioEffect.DPE_SUBCMD_POST_EQ_BAND0_CUTOFFFREQUENCY, (int)newValue);
                 break;
             case KEY_POST_EQ_BAND_0_GAIN:
-                mAudioEffectManager.setDpeParam(AudioEffectManager.SUBCMD_DPE_POST_EQ_BAND0_GAIN, (int)newValue);
+                mDroidAudioEffect.setDpeParam(DroidAudioEffect.DPE_SUBCMD_POST_EQ_BAND0_GAIN, (int)newValue);
                 break;
             case KEY_POST_EQ_BAND_1_CUTOFFFREQUENCY:
-                mAudioEffectManager.setDpeParam(AudioEffectManager.SUBCMD_DPE_POST_EQ_BAND1_CUTOFFFREQUENCY, (int)newValue);
+                mDroidAudioEffect.setDpeParam(DroidAudioEffect.DPE_SUBCMD_POST_EQ_BAND1_CUTOFFFREQUENCY, (int)newValue);
                 break;
             case KEY_POST_EQ_BAND_1_GAIN:
-                mAudioEffectManager.setDpeParam(AudioEffectManager.SUBCMD_DPE_POST_EQ_BAND1_GAIN, (int)newValue);
+                mDroidAudioEffect.setDpeParam(DroidAudioEffect.DPE_SUBCMD_POST_EQ_BAND1_GAIN, (int)newValue);
                 break;
             case KEY_POST_EQ_BAND_2_CUTOFFFREQUENCY:
-                mAudioEffectManager.setDpeParam(AudioEffectManager.SUBCMD_DPE_POST_EQ_BAND2_CUTOFFFREQUENCY, (int)newValue);
+                mDroidAudioEffect.setDpeParam(DroidAudioEffect.DPE_SUBCMD_POST_EQ_BAND2_CUTOFFFREQUENCY, (int)newValue);
                 break;
             case KEY_POST_EQ_BAND_2_GAIN:
-                mAudioEffectManager.setDpeParam(AudioEffectManager.SUBCMD_DPE_POST_EQ_BAND2_GAIN, (int)newValue);
+                mDroidAudioEffect.setDpeParam(DroidAudioEffect.DPE_SUBCMD_POST_EQ_BAND2_GAIN, (int)newValue);
                 break;
 
             //mbc band 0
             case KEY_MBC_BAND_0_CUTOFFFREQUENCY:
-                mAudioEffectManager.setDpeParam(AudioEffectManager.SUBCMD_DPE_MBC_BAND0_CUTOFFFREQUENCY, (int)newValue);
+                mDroidAudioEffect.setDpeParam(DroidAudioEffect.DPE_SUBCMD_MBC_BAND0_CUTOFFFREQUENCY, (int)newValue);
                 break;
             case KEY_MBC_BAND_0_ATTACKTIME:
-                mAudioEffectManager.setDpeParam(AudioEffectManager.SUBCMD_DPE_MBC_BAND0_ATTACKTIME, (int)newValue);
+                mDroidAudioEffect.setDpeParam(DroidAudioEffect.DPE_SUBCMD_MBC_BAND0_ATTACKTIME, (int)newValue);
                 break;
             case KEY_MBC_BAND_0_RELEASETIME:
-                mAudioEffectManager.setDpeParam(AudioEffectManager.SUBCMD_DPE_MBC_BAND0_RELEASETIME, (int)newValue);
+                mDroidAudioEffect.setDpeParam(DroidAudioEffect.DPE_SUBCMD_MBC_BAND0_RELEASETIME, (int)newValue);
                 break;
             case KEY_MBC_BAND_0_RATIO:
-                mAudioEffectManager.setDpeParam(AudioEffectManager.SUBCMD_DPE_MBC_BAND0_RATIO, (int)newValue);
+                mDroidAudioEffect.setDpeParam(DroidAudioEffect.DPE_SUBCMD_MBC_BAND0_RATIO, (int)newValue);
                 break;
             case KEY_MBC_BAND_0_THRESHOLD:
-                mAudioEffectManager.setDpeParam(AudioEffectManager.SUBCMD_DPE_MBC_BAND0_THRESHOLD, (int)newValue);
+                mDroidAudioEffect.setDpeParam(DroidAudioEffect.DPE_SUBCMD_MBC_BAND0_THRESHOLD, (int)newValue);
                 break;
             case KEY_MBC_BAND_0_KNEEWIDTH:
-                mAudioEffectManager.setDpeParam(AudioEffectManager.SUBCMD_DPE_MBC_BAND0_KNEEWIDTH, (int)newValue);
+                mDroidAudioEffect.setDpeParam(DroidAudioEffect.DPE_SUBCMD_MBC_BAND0_KNEEWIDTH, (int)newValue);
                 break;
             case KEY_MBC_BAND_0_NOISEGATETHRESHOLD:
-                mAudioEffectManager.setDpeParam(AudioEffectManager.SUBCMD_DPE_MBC_BAND0_NOISEGATETHRESHOLD, (int)newValue);
+                mDroidAudioEffect.setDpeParam(DroidAudioEffect.DPE_SUBCMD_MBC_BAND0_NOISEGATETHRESHOLD, (int)newValue);
                 break;
             case KEY_MBC_BAND_0_EXPANDERRATIO:
-                mAudioEffectManager.setDpeParam(AudioEffectManager.SUBCMD_DPE_MBC_BAND0_EXPANDERRATIO, (int)newValue);
+                mDroidAudioEffect.setDpeParam(DroidAudioEffect.DPE_SUBCMD_MBC_BAND0_EXPANDERRATIO, (int)newValue);
                 break;
             case KEY_MBC_BAND_0_PREGAIN:
-                mAudioEffectManager.setDpeParam(AudioEffectManager.SUBCMD_DPE_MBC_BAND0_PREGAIN, (int)newValue);
+                mDroidAudioEffect.setDpeParam(DroidAudioEffect.DPE_SUBCMD_MBC_BAND0_PREGAIN, (int)newValue);
                 break;
             case KEY_MBC_BAND_0_POSTGAIN:
-                mAudioEffectManager.setDpeParam(AudioEffectManager.SUBCMD_DPE_MBC_BAND0_POSTGAIN, (int)newValue);
+                mDroidAudioEffect.setDpeParam(DroidAudioEffect.DPE_SUBCMD_MBC_BAND0_POSTGAIN, (int)newValue);
                 break;
 
             //mbc band 1
             case KEY_MBC_BAND_1_CUTOFFFREQUENCY:
-                mAudioEffectManager.setDpeParam(AudioEffectManager.SUBCMD_DPE_MBC_BAND1_CUTOFFFREQUENCY, (int)newValue);
+                mDroidAudioEffect.setDpeParam(DroidAudioEffect.DPE_SUBCMD_MBC_BAND1_CUTOFFFREQUENCY, (int)newValue);
                 break;
             case KEY_MBC_BAND_1_ATTACKTIME:
-                mAudioEffectManager.setDpeParam(AudioEffectManager.SUBCMD_DPE_MBC_BAND1_ATTACKTIME, (int)newValue);
+                mDroidAudioEffect.setDpeParam(DroidAudioEffect.DPE_SUBCMD_MBC_BAND1_ATTACKTIME, (int)newValue);
                 break;
             case KEY_MBC_BAND_1_RELEASETIME:
-                mAudioEffectManager.setDpeParam(AudioEffectManager.SUBCMD_DPE_MBC_BAND1_RELEASETIME, (int)newValue);
+                mDroidAudioEffect.setDpeParam(DroidAudioEffect.DPE_SUBCMD_MBC_BAND1_RELEASETIME, (int)newValue);
                 break;
             case KEY_MBC_BAND_1_RATIO:
-                mAudioEffectManager.setDpeParam(AudioEffectManager.SUBCMD_DPE_MBC_BAND1_RATIO, (int)newValue);
+                mDroidAudioEffect.setDpeParam(DroidAudioEffect.DPE_SUBCMD_MBC_BAND1_RATIO, (int)newValue);
                 break;
             case KEY_MBC_BAND_1_THRESHOLD:
-                mAudioEffectManager.setDpeParam(AudioEffectManager.SUBCMD_DPE_MBC_BAND1_THRESHOLD, (int)newValue);
+                mDroidAudioEffect.setDpeParam(DroidAudioEffect.DPE_SUBCMD_MBC_BAND1_THRESHOLD, (int)newValue);
                 break;
             case KEY_MBC_BAND_1_KNEEWIDTH:
-                mAudioEffectManager.setDpeParam(AudioEffectManager.SUBCMD_DPE_MBC_BAND1_KNEEWIDTH, (int)newValue);
+                mDroidAudioEffect.setDpeParam(DroidAudioEffect.DPE_SUBCMD_MBC_BAND1_KNEEWIDTH, (int)newValue);
                 break;
             case KEY_MBC_BAND_1_NOISEGATETHRESHOLD:
-                mAudioEffectManager.setDpeParam(AudioEffectManager.SUBCMD_DPE_MBC_BAND1_NOISEGATETHRESHOLD, (int)newValue);
+                mDroidAudioEffect.setDpeParam(DroidAudioEffect.DPE_SUBCMD_MBC_BAND1_NOISEGATETHRESHOLD, (int)newValue);
                 break;
             case KEY_MBC_BAND_1_EXPANDERRATIO:
-                mAudioEffectManager.setDpeParam(AudioEffectManager.SUBCMD_DPE_MBC_BAND1_EXPANDERRATIO, (int)newValue);
+                mDroidAudioEffect.setDpeParam(DroidAudioEffect.DPE_SUBCMD_MBC_BAND1_EXPANDERRATIO, (int)newValue);
                 break;
             case KEY_MBC_BAND_1_PREGAIN:
-                mAudioEffectManager.setDpeParam(AudioEffectManager.SUBCMD_DPE_MBC_BAND1_PREGAIN, (int)newValue);
+                mDroidAudioEffect.setDpeParam(DroidAudioEffect.DPE_SUBCMD_MBC_BAND1_PREGAIN, (int)newValue);
                 break;
             case KEY_MBC_BAND_1_POSTGAIN:
-                mAudioEffectManager.setDpeParam(AudioEffectManager.SUBCMD_DPE_MBC_BAND1_POSTGAIN, (int)newValue);
+                mDroidAudioEffect.setDpeParam(DroidAudioEffect.DPE_SUBCMD_MBC_BAND1_POSTGAIN, (int)newValue);
                 break;
 
             //mbc band 2
             case KEY_MBC_BAND_2_CUTOFFFREQUENCY:
-                mAudioEffectManager.setDpeParam(AudioEffectManager.SUBCMD_DPE_MBC_BAND2_CUTOFFFREQUENCY, (int)newValue);
+                mDroidAudioEffect.setDpeParam(DroidAudioEffect.DPE_SUBCMD_MBC_BAND2_CUTOFFFREQUENCY, (int)newValue);
                 break;
             case KEY_MBC_BAND_2_ATTACKTIME:
-                mAudioEffectManager.setDpeParam(AudioEffectManager.SUBCMD_DPE_MBC_BAND2_ATTACKTIME, (int)newValue);
+                mDroidAudioEffect.setDpeParam(DroidAudioEffect.DPE_SUBCMD_MBC_BAND2_ATTACKTIME, (int)newValue);
                 break;
             case KEY_MBC_BAND_2_RELEASETIME:
-                mAudioEffectManager.setDpeParam(AudioEffectManager.SUBCMD_DPE_MBC_BAND2_RELEASETIME, (int)newValue);
+                mDroidAudioEffect.setDpeParam(DroidAudioEffect.DPE_SUBCMD_MBC_BAND2_RELEASETIME, (int)newValue);
                 break;
             case KEY_MBC_BAND_2_RATIO:
-                mAudioEffectManager.setDpeParam(AudioEffectManager.SUBCMD_DPE_MBC_BAND2_RATIO, (int)newValue);
+                mDroidAudioEffect.setDpeParam(DroidAudioEffect.DPE_SUBCMD_MBC_BAND2_RATIO, (int)newValue);
                 break;
             case KEY_MBC_BAND_2_THRESHOLD:
-                mAudioEffectManager.setDpeParam(AudioEffectManager.SUBCMD_DPE_MBC_BAND2_THRESHOLD, (int)newValue);
+                mDroidAudioEffect.setDpeParam(DroidAudioEffect.DPE_SUBCMD_MBC_BAND2_THRESHOLD, (int)newValue);
                 break;
             case KEY_MBC_BAND_2_KNEEWIDTH:
-                mAudioEffectManager.setDpeParam(AudioEffectManager.SUBCMD_DPE_MBC_BAND2_KNEEWIDTH, (int)newValue);
+                mDroidAudioEffect.setDpeParam(DroidAudioEffect.DPE_SUBCMD_MBC_BAND2_KNEEWIDTH, (int)newValue);
                 break;
             case KEY_MBC_BAND_2_NOISEGATETHRESHOLD:
-                mAudioEffectManager.setDpeParam(AudioEffectManager.SUBCMD_DPE_MBC_BAND2_NOISEGATETHRESHOLD, (int)newValue);
+                mDroidAudioEffect.setDpeParam(DroidAudioEffect.DPE_SUBCMD_MBC_BAND2_NOISEGATETHRESHOLD, (int)newValue);
                 break;
             case KEY_MBC_BAND_2_EXPANDERRATIO:
-                mAudioEffectManager.setDpeParam(AudioEffectManager.SUBCMD_DPE_MBC_BAND2_EXPANDERRATIO, (int)newValue);
+                mDroidAudioEffect.setDpeParam(DroidAudioEffect.DPE_SUBCMD_MBC_BAND2_EXPANDERRATIO, (int)newValue);
                 break;
             case KEY_MBC_BAND_2_PREGAIN:
-                mAudioEffectManager.setDpeParam(AudioEffectManager.SUBCMD_DPE_MBC_BAND2_PREGAIN, (int)newValue);
+                mDroidAudioEffect.setDpeParam(DroidAudioEffect.DPE_SUBCMD_MBC_BAND2_PREGAIN, (int)newValue);
                 break;
             case KEY_MBC_BAND_2_POSTGAIN:
-                mAudioEffectManager.setDpeParam(AudioEffectManager.SUBCMD_DPE_MBC_BAND2_POSTGAIN, (int)newValue);
+                mDroidAudioEffect.setDpeParam(DroidAudioEffect.DPE_SUBCMD_MBC_BAND2_POSTGAIN, (int)newValue);
                 break;
 
             //limiter
             case KEY_LIMITER_ATTACKTIME:
-                mAudioEffectManager.setDpeParam(AudioEffectManager.SUBCMD_DPE_LIMITER_ATTACKTIME, (int)newValue);
+                mDroidAudioEffect.setDpeParam(DroidAudioEffect.DPE_SUBCMD_LIMITER_ATTACKTIME, (int)newValue);
                 break;
             case KEY_LIMITER_RELEASETIME:
-                mAudioEffectManager.setDpeParam(AudioEffectManager.SUBCMD_DPE_LIMITER_RELEASETIME, (int)newValue);
+                mDroidAudioEffect.setDpeParam(DroidAudioEffect.DPE_SUBCMD_LIMITER_RELEASETIME, (int)newValue);
                 break;
             case KEY_LIMITER_RATIO:
-                mAudioEffectManager.setDpeParam(AudioEffectManager.SUBCMD_DPE_LIMITER_RATIO, (int)newValue);
+                mDroidAudioEffect.setDpeParam(DroidAudioEffect.DPE_SUBCMD_LIMITER_RATIO, (int)newValue);
                 break;
             case KEY_LIMITER_THRESHOLD:
-                mAudioEffectManager.setDpeParam(AudioEffectManager.SUBCMD_DPE_LIMITER_THRESHOLD, (int)newValue);
+                mDroidAudioEffect.setDpeParam(DroidAudioEffect.DPE_SUBCMD_LIMITER_THRESHOLD, (int)newValue);
                 break;
             case KEY_LIMITER_POSTGAIN:
-                mAudioEffectManager.setDpeParam(AudioEffectManager.SUBCMD_DPE_LIMITER_POSTGAIN, (int)newValue);
+                mDroidAudioEffect.setDpeParam(DroidAudioEffect.DPE_SUBCMD_LIMITER_POSTGAIN, (int)newValue);
                 break;
         }
         return true;
     }
+
+    @Override
+    public int getMetricsCategory() {
+        return 0;
+    }
+
 }

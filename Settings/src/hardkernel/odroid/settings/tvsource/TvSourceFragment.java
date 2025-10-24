@@ -156,6 +156,11 @@ public class TvSourceFragment extends SettingsPreferenceFragment {
         return false;
     }
 
+    @Override
+    public int getMetricsCategory() {
+        return 0;
+    }
+
     private boolean isApkInstalled(String packageName) {
         PackageManager packageManager = getPreferenceManager().getContext().getPackageManager();
         try {

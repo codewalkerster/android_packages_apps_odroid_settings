@@ -7,8 +7,8 @@ import android.media.AudioManager;
 import android.provider.Settings;
 import android.util.Log;
 
-import com.droidlogic.app.AudioEffectManager;
 import com.droidlogic.app.DroidAudioManager;
+import com.droidlogic.app.DroidAudioEffect;
 
 
 import static hardkernel.odroid.settings.util.DroidUtils.logDebug;
@@ -23,8 +23,8 @@ public class AudioOptionsManager {
 
     private Context mContext;
     private static volatile AudioOptionsManager mAudioOptionsManager;
-    private AudioManager mAudioManager;
     private DroidAudioManager mDroidAudioManager;
+    private DroidAudioEffect mDroidAudioEffect;
 
     public static boolean isInit() {
         return mAudioOptionsManager != null;
@@ -53,21 +53,22 @@ public class AudioOptionsManager {
 
     private AudioOptionsManager(final Context context) {
         mContext = context;
-        mAudioManager = context.getSystemService(AudioManager.class);
+        mDroidAudioEffect = DroidAudioEffect.getInstance(context);
         mDroidAudioManager = DroidAudioManager.getInstance(context);
     }
 
     public boolean isAudioSupportMs12System() {
-        boolean isSupportMs12 = mDroidAudioManager.isAudioSupportMs12System();
+        boolean isSupportMs12 = mDroidAudioEffect.getEffectFunctionConfig(DroidAudioEffect.EFFECT_CONFIG_DAP)
+                                    != DroidAudioEffect.EFFECT_CONFIG_DAP_MS12_N;
         Log.d(TAG, "get prepareArgs existingName: " + isSupportMs12);
         return isSupportMs12;
     }
 
     public boolean isDolbyMATEnabled() {
-        return !mDroidAudioManager.getForceDDPEnable();
+        return !mDroidAudioManager.isForceDDPEnabled();
     }
 
     public void setDolbyMATEnabled(boolean enabled) {
-        mDroidAudioManager.setForceDDPEnable(!enabled);
+        mDroidAudioManager.setForceDDPEnabled(!enabled);
     }
 }

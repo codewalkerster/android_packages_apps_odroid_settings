@@ -23,6 +23,8 @@ import android.os.Bundle;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceScreen;
 
+import com.android.internal.logging.nano.MetricsProto;
+
 import hardkernel.odroid.settings.SettingsPreferenceFragment;
 import hardkernel.odroid.settings.R;
 import hardkernel.odroid.settings.RadioPreference;
@@ -105,4 +107,10 @@ public class KioskSelectFragment extends SettingsPreferenceFragment {
 
         return true;
     }
+
+    @Override
+    public int getMetricsCategory() {
+        return MetricsProto.MetricsEvent.SOUND;
+    }
+
 }

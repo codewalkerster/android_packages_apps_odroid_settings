@@ -19,6 +19,8 @@ import android.os.Bundle;
 
 import androidx.preference.Preference;
 
+import com.android.internal.logging.nano.MetricsProto;
+
 import hardkernel.odroid.settings.R;
 import hardkernel.odroid.settings.SettingsPreferenceFragment;
 
@@ -67,4 +69,10 @@ public class GpuFragment extends SettingsPreferenceFragment {
         gpuClockPref.setSummary(currentClock);
         gpuGovernorPref.setSummary(currentGovernor);
     }
+
+    @Override
+    public int getMetricsCategory() {
+        return MetricsProto.MetricsEvent.SOUND;
+    }
+
 }

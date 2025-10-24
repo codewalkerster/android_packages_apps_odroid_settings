@@ -41,6 +41,7 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceCategory;
 import androidx.preference.PreferenceGroup;
 
+import com.android.internal.logging.nano.MetricsProto;
 import com.android.settingslib.core.AbstractPreferenceController;
 import hardkernel.odroid.settings.PreferenceControllerFragment;
 import hardkernel.odroid.settings.R;
@@ -345,4 +346,10 @@ public class ResolutionSelectionFragment extends PreferenceControllerFragment {
                                 .resolution_selection_dialog_desc,
                         resolutionString);
     }
+
+    @Override
+    public int getMetricsCategory() {
+        return MetricsProto.MetricsEvent.SOUND;
+    }
+
 }

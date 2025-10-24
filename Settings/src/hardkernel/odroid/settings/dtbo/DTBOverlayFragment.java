@@ -1,5 +1,7 @@
 package hardkernel.odroid.settings.dtbo;
 
+import com.android.internal.logging.nano.MetricsProto;
+
 import hardkernel.odroid.settings.R;
 import hardkernel.odroid.settings.SettingsPreferenceFragment;
 
@@ -33,4 +35,10 @@ public class DTBOverlayFragment extends SettingsPreferenceFragment {
 
         overlays.setSummary(Overlay.getCurrent());
     }
+
+    @Override
+    public int getMetricsCategory() {
+        return MetricsProto.MetricsEvent.SOUND;
+    }
+
 }

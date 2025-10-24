@@ -135,6 +135,11 @@ public class PowerOnModeFragment extends SettingsPreferenceFragment {
         return super.onPreferenceTreeClick(preference);
     }
 
+    @Override
+    public int getMetricsCategory() {
+        return 0;
+    }
+
     private int getPowerOnMode() {
         int default_value = POWER_ON;
         String mode = mSystemControlManager.getBootenv(POWER_ON_MODE_ENV, STRING_POWER_ON);

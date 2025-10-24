@@ -21,6 +21,8 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceScreen;
 import android.widget.Toast;
 
+import com.android.internal.logging.nano.MetricsProto;
+
 import hardkernel.odroid.settings.R;
 import hardkernel.odroid.settings.SettingsPreferenceFragment;
 
@@ -93,4 +95,10 @@ public class FrequencyFragment extends SettingsPreferenceFragment {
     private void saveFrequency(String frequency) {
             ConfigEnv.setGpuFreq(frequency);
     }
+
+    @Override
+    public int getMetricsCategory() {
+        return MetricsProto.MetricsEvent.SOUND;
+    }
+
 }

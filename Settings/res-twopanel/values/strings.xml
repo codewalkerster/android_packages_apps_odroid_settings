@@ -2217,6 +2217,12 @@
     <string name="tv_balance_effect">Balance</string>
     <string name="tv_spdif">SPDIF</string>
     <string name="tv_virtual_surround">Virtual Surround</string>
+    <string name="title_karamic_manager">Global MIC</string>
+    <string name="title_karamic_source">Source</string>
+    <string name="title_karamic_mute">Mute</string>
+    <string name="title_karamic_gain">Gain</string>
+    <string name="title_karamic_reverb">Reverb</string>
+    <string name="title_karamic_reverb_level">Reverb Level</string>
     <string name="title_tv_dts_virtualx">DTS Audio Setting</string>
     <string name="title_tv_dts_virtualx_truvolumehd">DTS TruVolume HD</string>
     <string name="tv_sound_output_device">Sound Output Device</string>

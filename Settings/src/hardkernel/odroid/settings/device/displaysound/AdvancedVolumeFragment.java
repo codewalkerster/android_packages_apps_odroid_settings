@@ -47,6 +47,8 @@ import java.util.List;
 import java.util.Map;
 import android.util.Log;
 
+import com.android.internal.logging.nano.MetricsProto;
+
 /**
  * The "Advanced sound settings" screen in TV Settings.
  */
@@ -440,4 +442,10 @@ public class AdvancedVolumeFragment extends PreferenceControllerFragment {
     protected int getPageId() {
         return TvSettingsEnums.DISPLAY_SOUND_ADVANCED_SOUNDS;
     }
+
+    @Override
+    public int getMetricsCategory() {
+        return MetricsProto.MetricsEvent.SOUND;
+    }
+
 }

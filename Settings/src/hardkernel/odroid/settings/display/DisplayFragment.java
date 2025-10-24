@@ -117,4 +117,10 @@ public class DisplayFragment extends SettingsPreferenceFragment implements Prefe
         }
         return true;
     }
+
+    @Override
+    public int getMetricsCategory() {
+        return 0;
+    }
+
 }

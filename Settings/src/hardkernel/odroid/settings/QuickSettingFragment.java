@@ -47,7 +47,7 @@ import android.widget.TextView;
 import hardkernel.odroid.settings.R;
 import hardkernel.odroid.settings.SettingsPreferenceFragment;
 import hardkernel.odroid.settings.util.DroidUtils;
-import com.droidlogic.app.AudioEffectManager;
+import com.droidlogic.app.DroidAudioEffect;
 import com.droidlogic.app.SystemControlManager;
 import hardkernel.odroid.settings.pqsettings.PQSettingsManager;
 
@@ -61,7 +61,7 @@ public class QuickSettingFragment extends SettingsPreferenceFragment implements 
     public static final String KEY_ENABLE_OSD_SHARPNESS = "pq_osd_sharpness_enabled";
 
     private SystemControlManager mSystemControlManager;
-    private AudioEffectManager mAudioEffectManager;
+    private DroidAudioEffect mDroidAudioEffect;
     private PQSettingsManager mPQSettingsManager;
 
     public static QuickSettingFragment newInstance() {
@@ -70,8 +70,8 @@ public class QuickSettingFragment extends SettingsPreferenceFragment implements 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        if (mAudioEffectManager == null) {
-            mAudioEffectManager = AudioEffectManager.getInstance(getActivity());
+        if (mDroidAudioEffect == null) {
+            mDroidAudioEffect = DroidAudioEffect.getInstance(getActivity());
         }
         mSystemControlManager = SystemControlManager.getInstance();
         if (mPQSettingsManager == null) {
@@ -126,6 +126,11 @@ public class QuickSettingFragment extends SettingsPreferenceFragment implements 
             mPQSettingsManager.setOsdSharpnessEnabled((boolean)newValue);
         }
         return true;
+    }
+
+    @Override
+    public int getMetricsCategory() {
+        return 0;
     }
 
     private void startExportedActivity(String packageName, String activityName) {

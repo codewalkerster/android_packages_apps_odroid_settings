@@ -50,6 +50,8 @@ import com.android.tv.twopanelsettings.slices.SlicePreference;
 
 import java.util.Objects;
 
+import com.android.internal.logging.nano.MetricsProto;
+
 /**
  * The "Display & sound" screen in TV Settings.
  */
@@ -250,4 +252,10 @@ public class DisplaySoundFragment extends SettingsPreferenceFragment implements
                     PreferredDynamicRangeInfo.MatchContentDynamicRangeInfoFragment.class.getName());
         }
     }
+
+    @Override
+    public int getMetricsCategory() {
+        return MetricsProto.MetricsEvent.SOUND;
+    }
+
 }

@@ -11,6 +11,8 @@ import hardkernel.odroid.settings.R;
 import hardkernel.odroid.settings.SettingsPreferenceFragment;
 import hardkernel.odroid.settings.EnvProperty;
 
+import com.android.internal.logging.nano.MetricsProto;
+
 public class AmblightFragment extends SettingsPreferenceFragment {
     private static final String TAG = "AmblightFragment";
     private static final String KEY_BOBLIGHT_ON_SWITCH = "boblight_on_switch";
@@ -96,4 +98,10 @@ public class AmblightFragment extends SettingsPreferenceFragment {
                 .setCancelable(true)
                 .create().show();
     }
+
+    @Override
+    public int getMetricsCategory() {
+        return MetricsProto.MetricsEvent.SOUND;
+    }
+
 }

@@ -48,6 +48,9 @@ import androidx.preference.PreferenceScreen;
 import androidx.preference.PreferenceViewHolder;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.settingslib.core.instrumentation.Instrumentable;
+import com.android.settingslib.core.instrumentation.MetricsFeatureProvider;
+import com.android.settingslib.core.instrumentation.VisibilityLoggerMixin;
 import com.android.settingslib.core.lifecycle.Lifecycle;
 import hardkernel.odroid.settings.overlay.FlavorUtils;
 import hardkernel.odroid.settings.util.SettingsPreferenceUtil;
@@ -60,9 +63,11 @@ import com.android.tv.twopanelsettings.TwoPanelSettingsFragment;
  * and allow for instrumentation.
  */
 public abstract class SettingsPreferenceFragment extends LeanbackAddBackPreferenceFragment
-        implements LifecycleOwner,
+        implements LifecycleOwner, Instrumentable,
         TwoPanelSettingsFragment.PreviewableComponentCallback {
     private final Lifecycle mLifecycle = new Lifecycle(this);
+    private final VisibilityLoggerMixin mVisibilityLoggerMixin;
+    protected MetricsFeatureProvider mMetricsFeatureProvider;
 
     // Rename getLifecycle() to getSettingsLifecycle() as androidx Fragment has already implemented
     // getLifecycle(), overriding here would cause unexpected crash in framework.
@@ -72,6 +77,11 @@ public abstract class SettingsPreferenceFragment extends LeanbackAddBackPreferen
     }
 
     public SettingsPreferenceFragment() {
+        mMetricsFeatureProvider = new MetricsFeatureProvider();
+        // Mixin that logs visibility change for activity.
+        mVisibilityLoggerMixin = new VisibilityLoggerMixin(getMetricsCategory(),
+                mMetricsFeatureProvider);
+        getSettingsLifecycle().addObserver(mVisibilityLoggerMixin);
     }
 
     @CallSuper
@@ -195,6 +205,7 @@ public abstract class SettingsPreferenceFragment extends LeanbackAddBackPreferen
     @CallSuper
     @Override
     public void onResume() {
+        mVisibilityLoggerMixin.setSourceMetricsCategory(getActivity());
         super.onResume();
         mLifecycle.handleLifecycleEvent(ON_RESUME);
         if (getCallbackFragment() instanceof TwoPanelSettingsFragment) {

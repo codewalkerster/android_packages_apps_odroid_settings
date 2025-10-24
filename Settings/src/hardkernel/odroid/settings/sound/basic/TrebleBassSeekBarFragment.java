@@ -30,7 +30,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.droidlogic.app.AudioEffectManager;
+import com.droidlogic.app.DroidAudioEffect;
 import com.droidlogic.app.DroidAudioManager;
 import hardkernel.odroid.settings.TvSettingsActivity;
 import hardkernel.odroid.settings.R;
@@ -45,7 +45,7 @@ public class TrebleBassSeekBarFragment extends SettingsPreferenceFragment implem
     private TextView text_treble;
     private TextView text_bass;
 
-    private AudioEffectManager mAudioEffectManager;
+    private DroidAudioEffect mDroidAudioEffect;
 
     private boolean isSeekBarInited = false;
 
@@ -55,8 +55,8 @@ public class TrebleBassSeekBarFragment extends SettingsPreferenceFragment implem
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        if (mAudioEffectManager == null) {
-            mAudioEffectManager = ((TvSettingsActivity)getActivity()).getAudioEffectManager();
+        if (mDroidAudioEffect == null) {
+            mDroidAudioEffect = DroidAudioEffect.getInstance(getActivity());
         }
         super.onCreate(savedInstanceState);
     }
@@ -77,13 +77,18 @@ public class TrebleBassSeekBarFragment extends SettingsPreferenceFragment implem
 
     }
 
+    @Override
+    public int getMetricsCategory() {
+        return 0;
+    }
+
     private void initSeekBar(View view) {
         int status = -1;
         boolean hasfocused = false;
         seekbar_treble = (SeekBar) view.findViewById(R.id.seekbar_tv_treble);
         text_treble = (TextView) view.findViewById(R.id.text_tv_treble);
         if (true) {
-            status = mAudioEffectManager.getTrebleStatus();
+            status = mDroidAudioEffect.getTreble();
             seekbar_treble.setOnSeekBarChangeListener(this);
             seekbar_treble.setProgress(status);
             setShow(R.id.seekbar_tv_treble, status);
@@ -96,7 +101,7 @@ public class TrebleBassSeekBarFragment extends SettingsPreferenceFragment implem
         seekbar_bass = (SeekBar) view.findViewById(R.id.seekbar_tv_bass);
         text_bass = (TextView) view.findViewById(R.id.text_tv_bass);
         if (true) {
-            status = mAudioEffectManager.getBassStatus();
+            status = mDroidAudioEffect.getBass();
             seekbar_bass.setOnSeekBarChangeListener(this);
             seekbar_bass.setProgress(status);
             setShow(R.id.seekbar_tv_bass, status);
@@ -116,16 +121,17 @@ public class TrebleBassSeekBarFragment extends SettingsPreferenceFragment implem
         if (!isSeekBarInited) {
             return;
         }
-        boolean supportMs12Dap = DroidAudioManager.getInstance(getActivity()).isAudioSupportMs12System();
+        boolean supportMs12Dap = mDroidAudioEffect.getEffectFunctionConfig(DroidAudioEffect.EFFECT_CONFIG_DAP)
+                                    != DroidAudioEffect.EFFECT_CONFIG_DAP_MS12_N;
         switch (seekBar.getId()) {
             case R.id.seekbar_tv_treble:{
                 setShow(R.id.seekbar_tv_treble, progress);
-                mAudioEffectManager.setTreble(progress/* - mTvOptionSettingManager.getTrebleStatus()*/);
+                mDroidAudioEffect.setTreble(progress/* - mTvOptionSettingManager.getTreble()*/);
                 break;
             }
             case R.id.seekbar_tv_bass:{
                 setShow(R.id.seekbar_tv_bass, progress);
-                mAudioEffectManager.setBass(progress/* - mTvOptionSettingManager.getBassStatus()*/);
+                mDroidAudioEffect.setBass(progress/* - mTvOptionSettingManager.getBass()*/);
                 break;
             }
             default:

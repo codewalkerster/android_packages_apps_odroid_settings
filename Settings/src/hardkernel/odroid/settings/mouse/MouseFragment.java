@@ -5,6 +5,8 @@ import android.widget.Toast;
 import androidx.preference.Preference;
 import androidx.preference.TwoStatePreference;
 
+import com.android.internal.logging.nano.MetricsProto;
+
 import hardkernel.odroid.settings.R;
 import hardkernel.odroid.settings.EnvProperty;
 import hardkernel.odroid.settings.SettingsPreferenceFragment;
@@ -75,4 +77,10 @@ public class MouseFragment extends SettingsPreferenceFragment {
         }
         return super.onPreferenceTreeClick(preference);
     }
+
+    @Override
+    public int getMetricsCategory() {
+        return MetricsProto.MetricsEvent.SOUND;
+    }
+
 }
