@@ -15,6 +15,8 @@
  */
 package hardkernel.odroid.settings.kiosk;
 
+import android.content.pm.PackageManager;
+import android.content.ComponentName;
 import android.os.Bundle;
 import android.widget.Toast;
 
@@ -77,6 +79,21 @@ public class KioskFragment extends SettingsPreferenceFragment {
                 Toast.makeText(getContext(),
                         R.string.kiosk_mode_message,
                         Toast.LENGTH_LONG).show();
+
+                PackageManager pm = getContext().getPackageManager();
+                ComponentName componentName
+                    = new ComponentName("com.android.systemui",
+                            "com.android.systemui.SystemUIService");
+
+                try {
+                    pm.setComponentEnabledSetting(componentName,
+                            kiosk_mode ? PackageManager.COMPONENT_ENABLED_STATE_DISABLED
+                                       : PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+                            PackageManager.DONT_KILL_APP);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
                 return true;
         }
         return super.onPreferenceTreeClick(preference);
